@@ -11,6 +11,10 @@ def analyze_sport(
     all_candidates: list[Candidate] = []
     notes: list[str] = []
 
+    # ============================================================
+    # ANALISIS NORMAL DE MERCADOS
+    # ============================================================
+
     for game in games:
         game_quotes = [
             quote
@@ -54,6 +58,10 @@ def analyze_sport(
                 )[0]
                 for pair in book_pairs.values()
             ) / len(book_pairs)
+
+            # ====================================================
+            # PRIMERAS 5 ENTRADAS
+            # ====================================================
 
             if market_name == "Primeras 5 entradas":
                 matchup = (
@@ -131,7 +139,6 @@ def analyze_sport(
             )
 
             for side in ("home", "away"):
-
                 best = max(
                     (
                         quote
@@ -328,6 +335,215 @@ def analyze_sport(
                     )
                 )
 
+    # ============================================================
+    # MLB - TOP 3 GANADORES DEL JUEGO COMPLETO
+    # ============================================================
+
+    if sport == "MLB" and mlb_matchups:
+        mlb_predictions: list[
+            tuple[
+                float,
+                Game,
+                str,
+                dict[str, Any],
+            ]
+        ] = []
+
+        for game in games:
+            matchup = (
+                mlb_matchups
+                .get(
+                    str(game.id),
+                    {},
+                )
+            )
+
+            home_probability = (
+                full_game_home_probability(
+                    matchup
+                )
+            )
+
+            if home_probability is None:
+                continue
+
+            if home_probability >= 0.50:
+                predicted_winner = (
+                    game.home.name
+                )
+                winner_probability = (
+                    home_probability
+                )
+            else:
+                predicted_winner = (
+                    game.away.name
+                )
+                winner_probability = (
+                    1.0
+                    - home_probability
+                )
+
+            mlb_predictions.append(
+                (
+                    winner_probability,
+                    game,
+                    predicted_winner,
+                    matchup,
+                )
+            )
+
+        mlb_predictions.sort(
+            key=lambda item: item[0],
+            reverse=True,
+        )
+
+        if mlb_predictions:
+            notes.append(
+                "========== MLB TOP 3 GANADORES =========="
+            )
+
+            for rank, (
+                winner_probability,
+                game,
+                predicted_winner,
+                matchup,
+            ) in enumerate(
+                mlb_predictions[:3],
+                start=1,
+            ):
+                notes.append(
+                    f"#{rank} "
+                    f"{game.away.name} @ "
+                    f"{game.home.name}"
+                )
+
+                notes.append(
+                    f"GANADOR PREDICHO: "
+                    f"{predicted_winner}"
+                )
+
+                notes.append(
+                    f"Probabilidad estimada: "
+                    f"{winner_probability * 100:.1f}%"
+                )
+
+                home_pitcher = (
+                    matchup
+                    .get("home", {})
+                    .get("pitcher", {})
+                )
+
+                away_pitcher = (
+                    matchup
+                    .get("away", {})
+                    .get("pitcher", {})
+                )
+
+                if home_pitcher:
+                    notes.append(
+                        f"Abridor {game.home.name}: "
+                        f"{home_pitcher.get('name', 'N/D')} | "
+                        f"ERA "
+                        f"{home_pitcher.get('era', 'N/D')} | "
+                        f"WHIP "
+                        f"{home_pitcher.get('whip', 'N/D')}"
+                    )
+
+                if away_pitcher:
+                    notes.append(
+                        f"Abridor {game.away.name}: "
+                        f"{away_pitcher.get('name', 'N/D')} | "
+                        f"ERA "
+                        f"{away_pitcher.get('era', 'N/D')} | "
+                        f"WHIP "
+                        f"{away_pitcher.get('whip', 'N/D')}"
+                    )
+
+                home_bvp = (
+                    matchup
+                    .get("home", {})
+                    .get(
+                        "vs_opposing_pitcher",
+                        {},
+                    )
+                )
+
+                away_bvp = (
+                    matchup
+                    .get("away", {})
+                    .get(
+                        "vs_opposing_pitcher",
+                        {},
+                    )
+                )
+
+                if home_bvp:
+                    notes.append(
+                        f"{game.home.name} vs abridor rival: "
+                        f"OPS "
+                        f"{home_bvp.get('ops', 'N/D')} | "
+                        f"PA "
+                        f"{home_bvp.get('plate_appearances', 'N/D')}"
+                    )
+
+                if away_bvp:
+                    notes.append(
+                        f"{game.away.name} vs abridor rival: "
+                        f"OPS "
+                        f"{away_bvp.get('ops', 'N/D')} | "
+                        f"PA "
+                        f"{away_bvp.get('plate_appearances', 'N/D')}"
+                    )
+
+                f5_home_probability = (
+                    first_five_home_probability(
+                        matchup
+                    )
+                )
+
+                if (
+                    f5_home_probability
+                    is not None
+                ):
+                    if (
+                        f5_home_probability
+                        >= 0.50
+                    ):
+                        f5_winner = (
+                            game.home.name
+                        )
+                        f5_probability = (
+                            f5_home_probability
+                        )
+                    else:
+                        f5_winner = (
+                            game.away.name
+                        )
+                        f5_probability = (
+                            1.0
+                            - f5_home_probability
+                        )
+
+                    notes.append(
+                        f"F5 PREDICHO: "
+                        f"{f5_winner} | "
+                        f"{f5_probability * 100:.1f}%"
+                    )
+
+                notes.append(
+                    "----------------------------------------"
+                )
+
+        else:
+            notes.append(
+                "MLB: no se pudo calcular el Top 3 "
+                "porque faltan datos de los enfrentamientos."
+            )
+
+    # ============================================================
+    # MEJOR OPCION OBSERVADA
+    # ============================================================
+
     best_observed = max(
         all_candidates,
         key=lambda candidate: (
@@ -351,6 +567,10 @@ def analyze_sport(
         ),
         default=None,
     )
+
+    # ============================================================
+    # NOTAS FINALES
+    # ============================================================
 
     if not games:
         notes.append(
@@ -376,7 +596,6 @@ def analyze_sport(
         )
 
         if best_observed:
-
             notes.append(
                 f"MEJOR OPCIÓN: "
                 f"{best_observed.selection} | "
