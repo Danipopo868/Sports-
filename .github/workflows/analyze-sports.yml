@@ -35,6 +35,14 @@ jobs:
             cp sports_predictor/engine.py proyecto/sports-predictor-github/sports_predictor/engine.py
           fi
 
+          if [ -f mlb.py ]; then
+            cp mlb.py proyecto/sports-predictor-github/sports_predictor/mlb.py
+          fi
+
+          if [ -f Engine.py ]; then
+            cp Engine.py proyecto/sports-predictor-github/sports_predictor/engine.py
+          fi
+
       - name: Configurar Python
         uses: actions/setup-python@v5
         with:
