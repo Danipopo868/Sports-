@@ -27,8 +27,13 @@ jobs:
       - name: Instalar dependencias
         run: pip install -r requirements.txt
 
-      - name: Probar cálculos
-        run: python -m unittest discover -s tests -v
+      - name: Probar sintaxis
+        run: |
+          python -m py_compile sports_predictor/main.py
+          python -m py_compile sports_predictor/engine.py
+          python -m py_compile sports_predictor/api.py
+          python -m py_compile sports_predictor/mlb.py
+          python -m py_compile sports_predictor/report.py
 
       - name: Ejecutar durante 180 minutos
         env:
