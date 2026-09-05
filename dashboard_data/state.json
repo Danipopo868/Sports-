@@ -1,0 +1,108 @@
+{
+  "generated_at": "2026-09-05T19:33:07.389271-04:00",
+  "analysis_date": "2026-09-05",
+  "scan_number": 1,
+  "guarantee": false,
+  "message": "Las probabilidades son estimaciones; ninguna apuesta garantiza ganancias.",
+  "sports": {
+    "MLB": {
+      "games": 23,
+      "quotes": 54,
+      "remaining_requests": 26,
+      "notes": [
+        "",
+        "========================================",
+        "⚾ MLB TOP 3 GANADORES DEL JUEGO",
+        "========================================",
+        "",
+        "#1 Los Angeles Angels @ Pittsburgh Pirates",
+        "GANADOR PREDICHO: Pittsburgh Pirates",
+        "Probabilidad estimada: 64.6%",
+        "F5 PREDICHO: Pittsburgh Pirates",
+        "Probabilidad F5: 69.0%",
+        "Bateo visitante vs abridor: PA 8 | AVG 0.125 | OBP 0.125 | SLG 0.125 | OPS 0.250",
+        "Bateo local vs abridor: PA 25 | AVG 0.200 | OBP 0.240 | SLG 0.360 | OPS 0.600",
+        "",
+        "#2 Detroit Tigers @ Cleveland Guardians",
+        "GANADOR PREDICHO: Cleveland Guardians",
+        "Probabilidad estimada: 59.4%",
+        "F5 PREDICHO: Cleveland Guardians",
+        "Probabilidad F5: 65.4%",
+        "Bateo visitante vs abridor: PA 43 | AVG 0.201 | OBP 0.279 | SLG 0.444 | OPS 0.723",
+        "Bateo local vs abridor: PA 85 | AVG 0.268 | OBP 0.330 | SLG 0.500 | OPS 0.830",
+        "",
+        "#3 Toronto Blue Jays @ Kansas City Royals",
+        "GANADOR PREDICHO: Kansas City Royals",
+        "Probabilidad estimada: 58.8%",
+        "F5 PREDICHO: Kansas City Royals",
+        "Probabilidad F5: 61.6%",
+        "Bateo visitante vs abridor: PA 41 | AVG 0.272 | OBP 0.350 | SLG 0.388 | OPS 0.737",
+        "Bateo local vs abridor: PA 72 | AVG 0.303 | OBP 0.347 | SLG 0.600 | OPS 0.947",
+        "Ninguna opción superó simultáneamente todos los filtros de valor y calidad.",
+        "",
+        "MEJOR OPCION OBSERVADA:",
+        "San Francisco Giants @ New York Mets",
+        "Mercado: Primeras 5 entradas",
+        "Selección: San Francisco Giants",
+        "Probabilidad modelo: 49.6%",
+        "Punto equilibrio: 37.9%",
+        "Edge: 11.7%",
+        "EV: 30.9%",
+        "Calidad: 34/100",
+        "Forma New York Mets: 0-0; San Francisco Giants: 0-0",
+        "Consenso sin margen de 2 casa(s)",
+        "FALLA probabilidad: 49.6% < 55.0%",
+        "FALLA calidad: 34/100 < 60/100",
+        "FALLA historial: 0 < 5"
+      ],
+      "error": null,
+      "recommendation": null,
+      "best_observed": {
+        "sport": "MLB",
+        "game_id": "184944",
+        "matchup": "San Francisco Giants @ New York Mets",
+        "start": "2026-09-05T20:10:00+00:00",
+        "market": "Primeras 5 entradas",
+        "selection": "San Francisco Giants",
+        "bookmaker": "Marathon",
+        "decimal_odds": 2.64,
+        "model_probability": 0.4957761411072421,
+        "break_even_probability": 0.3787878787878788,
+        "edge": 0.11698826231936332,
+        "expected_value": 0.30884901252311914,
+        "bookmakers": 2,
+        "data_quality": 34,
+        "passes_filters": false,
+        "reasons": [
+          "Forma New York Mets: 0-0; San Francisco Giants: 0-0",
+          "Consenso sin margen de 2 casa(s)",
+          "FALLA probabilidad: 49.6% < 55.0%",
+          "FALLA calidad: 34/100 < 60/100",
+          "FALLA historial: 0 < 5"
+        ]
+      }
+    },
+    "NFL": {
+      "games": 0,
+      "quotes": 0,
+      "remaining_requests": null,
+      "notes": [
+        "No hay partidos disponibles para la fecha analizada."
+      ],
+      "error": null,
+      "recommendation": null,
+      "best_observed": null
+    },
+    "NBA": {
+      "games": 1,
+      "quotes": 0,
+      "remaining_requests": 78,
+      "notes": [
+        "No llegaron cuotas comparables; sin precio no se puede calcular rentabilidad."
+      ],
+      "error": null,
+      "recommendation": null,
+      "best_observed": null
+    }
+  }
+}
