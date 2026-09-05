@@ -24,28 +24,47 @@ jobs:
           rm -rf proyecto
           mkdir -p proyecto
           unzip -q -o sports-predictor-github.zip -d proyecto
-          echo "=== CONTENIDO REAL DEL ZIP ==="
-          find proyecto -maxdepth 3 -type f | sort
 
       - name: Usar archivos actualizados
         run: |
-          echo "Archivos externos disponibles:"
-          find sports_predictor -maxdepth 1 -type f 2>/dev/null | sort || true
+          if [ -f sports_predictor/main.py ]; then
+            cp sports_predictor/main.py proyecto/sports-predictor-github/sports_predictor/main.py
+          fi
+
+          if [ -f sports_predictor/engine.py ]; then
+            cp sports_predictor/engine.py proyecto/sports-predictor-github/sports_predictor/engine.py
+          fi
 
       - name: Configurar Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
-      - name: Localizar proyecto
-        run: |
-          echo "=== REQUIREMENTS ENCONTRADO ==="
-          find proyecto -name requirements.txt -type f -print
-          echo "=== CONFIG ENCONTRADO ==="
-          find proyecto -name config.json -type f -print
-          echo "=== MAIN ENCONTRADO ==="
-          find proyecto -path "*/sports_predictor/main.py" -type f -print
+      - name: Instalar dependencias
+        run: pip install -r requirements.txt
 
-      - name: Ver estructura
+      - name: Probar cálculos
+        working-directory: proyecto/sports-predictor-github
+        run: python -m unittest discover -s tests -v
+
+      - name: Ejecutar durante 180 minutos
+        working-directory: proyecto/sports-predictor-github
+        env:
+          API_SPORTS_KEY: ${{ secrets.API_SPORTS_KEY }}
+        run: python -m sports_predictor.main --duration-minutes 180 --interval-minutes 15
+
+      - name: Mostrar resultado
+        if: always()
+        working-directory: proyecto/sports-predictor-github
         run: |
-          find proyecto -maxdepth 4 -type f | sort
+          if [ -f reports/latest.md ]; then
+            cat reports/latest.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Guardar reportes
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reporte-deportivo
+          path: proyecto/sports-predictor-github/reports/
+          retention-days: 14
