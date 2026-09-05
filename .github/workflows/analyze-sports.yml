@@ -19,29 +19,35 @@ jobs:
       - name: Descargar repositorio
         uses: actions/checkout@v4
 
+      - name: Abrir proyecto
+        run: unzip -q sports-predictor-github.zip -d proyecto
+
+      - name: Usar main actualizado
+        run: |
+          cp sports_predictor/main.py proyecto/sports-predictor-github/sports_predictor/main.py
+
       - name: Configurar Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
       - name: Instalar dependencias
+        working-directory: proyecto/sports-predictor-github
         run: pip install -r requirements.txt
 
-      - name: Probar sintaxis
-        run: |
-          python -m py_compile sports_predictor/main.py
-          python -m py_compile sports_predictor/engine.py
-          python -m py_compile sports_predictor/api.py
-          python -m py_compile sports_predictor/mlb.py
-          python -m py_compile sports_predictor/report.py
+      - name: Probar cálculos
+        working-directory: proyecto/sports-predictor-github
+        run: python -m unittest discover -s tests -v
 
       - name: Ejecutar durante 180 minutos
+        working-directory: proyecto/sports-predictor-github
         env:
           API_SPORTS_KEY: ${{ secrets.API_SPORTS_KEY }}
         run: python -m sports_predictor.main --duration-minutes 180 --interval-minutes 15
 
       - name: Mostrar resultado
         if: always()
+        working-directory: proyecto/sports-predictor-github
         run: |
           if [ -f reports/latest.md ]; then
             cat reports/latest.md >> "$GITHUB_STEP_SUMMARY"
@@ -52,5 +58,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: reporte-deportivo
-          path: reports/
+          path: proyecto/sports-predictor-github/reports/
           retention-days: 14
