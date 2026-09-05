@@ -1,0 +1,54 @@
+name: Analizar deportes durante 3 horas
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sports-predictor
+  cancel-in-progress: false
+
+jobs:
+  analizar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 190
+
+    steps:
+      - name: Descargar repositorio
+        uses: actions/checkout@v4
+
+      - name: Abrir proyecto
+        run: unzip -q sports-predictor-github.zip -d proyecto
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Probar cálculos
+        working-directory: proyecto/sports-predictor-github
+        run: python -m unittest discover -s tests -v
+
+      - name: Ejecutar durante 180 minutos
+        working-directory: proyecto/sports-predictor-github
+        env:
+          API_SPORTS_KEY: ${{ secrets.API_SPORTS_KEY }}
+        run: python -m sports_predictor.main --duration-minutes 180 --interval-minutes 15
+
+      - name: Mostrar resultado
+        if: always()
+        working-directory: proyecto/sports-predictor-github
+        run: |
+          if [ -f reports/latest.md ]; then
+            cat reports/latest.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Guardar reportes
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reporte-deportivo
+          path: proyecto/sports-predictor-github/reports/
+          retention-days: 14
