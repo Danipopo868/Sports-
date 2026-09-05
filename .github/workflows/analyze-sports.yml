@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: sports-predictor
@@ -18,6 +18,9 @@ jobs:
     steps:
       - name: Descargar repositorio
         uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
 
       - name: Abrir proyecto
         run: |
@@ -55,11 +58,51 @@ jobs:
         working-directory: proyecto/sports-predictor-github
         run: python -m unittest discover -s tests -v
 
-      - name: Ejecutar durante 180 minutos
-        working-directory: proyecto/sports-predictor-github
+      - name: Ejecutar analisis y actualizar Streamlit
         env:
           API_SPORTS_KEY: ${{ secrets.API_SPORTS_KEY }}
-        run: python -m sports_predictor.main --duration-minutes 180 --interval-minutes 15
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          END=$((SECONDS + 10800))
+          SCAN=0
+
+          while [ $SECONDS -lt $END ]; do
+            SCAN=$((SCAN + 1))
+
+            echo "========================================"
+            echo "ESCANEO #$SCAN"
+            echo "========================================"
+
+            cd "$GITHUB_WORKSPACE/proyecto/sports-predictor-github"
+
+            python -m sports_predictor.main \
+              --once \
+              --output "$GITHUB_WORKSPACE/proyecto/sports-predictor-github/reports"
+
+            cd "$GITHUB_WORKSPACE"
+
+            mkdir -p dashboard_data
+
+            if [ -f proyecto/sports-predictor-github/dashboard_data/state.json ]; then
+              cp proyecto/sports-predictor-github/dashboard_data/state.json dashboard_data/state.json
+
+              git add dashboard_data/state.json
+
+              if ! git diff --cached --quiet; then
+                git commit -m "Actualizar dashboard deportivo"
+                git pull --rebase origin main
+                git push origin HEAD:main
+              fi
+            else
+              echo "ERROR: no se genero dashboard_data/state.json"
+            fi
+
+            if [ $SECONDS -lt $END ]; then
+              sleep 900
+            fi
+          done
 
       - name: Mostrar resultado
         if: always()
