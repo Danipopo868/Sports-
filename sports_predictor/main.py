@@ -34,14 +34,20 @@ class SportsAnalyzer:
         self.config = config
         self.client = ApiSportsClient(api_key)
         self.mlb = MlbStatsClient()
-        self.history_cache: dict[tuple[str, str, str], list[dict[str, Any]]] = {}
+        self.history_cache: dict[
+            tuple[str, str, str],
+            list[dict[str, Any]]
+        ] = {}
 
     def scan(self, date_iso: str) -> dict[str, dict[str, Any]]:
         results: dict[str, dict[str, Any]] = {}
 
         for sport in SPORTS:
             try:
-                game_result = self.client.games_for_date(sport, date_iso)
+                game_result = self.client.games_for_date(
+                    sport,
+                    date_iso,
+                )
 
                 normalized = normalize_games(
                     sport,
@@ -54,7 +60,10 @@ class SportsAnalyzer:
                     if not is_finished(game.status)
                 ]
 
-                game_ids = [game.id for game in games]
+                game_ids = [
+                    game.id
+                    for game in games
+                ]
 
                 odds_result = self.client.odds_for_date(
                     sport,
@@ -73,7 +82,10 @@ class SportsAnalyzer:
                 )
 
                 matchups = (
-                    self._mlb_matchups(games, date_iso)
+                    self._mlb_matchups(
+                        games,
+                        date_iso,
+                    )
                     if sport == "MLB"
                     else None
                 )
@@ -105,7 +117,9 @@ class SportsAnalyzer:
                     "recommendation": None,
                     "best_observed": None,
                     "notes": [],
-                    "error": _safe_error(str(exc)),
+                    "error": _safe_error(
+                        str(exc)
+                    ),
                 }
 
         return results
@@ -117,10 +131,15 @@ class SportsAnalyzer:
     ) -> dict[str, TeamForm]:
 
         forms: dict[str, TeamForm] = {}
-        history_limit = int(self.config["history_games"])
+        history_limit = int(
+            self.config["history_games"]
+        )
 
         for game in games:
-            for team in (game.home, game.away):
+            for team in (
+                game.home,
+                game.away,
+            ):
 
                 key = (
                     sport,
@@ -135,13 +154,20 @@ class SportsAnalyzer:
                             team.id,
                             game.season,
                         )
-                        self.history_cache[key] = history.response
+
+                        self.history_cache[
+                            key
+                        ] = history.response
 
                     except ApiSportsError:
-                        self.history_cache[key] = []
+                        self.history_cache[
+                            key
+                        ] = []
 
                 history_rows = list(
-                    self.history_cache[key]
+                    self.history_cache[
+                        key
+                    ]
                 )
 
                 current_form = calculate_team_form(
@@ -187,7 +213,9 @@ class SportsAnalyzer:
                         ]
                     )
 
-                forms[str(team.id)] = calculate_team_form(
+                forms[
+                    str(team.id)
+                ] = calculate_team_form(
                     sport,
                     team.id,
                     history_rows,
@@ -203,10 +231,15 @@ class SportsAnalyzer:
         date_iso: str,
     ) -> dict[str, dict[str, Any]]:
 
-        matchups: dict[str, dict[str, Any]] = {}
+        matchups: dict[
+            str,
+            dict[str, Any]
+        ] = {}
 
         for game in games:
-            matchups[str(game.id)] = self.mlb.matchup(
+            matchups[
+                str(game.id)
+            ] = self.mlb.matchup(
                 game.home.name,
                 game.away.name,
                 game.season_year,
@@ -218,7 +251,9 @@ class SportsAnalyzer:
 
 def run(args: argparse.Namespace) -> int:
 
-    config_path = Path(args.config).resolve()
+    config_path = Path(
+        args.config
+    ).resolve()
 
     config = json.loads(
         config_path.read_text(
@@ -293,11 +328,18 @@ def run(args: argparse.Namespace) -> int:
     )
 
     started = time.monotonic()
-    deadline = started + duration_seconds
+    deadline = (
+        started
+        + duration_seconds
+    )
+
     next_scan = started
     scan_number = 0
 
-    last_snapshot: dict[str, Any] | None = None
+    last_snapshot: dict[
+        str,
+        Any
+    ] | None = None
 
     while not stop_event.is_set():
 
@@ -334,19 +376,59 @@ def run(args: argparse.Namespace) -> int:
         )
 
         # ====================================================
+        # GUARDAR DATOS PARA STREAMLIT
+        # ====================================================
+
+        dashboard_dir = (
+            PROJECT_ROOT
+            / "dashboard_data"
+        )
+
+        dashboard_dir.mkdir(
+            parents=True,
+            exist_ok=True,
+        )
+
+        state_file = (
+            dashboard_dir
+            / "state.json"
+        )
+
+        state_file.write_text(
+            json.dumps(
+                last_snapshot,
+                ensure_ascii=False,
+                indent=2,
+                default=str,
+            ),
+            encoding="utf-8",
+        )
+
+        print(
+            f"Dashboard actualizado: {state_file}",
+            flush=True,
+        )
+
+        # ====================================================
         # MOSTRAR RESULTADO Y MOTIVO
         # ====================================================
 
         for sport in SPORTS:
 
-            sport_result = results[sport]
+            sport_result = results[
+                sport
+            ]
 
-            recommendation = sport_result.get(
-                "recommendation"
+            recommendation = (
+                sport_result.get(
+                    "recommendation"
+                )
             )
 
-            best_observed = sport_result.get(
-                "best_observed"
+            best_observed = (
+                sport_result.get(
+                    "best_observed"
+                )
             )
 
             notes = sport_result.get(
@@ -396,10 +478,15 @@ def run(args: argparse.Namespace) -> int:
             flush=True,
         )
 
-        if args.once or duration_seconds == 0:
+        if (
+            args.once
+            or duration_seconds == 0
+        ):
             break
 
-        next_scan += interval_seconds
+        next_scan += (
+            interval_seconds
+        )
 
         remaining_session = (
             deadline
@@ -425,23 +512,34 @@ def run(args: argparse.Namespace) -> int:
             wait_seconds
         )
 
-        if time.monotonic() >= deadline:
+        if (
+            time.monotonic()
+            >= deadline
+        ):
             break
 
     if last_snapshot is None:
         return 1
 
     all_errors = all(
-        last_snapshot["sports"]
+        last_snapshot[
+            "sports"
+        ]
         .get(
             sport,
             {},
         )
-        .get("error")
+        .get(
+            "error"
+        )
         for sport in SPORTS
     )
 
-    return 1 if all_errors else 0
+    return (
+        1
+        if all_errors
+        else 0
+    )
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -472,7 +570,10 @@ def build_parser() -> argparse.ArgumentParser:
 
     parser.add_argument(
         "--date",
-        help="Fecha YYYY-MM-DD; útil para pruebas",
+        help=(
+            "Fecha YYYY-MM-DD; "
+            "útil para pruebas"
+        ),
     )
 
     parser.add_argument(
@@ -541,4 +642,4 @@ if __name__ == "__main__":
         run(
             build_parser().parse_args()
         )
-        )
+                    )
