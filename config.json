@@ -1,0 +1,17 @@
+{
+  "timezone": "America/New_York",
+  "history_games": 12,
+  "filters": {
+    "minimum_probability": 0.55,
+    "minimum_edge": 0.03,
+    "minimum_expected_value": 0.03,
+    "minimum_bookmakers": 2,
+    "minimum_history_games": 5,
+    "minimum_data_quality": 60
+  },
+  "model": {
+    "market_weight": 0.58,
+    "form_weight": 0.42,
+    "maximum_probability": 0.85
+  }
+}
