@@ -20,11 +20,28 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Abrir proyecto
-        run: unzip -q sports-predictor-github.zip -d proyecto
-
-      - name: Usar main actualizado
         run: |
-          cp sports_predictor/main.py proyecto/sports-predictor-github/sports_predictor/main.py
+          rm -rf proyecto
+          mkdir -p proyecto
+          unzip -q -o sports-predictor-github.zip -d proyecto
+
+      - name: Usar archivos actualizados
+        run: |
+          if [ -f sports_predictor/main.py ]; then
+            cp sports_predictor/main.py proyecto/sports-predictor-github/sports_predictor/main.py
+          fi
+
+          if [ -f sports_predictor/engine.py ]; then
+            cp sports_predictor/engine.py proyecto/sports-predictor-github/sports_predictor/engine.py
+          fi
+
+      - name: Verificar proyecto
+        run: |
+          test -f proyecto/sports-predictor-github/requirements.txt
+          test -f proyecto/sports-predictor-github/config.json
+          test -f proyecto/sports-predictor-github/sports_predictor/main.py
+          test -f proyecto/sports-predictor-github/sports_predictor/engine.py
+          echo "Proyecto OK"
 
       - name: Configurar Python
         uses: actions/setup-python@v5
@@ -43,7 +60,10 @@ jobs:
         working-directory: proyecto/sports-predictor-github
         env:
           API_SPORTS_KEY: ${{ secrets.API_SPORTS_KEY }}
-        run: python -m sports_predictor.main --duration-minutes 180 --interval-minutes 15
+        run: |
+          python -m sports_predictor.main \
+            --duration-minutes 180 \
+            --interval-minutes 15
 
       - name: Mostrar resultado
         if: always()
