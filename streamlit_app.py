@@ -1,35 +1,34 @@
 from __future__ import annotations
 
 import json
-import re
-from datetime import datetime
 from pathlib import Path
-from typing import Any
 
 import streamlit as st
 
 
 # ============================================================
-# CONFIGURACION
+# CONFIGURACIÓN
 # ============================================================
+
+st.set_page_config(
+    page_title="Sports Predictor",
+    page_icon="🏆",
+    layout="wide",
+    initial_sidebar_state="collapsed",
+)
 
 ROOT = Path(__file__).resolve().parent
 
-STATE_FILE = ROOT / "dashboard_data" / "state.json"
-LATEST_FILE = ROOT / "dashboard_data" / "latest.json"
+REPORT_FILE = (
+    ROOT
+    / "reports"
+    / "latest.json"
+)
 
-SPORT_NAMES = {
-    "MLB": "⚾ MLB",
-    "NFL": "🏈 NFL",
-    "NBA": "🏀 NBA",
-}
-
-
-st.set_page_config(
-    page_title="Sports Edge",
-    page_icon="⚾",
-    layout="wide",
-    initial_sidebar_state="collapsed",
+HISTORY_FILE = (
+    ROOT
+    / "dashboard_data"
+    / "prediction_history.json"
 )
 
 
@@ -41,68 +40,78 @@ st.markdown(
     """
 <style>
 
-.stApp {
-    background:
-        radial-gradient(circle at 50% -20%, #172d46 0%, #090f18 42%, #05080d 75%);
+.block-container {
+    max-width: 1500px;
+    padding-top: 1.4rem;
+    padding-bottom: 4rem;
 }
 
-.block-container {
-    max-width: 1180px;
-    padding-top: 1rem;
-    padding-bottom: 3rem;
+[data-testid="stAppViewContainer"] {
+    background:
+        radial-gradient(
+            circle at top left,
+            #13213d 0%,
+            #07101d 35%,
+            #02050a 100%
+        );
+}
+
+[data-testid="stHeader"] {
+    background: transparent;
 }
 
 h1, h2, h3 {
-    letter-spacing: -0.03em;
+    letter-spacing: -0.02em;
 }
 
-[data-testid="stMetric"] {
-    background: rgba(15, 24, 36, 0.92);
-    border: 1px solid #29384b;
-    border-radius: 15px;
-    padding: 14px;
-}
-
-.pred-card {
-    background: rgba(12, 20, 31, 0.94);
-    border: 1px solid #2b394a;
-    border-radius: 18px;
-    padding: 18px;
-    margin-bottom: 16px;
-}
-
-.rank {
-    font-size: 1.15rem;
+.main-title {
+    font-size: 2.1rem;
     font-weight: 800;
+    margin-bottom: 0;
 }
 
-.winner {
+.subtitle {
+    opacity: .75;
+    margin-top: .2rem;
+    margin-bottom: 1.5rem;
+}
+
+.pick-card {
+    border: 1px solid rgba(148,163,184,.22);
+    border-radius: 18px;
+    padding: 20px;
+    margin: 10px 0 18px 0;
+    background: rgba(15,23,42,.88);
+}
+
+.pick-title {
     font-size: 1.45rem;
-    font-weight: 900;
-    margin-top: 8px;
+    font-weight: 800;
+    margin-bottom: 8px;
 }
 
-.muted {
-    color: #95a4b7;
+.pick-team {
+    font-size: 1.9rem;
+    font-weight: 900;
+    margin: 6px 0;
+}
+
+.pick-market {
+    font-size: 1rem;
+    opacity: .82;
 }
 
 .good {
     font-weight: 800;
 }
 
-.section-title {
-    font-size: 1.35rem;
-    font-weight: 850;
-    margin-top: 1.3rem;
-    margin-bottom: .7rem;
+.small-text {
+    font-size: .9rem;
+    opacity: .72;
 }
 
-.footer-note {
-    margin-top: 2rem;
-    color: #93a0b2;
-    border-top: 1px solid #263242;
-    padding-top: 1rem;
-    font-size: .88rem;
+.history-win {
+    font-weight: 800;
 }
 
 </style>
@@ -112,708 +121,1080 @@ h1, h2, h3 {
 
 
 # ============================================================
-# LEER ARCHIVO
+# HELPERS
 # ============================================================
 
-def get_data_file() -> Path | None:
+def load_json(
+    path: Path,
+    default,
+):
 
-    if STATE_FILE.exists():
-        return STATE_FILE
-
-    if LATEST_FILE.exists():
-        return LATEST_FILE
-
-    return None
-
-
-@st.cache_data(ttl=5)
-def load_snapshot(
-    path: str,
-    modified: float,
-) -> dict[str, Any]:
-
-    del modified
-
-    return json.loads(
-        Path(path).read_text(
-            encoding="utf-8"
-        )
-    )
-
-
-# ============================================================
-# FORMATO
-# ============================================================
-
-def pct(value: Any) -> str:
+    if not path.exists():
+        return default
 
     try:
-        number = float(value)
 
-        if number <= 1:
-            number *= 100
+        return json.loads(
+            path.read_text(
+                encoding="utf-8"
+            )
+        )
 
-        return f"{number:.1f}%"
+    except Exception:
 
-    except (TypeError, ValueError):
+        return default
+
+
+def pct(
+    value,
+) -> str:
+
+    try:
+
+        number = float(
+            value
+        )
+
+    except (
+        TypeError,
+        ValueError,
+    ):
+
+        return "—"
+
+    if abs(number) <= 1.0:
+
+        number *= 100.0
+
+    return f"{number:.1f}%"
+
+
+def decimal(
+    value,
+) -> str:
+
+    try:
+
+        return f"{float(value):.2f}"
+
+    except (
+        TypeError,
+        ValueError,
+    ):
+
         return "—"
 
 
-def display_time(value: str) -> str:
+def candidate_dict(
+    candidate,
+) -> dict:
 
-    try:
+    if candidate is None:
+        return {}
 
-        parsed = datetime.fromisoformat(
-            value.replace("Z", "+00:00")
-        )
+    if isinstance(
+        candidate,
+        dict,
+    ):
+        return candidate
 
-        return parsed.strftime(
-            "%d/%m/%Y · %I:%M %p"
-        )
-
-    except Exception:
-        return value or "Sin fecha"
-
-
-# ============================================================
-# EXTRAER TOP 3 DESDE NOTES
-# ============================================================
-
-def parse_mlb_top3(
-    notes: list[str],
-) -> list[dict[str, Any]]:
-
-    predictions: list[dict[str, Any]] = []
-
-    current: dict[str, Any] | None = None
-
-    for raw in notes:
-
-        line = str(raw).strip()
-
-        if not line:
-            continue
+    return {}
 
 
-        rank_match = re.match(
-            r"#([123])\s+(.+?)\s+@\s+(.+)",
-            line,
-        )
+def sport_title(
+    sport: str,
+) -> str:
 
-        if rank_match:
+    icons = {
+        "MLB": "⚾",
+        "NFL": "🏈",
+        "NBA": "🏀",
+    }
 
-            if current:
-                predictions.append(current)
-
-            current = {
-                "rank": int(
-                    rank_match.group(1)
-                ),
-                "away": rank_match.group(2),
-                "home": rank_match.group(3),
-            }
-
-            continue
-
-
-        if current is None:
-            continue
-
-
-        if line.startswith(
-            "GANADOR PREDICHO:"
-        ):
-
-            current["winner"] = line.split(
-                ":",
-                1,
-            )[1].strip()
-
-            continue
-
-
-        if line.startswith(
-            "Probabilidad estimada:"
-        ):
-
-            current["probability"] = (
-                line.split(
-                    ":",
-                    1,
-                )[1].strip()
-            )
-
-            continue
-
-
-        if line.startswith(
-            "F5 PREDICHO:"
-        ):
-
-            current["f5_winner"] = line.split(
-                ":",
-                1,
-            )[1].strip()
-
-            continue
-
-
-        if line.startswith(
-            "Probabilidad F5:"
-        ):
-
-            current["f5_probability"] = (
-                line.split(
-                    ":",
-                    1,
-                )[1].strip()
-            )
-
-            continue
-
-
-        if line.startswith(
-            "Abridor visitante:"
-        ):
-
-            current["away_starter"] = (
-                line.split(
-                    ":",
-                    1,
-                )[1].strip()
-            )
-
-            continue
-
-
-        if line.startswith(
-            "Abridor local:"
-        ):
-
-            current["home_starter"] = (
-                line.split(
-                    ":",
-                    1,
-                )[1].strip()
-            )
-
-            continue
-
-
-        if line.startswith(
-            "Bateo visitante vs abridor:"
-        ):
-
-            current["away_bvp"] = (
-                line.split(
-                    ":",
-                    1,
-                )[1].strip()
-            )
-
-            continue
-
-
-        if line.startswith(
-            "Bateo local vs abridor:"
-        ):
-
-            current["home_bvp"] = (
-                line.split(
-                    ":",
-                    1,
-                )[1].strip()
-            )
-
-            continue
-
-
-    if current:
-        predictions.append(current)
-
-
-    predictions.sort(
-        key=lambda item:
-            item.get("rank", 99)
-    )
-
-    return predictions[:3]
-
-
-# ============================================================
-# TARJETAS TOP 3 MLB
-# ============================================================
-
-def render_mlb_top3(
-    result: dict[str, Any],
-) -> None:
-
-    notes = result.get("notes") or []
-
-    predictions = parse_mlb_top3(
-        notes
-    )
-
-    st.markdown(
-        '<div class="section-title">🏆 TOP 3 GANADORES MLB</div>',
-        unsafe_allow_html=True,
+    return (
+        f"{icons.get(sport, '🏆')} "
+        f"{sport}"
     )
 
 
-    if not predictions:
+def market_icon(
+    market: str,
+) -> str:
 
-        st.info(
-            "Todavía no hay predicciones Top 3 MLB disponibles."
-        )
+    market_lower = str(
+        market
+    ).lower()
 
-        return
+    if (
+        "5"
+        in market_lower
+        or "f5"
+        in market_lower
+    ):
+        return "5️⃣"
 
-
-    for prediction in predictions:
-
-        rank = prediction.get(
-            "rank",
-            "—",
-        )
-
-        away = prediction.get(
-            "away",
-            "Visitante",
-        )
-
-        home = prediction.get(
-            "home",
-            "Local",
-        )
-
-        winner = prediction.get(
-            "winner",
-            "Sin predicción",
-        )
-
-        probability = prediction.get(
-            "probability",
-            "—",
-        )
-
-        f5_winner = prediction.get(
-            "f5_winner",
-            "Sin datos",
-        )
-
-        f5_probability = prediction.get(
-            "f5_probability",
-            "—",
-        )
+    return "🏆"
 
 
-        st.markdown(
-            f"""
-<div class="pred-card">
+def result_icon(
+    result: str | None,
+) -> str:
 
-<div class="rank">
-#{rank} · {away} @ {home}
+    if result == "GANADA":
+        return "✅"
+
+    if result == "PERDIDA":
+        return "❌"
+
+    if result == "EMPATE":
+        return "➖"
+
+    return "⏳"
+
+
+# ============================================================
+# CARGAR DATOS
+# ============================================================
+
+snapshot = load_json(
+    REPORT_FILE,
+    {},
+)
+
+history_rows = load_json(
+    HISTORY_FILE,
+    [],
+)
+
+if not isinstance(
+    history_rows,
+    list,
+):
+
+    history_rows = []
+
+
+# ============================================================
+# CABECERA
+# ============================================================
+
+st.markdown(
+    """
+<div class="main-title">
+🏆 SPORTS PREDICTOR
 </div>
 
-<div class="winner">
-🏆 GANADOR: {winner}
-</div>
-
-<div class="muted">
-Probabilidad estimada: <b>{probability}</b>
-</div>
-
+<div class="subtitle">
+Motor de análisis deportivo — MLB · NFL · NBA
 </div>
 """,
-            unsafe_allow_html=True,
-        )
-
-
-        col1, col2 = st.columns(2)
-
-        with col1:
-
-            st.metric(
-                "Ganador juego completo",
-                winner,
-            )
-
-            st.metric(
-                "Probabilidad",
-                probability,
-            )
-
-
-        with col2:
-
-            st.metric(
-                "F5 predicho",
-                f5_winner,
-            )
-
-            st.metric(
-                "Probabilidad F5",
-                f5_probability,
-            )
-
-
-        away_starter = prediction.get(
-            "away_starter"
-        )
-
-        home_starter = prediction.get(
-            "home_starter"
-        )
-
-        away_bvp = prediction.get(
-            "away_bvp"
-        )
-
-        home_bvp = prediction.get(
-            "home_bvp"
-        )
-
-
-        with st.expander(
-            "Ver análisis del partido"
-        ):
-
-            if away_starter:
-                st.write(
-                    f"**Abridor visitante:** {away_starter}"
-                )
-
-            if home_starter:
-                st.write(
-                    f"**Abridor local:** {home_starter}"
-                )
-
-            if away_bvp:
-                st.write(
-                    f"**Bateo visitante vs abridor:** {away_bvp}"
-                )
-
-            if home_bvp:
-                st.write(
-                    f"**Bateo local vs abridor:** {home_bvp}"
-                )
-
-
-        st.divider()
+    unsafe_allow_html=True,
+)
 
 
 # ============================================================
-# APUESTA CON VALOR
+# INFORMACIÓN DEL ÚLTIMO ESCANEO
 # ============================================================
 
-def render_candidate(
-    candidate: dict[str, Any],
-) -> None:
+if snapshot:
 
-    st.success(
-        "✅ APOSTAR — VALOR DETECTADO"
+    generated_at = (
+        snapshot.get(
+            "generated_at"
+        )
+        or snapshot.get(
+            "timestamp"
+        )
+        or "—"
+    )
+
+    date_analyzed = (
+        snapshot.get(
+            "date"
+        )
+        or snapshot.get(
+            "date_iso"
+        )
+        or "—"
+    )
+
+    scan_number = (
+        snapshot.get(
+            "scan_number",
+            "—",
+        )
+    )
+
+    a, b, c = st.columns(
+        3
+    )
+
+    a.metric(
+        "Fecha analizada",
+        date_analyzed,
+    )
+
+    b.metric(
+        "Escaneo",
+        scan_number,
+    )
+
+    c.metric(
+        "Última actualización",
+        str(
+            generated_at
+        )[:19],
+    )
+
+
+# ============================================================
+# DEPORTES
+# ============================================================
+
+sports_data = (
+    snapshot.get(
+        "sports",
+        {}
+    )
+    if snapshot
+    else {}
+)
+
+st.divider()
+
+st.header(
+    "🎯 Selecciones del motor"
+)
+
+
+# ============================================================
+# MOSTRAR CADA DEPORTE
+# ============================================================
+
+for sport in (
+    "MLB",
+    "NFL",
+    "NBA",
+):
+
+    data = (
+        sports_data.get(
+            sport,
+            {}
+        )
+        or {}
     )
 
     st.subheader(
-        candidate.get(
-            "selection",
-            "Selección no disponible",
+        sport_title(
+            sport
         )
     )
 
-    st.caption(
-        f"{candidate.get('matchup', '')} · "
-        f"{candidate.get('market', '')}"
-    )
-
-
-    c1, c2, c3, c4 = st.columns(4)
-
-    c1.metric(
-        "Probabilidad",
-        pct(
-            candidate.get(
-                "model_probability"
-            )
-        ),
-    )
-
-    try:
-        odds = (
-            f"{float(candidate.get('decimal_odds', 0)):.2f}"
-        )
-    except Exception:
-        odds = "—"
-
-    c2.metric(
-        "Mejor cuota",
-        odds,
-    )
-
-    c3.metric(
-        "Edge",
-        pct(
-            candidate.get(
-                "edge"
-            )
-        ),
-    )
-
-    c4.metric(
-        "EV",
-        pct(
-            candidate.get(
-                "expected_value"
-            )
-        ),
-    )
-
-
-# ============================================================
-# NO APOSTAR
-# ============================================================
-
-def render_no_bet(
-    result: dict[str, Any],
-) -> None:
-
-    st.warning(
-        "⚠️ NO APOSTAR"
-    )
-
-    best = result.get(
-        "best_observed"
-    )
-
-    if best:
-
-        with st.expander(
-            "Ver mejor opción descartada"
-        ):
-
-            st.write(
-                f"**{best.get('selection', 'Sin selección')}**"
-            )
-
-            st.caption(
-                f"{best.get('matchup', '')} · "
-                f"{best.get('market', '')}"
-            )
-
-            c1, c2, c3 = st.columns(3)
-
-            c1.metric(
-                "Probabilidad",
-                pct(
-                    best.get(
-                        "model_probability"
-                    )
-                ),
-            )
-
-            c2.metric(
-                "Edge",
-                pct(
-                    best.get(
-                        "edge"
-                    )
-                ),
-            )
-
-            c3.metric(
-                "Calidad",
-                f"{best.get('data_quality', 0)}/100",
-            )
-
-
-# ============================================================
-# RESULTADO POR DEPORTE
-# ============================================================
-
-def render_sport(
-    sport: str,
-    result: dict[str, Any],
-) -> None:
-
-    error = result.get(
+    error = data.get(
         "error"
     )
 
     if error:
 
         st.error(
-            "DATOS INCOMPLETOS"
+            f"{sport}: {error}"
         )
 
-        st.write(
-            error
+        continue
+
+    games = data.get(
+        "games",
+        0,
+    )
+
+    quotes = data.get(
+        "quotes",
+        0,
+    )
+
+    recommendation = (
+        candidate_dict(
+            data.get(
+                "recommendation"
+            )
+        )
+    )
+
+    best_observed = (
+        candidate_dict(
+            data.get(
+                "best_observed"
+            )
+        )
+    )
+
+    # --------------------------------------------------------
+    # CONTADORES
+    # --------------------------------------------------------
+
+    x1, x2 = st.columns(
+        2
+    )
+
+    x1.metric(
+        "Partidos analizados",
+        games,
+    )
+
+    x2.metric(
+        "Precios/mercados leídos",
+        quotes,
+    )
+
+    # ========================================================
+    # APUESTA RECOMENDADA
+    # ========================================================
+
+    if recommendation:
+
+        market = (
+            recommendation.get(
+                "market"
+            )
+            or "Ganador del partido"
         )
 
-        return
+        selection = (
+            recommendation.get(
+                "selection"
+            )
+            or "—"
+        )
 
+        matchup = (
+            recommendation.get(
+                "matchup"
+            )
+            or "—"
+        )
 
-    if sport == "MLB":
+        probability = (
+            recommendation.get(
+                "model_probability"
+            )
+        )
 
-        render_mlb_top3(
-            result
+        quality = (
+            recommendation.get(
+                "data_quality"
+            )
+        )
+
+        edge = (
+            recommendation.get(
+                "edge"
+            )
+        )
+
+        ev = (
+            recommendation.get(
+                "expected_value"
+            )
+        )
+
+        odds = (
+            recommendation.get(
+                "decimal_odds"
+            )
         )
 
         st.markdown(
-            '<div class="section-title">💰 DECISIÓN DE APUESTA</div>',
+            f"""
+<div class="pick-card">
+
+<div class="pick-title">
+{market_icon(market)} APUESTA SELECCIONADA
+</div>
+
+<div class="pick-team">
+{selection}
+</div>
+
+<div class="pick-market">
+{matchup}
+<br>
+{market}
+</div>
+
+</div>
+""",
             unsafe_allow_html=True,
         )
 
+        p1, p2, p3, p4 = (
+            st.columns(
+                4
+            )
+        )
 
-    if result.get(
-        "recommendation"
-    ):
+        p1.metric(
+            "Probabilidad",
+            pct(
+                probability
+            ),
+        )
 
-        render_candidate(
-            result[
-                "recommendation"
-            ]
+        p2.metric(
+            "Calidad de datos",
+            (
+                f"{quality}%"
+                if quality
+                is not None
+                else "—"
+            ),
+        )
+
+        p3.metric(
+            "Edge",
+            pct(
+                edge
+            ),
+        )
+
+        p4.metric(
+            "Valor esperado",
+            pct(
+                ev
+            ),
+        )
+
+        st.caption(
+            "Cuota decimal disponible: "
+            + decimal(
+                odds
+            )
+        )
+
+        reasons = (
+            recommendation.get(
+                "reasons"
+            )
+            or []
+        )
+
+        if reasons:
+
+            with st.expander(
+                "🔎 Ver análisis utilizado"
+            ):
+
+                for reason in reasons:
+
+                    st.write(
+                        f"• {reason}"
+                    )
+
+    # ========================================================
+    # NO APOSTAR
+    # ========================================================
+
+    else:
+
+        st.warning(
+            "NO APOSTAR — ningún partido "
+            "superó todos los filtros."
+        )
+
+        if best_observed:
+
+            with st.expander(
+                "Ver la opción que más se acercó"
+            ):
+
+                st.write(
+                    "**Partido:**",
+                    best_observed.get(
+                        "matchup",
+                        "—",
+                    ),
+                )
+
+                st.write(
+                    "**Selección:**",
+                    best_observed.get(
+                        "selection",
+                        "—",
+                    ),
+                )
+
+                st.write(
+                    "**Mercado:**",
+                    best_observed.get(
+                        "market",
+                        "—",
+                    ),
+                )
+
+                st.write(
+                    "**Probabilidad:**",
+                    pct(
+                        best_observed.get(
+                            "model_probability"
+                        )
+                    ),
+                )
+
+                st.write(
+                    "**Calidad:**",
+                    best_observed.get(
+                        "data_quality",
+                        "—",
+                    ),
+                )
+
+    # ========================================================
+    # NOTAS
+    # ========================================================
+
+    notes = (
+        data.get(
+            "notes"
+        )
+        or []
+    )
+
+    if notes:
+
+        with st.expander(
+            f"Notas de {sport}"
+        ):
+
+            for note in notes:
+
+                st.write(
+                    f"• {note}"
+                )
+
+    st.divider()
+
+
+# ============================================================
+# MLB: GANADOR FINAL Y F5
+# ============================================================
+
+st.header(
+    "⚾ MLB — mercados"
+)
+
+mlb_history = [
+    row
+    for row in history_rows
+    if str(
+        row.get(
+            "sport",
+            ""
+        )
+    ).upper()
+    == "MLB"
+]
+
+final_rows = [
+    row
+    for row in mlb_history
+    if str(
+        row.get(
+            "market",
+            ""
+        )
+    ).lower()
+    == "ganador del partido"
+]
+
+f5_rows = [
+    row
+    for row in mlb_history
+    if (
+        "5"
+        in str(
+            row.get(
+                "market",
+                ""
+            )
+        )
+        or
+        "f5"
+        in str(
+            row.get(
+                "market",
+                ""
+            )
+        ).lower()
+    )
+]
+
+m1, m2 = st.columns(
+    2
+)
+
+with m1:
+
+    st.subheader(
+        "🏆 Ganador final"
+    )
+
+    if final_rows:
+
+        latest_final = (
+            final_rows[-1]
+        )
+
+        st.metric(
+            "Última selección",
+            latest_final.get(
+                "selection",
+                "—",
+            ),
+        )
+
+        st.write(
+            "Probabilidad:",
+            pct(
+                latest_final.get(
+                    "model_probability"
+                )
+            ),
+        )
+
+        st.write(
+            "Resultado:",
+            (
+                result_icon(
+                    latest_final.get(
+                        "status"
+                    )
+                )
+                + " "
+                + str(
+                    latest_final.get(
+                        "status",
+                        "PENDIENTE",
+                    )
+                )
+            ),
         )
 
     else:
 
-        render_no_bet(
-            result
+        st.caption(
+            "Todavía no hay selección "
+            "de ganador final."
         )
 
 
-    st.caption(
-        f"Partidos revisados: "
-        f"{result.get('games', 0)} · "
-        f"Cuotas válidas: "
-        f"{result.get('quotes', 0)}"
+with m2:
+
+    st.subheader(
+        "5️⃣ Primeras 5 entradas"
     )
 
+    if f5_rows:
+
+        latest_f5 = (
+            f5_rows[-1]
+        )
+
+        st.metric(
+            "Última selección",
+            latest_f5.get(
+                "selection",
+                "—",
+            ),
+        )
+
+        st.write(
+            "Probabilidad:",
+            pct(
+                latest_f5.get(
+                    "model_probability"
+                )
+            ),
+        )
+
+        st.write(
+            "Resultado:",
+            (
+                result_icon(
+                    latest_f5.get(
+                        "status"
+                    )
+                )
+                + " "
+                + str(
+                    latest_f5.get(
+                        "status",
+                        "PENDIENTE",
+                    )
+                )
+            ),
+        )
+
+    else:
+
+        st.caption(
+            "Todavía no hay selección F5."
+        )
+
 
 # ============================================================
-# TITULO
+# HISTORIAL
 # ============================================================
 
-title, action = st.columns(
-    [5, 1]
+st.divider()
+
+st.header(
+    "📚 Historial de predicciones"
 )
 
-with title:
-
-    st.title(
-        "Sports Edge"
+won = sum(
+    row.get(
+        "status"
     )
+    == "GANADA"
+    for row in history_rows
+)
 
-    st.caption(
-        "Predicciones deportivas · "
-        "ganador del juego · F5 · "
-        "valor esperado"
+lost = sum(
+    row.get(
+        "status"
     )
+    == "PERDIDA"
+    for row in history_rows
+)
 
-
-with action:
-
-    if st.button(
-        "🔄 Actualizar",
-        use_container_width=True,
-    ):
-
-        st.cache_data.clear()
-
-        st.rerun()
-
-
-# ============================================================
-# CARGAR DATA
-# ============================================================
-
-DATA_FILE = get_data_file()
-
-
-if DATA_FILE is None:
-
-    st.info(
-        "Aún no existe "
-        "`dashboard_data/state.json` "
-        "ni `dashboard_data/latest.json`.\n\n"
-        "Cuando el motor escriba su primer "
-        "reporte, aparecerán aquí las "
-        "predicciones."
+ties = sum(
+    row.get(
+        "status"
     )
-
-    st.stop()
-
-
-snapshot = load_snapshot(
-    str(DATA_FILE),
-    DATA_FILE.stat().st_mtime,
+    == "EMPATE"
+    for row in history_rows
 )
 
-
-st.success(
-    "● Datos reales · motor conectado"
+pending = sum(
+    row.get(
+        "status"
+    )
+    == "PENDIENTE"
+    for row in history_rows
 )
 
-
-st.caption(
-    "Actualizado: "
-    f"{display_time(snapshot.get('generated_at', ''))} "
-    f"· Escaneo #{snapshot.get('scan_number', '—')}"
+resolved = (
+    won
+    + lost
 )
 
-
-# ============================================================
-# TABS
-# ============================================================
-
-tabs = st.tabs(
-    [
-        SPORT_NAMES["MLB"],
-        SPORT_NAMES["NFL"],
-        SPORT_NAMES["NBA"],
-    ]
+accuracy = (
+    100.0
+    * won
+    / resolved
+    if resolved
+    else 0.0
 )
 
+h1, h2, h3, h4, h5 = (
+    st.columns(
+        5
+    )
+)
 
-for tab, sport in zip(
-    tabs,
+h1.metric(
+    "Ganadas",
+    won,
+)
+
+h2.metric(
+    "Perdidas",
+    lost,
+)
+
+h3.metric(
+    "Empates",
+    ties,
+)
+
+h4.metric(
+    "Pendientes",
+    pending,
+)
+
+h5.metric(
+    "Efectividad",
     (
-        "MLB",
-        "NFL",
-        "NBA",
+        f"{accuracy:.1f}%"
+        if resolved
+        else "—"
     ),
+)
+
+
+# ============================================================
+# EFECTIVIDAD GANADOR FINAL / F5
+# ============================================================
+
+st.subheader(
+    "Resultados MLB por mercado"
+)
+
+
+def market_stats(
+    rows,
 ):
 
-    with tab:
+    w = sum(
+        row.get(
+            "status"
+        )
+        == "GANADA"
+        for row in rows
+    )
 
-        result = (
-            snapshot
-            .get(
-                "sports",
-                {},
-            )
-            .get(
-                sport,
-                {},
-            )
+    l = sum(
+        row.get(
+            "status"
+        )
+        == "PERDIDA"
+        for row in rows
+    )
+
+    p = sum(
+        row.get(
+            "status"
+        )
+        == "PENDIENTE"
+        for row in rows
+    )
+
+    resolved_market = (
+        w
+        + l
+    )
+
+    rate = (
+        100.0
+        * w
+        / resolved_market
+        if resolved_market
+        else 0.0
+    )
+
+    return (
+        w,
+        l,
+        p,
+        rate,
+    )
+
+
+fw, fl, fp, fr = market_stats(
+    final_rows
+)
+
+f5w, f5l, f5p, f5r = market_stats(
+    f5_rows
+)
+
+r1, r2 = st.columns(
+    2
+)
+
+with r1:
+
+    st.markdown(
+        "### 🏆 GANADOR FINAL"
+    )
+
+    a, b, c = st.columns(
+        3
+    )
+
+    a.metric(
+        "Ganadas",
+        fw,
+    )
+
+    b.metric(
+        "Perdidas",
+        fl,
+    )
+
+    c.metric(
+        "Pendientes",
+        fp,
+    )
+
+    st.metric(
+        "Efectividad",
+        (
+            f"{fr:.1f}%"
+            if fw + fl
+            else "—"
+        ),
+    )
+
+
+with r2:
+
+    st.markdown(
+        "### 5️⃣ F5"
+    )
+
+    a, b, c = st.columns(
+        3
+    )
+
+    a.metric(
+        "Ganadas",
+        f5w,
+    )
+
+    b.metric(
+        "Perdidas",
+        f5l,
+    )
+
+    c.metric(
+        "Pendientes",
+        f5p,
+    )
+
+    st.metric(
+        "Efectividad",
+        (
+            f"{f5r:.1f}%"
+            if f5w + f5l
+            else "—"
+        ),
+    )
+
+
+# ============================================================
+# TABLA DE HISTORIAL
+# ============================================================
+
+if history_rows:
+
+    st.subheader(
+        "Últimas predicciones"
+    )
+
+    table = []
+
+    for row in reversed(
+        history_rows[-100:]
+    ):
+
+        table.append(
+            {
+                "Fecha":
+                    str(
+                        row.get(
+                            "created_at",
+                            ""
+                        )
+                    )[:19],
+
+                "Deporte":
+                    row.get(
+                        "sport"
+                    ),
+
+                "Partido":
+                    row.get(
+                        "matchup"
+                    ),
+
+                "Mercado":
+                    row.get(
+                        "market"
+                    ),
+
+                "Selección":
+                    row.get(
+                        "selection"
+                    ),
+
+                "Probabilidad":
+                    pct(
+                        row.get(
+                            "model_probability"
+                        )
+                    ),
+
+                "Calidad":
+                    (
+                        f"{row.get('data_quality')}%"
+                        if row.get(
+                            "data_quality"
+                        )
+                        is not None
+                        else "—"
+                    ),
+
+                "Resultado":
+                    (
+                        result_icon(
+                            row.get(
+                                "status"
+                            )
+                        )
+                        + " "
+                        + str(
+                            row.get(
+                                "status",
+                                "PENDIENTE",
+                            )
+                        )
+                    ),
+
+                "Marcador final":
+                    (
+                        (
+                            f"{row.get('away_score')} - "
+                            f"{row.get('home_score')}"
+                        )
+                        if (
+                            row.get(
+                                "away_score"
+                            )
+                            is not None
+                            and
+                            row.get(
+                                "home_score"
+                            )
+                            is not None
+                        )
+                        else "—"
+                    ),
+            }
         )
 
-        render_sport(
-            sport,
-            result,
-        )
+    st.dataframe(
+        table,
+        use_container_width=True,
+        hide_index=True,
+    )
+
+else:
+
+    st.info(
+        "El historial comenzará a llenarse "
+        "cuando el motor haga su primera selección."
+    )
 
 
 # ============================================================
 # PIE
 # ============================================================
 
-st.markdown(
-    """
-<div class="footer-note">
-Las probabilidades son estimaciones matemáticas,
-no garantías. El ganador del juego y el F5 se
-muestran separados de la decisión APOSTAR / NO APOSTAR.
-</div>
-""",
-    unsafe_allow_html=True,
+st.divider()
+
+st.caption(
+    "El motor analiza los partidos antes de seleccionar "
+    "una apuesta. Una probabilidad alta no garantiza "
+    "el resultado de un evento deportivo."
 )
