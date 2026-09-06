@@ -321,12 +321,24 @@ def build_mlb_matchups(
 
         try:
 
+            # =================================================
+            # CORRECCIÓN
+            #
+            # MlbStatsClient.matchup() recibe:
+            # home_name
+            # away_name
+            # season
+            # date_iso
+            #
+            # NO game_id / team ids.
+            # =================================================
+
             matchup = (
                 mlb_client.matchup(
-                    game_id=game.id,
+                    home_name=game.home.name,
+                    away_name=game.away.name,
+                    season=game.season_year,
                     date_iso=date_iso,
-                    away_team_id=game.away.id,
-                    home_team_id=game.home.id,
                 )
             )
 
@@ -355,6 +367,25 @@ def build_mlb_matchups(
                         (
                             "    Calidad MLB: "
                             f"{score}/100"
+                        )
+                    )
+
+                missing = (
+                    completeness.get(
+                        "missing"
+                    )
+                    or []
+                )
+
+                if missing:
+
+                    print(
+                        (
+                            "    Factores faltantes: "
+                            + ", ".join(
+                                str(value)
+                                for value in missing
+                            )
                         )
                     )
 
@@ -489,8 +520,6 @@ def analyze_one_sport(
 
     # ========================================================
     # 3. NO HAY PARTIDOS DISPONIBLES
-    #
-    # NO ES "NO APOSTAR".
     # ========================================================
 
     if not unfinished_games:
@@ -533,7 +562,7 @@ def analyze_one_sport(
         }
 
     # ========================================================
-    # 4. CUOTAS DE TODOS LOS PARTIDOS
+    # 4. CUOTAS
     # ========================================================
 
     game_ids = [
@@ -604,8 +633,6 @@ def analyze_one_sport(
 
     # ========================================================
     # 6. MLB PROFUNDO
-    #
-    # mlb.py analiza todos los factores MLB disponibles.
     # ========================================================
 
     mlb_matchups: (
@@ -694,7 +721,7 @@ def analyze_one_sport(
         )
 
     # ========================================================
-    # 9. HISTORIAL ACTUAL
+    # 9. HISTORIAL
     # ========================================================
 
     rows = load_history(
@@ -892,7 +919,7 @@ def analyze_one_sport(
             )
 
     # ========================================================
-    # MOSTRAR RESUMEN DEL ESTUDIO
+    # MOSTRAR RESUMEN
     # ========================================================
 
     for note in notes:
@@ -1073,7 +1100,7 @@ def run_scan(
             }
 
     # ========================================================
-    # GUARDAR REPORTE DESPUÉS DE TERMINAR TODO
+    # GUARDAR REPORTE
     # ========================================================
 
     snapshot = build_snapshot(
@@ -1195,9 +1222,6 @@ def main() -> None:
 
     # ========================================================
     # UNA SOLA PASADA
-    #
-    # Ya no existe aquí el ciclo de 3 horas.
-    # Los resultados se actualizan por results.py.
     # ========================================================
 
     run_scan(
