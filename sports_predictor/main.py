@@ -209,20 +209,26 @@ def build_forms(
     team_ids: set[Any] = set()
 
     for game in games:
+
         team_ids.add(
             game.away.id
         )
+
         team_ids.add(
             game.home.id
         )
 
     forms: dict[str, Any] = {}
 
-    total_teams = len(team_ids)
+    total_teams = len(
+        team_ids
+    )
 
     print(
-        f"Equipos para forma reciente: "
-        f"{total_teams}"
+        (
+            "Equipos para forma reciente: "
+            f"{total_teams}"
+        )
     )
 
     for index, team_id in enumerate(
@@ -264,9 +270,9 @@ def build_forms(
 
             print(
                 (
-                    f"  No se pudo obtener "
-                    f"forma del equipo "
-                    f"{team_id}: {exc}"
+                    "  No se pudo obtener "
+                    f"forma del equipo {team_id}: "
+                    f"{exc}"
                 )
             )
 
@@ -288,7 +294,9 @@ def build_mlb_matchups(
         dict[str, Any],
     ] = {}
 
-    total_games = len(games)
+    total_games = len(
+        games
+    )
 
     print(
         (
@@ -335,8 +343,10 @@ def build_mlb_matchups(
                     or {}
                 )
 
-                score = completeness.get(
-                    "score"
+                score = (
+                    completeness.get(
+                        "score"
+                    )
                 )
 
                 if score is not None:
@@ -361,7 +371,7 @@ def build_mlb_matchups(
 
             print(
                 (
-                    f"    DATOS INSUFICIENTES: "
+                    "    DATOS INSUFICIENTES: "
                     f"{type(exc).__name__}: "
                     f"{exc}"
                 )
@@ -379,26 +389,29 @@ def build_mlb_matchups(
 
 
 # ============================================================
-# ACTUALIZAR PENDIENTES SIN CREAR APUESTA
+# RESOLVER PREDICCIONES EXISTENTES
+#
+# IMPORTANTE:
+# NO CREA APUESTAS NUEVAS.
 # ============================================================
 
 def resolve_existing_predictions(
     sport: str,
-    games,
     raw_games,
+    now: datetime,
 ) -> None:
 
     update_history(
-        history_path=HISTORY_FILE,
+        path=HISTORY_FILE,
         sport=sport,
+        games=raw_games,
         recommendation=None,
-        games=games,
-        raw_games=raw_games,
+        now=now,
     )
 
 
 # ============================================================
-# ANALIZAR UN DEPORTE
+# ANALIZAR UN DEPORTE COMPLETO
 # ============================================================
 
 def analyze_one_sport(
@@ -415,11 +428,13 @@ def analyze_one_sport(
 
     print()
     print("=" * 60)
-    print(f"ANALIZANDO {sport}")
+    print(
+        f"ANALIZANDO {sport}"
+    )
     print("=" * 60)
 
     # ========================================================
-    # 1. DESCARGAR TODOS LOS PARTIDOS DEL DÍA
+    # 1. TODOS LOS PARTIDOS DEL DÍA
     # ========================================================
 
     games_result = (
@@ -463,20 +478,19 @@ def analyze_one_sport(
     )
 
     # ========================================================
-    # 2. RESOLVER PREDICCIONES ANTERIORES
+    # 2. RESOLVER APUESTAS ANTERIORES
     # ========================================================
 
     resolve_existing_predictions(
         sport=sport,
-        games=games,
         raw_games=raw_games,
+        now=now,
     )
 
     # ========================================================
-    # 3. SI NO HAY PARTIDOS ABIERTOS
+    # 3. NO HAY PARTIDOS DISPONIBLES
     #
-    # Esto NO es "NO APOSTAR".
-    # Simplemente no existen partidos para analizar.
+    # NO ES "NO APOSTAR".
     # ========================================================
 
     if not unfinished_games:
@@ -503,21 +517,23 @@ def analyze_one_sport(
 
             "notes": [
                 (
-                    "SIN DECISIÓN: no hay partidos "
-                    "disponibles para una nueva "
-                    "predicción."
+                    "SIN DECISIÓN: "
+                    "no hay partidos disponibles "
+                    "para una nueva predicción."
                 )
             ],
 
             "history_summary":
-                history_summary(rows),
+                history_summary(
+                    rows
+                ),
 
             "error":
                 None,
         }
 
     # ========================================================
-    # 4. DESCARGAR CUOTAS DE TODOS LOS PARTIDOS
+    # 4. CUOTAS DE TODOS LOS PARTIDOS
     # ========================================================
 
     game_ids = [
@@ -528,7 +544,8 @@ def analyze_one_sport(
     print(
         (
             f"{sport}: descargando mercados "
-            f"para {len(game_ids)} partido(s)..."
+            f"para {len(game_ids)} "
+            "partido(s)..."
         )
     )
 
@@ -554,7 +571,7 @@ def analyze_one_sport(
     )
 
     # ========================================================
-    # 5. FORMA RECIENTE DE TODOS LOS EQUIPOS
+    # 5. FORMA RECIENTE
     # ========================================================
 
     history_games = int(
@@ -588,9 +605,7 @@ def analyze_one_sport(
     # ========================================================
     # 6. MLB PROFUNDO
     #
-    # Aquí mlb.py reúne los factores MLB disponibles:
-    # abridores, bullpen, ofensiva, splits, BvP,
-    # descanso, lineup/contexto, F5, etc.
+    # mlb.py analiza todos los factores MLB disponibles.
     # ========================================================
 
     mlb_matchups: (
@@ -612,16 +627,7 @@ def analyze_one_sport(
         )
 
     # ========================================================
-    # 7. MOTOR
-    #
-    # analyze_sport RECORRE TODOS LOS PARTIDOS.
-    #
-    # No selecciona la apuesta hasta terminar.
-    #
-    # DEVUELVE:
-    # recommendation
-    # best_observed
-    # notes
+    # 7. CALCULAR TODOS LOS CANDIDATOS
     # ========================================================
 
     print(
@@ -644,7 +650,6 @@ def analyze_one_sport(
         mlb_matchups=mlb_matchups,
     )
 
-    # Convertir dataclass Candidate a dict.
     recommendation_dict = (
         recommendation.to_dict()
         if recommendation is not None
@@ -658,8 +663,7 @@ def analyze_one_sport(
     )
 
     # ========================================================
-    # 8. SOLO DESPUÉS DEL ANÁLISIS COMPLETO
-    #    INTENTAR GUARDAR LA PREDICCIÓN
+    # 8. GUARDAR SOLO DESPUÉS DE TERMINAR TODO
     # ========================================================
 
     if recommendation_dict:
@@ -667,17 +671,17 @@ def analyze_one_sport(
         print(
             (
                 f"{sport}: análisis completo. "
-                "Existe candidato que supera "
-                "todos los filtros."
+                "Existe una selección que "
+                "superó todos los filtros."
             )
         )
 
         update_history(
-            history_path=HISTORY_FILE,
+            path=HISTORY_FILE,
             sport=sport,
+            games=raw_games,
             recommendation=recommendation_dict,
-            games=games,
-            raw_games=raw_games,
+            now=now,
         )
 
     else:
@@ -690,7 +694,7 @@ def analyze_one_sport(
         )
 
     # ========================================================
-    # 9. RECARGAR HISTORIAL
+    # 9. HISTORIAL ACTUAL
     # ========================================================
 
     rows = load_history(
@@ -698,9 +702,7 @@ def analyze_one_sport(
     )
 
     # ========================================================
-    # 10. BUSCAR PREDICCIONES BLOQUEADAS
-    #
-    # F5 y ganador final son independientes.
+    # 10. BLOQUEOS INDEPENDIENTES
     # ========================================================
 
     active_final = (
@@ -732,7 +734,7 @@ def analyze_one_sport(
     )
 
     # ========================================================
-    # 11. QUÉ MOSTRAR EN STREAMLIT
+    # 11. RECOMENDACIÓN PARA STREAMLIT
     # ========================================================
 
     dashboard_recommendation = (
@@ -768,7 +770,7 @@ def analyze_one_sport(
         )
 
     # ========================================================
-    # 13. CONSOLA
+    # 13. DECISIÓN FINAL
     # ========================================================
 
     print()
@@ -855,22 +857,19 @@ def analyze_one_sport(
 
     else:
 
-        # IMPORTANTE:
-        # Aquí no inventamos la causa.
-        # Las notas de engine.py indican si fue:
-        # - NO APOSTAR REAL
-        # - DATOS INSUFICIENTES
-        # - SIN DECISIÓN
-
         no_apostar_real = any(
-            "NO APOSTAR REAL"
-            in str(note)
+            (
+                "NO APOSTAR REAL"
+                in str(note)
+            )
             for note in notes
         )
 
         datos_insuficientes = any(
-            "DATOS INSUFICIENTES"
-            in str(note)
+            (
+                "DATOS INSUFICIENTES"
+                in str(note)
+            )
             for note in notes
         )
 
@@ -892,26 +891,33 @@ def analyze_one_sport(
                 "SIN DECISIÓN"
             )
 
-    # Mostrar resumen del análisis.
+    # ========================================================
+    # MOSTRAR RESUMEN DEL ESTUDIO
+    # ========================================================
+
     for note in notes:
+
+        text = str(
+            note
+        )
 
         if (
             "ESCANEO COMPLETO"
-            in str(note)
+            in text
             or "NO APOSTAR REAL"
-            in str(note)
+            in text
             or "DATOS INSUFICIENTES"
-            in str(note)
+            in text
             or "APUESTA SELECCIONADA"
-            in str(note)
+            in text
         ):
 
             print(
-                f"• {note}"
+                f"• {text}"
             )
 
     # ========================================================
-    # 14. RESULTADO PARA REPORT/STREAMLIT
+    # 14. DATOS PARA REPORT / STREAMLIT
     # ========================================================
 
     return {
@@ -934,7 +940,9 @@ def analyze_one_sport(
             notes,
 
         "history_summary":
-            history_summary(rows),
+            history_summary(
+                rows
+            ),
 
         "error":
             None,
@@ -942,7 +950,7 @@ def analyze_one_sport(
 
 
 # ============================================================
-# UN ÚNICO ANÁLISIS COMPLETO
+# ANÁLISIS COMPLETO DEL DÍA
 # ============================================================
 
 def run_scan(
@@ -972,8 +980,6 @@ def run_scan(
         dict[str, Any],
     ] = {}
 
-    # Cada deporte se termina completamente
-    # antes de pasar al siguiente.
     for sport in (
         "MLB",
         "NFL",
@@ -1020,7 +1026,9 @@ def run_scan(
                     )
                 ],
                 "history_summary":
-                    history_summary(rows),
+                    history_summary(
+                        rows
+                    ),
                 "error":
                     str(exc),
             }
@@ -1054,7 +1062,9 @@ def run_scan(
                     )
                 ],
                 "history_summary":
-                    history_summary(rows),
+                    history_summary(
+                        rows
+                    ),
                 "error":
                     (
                         f"{type(exc).__name__}: "
@@ -1063,7 +1073,7 @@ def run_scan(
             }
 
     # ========================================================
-    # GUARDAR SNAPSHOT SOLO AL TERMINAR LOS 3 DEPORTES
+    # GUARDAR REPORTE DESPUÉS DE TERMINAR TODO
     # ========================================================
 
     snapshot = build_snapshot(
@@ -1103,9 +1113,6 @@ def parse_args() -> argparse.Namespace:
             "MLB / NFL / NBA"
         )
     )
-
-    # Se conservan estos argumentos para no romper
-    # comandos antiguos, pero el workflow nuevo usa --once.
 
     parser.add_argument(
         "--duration-minutes",
@@ -1166,8 +1173,10 @@ def main() -> None:
             )
         )
 
-    api_client = ApiSportsClient(
-        api_key=api_key,
+    api_client = (
+        ApiSportsClient(
+            api_key=api_key,
+        )
     )
 
     mlb_client = (
@@ -1185,15 +1194,10 @@ def main() -> None:
     )
 
     # ========================================================
-    # IMPORTANTE
+    # UNA SOLA PASADA
     #
-    # La aplicación ya NO hace escaneos repetidos aquí.
-    #
-    # Incluso si alguien ejecuta el archivo sin --once,
-    # hacemos UNA sola pasada completa.
-    #
-    # La actualización GANADA/PERDIDA está separada
-    # en sports_predictor.results.
+    # Ya no existe aquí el ciclo de 3 horas.
+    # Los resultados se actualizan por results.py.
     # ========================================================
 
     run_scan(
