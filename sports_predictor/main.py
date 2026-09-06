@@ -3,1235 +3,240 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import signal
+import sys
+import threading
+import time
 from datetime import datetime
 from pathlib import Path
 from typing import Any
 from zoneinfo import ZoneInfo
 
-from .api import (
-    ApiSportsClient,
-    ApiSportsError,
-)
+from .api import ApiSportsClient, ApiSportsError
 from .engine import (
+    TeamForm,
     analyze_sport,
     calculate_team_form,
     is_finished,
     normalize_games,
     parse_quotes,
 )
-from .history import (
-    get_active_prediction,
-    history_summary,
-    load_history,
-    update_history,
-)
 from .mlb import MlbStatsClient
-from .report import (
-    build_snapshot,
-    save_reports,
-)
+from .history import update_history, history_summary
+from .report import build_snapshot, save_reports
 
 
-# ============================================================
-# RUTAS
-# ============================================================
+SPORTS = ("MLB", "NFL", "NBA")
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
-PROJECT_ROOT = (
-    Path(__file__)
-    .resolve()
-    .parent
-    .parent
-)
 
-CONFIG_FILE = (
-    PROJECT_ROOT
-    / "config.json"
-)
+class SportsAnalyzer:
+    def __init__(self, api_key: str, config: dict[str, Any]) -> None:
+        self.config = config
+        self.client = ApiSportsClient(api_key)
+        self.mlb = MlbStatsClient()
+        self.history_cache: dict[tuple[str, str, str], list[dict[str, Any]]] = {}
 
-REPORT_DIR = (
-    PROJECT_ROOT
-    / "reports"
-)
-
-DASHBOARD_DIR = (
-    PROJECT_ROOT
-    / "dashboard_data"
-)
-
-HISTORY_FILE = (
-    DASHBOARD_DIR
-    / "prediction_history.json"
-)
-
-
-# ============================================================
-# CONFIGURACIÓN
-# ============================================================
-
-def load_config() -> dict[str, Any]:
-
-    if not CONFIG_FILE.exists():
-        raise FileNotFoundError(
-            f"No existe {CONFIG_FILE}"
-        )
-
-    return json.loads(
-        CONFIG_FILE.read_text(
-            encoding="utf-8"
-        )
-    )
-
-
-# ============================================================
-# APUESTA BLOQUEADA -> DASHBOARD
-# ============================================================
-
-def locked_prediction_to_candidate(
-    row: dict[str, Any] | None,
-) -> dict[str, Any] | None:
-
-    if not row:
-        return None
-
-    reasons = list(
-        row.get("reasons")
-        or []
-    )
-
-    reasons.extend(
-        [
-            "🔒 Predicción bloqueada.",
-            (
-                "Esta selección ya fue publicada "
-                "y no se cambiará mientras siga pendiente."
-            ),
-        ]
-    )
-
-    return {
-        "sport":
-            row.get("sport"),
-
-        "game_id":
-            row.get("game_id"),
-
-        "matchup":
-            row.get("matchup"),
-
-        "start":
-            row.get("start"),
-
-        "market":
-            row.get("market"),
-
-        "selection":
-            row.get("selection"),
-
-        "away_team":
-            row.get("away_team"),
-
-        "home_team":
-            row.get("home_team"),
-
-        "bookmaker":
-            row.get("bookmaker"),
-
-        "model_probability":
-            row.get("model_probability"),
-
-        "break_even_probability":
-            row.get("break_even_probability"),
-
-        "data_quality":
-            row.get("data_quality"),
-
-        "decimal_odds":
-            row.get("decimal_odds"),
-
-        "edge":
-            row.get("edge"),
-
-        "expected_value":
-            row.get("expected_value"),
-
-        "bookmakers":
-            row.get("bookmakers"),
-
-        "passes_filters":
-            True,
-
-        "locked":
-            True,
-
-        "status":
-            row.get(
-                "status",
-                "PENDIENTE",
-            ),
-
-        "reasons":
-            reasons,
-    }
-
-
-# ============================================================
-# TEMPORADA
-# ============================================================
-
-def current_season(
-    sport: str,
-    now: datetime,
-) -> int:
-
-    year = now.year
-
-    if (
-        sport == "NFL"
-        and now.month <= 2
-    ):
-        return year - 1
-
-    return year
-
-
-# ============================================================
-# FORMAS RECIENTES
-# ============================================================
-
-def build_forms(
-    client: ApiSportsClient,
-    sport: str,
-    games,
-    history_games: int,
-    season: int,
-) -> dict[str, Any]:
-
-    team_ids: set[Any] = set()
-
-    for game in games:
-
-        team_ids.add(
-            game.away.id
-        )
-
-        team_ids.add(
-            game.home.id
-        )
-
-    forms: dict[str, Any] = {}
-
-    total_teams = len(
-        team_ids
-    )
-
-    print(
-        (
-            "Equipos para forma reciente: "
-            f"{total_teams}"
-        )
-    )
-
-    for index, team_id in enumerate(
-        sorted(
-            team_ids,
-            key=lambda value: str(value),
-        ),
-        start=1,
-    ):
-
-        print(
-            (
-                f"  Forma reciente "
-                f"{index}/{total_teams} "
-                f"- equipo {team_id}"
-            )
-        )
-
-        try:
-
-            history_result = (
-                client.team_history(
-                    sport,
-                    team_id,
-                    season,
-                )
-            )
-
-            forms[
-                str(team_id)
-            ] = calculate_team_form(
-                sport=sport,
-                team_id=team_id,
-                raw_games=history_result.response,
-                limit=history_games,
-            )
-
-        except Exception as exc:
-
-            print(
-                (
-                    "  No se pudo obtener "
-                    f"forma del equipo {team_id}: "
-                    f"{exc}"
-                )
-            )
-
-    return forms
-
-
-# ============================================================
-# MLB MATCHUPS PROFUNDOS
-# ============================================================
-
-def build_mlb_matchups(
-    mlb_client: MlbStatsClient,
-    games,
-    date_iso: str,
-) -> dict[str, dict[str, Any]]:
-
-    matchups: dict[
-        str,
-        dict[str, Any],
-    ] = {}
-
-    total_games = len(
-        games
-    )
-
-    print(
-        (
-            "MLB: comenzando análisis "
-            f"profundo de {total_games} "
-            "partido(s)."
-        )
-    )
-
-    for index, game in enumerate(
-        games,
-        start=1,
-    ):
-
-        print(
-            (
-                f"  MLB {index}/{total_games}: "
-                f"{game.away.name} @ "
-                f"{game.home.name}"
-            )
-        )
-
-        try:
-
-            # =================================================
-            # CORRECCIÓN
-            #
-            # MlbStatsClient.matchup() recibe:
-            # home_name
-            # away_name
-            # season
-            # date_iso
-            #
-            # NO game_id / team ids.
-            # =================================================
-
-            matchup = (
-                mlb_client.matchup(
-                    home_name=game.home.name,
-                    away_name=game.away.name,
-                    season=game.season_year,
-                    date_iso=date_iso,
-                )
-            )
-
-            if matchup:
-
-                matchups[
-                    str(game.id)
-                ] = matchup
-
-                completeness = (
-                    matchup.get(
-                        "completeness"
-                    )
-                    or {}
-                )
-
-                score = (
-                    completeness.get(
-                        "score"
-                    )
-                )
-
-                if score is not None:
-
-                    print(
-                        (
-                            "    Calidad MLB: "
-                            f"{score}/100"
-                        )
-                    )
-
-                missing = (
-                    completeness.get(
-                        "missing"
-                    )
-                    or []
-                )
-
-                if missing:
-
-                    print(
-                        (
-                            "    Factores faltantes: "
-                            + ", ".join(
-                                str(value)
-                                for value in missing
-                            )
-                        )
-                    )
-
-            else:
-
-                print(
-                    (
-                        "    DATOS INSUFICIENTES: "
-                        "matchup MLB vacío."
-                    )
-                )
-
-        except Exception as exc:
-
-            print(
-                (
-                    "    DATOS INSUFICIENTES: "
-                    f"{type(exc).__name__}: "
-                    f"{exc}"
-                )
-            )
-
-    print(
-        (
-            "MLB: análisis profundo terminado. "
-            f"{len(matchups)}/{total_games} "
-            "matchup(s) obtenidos."
-        )
-    )
-
-    return matchups
-
-
-# ============================================================
-# RESOLVER PREDICCIONES EXISTENTES
-#
-# IMPORTANTE:
-# NO CREA APUESTAS NUEVAS.
-# ============================================================
-
-def resolve_existing_predictions(
-    sport: str,
-    raw_games,
-    now: datetime,
-) -> None:
-
-    update_history(
-        path=HISTORY_FILE,
-        sport=sport,
-        games=raw_games,
-        recommendation=None,
-        now=now,
-    )
-
-
-# ============================================================
-# ANALIZAR UN DEPORTE COMPLETO
-# ============================================================
-
-def analyze_one_sport(
-    sport: str,
-    now: datetime,
-    config: dict[str, Any],
-    api_client: ApiSportsClient,
-    mlb_client: MlbStatsClient | None,
-) -> dict[str, Any]:
-
-    date_iso = (
-        now.date().isoformat()
-    )
-
-    print()
-    print("=" * 60)
-    print(
-        f"ANALIZANDO {sport}"
-    )
-    print("=" * 60)
-
-    # ========================================================
-    # 1. TODOS LOS PARTIDOS DEL DÍA
-    # ========================================================
-
-    games_result = (
-        api_client.games_for_date(
-            sport,
-            date_iso,
-        )
-    )
-
-    raw_games = (
-        games_result.response
-    )
-
-    games = normalize_games(
-        sport,
-        raw_games,
-    )
-
-    unfinished_games = [
-        game
-        for game in games
-        if not is_finished(
-            game.status
-        )
-    ]
-
-    print(
-        (
-            f"{sport}: "
-            f"{len(games)} partido(s) "
-            "encontrados."
-        )
-    )
-
-    print(
-        (
-            f"{sport}: "
-            f"{len(unfinished_games)} partido(s) "
-            "disponibles para analizar."
-        )
-    )
-
-    # ========================================================
-    # 2. RESOLVER APUESTAS ANTERIORES
-    # ========================================================
-
-    resolve_existing_predictions(
-        sport=sport,
-        raw_games=raw_games,
-        now=now,
-    )
-
-    # ========================================================
-    # 3. NO HAY PARTIDOS DISPONIBLES
-    # ========================================================
-
-    if not unfinished_games:
-
-        rows = load_history(
-            HISTORY_FILE
-        )
-
-        return {
-            "games":
-                len(games),
-
-            "quotes":
-                0,
-
-            "remaining_requests":
-                games_result.remaining_requests,
-
-            "recommendation":
-                None,
-
-            "best_observed":
-                None,
-
-            "notes": [
-                (
-                    "SIN DECISIÓN: "
-                    "no hay partidos disponibles "
-                    "para una nueva predicción."
-                )
-            ],
-
-            "history_summary":
-                history_summary(
-                    rows
-                ),
-
-            "error":
-                None,
-        }
-
-    # ========================================================
-    # 4. CUOTAS
-    # ========================================================
-
-    game_ids = [
-        game.id
-        for game in unfinished_games
-    ]
-
-    print(
-        (
-            f"{sport}: descargando mercados "
-            f"para {len(game_ids)} "
-            "partido(s)..."
-        )
-    )
-
-    odds_result = (
-        api_client.odds_for_date(
-            sport,
-            date_iso,
-            game_ids,
-        )
-    )
-
-    quotes = parse_quotes(
-        odds_result.response,
-        unfinished_games,
-    )
-
-    print(
-        (
-            f"{sport}: "
-            f"{len(quotes)} cuota(s) "
-            "utilizables encontradas."
-        )
-    )
-
-    # ========================================================
-    # 5. FORMA RECIENTE
-    # ========================================================
-
-    history_games = int(
-        config.get(
-            "history_games",
-            12,
-        )
-    )
-
-    season = current_season(
-        sport,
-        now,
-    )
-
-    forms = build_forms(
-        client=api_client,
-        sport=sport,
-        games=unfinished_games,
-        history_games=history_games,
-        season=season,
-    )
-
-    print(
-        (
-            f"{sport}: forma reciente "
-            f"obtenida para "
-            f"{len(forms)} equipo(s)."
-        )
-    )
-
-    # ========================================================
-    # 6. MLB PROFUNDO
-    # ========================================================
-
-    mlb_matchups: (
-        dict[str, dict[str, Any]]
-        | None
-    ) = None
-
-    if (
-        sport == "MLB"
-        and mlb_client is not None
-    ):
-
-        mlb_matchups = (
-            build_mlb_matchups(
-                mlb_client=mlb_client,
-                games=unfinished_games,
-                date_iso=date_iso,
-            )
-        )
-
-    # ========================================================
-    # 7. CALCULAR TODOS LOS CANDIDATOS
-    # ========================================================
-
-    print(
-        (
-            f"{sport}: calculando TODOS "
-            "los candidatos..."
-        )
-    )
-
-    (
-        recommendation,
-        best_observed,
-        notes,
-    ) = analyze_sport(
-        sport=sport,
-        games=unfinished_games,
-        quotes=quotes,
-        forms=forms,
-        config=config,
-        mlb_matchups=mlb_matchups,
-    )
-
-    recommendation_dict = (
-        recommendation.to_dict()
-        if recommendation is not None
-        else None
-    )
-
-    best_observed_dict = (
-        best_observed.to_dict()
-        if best_observed is not None
-        else None
-    )
-
-    # ========================================================
-    # 8. GUARDAR SOLO DESPUÉS DE TERMINAR TODO
-    # ========================================================
-
-    if recommendation_dict:
-
-        print(
-            (
-                f"{sport}: análisis completo. "
-                "Existe una selección que "
-                "superó todos los filtros."
-            )
-        )
-
-        update_history(
-            path=HISTORY_FILE,
-            sport=sport,
-            games=raw_games,
-            recommendation=recommendation_dict,
-            now=now,
-        )
-
-    else:
-
-        print(
-            (
-                f"{sport}: análisis completo "
-                "sin nueva apuesta elegible."
-            )
-        )
-
-    # ========================================================
-    # 9. HISTORIAL
-    # ========================================================
-
-    rows = load_history(
-        HISTORY_FILE
-    )
-
-    # ========================================================
-    # 10. BLOQUEOS INDEPENDIENTES
-    # ========================================================
-
-    active_final = (
-        get_active_prediction(
-            rows,
-            sport,
-            "Ganador del partido",
-        )
-    )
-
-    active_f5 = (
-        get_active_prediction(
-            rows,
-            sport,
-            "Primeras 5 entradas",
-        )
-    )
-
-    locked_final = (
-        locked_prediction_to_candidate(
-            active_final
-        )
-    )
-
-    locked_f5 = (
-        locked_prediction_to_candidate(
-            active_f5
-        )
-    )
-
-    # ========================================================
-    # 11. RECOMENDACIÓN PARA STREAMLIT
-    # ========================================================
-
-    dashboard_recommendation = (
-        locked_final
-        or locked_f5
-        or recommendation_dict
-    )
-
-    # ========================================================
-    # 12. NOTAS DE BLOQUEO
-    # ========================================================
-
-    if locked_final:
-
-        notes.append(
-            (
-                "🔒 GANADOR FINAL bloqueado: "
-                f"{locked_final.get('selection')}. "
-                "No puede cambiarse mientras "
-                "siga PENDIENTE."
-            )
-        )
-
-    if locked_f5:
-
-        notes.append(
-            (
-                "🔒 F5 bloqueado: "
-                f"{locked_f5.get('selection')}. "
-                "No puede cambiarse mientras "
-                "siga PENDIENTE."
-            )
-        )
-
-    # ========================================================
-    # 13. DECISIÓN FINAL
-    # ========================================================
-
-    print()
-    print(
-        f"DECISIÓN FINAL {sport}"
-    )
-    print("-" * 60)
-
-    if dashboard_recommendation:
-
-        print(
-            (
-                "SELECCIÓN: "
-                f"{dashboard_recommendation.get('selection')}"
-            )
-        )
-
-        print(
-            (
-                "PARTIDO: "
-                f"{dashboard_recommendation.get('matchup')}"
-            )
-        )
-
-        print(
-            (
-                "MERCADO: "
-                f"{dashboard_recommendation.get('market')}"
-            )
-        )
-
-        probability = (
-            dashboard_recommendation.get(
-                "model_probability"
-            )
-        )
-
-        if probability is not None:
-
+    def scan(self, date_iso: str) -> dict[str, dict[str, Any]]:
+        results: dict[str, dict[str, Any]] = {}
+        for sport in SPORTS:
             try:
-
-                probability_number = float(
-                    probability
+                game_result = self.client.games_for_date(sport, date_iso)
+                normalized = normalize_games(sport, game_result.response)
+                games = [game for game in normalized if not is_finished(game.status)]
+                game_ids = [game.id for game in games]
+                odds_result = self.client.odds_for_date(sport, date_iso, game_ids)
+                quotes = parse_quotes(odds_result.response, games)
+                forms = self._forms_for_games(sport, games)
+                matchups = self._mlb_matchups(games, date_iso) if sport == "MLB" else None
+                recommendations, best_observed, notes = analyze_sport(
+                    sport,
+                    games,
+                    quotes,
+                    forms,
+                    self.config,
+                    matchups,
                 )
-
-                if probability_number <= 1:
-                    probability_number *= 100
-
-                print(
-                    (
-                        "PROBABILIDAD: "
-                        f"{probability_number:.1f}%"
-                    )
+                history_file = PROJECT_ROOT / "dashboard_data" / "prediction_history.json"
+                history_rows = update_history(
+                    history_file, sport, normalized, recommendations, datetime.now()
                 )
+                results[sport] = {
+                    "games": len(games),
+                    "quotes": len(quotes),
+                    "remaining_requests": odds_result.remaining_requests,
+                    "recommendations": recommendations,
+                    "recommendation": recommendations[0] if recommendations else None,
+                    "best_observed": best_observed,
+                    "notes": notes,
+                    "history_summary": history_summary(history_rows),
+                    "error": None,
+                }
+            except (ApiSportsError, ValueError) as exc:
+                results[sport] = {
+                    "games": 0,
+                    "quotes": 0,
+                    "remaining_requests": None,
+                    "recommendations": [],
+                    "recommendation": None,
+                    "best_observed": None,
+                    "notes": [],
+                    "error": _safe_error(str(exc)),
+                }
+        return results
 
-            except (
-                TypeError,
-                ValueError,
-            ):
-                pass
-
-        quality = (
-            dashboard_recommendation.get(
-                "data_quality"
-            )
-        )
-
-        if quality is not None:
-
-            print(
-                (
-                    "CALIDAD DE DATOS: "
-                    f"{quality}/100"
+    def _forms_for_games(self, sport: str, games: list[Any]) -> dict[str, TeamForm]:
+        forms: dict[str, TeamForm] = {}
+        history_limit = int(self.config["history_games"])
+        for game in games:
+            for team in (game.home, game.away):
+                key = (sport, str(team.id), game.season)
+                if key not in self.history_cache:
+                    try:
+                        history = self.client.team_history(sport, team.id, game.season)
+                        self.history_cache[key] = history.response
+                    except ApiSportsError:
+                        self.history_cache[key] = []
+                history_rows = list(self.history_cache[key])
+                current_form = calculate_team_form(
+                    sport,
+                    team.id,
+                    history_rows,
+                    history_limit,
+                    game.id,
                 )
-            )
-
-        if dashboard_recommendation.get(
-            "locked"
-        ):
-
-            print(
-                "ESTADO: 🔒 BLOQUEADA"
-            )
-
-    else:
-
-        no_apostar_real = any(
-            (
-                "NO APOSTAR REAL"
-                in str(note)
-            )
-            for note in notes
-        )
-
-        datos_insuficientes = any(
-            (
-                "DATOS INSUFICIENTES"
-                in str(note)
-            )
-            for note in notes
-        )
-
-        if no_apostar_real:
-
-            print(
-                "NO APOSTAR REAL"
-            )
-
-        elif datos_insuficientes:
-
-            print(
-                "DATOS INSUFICIENTES"
-            )
-
-        else:
-
-            print(
-                "SIN DECISIÓN"
-            )
-
-    # ========================================================
-    # MOSTRAR RESUMEN
-    # ========================================================
-
-    for note in notes:
-
-        text = str(
-            note
-        )
-
-        if (
-            "ESCANEO COMPLETO"
-            in text
-            or "NO APOSTAR REAL"
-            in text
-            or "DATOS INSUFICIENTES"
-            in text
-            or "APUESTA SELECCIONADA"
-            in text
-        ):
-
-            print(
-                f"• {text}"
-            )
-
-    # ========================================================
-    # 14. DATOS PARA REPORT / STREAMLIT
-    # ========================================================
-
-    return {
-        "games":
-            len(unfinished_games),
-
-        "quotes":
-            len(quotes),
-
-        "remaining_requests":
-            odds_result.remaining_requests,
-
-        "recommendation":
-            dashboard_recommendation,
-
-        "best_observed":
-            best_observed_dict,
-
-        "notes":
-            notes,
-
-        "history_summary":
-            history_summary(
-                rows
-            ),
-
-        "error":
-            None,
-    }
-
-
-# ============================================================
-# ANÁLISIS COMPLETO DEL DÍA
-# ============================================================
-
-def run_scan(
-    scan_number: int,
-    config: dict[str, Any],
-    api_client: ApiSportsClient,
-    mlb_client: MlbStatsClient | None,
-    timezone: ZoneInfo,
-) -> dict[str, Any]:
-
-    now = datetime.now(
-        timezone
-    )
-
-    print()
-    print("=" * 60)
-    print(
-        (
-            "ANÁLISIS COMPLETO DEL DÍA "
-            f"{now.date().isoformat()}"
-        )
-    )
-    print("=" * 60)
-
-    results: dict[
-        str,
-        dict[str, Any],
-    ] = {}
-
-    for sport in (
-        "MLB",
-        "NFL",
-        "NBA",
-    ):
-
-        try:
-
-            results[
-                sport
-            ] = analyze_one_sport(
-                sport=sport,
-                now=now,
-                config=config,
-                api_client=api_client,
-                mlb_client=mlb_client,
-            )
-
-        except ApiSportsError as exc:
-
-            print(
-                (
-                    f"{sport} API ERROR: "
-                    f"{exc}"
+                if current_form.games < history_limit:
+                    previous_season = _previous_season(game.season)
+                    previous_key = (sport, str(team.id), previous_season)
+                    if previous_key not in self.history_cache:
+                        try:
+                            previous = self.client.team_history(
+                                sport, team.id, previous_season
+                            )
+                            self.history_cache[previous_key] = previous.response
+                        except ApiSportsError:
+                            self.history_cache[previous_key] = []
+                    history_rows.extend(self.history_cache[previous_key])
+                forms[str(team.id)] = calculate_team_form(
+                    sport,
+                    team.id,
+                    history_rows,
+                    history_limit,
+                    game.id,
                 )
+        return forms
+
+    def _mlb_matchups(self, games: list[Any], date_iso: str) -> dict[str, dict[str, Any]]:
+        matchups: dict[str, dict[str, Any]] = {}
+        for game in games:
+            matchups[str(game.id)] = self.mlb.matchup(
+                game.home.name,
+                game.away.name,
+                game.season_year,
+                date_iso,
             )
-
-            rows = load_history(
-                HISTORY_FILE
-            )
-
-            results[sport] = {
-                "games": 0,
-                "quotes": 0,
-                "remaining_requests": None,
-                "recommendation": None,
-                "best_observed": None,
-                "notes": [
-                    (
-                        "DATOS INSUFICIENTES: "
-                        "error de API. "
-                        "No se considera "
-                        "NO APOSTAR."
-                    )
-                ],
-                "history_summary":
-                    history_summary(
-                        rows
-                    ),
-                "error":
-                    str(exc),
-            }
-
-        except Exception as exc:
-
-            print(
-                (
-                    f"{sport} ERROR: "
-                    f"{type(exc).__name__}: "
-                    f"{exc}"
-                )
-            )
-
-            rows = load_history(
-                HISTORY_FILE
-            )
-
-            results[sport] = {
-                "games": 0,
-                "quotes": 0,
-                "remaining_requests": None,
-                "recommendation": None,
-                "best_observed": None,
-                "notes": [
-                    (
-                        "DATOS INSUFICIENTES: "
-                        "el análisis tuvo un error. "
-                        "No se considera "
-                        "NO APOSTAR."
-                    )
-                ],
-                "history_summary":
-                    history_summary(
-                        rows
-                    ),
-                "error":
-                    (
-                        f"{type(exc).__name__}: "
-                        f"{exc}"
-                    ),
-            }
-
-    # ========================================================
-    # GUARDAR REPORTE
-    # ========================================================
-
-    snapshot = build_snapshot(
-        generated_at=now,
-        date_iso=now.date().isoformat(),
-        scan_number=scan_number,
-        results=results,
-    )
-
-    save_reports(
-        snapshot,
-        REPORT_DIR,
-    )
-
-    print()
-    print("=" * 60)
-    print(
-        "ANÁLISIS DEL DÍA TERMINADO"
-    )
-    print(
-        "Reporte actualizado."
-    )
-    print("=" * 60)
-
-    return snapshot
+        return matchups
 
 
-# ============================================================
-# ARGUMENTOS
-# ============================================================
-
-def parse_args() -> argparse.Namespace:
-
-    parser = argparse.ArgumentParser(
-        description=(
-            "Sports Predictor "
-            "MLB / NFL / NBA"
-        )
-    )
-
-    parser.add_argument(
-        "--duration-minutes",
-        type=int,
-        default=180,
-    )
-
-    parser.add_argument(
-        "--interval-minutes",
-        type=int,
-        default=15,
-    )
-
-    parser.add_argument(
-        "--once",
-        action="store_true",
-        help=(
-            "Analizar todos los partidos "
-            "del día una sola vez."
-        ),
-    )
-
-    return parser.parse_args()
-
-
-# ============================================================
-# MAIN
-# ============================================================
-
-def main() -> None:
-
-    args = parse_args()
-
-    config = load_config()
-
-    timezone_name = (
-        config.get(
-            "timezone",
-            "America/Chicago",
-        )
-    )
-
-    timezone = ZoneInfo(
-        timezone_name
-    )
-
-    api_key = os.environ.get(
-        "API_SPORTS_KEY",
-        "",
-    ).strip()
-
+def run(args: argparse.Namespace) -> int:
+    config_path = Path(args.config).resolve()
+    config = json.loads(config_path.read_text(encoding="utf-8"))
+    api_key = os.environ.get("API_SPORTS_KEY", "").strip()
     if not api_key:
+        print(
+            "ERROR: crea el secreto API_SPORTS_KEY en GitHub antes de ejecutar.",
+            file=sys.stderr,
+        )
+        return 2
 
-        raise RuntimeError(
-            (
-                "Falta el secret "
-                "API_SPORTS_KEY."
+    timezone = ZoneInfo(str(config.get("timezone", "America/New_York")))
+    analyzer = SportsAnalyzer(api_key, config)
+    output_dir = Path(args.output).resolve()
+    stop_event = threading.Event()
+
+    def request_stop(_signum: int, _frame: Any) -> None:
+        stop_event.set()
+
+    signal.signal(signal.SIGTERM, request_stop)
+    signal.signal(signal.SIGINT, request_stop)
+
+    duration_seconds = 0 if args.once else max(1, args.duration_minutes) * 60
+    interval_seconds = max(1, args.interval_minutes) * 60
+    started = time.monotonic()
+    deadline = started + duration_seconds
+    next_scan = started
+    scan_number = 0
+    last_snapshot: dict[str, Any] | None = None
+
+    while not stop_event.is_set():
+        scan_number += 1
+        now = datetime.now(timezone)
+        date_iso = args.date or now.date().isoformat()
+        print(f"[{now.isoformat()}] Escaneo #{scan_number} de {date_iso}", flush=True)
+        results = analyzer.scan(date_iso)
+        last_snapshot = build_snapshot(now, date_iso, scan_number, results)
+        latest_md, _ = save_reports(last_snapshot, output_dir)
+        for sport in SPORTS:
+            recommendation = results[sport].get("recommendation")
+            state = (
+                f"APOSTAR {recommendation.selection}"
+                if recommendation
+                else "NO APOSTAR"
             )
-        )
+            print(f"{sport}: {state}", flush=True)
+        print(f"Reporte actualizado: {latest_md}", flush=True)
 
-    api_client = (
-        ApiSportsClient(
-            api_key=api_key,
-        )
+        if args.once or duration_seconds == 0:
+            break
+        next_scan += interval_seconds
+        remaining_session = deadline - time.monotonic()
+        if remaining_session <= 0:
+            break
+        wait_seconds = min(max(0.0, next_scan - time.monotonic()), remaining_session)
+        if wait_seconds <= 0:
+            continue
+        stop_event.wait(wait_seconds)
+        if time.monotonic() >= deadline:
+            break
+
+    if last_snapshot is None:
+        return 1
+    all_errors = all(
+        last_snapshot["sports"].get(sport, {}).get("error") for sport in SPORTS
     )
+    return 1 if all_errors else 0
 
-    mlb_client = (
-        MlbStatsClient()
+
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        description="Analiza MLB, NFL y NBA sin conectar con ninguna plataforma de apuestas."
     )
+    parser.add_argument("--duration-minutes", type=int, default=180)
+    parser.add_argument("--interval-minutes", type=int, default=15)
+    parser.add_argument("--once", action="store_true")
+    parser.add_argument("--date", help="Fecha YYYY-MM-DD; útil para pruebas")
+    parser.add_argument("--config", default=str(PROJECT_ROOT / "config.json"))
+    parser.add_argument("--output", default=str(PROJECT_ROOT / "reports"))
+    return parser
 
-    DASHBOARD_DIR.mkdir(
-        parents=True,
-        exist_ok=True,
-    )
 
-    REPORT_DIR.mkdir(
-        parents=True,
-        exist_ok=True,
-    )
+def _safe_error(message: str) -> str:
+    # Evita que una API incluya accidentalmente la clave dentro de un error visible.
+    return message.replace(os.environ.get("API_SPORTS_KEY", ""), "[OCULTA]")[:700]
 
-    # ========================================================
-    # UNA SOLA PASADA
-    # ========================================================
 
-    run_scan(
-        scan_number=1,
-        config=config,
-        api_client=api_client,
-        mlb_client=mlb_client,
-        timezone=timezone,
-    )
+def _previous_season(season: str) -> str:
+    if "-" in season:
+        parts = season.split("-", 1)
+        try:
+            return f"{int(parts[0]) - 1}-{int(parts[1]) - 1}"
+        except ValueError:
+            return season
+    try:
+        return str(int(season) - 1)
+    except ValueError:
+        return season
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(run(build_parser().parse_args()))
