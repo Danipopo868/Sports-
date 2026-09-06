@@ -1,0 +1,77 @@
+{
+  "generated_at": "2026-09-06T10:23:25.189160-05:00",
+  "date": "2026-09-06",
+  "scan_number": 1,
+  "sports": {
+    "MLB": {
+      "games": 0,
+      "quotes": 0,
+      "remaining_requests": null,
+      "recommendation": null,
+      "best_observed": null,
+      "notes": [],
+      "history_summary": {},
+      "error": "MLB games: {'requests': 'You have reached the request limit for the day, Go to https://dashboard.api-football.com to upgrade your plan.'}"
+    },
+    "NFL": {
+      "games": 0,
+      "quotes": 0,
+      "remaining_requests": null,
+      "recommendation": null,
+      "best_observed": null,
+      "notes": [
+        "No hay partidos disponibles para la fecha analizada."
+      ],
+      "history_summary": {
+        "total": 0,
+        "ganadas": 0,
+        "perdidas": 0,
+        "empates": 0,
+        "pendientes": 0,
+        "resueltas": 0,
+        "win_rate": 0.0
+      },
+      "error": null
+    },
+    "NBA": {
+      "games": 4,
+      "quotes": 48,
+      "remaining_requests": 64,
+      "recommendation": null,
+      "best_observed": {
+        "sport": "NBA",
+        "game_id": "498273",
+        "matchup": "USA W @ Italy W",
+        "start": "2026-09-06T18:45:00+00:00",
+        "market": "Ganador del partido",
+        "selection": "Italy W",
+        "bookmaker": "Pinnacle",
+        "decimal_odds": 17.53,
+        "model_probability": 0.42881838985721715,
+        "break_even_probability": 0.057045065601825436,
+        "edge": 0.3717733242553917,
+        "expected_value": 6.517186374197017,
+        "bookmakers": 4,
+        "data_quality": 38,
+        "passes_filters": false,
+        "reasons": [
+          "Forma Italy W: 0-0; USA W: 0-0",
+          "Consenso sin margen de 4 casa(s)"
+        ]
+      },
+      "notes": [
+        "Ninguna opción superó simultáneamente todos los filtros de valor y calidad."
+      ],
+      "history_summary": {
+        "total": 0,
+        "ganadas": 0,
+        "perdidas": 0,
+        "empates": 0,
+        "pendientes": 0,
+        "resueltas": 0,
+        "win_rate": 0.0
+      },
+      "error": null
+    }
+  }
+}
