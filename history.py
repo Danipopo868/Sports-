@@ -2,24 +2,31 @@ from __future__ import annotations
 
 import json
 import os
-from datetime import datetime, timezone
+from datetime import datetime
+from pathlib import Path
 from typing import Any
 
 
-HISTORY_FILE = "sports_history.json"
+# ============================================================
+# CARGAR HISTORIAL
+# ============================================================
 
+def load_history(
+    path: str | Path,
+) -> list[dict[str, Any]]:
 
-def _now_iso() -> str:
-    return datetime.now(timezone.utc).isoformat()
+    path = Path(path)
 
-
-def _safe_load(path: str) -> list[dict[str, Any]]:
-    if not os.path.exists(path):
+    if not path.exists():
         return []
 
     try:
-        with open(path, "r", encoding="utf-8") as f:
-            data = json.load(f)
+
+        data = json.loads(
+            path.read_text(
+                encoding="utf-8"
+            )
+        )
 
         if isinstance(data, list):
             return data
@@ -30,506 +37,1068 @@ def _safe_load(path: str) -> list[dict[str, Any]]:
     return []
 
 
-def _safe_save(
-    rows: list[dict[str, Any]],
-    path: str,
-) -> None:
-
-    temp_path = f"{path}.tmp"
-
-    with open(temp_path, "w", encoding="utf-8") as f:
-        json.dump(
-            rows,
-            f,
-            ensure_ascii=False,
-            indent=2,
-        )
-
-    os.replace(
-        temp_path,
-        path,
-    )
-
-
-def load_history(
-    path: str = HISTORY_FILE,
-) -> list[dict[str, Any]]:
-
-    return _safe_load(path)
-
+# ============================================================
+# GUARDAR HISTORIAL
+# ============================================================
 
 def save_history(
+    path: str | Path,
     rows: list[dict[str, Any]],
-    path: str = HISTORY_FILE,
 ) -> None:
 
-    _safe_save(
-        rows,
+    path = Path(path)
+
+    path.parent.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
+
+    temp = path.with_suffix(
+        path.suffix + ".tmp"
+    )
+
+    temp.write_text(
+        json.dumps(
+            rows,
+            ensure_ascii=False,
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+
+    os.replace(
+        temp,
         path,
     )
 
 
-def build_history_id(
+# ============================================================
+# ID ÚNICO DE PREDICCIÓN
+# ============================================================
+
+def prediction_id(
     sport: str,
     game_id: str,
     market: str,
-    team: str,
+    selection: str,
 ) -> str:
 
     return (
         f"{sport}|"
         f"{game_id}|"
         f"{market}|"
-        f"{team}"
+        f"{selection}"
     )
 
 
-def add_prediction(
-    prediction: dict[str, Any],
-    path: str = HISTORY_FILE,
-) -> dict[str, Any]:
+# ============================================================
+# ACTUALIZAR HISTORIAL
+# ============================================================
 
-    rows = load_history(path)
+def update_history(
+    path: str | Path,
+    sport: str,
+    games: list[Any],
+    recommendation: Any | None,
+    now: datetime,
+) -> list[dict[str, Any]]:
 
-    sport = str(
-        prediction.get("sport")
-        or ""
+    rows = load_history(
+        path
     )
 
-    game_id = str(
-        prediction.get("game_id")
-        or ""
-    )
+    # ========================================================
+    # 1. GUARDAR NUEVA PREDICCIÓN
+    # ========================================================
 
-    market = str(
-        prediction.get("market")
-        or "GANADOR_FINAL"
-    )
+    if recommendation is not None:
 
-    team = str(
-        prediction.get("team")
-        or ""
-    )
-
-    history_id = build_history_id(
-        sport=sport,
-        game_id=game_id,
-        market=market,
-        team=team,
-    )
-
-    for row in rows:
-        if row.get("history_id") == history_id:
-            return row
-
-    item = {
-        "history_id": history_id,
-        "created_at": _now_iso(),
-
-        "sport": sport,
-        "game_id": game_id,
-        "market": market,
-
-        "team": team,
-        "opponent": prediction.get(
-            "opponent"
-        ),
-
-        "side": prediction.get(
-            "side"
-        ),
-
-        "decision": prediction.get(
-            "decision"
-        ),
-
-        "model_probability": prediction.get(
-            "model_probability"
-        ),
-
-        "model_probability_pct": prediction.get(
-            "model_probability_pct"
-        ),
-
-        "market_probability": prediction.get(
-            "market_probability"
-        ),
-
-        "market_probability_pct": prediction.get(
-            "market_probability_pct"
-        ),
-
-        "edge_pct": prediction.get(
-            "edge_pct"
-        ),
-
-        "confidence": prediction.get(
-            "confidence"
-        ),
-
-        "score": prediction.get(
-            "score"
-        ),
-
-        "data_quality": prediction.get(
-            "data_quality"
-        ),
-
-        "reasons": prediction.get(
-            "reasons"
-        ),
-
-        "status": "PENDIENTE",
-
-        "winner": None,
-
-        "home_score": None,
-        "away_score": None,
-
-        "f5_home_score": None,
-        "f5_away_score": None,
-
-        "resolved_at": None,
-    }
-
-    rows.append(item)
-
-    save_history(
-        rows,
-        path,
-    )
-
-    return item
-
-
-def _team_matches(
-    selected_team: str,
-    winner_team: str,
-) -> bool:
-
-    a = (
-        selected_team
-        .strip()
-        .lower()
-    )
-
-    b = (
-        winner_team
-        .strip()
-        .lower()
-    )
-
-    return (
-        a == b
-        or
-        a in b
-        or
-        b in a
-    )
-
-
-def resolve_final_winner(
-    game_id: str,
-    winner_team: str,
-    home_score: int | float | None = None,
-    away_score: int | float | None = None,
-    sport: str = "MLB",
-    path: str = HISTORY_FILE,
-) -> int:
-
-    rows = load_history(path)
-
-    changed = 0
-
-    for row in rows:
-
-        if str(
-            row.get("game_id")
-        ) != str(game_id):
-            continue
-
-        if str(
-            row.get("sport")
-        ).upper() != sport.upper():
-            continue
-
-        if (
-            str(
-                row.get("market")
-            ).upper()
-            !=
-            "GANADOR_FINAL"
-        ):
-            continue
-
-        if row.get("status") not in (
-            "PENDIENTE",
-            None,
-            "",
-        ):
-            continue
-
-        selected_team = str(
-            row.get("team")
-            or ""
+        game_id = str(
+            getattr(
+                recommendation,
+                "game_id",
+                "",
+            )
         )
 
-        if _team_matches(
-            selected_team,
-            winner_team,
-        ):
-            result = "GANADA"
-        else:
-            result = "PERDIDA"
-
-        row["status"] = result
-        row["winner"] = winner_team
-
-        row["home_score"] = home_score
-        row["away_score"] = away_score
-
-        row["resolved_at"] = _now_iso()
-
-        changed += 1
-
-    if changed:
-        save_history(
-            rows,
-            path,
+        market = str(
+            getattr(
+                recommendation,
+                "market",
+                "Ganador del partido",
+            )
         )
 
-    return changed
+        selection = str(
+            getattr(
+                recommendation,
+                "selection",
+                "",
+            )
+        )
 
+        unique_id = prediction_id(
+            sport,
+            game_id,
+            market,
+            selection,
+        )
 
-def resolve_f5_result(
-    game_id: str,
-    home_team: str,
-    away_team: str,
-    home_score_f5: int | float,
-    away_score_f5: int | float,
-    sport: str = "MLB",
-    path: str = HISTORY_FILE,
-) -> int:
+        exists = any(
+            row.get(
+                "prediction_id"
+            )
+            == unique_id
+            for row in rows
+        )
 
-    rows = load_history(path)
+        if not exists:
 
-    changed = 0
+            row = {
+                "prediction_id":
+                    unique_id,
 
-    if home_score_f5 > away_score_f5:
-        winner = home_team
+                "created_at":
+                    now.isoformat(),
 
-    elif away_score_f5 > home_score_f5:
-        winner = away_team
+                "sport":
+                    sport,
 
-    else:
-        winner = None
+                "game_id":
+                    game_id,
 
-    for row in rows:
+                "matchup":
+                    getattr(
+                        recommendation,
+                        "matchup",
+                        "",
+                    ),
 
-        if str(
-            row.get("game_id")
-        ) != str(game_id):
-            continue
+                "start":
+                    getattr(
+                        recommendation,
+                        "start",
+                        "",
+                    ),
 
-        if str(
-            row.get("sport")
-        ).upper() != sport.upper():
-            continue
+                "market":
+                    market,
 
-        if str(
-            row.get("market")
-        ).upper() != "F5":
-            continue
+                "selection":
+                    selection,
 
-        if row.get("status") not in (
-            "PENDIENTE",
-            None,
-            "",
-        ):
-            continue
+                "bookmaker":
+                    getattr(
+                        recommendation,
+                        "bookmaker",
+                        "",
+                    ),
 
-        row["f5_home_score"] = home_score_f5
-        row["f5_away_score"] = away_score_f5
+                "decimal_odds":
+                    _safe_float(
+                        getattr(
+                            recommendation,
+                            "decimal_odds",
+                            None,
+                        )
+                    ),
 
-        if winner is None:
-            row["status"] = "EMPATE"
-            row["winner"] = None
+                "model_probability":
+                    _safe_float(
+                        getattr(
+                            recommendation,
+                            "model_probability",
+                            None,
+                        )
+                    ),
 
-        else:
+                "model_probability_pct":
+                    _pct(
+                        getattr(
+                            recommendation,
+                            "model_probability",
+                            None,
+                        )
+                    ),
 
-            selected_team = str(
-                row.get("team")
-                or ""
+                "break_even_probability":
+                    _safe_float(
+                        getattr(
+                            recommendation,
+                            "break_even_probability",
+                            None,
+                        )
+                    ),
+
+                "edge":
+                    _safe_float(
+                        getattr(
+                            recommendation,
+                            "edge",
+                            None,
+                        )
+                    ),
+
+                "edge_pct":
+                    _pct(
+                        getattr(
+                            recommendation,
+                            "edge",
+                            None,
+                        )
+                    ),
+
+                "expected_value":
+                    _safe_float(
+                        getattr(
+                            recommendation,
+                            "expected_value",
+                            None,
+                        )
+                    ),
+
+                "expected_value_pct":
+                    _pct(
+                        getattr(
+                            recommendation,
+                            "expected_value",
+                            None,
+                        )
+                    ),
+
+                "bookmakers":
+                    getattr(
+                        recommendation,
+                        "bookmakers",
+                        None,
+                    ),
+
+                "data_quality":
+                    getattr(
+                        recommendation,
+                        "data_quality",
+                        None,
+                    ),
+
+                "reasons":
+                    list(
+                        getattr(
+                            recommendation,
+                            "reasons",
+                            (),
+                        )
+                    ),
+
+                "status":
+                    "PENDIENTE",
+
+                "winner":
+                    None,
+
+                "home_team":
+                    None,
+
+                "away_team":
+                    None,
+
+                "home_score":
+                    None,
+
+                "away_score":
+                    None,
+
+                "f5_home_score":
+                    None,
+
+                "f5_away_score":
+                    None,
+
+                "resolved_at":
+                    None,
+            }
+
+            rows.append(
+                row
             )
 
-            if _team_matches(
-                selected_team,
-                winner,
-            ):
-                row["status"] = "GANADA"
-            else:
-                row["status"] = "PERDIDA"
+    # ========================================================
+    # 2. RESOLVER PARTIDOS TERMINADOS
+    # ========================================================
 
-            row["winner"] = winner
+    for game in games:
 
-        row["resolved_at"] = _now_iso()
-
-        changed += 1
-
-    if changed:
-        save_history(
-            rows,
-            path,
+        game_id = str(
+            getattr(
+                game,
+                "id",
+                "",
+            )
         )
 
-    return changed
+        if not game_id:
+            continue
 
+        if not _is_finished_game(
+            game
+        ):
+            continue
 
-def history_summary(
-    sport: str | None = None,
-    market: str | None = None,
-    path: str = HISTORY_FILE,
-) -> dict[str, Any]:
+        home_team = str(
+            getattr(
+                getattr(
+                    game,
+                    "home",
+                    None,
+                ),
+                "name",
+                "",
+            )
+        )
 
-    rows = load_history(path)
+        away_team = str(
+            getattr(
+                getattr(
+                    game,
+                    "away",
+                    None,
+                ),
+                "name",
+                "",
+            )
+        )
 
-    filtered = []
+        raw = getattr(
+            game,
+            "raw",
+            {},
+        )
 
-    for row in rows:
+        home_score = _score(
+            raw,
+            "home",
+        )
 
-        if sport:
+        away_score = _score(
+            raw,
+            "away",
+        )
+
+        # ----------------------------------------------------
+        # F5
+        # ----------------------------------------------------
+
+        f5_home, f5_away = (
+            _first_five_scores(
+                raw
+            )
+        )
+
+        for row in rows:
+
+            if (
+                str(
+                    row.get(
+                        "game_id"
+                    )
+                )
+                != game_id
+            ):
+                continue
 
             if str(
-                row.get("sport")
+                row.get(
+                    "sport"
+                )
             ).upper() != sport.upper():
                 continue
 
-        if market:
-
-            if str(
-                row.get("market")
-            ).upper() != market.upper():
+            if (
+                row.get("status")
+                != "PENDIENTE"
+            ):
                 continue
 
-        filtered.append(row)
+            row["home_team"] = (
+                home_team
+            )
+
+            row["away_team"] = (
+                away_team
+            )
+
+            row["home_score"] = (
+                home_score
+            )
+
+            row["away_score"] = (
+                away_score
+            )
+
+            market = str(
+                row.get(
+                    "market",
+                    "",
+                )
+            ).lower()
+
+            # =================================================
+            # RESOLVER F5
+            # =================================================
+
+            if (
+                "5"
+                in market
+                and (
+                    "entrada"
+                    in market
+                    or
+                    "inning"
+                    in market
+                    or
+                    "f5"
+                    in market
+                )
+            ):
+
+                if (
+                    f5_home is None
+                    or
+                    f5_away is None
+                ):
+                    continue
+
+                row[
+                    "f5_home_score"
+                ] = f5_home
+
+                row[
+                    "f5_away_score"
+                ] = f5_away
+
+                if (
+                    f5_home
+                    ==
+                    f5_away
+                ):
+
+                    row["status"] = (
+                        "EMPATE"
+                    )
+
+                    row["winner"] = (
+                        None
+                    )
+
+                else:
+
+                    winner = (
+                        home_team
+                        if f5_home
+                        > f5_away
+                        else away_team
+                    )
+
+                    row["winner"] = (
+                        winner
+                    )
+
+                    if _same_team(
+                        row.get(
+                            "selection",
+                            "",
+                        ),
+                        winner,
+                    ):
+
+                        row["status"] = (
+                            "GANADA"
+                        )
+
+                    else:
+
+                        row["status"] = (
+                            "PERDIDA"
+                        )
+
+                row[
+                    "resolved_at"
+                ] = now.isoformat()
+
+            # =================================================
+            # RESOLVER GANADOR FINAL
+            # =================================================
+
+            else:
+
+                if (
+                    home_score is None
+                    or
+                    away_score is None
+                ):
+                    continue
+
+                if (
+                    home_score
+                    ==
+                    away_score
+                ):
+
+                    row["status"] = (
+                        "EMPATE"
+                    )
+
+                    row["winner"] = (
+                        None
+                    )
+
+                else:
+
+                    winner = (
+                        home_team
+                        if home_score
+                        > away_score
+                        else away_team
+                    )
+
+                    row["winner"] = (
+                        winner
+                    )
+
+                    if _same_team(
+                        row.get(
+                            "selection",
+                            "",
+                        ),
+                        winner,
+                    ):
+
+                        row["status"] = (
+                            "GANADA"
+                        )
+
+                    else:
+
+                        row["status"] = (
+                            "PERDIDA"
+                        )
+
+                row[
+                    "resolved_at"
+                ] = now.isoformat()
+
+    save_history(
+        path,
+        rows,
+    )
+
+    return rows
+
+
+# ============================================================
+# RESUMEN
+# ============================================================
+
+def history_summary(
+    rows: list[dict[str, Any]],
+) -> dict[str, Any]:
+
+    total = len(
+        rows
+    )
 
     won = sum(
         1
-        for row in filtered
-        if row.get("status") == "GANADA"
+        for row in rows
+        if row.get(
+            "status"
+        )
+        == "GANADA"
     )
 
     lost = sum(
         1
-        for row in filtered
-        if row.get("status") == "PERDIDA"
+        for row in rows
+        if row.get(
+            "status"
+        )
+        == "PERDIDA"
     )
 
     ties = sum(
         1
-        for row in filtered
-        if row.get("status") == "EMPATE"
+        for row in rows
+        if row.get(
+            "status"
+        )
+        == "EMPATE"
     )
 
     pending = sum(
         1
-        for row in filtered
-        if row.get("status") == "PENDIENTE"
+        for row in rows
+        if row.get(
+            "status"
+        )
+        == "PENDIENTE"
     )
 
-    resolved = won + lost
+    resolved = (
+        won
+        + lost
+    )
 
-    accuracy = (
-        won / resolved * 100.0
+    win_rate = (
+        won
+        / resolved
+        * 100.0
         if resolved
         else 0.0
     )
 
     return {
-        "total": len(filtered),
-        "ganadas": won,
-        "perdidas": lost,
-        "empates": ties,
-        "pendientes": pending,
-        "resueltas": resolved,
-        "accuracy_pct": round(
-            accuracy,
-            2,
-        ),
+        "total":
+            total,
+
+        "ganadas":
+            won,
+
+        "perdidas":
+            lost,
+
+        "empates":
+            ties,
+
+        "pendientes":
+            pending,
+
+        "resueltas":
+            resolved,
+
+        "win_rate":
+            round(
+                win_rate,
+                2,
+            ),
     }
 
 
+# ============================================================
+# RESUMEN POR MERCADO
+# ============================================================
+
+def history_summary_by_market(
+    rows: list[dict[str, Any]],
+) -> dict[str, Any]:
+
+    output: dict[
+        str,
+        dict[str, Any],
+    ] = {}
+
+    markets = sorted(
+        {
+            str(
+                row.get(
+                    "market",
+                    "N/D",
+                )
+            )
+            for row in rows
+        }
+    )
+
+    for market in markets:
+
+        market_rows = [
+            row
+            for row in rows
+            if str(
+                row.get(
+                    "market",
+                    ""
+                )
+            )
+            == market
+        ]
+
+        output[
+            market
+        ] = history_summary(
+            market_rows
+        )
+
+    return output
+
+
+# ============================================================
+# ÚLTIMAS PREDICCIONES
+# ============================================================
+
 def recent_history(
-    limit: int = 50,
-    sport: str | None = None,
-    market: str | None = None,
-    path: str = HISTORY_FILE,
+    rows: list[dict[str, Any]],
+    limit: int = 100,
 ) -> list[dict[str, Any]]:
 
-    rows = load_history(path)
-
-    filtered = []
-
-    for row in rows:
-
-        if sport:
-
-            if str(
-                row.get("sport")
-            ).upper() != sport.upper():
-                continue
-
-        if market:
-
-            if str(
-                row.get("market")
-            ).upper() != market.upper():
-                continue
-
-        filtered.append(row)
-
-    filtered.sort(
+    ordered = sorted(
+        rows,
         key=lambda row: str(
-            row.get("created_at")
-            or ""
+            row.get(
+                "created_at",
+                "",
+            )
         ),
         reverse=True,
     )
 
-    return filtered[:limit]
+    return ordered[
+        :limit
+    ]
 
+
+# ============================================================
+# BORRAR HISTORIAL
+# ============================================================
 
 def clear_history(
-    path: str = HISTORY_FILE,
+    path: str | Path,
 ) -> None:
 
     save_history(
-        [],
         path,
+        [],
     )
 
 
-def pending_predictions(
-    sport: str | None = None,
-    path: str = HISTORY_FILE,
-) -> list[dict[str, Any]]:
+# ============================================================
+# HELPERS
+# ============================================================
 
-    rows = load_history(path)
+def _safe_float(
+    value: Any,
+) -> float | None:
 
-    pending = []
+    try:
 
-    for row in rows:
+        if value is None:
+            return None
 
-        if row.get("status") != "PENDIENTE":
-            continue
+        return float(
+            value
+        )
 
-        if sport:
+    except (
+        TypeError,
+        ValueError,
+    ):
 
-            if str(
-                row.get("sport")
-            ).upper() != sport.upper():
+        return None
+
+
+def _pct(
+    value: Any,
+) -> float | None:
+
+    number = _safe_float(
+        value
+    )
+
+    if number is None:
+        return None
+
+    return round(
+        number
+        * 100.0,
+        2,
+    )
+
+
+def _same_team(
+    a: Any,
+    b: Any,
+) -> bool:
+
+    a = _normalize_team(
+        str(
+            a
+            or ""
+        )
+    )
+
+    b = _normalize_team(
+        str(
+            b
+            or ""
+        )
+    )
+
+    if not a or not b:
+        return False
+
+    return (
+        a == b
+        or a in b
+        or b in a
+    )
+
+
+def _normalize_team(
+    value: str,
+) -> str:
+
+    return "".join(
+        char.lower()
+        for char in value
+        if char.isalnum()
+    )
+
+
+def _is_finished_game(
+    game: Any,
+) -> bool:
+
+    status = str(
+        getattr(
+            game,
+            "status",
+            "",
+        )
+    ).lower()
+
+    return any(
+        word in status
+        for word in (
+            "final",
+            "finished",
+            "closed",
+            "game finished",
+            "ft",
+        )
+    )
+
+
+def _score(
+    raw: dict[str, Any],
+    side: str,
+) -> float | None:
+
+    scores = (
+        raw.get("scores")
+        or {}
+    )
+
+    block = scores.get(
+        side
+    )
+
+    if (
+        side == "away"
+        and block is None
+    ):
+
+        block = scores.get(
+            "visitors"
+        )
+
+    if block is None:
+        return None
+
+    if isinstance(
+        block,
+        (
+            int,
+            float,
+            str,
+        ),
+    ):
+
+        return _safe_float(
+            block
+        )
+
+    if isinstance(
+        block,
+        dict,
+    ):
+
+        for key in (
+            "total",
+            "points",
+            "runs",
+            "score",
+        ):
+
+            value = block.get(
+                key
+            )
+
+            if value is not None:
+
+                number = (
+                    _safe_float(
+                        value
+                    )
+                )
+
+                if number is not None:
+                    return number
+
+    return None
+
+
+# ============================================================
+# PRIMERAS 5 ENTRADAS
+# ============================================================
+
+def _first_five_scores(
+    raw: dict[str, Any],
+) -> tuple[
+    float | None,
+    float | None,
+]:
+
+    scores = (
+        raw.get("scores")
+        or {}
+    )
+
+    # --------------------------------------------------------
+    # FORMATO POSIBLE:
+    # scores.home.innings
+    # scores.away.innings
+    # --------------------------------------------------------
+
+    home_block = (
+        scores.get("home")
+        or {}
+    )
+
+    away_block = (
+        scores.get("away")
+        or scores.get("visitors")
+        or {}
+    )
+
+    if isinstance(
+        home_block,
+        dict,
+    ) and isinstance(
+        away_block,
+        dict,
+    ):
+
+        home_innings = (
+            home_block.get(
+                "innings"
+            )
+        )
+
+        away_innings = (
+            away_block.get(
+                "innings"
+            )
+        )
+
+        if isinstance(
+            home_innings,
+            list,
+        ) and isinstance(
+            away_innings,
+            list,
+        ):
+
+            home_f5 = sum(
+                _safe_float(
+                    value
+                )
+                or 0.0
+                for value
+                in home_innings[:5]
+            )
+
+            away_f5 = sum(
+                _safe_float(
+                    value
+                )
+                or 0.0
+                for value
+                in away_innings[:5]
+            )
+
+            return (
+                home_f5,
+                away_f5,
+            )
+
+    # --------------------------------------------------------
+    # FORMATO POSIBLE:
+    # innings: [{home: x, away: y}, ...]
+    # --------------------------------------------------------
+
+    innings = raw.get(
+        "innings"
+    )
+
+    if isinstance(
+        innings,
+        list,
+    ):
+
+        home_f5 = 0.0
+        away_f5 = 0.0
+        found = 0
+
+        for inning in innings[:5]:
+
+            if not isinstance(
+                inning,
+                dict,
+            ):
                 continue
 
-        pending.append(row)
+            home = (
+                _safe_float(
+                    inning.get(
+                        "home"
+                    )
+                )
+            )
 
-    return pending
+            away = (
+                _safe_float(
+                    inning.get(
+                        "away"
+                    )
+                )
+            )
+
+            if away is None:
+
+                away = (
+                    _safe_float(
+                        inning.get(
+                            "visitors"
+                        )
+                    )
+                )
+
+            if (
+                home is None
+                or away is None
+            ):
+                continue
+
+            home_f5 += home
+            away_f5 += away
+            found += 1
+
+        if found >= 5:
+
+            return (
+                home_f5,
+                away_f5,
+            )
+
+    return (
+        None,
+        None,
+        )
