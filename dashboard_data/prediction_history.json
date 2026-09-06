@@ -39,5 +39,41 @@
     "home_score": null,
     "away_f5": null,
     "home_f5": null
+  },
+  {
+    "key": "MLB|824385|Primeras 5 entradas|Cleveland Guardians",
+    "pick_number": 1,
+    "created_at": "2026-09-06T18:13:28.394238",
+    "sport": "MLB",
+    "game_id": "824385",
+    "matchup": "Detroit Tigers @ Cleveland Guardians",
+    "start": "2026-09-06T17:40:00Z",
+    "market": "Primeras 5 entradas",
+    "selection": "Cleveland Guardians",
+    "probability": 0.7312079119621362,
+    "odds": 0.0,
+    "edge": 0.0,
+    "expected_value": 0.0,
+    "data_quality": 91,
+    "status": "PENDIENTE",
+    "result": null
+  },
+  {
+    "key": "MLB|823822|Primeras 5 entradas|Chicago Cubs",
+    "pick_number": 2,
+    "created_at": "2026-09-06T18:13:28.394238",
+    "sport": "MLB",
+    "game_id": "823822",
+    "matchup": "Chicago Cubs @ Miami Marlins",
+    "start": "2026-09-06T17:40:00Z",
+    "market": "Primeras 5 entradas",
+    "selection": "Chicago Cubs",
+    "probability": 0.6936705833589072,
+    "odds": 0.0,
+    "edge": 0.0,
+    "expected_value": 0.0,
+    "data_quality": 100,
+    "status": "PENDIENTE",
+    "result": null
   }
 ]
