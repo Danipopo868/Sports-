@@ -1,6 +1,8 @@
 {
-  "timezone": "America/New_York",
+  "timezone": "America/Chicago",
+
   "history_games": 12,
+
   "filters": {
     "minimum_probability": 0.55,
     "minimum_edge": 0.03,
@@ -9,9 +11,19 @@
     "minimum_history_games": 5,
     "minimum_data_quality": 60
   },
+
   "model": {
     "market_weight": 0.58,
     "form_weight": 0.42,
     "maximum_probability": 0.85
+  },
+
+  "mlb": {
+    "minimum_bvp_pa": 10,
+    "require_probable_pitchers": true,
+    "prefer_confirmed_lineups": true,
+    "evaluate_first_five": true,
+    "evaluate_final_winner": true,
+    "minimum_factor_coverage": 55
   }
 }
