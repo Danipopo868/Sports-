@@ -2,7 +2,7 @@
 
 Fecha analizada: 2026-09-06
 
-Generado: 2026-09-06T10:23:25.189160-05:00
+Generado: 2026-09-06T10:53:00.717316-05:00
 
 Escaneo: 1
 
@@ -30,7 +30,7 @@ Ninguna opción superó todos los filtros.
 
 ### Notas
 
-- No hay partidos disponibles para la fecha analizada.
+- SIN DECISIÓN: no hay partidos disponibles para una nueva predicción.
 
 ## NBA
 
@@ -44,10 +44,10 @@ Ninguna opción superó todos los filtros.
 
 Mejor opción observada:
 
-- Partido: USA W @ Italy W
+- Partido: Belgium W @ Puerto Rico W
 - Mercado: Ganador del partido
-- Selección: Italy W
-- Probabilidad: 42.9%
+- Selección: Belgium W
+- Probabilidad: 56.5%
 
 ### Historial
 
@@ -59,4 +59,5 @@ Mejor opción observada:
 
 ### Notas
 
-- Ninguna opción superó simultáneamente todos los filtros de valor y calidad.
+- ESCANEO COMPLETO NBA: 4 partido(s) encontrados; 4 partido(s) evaluados; 4 mercado(s) calculados; 8 candidato(s) calculados; 0 candidato(s) superaron todos los filtros.
+- NO APOSTAR REAL: todos los candidatos calculables fueron comparados y ninguno superó simultáneamente los filtros mínimos de probabilidad, edge, valor esperado, casas, historial y calidad.
