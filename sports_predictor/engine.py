@@ -67,11 +67,11 @@ class Candidate:
     market: str
     selection: str
     bookmaker: str
-    decimal_odds: float
+    decimal_odds: float | None
     model_probability: float
-    break_even_probability: float
-    edge: float
-    expected_value: float
+    break_even_probability: float | None
+    edge: float | None
+    expected_value: float | None
     bookmakers: int
     data_quality: int
     passes_filters: bool
@@ -155,7 +155,9 @@ def normalize_games(
             or datetime.utcnow().year
         )
 
-        season_year = _season_number(season_raw)
+        season_year = _season_number(
+            season_raw
+        )
 
         games.append(
             Game(
@@ -210,11 +212,14 @@ def calculate_team_form(
 
         if (
             exclude_game_id is not None
-            and str(game.id) == str(exclude_game_id)
+            and str(game.id)
+            == str(exclude_game_id)
         ):
             continue
 
-        if not is_finished(game.status):
+        if not is_finished(
+            game.status
+        ):
             continue
 
         home_score = score_for_side(
@@ -248,7 +253,9 @@ def calculate_team_form(
 
         eligible.append(
             (
-                _sort_timestamp(game.raw),
+                _sort_timestamp(
+                    game.raw
+                ),
                 game,
                 scored,
                 allowed,
@@ -260,23 +267,35 @@ def calculate_team_form(
         reverse=True,
     )
 
-    selected = eligible[: max(1, limit)]
+    selected = eligible[
+        :max(
+            1,
+            limit,
+        )
+    ]
 
     wins = sum(
         scored > allowed
-        for _, _, scored, allowed in selected
+        for _, _, scored, allowed
+        in selected
     )
 
     losses = sum(
         scored < allowed
-        for _, _, scored, allowed in selected
+        for _, _, scored, allowed
+        in selected
     )
 
-    ties = len(selected) - wins - losses
+    ties = (
+        len(selected)
+        - wins
+        - losses
+    )
 
     total = len(selected)
 
     if not total:
+
         return TeamForm(
             0,
             0,
@@ -289,12 +308,18 @@ def calculate_team_form(
         )
 
     average_for = (
-        sum(item[2] for item in selected)
+        sum(
+            item[2]
+            for item in selected
+        )
         / total
     )
 
     average_against = (
-        sum(item[3] for item in selected)
+        sum(
+            item[3]
+            for item in selected
+        )
         / total
     )
 
@@ -303,7 +328,10 @@ def calculate_team_form(
         wins=wins,
         losses=losses,
         ties=ties,
-        win_rate=(wins + 0.5 * ties) / total,
+        win_rate=(
+            wins
+            + 0.5 * ties
+        ) / total,
         average_for=average_for,
         average_against=average_against,
         average_margin=(
@@ -331,7 +359,9 @@ def parse_quotes(
 
     for item in raw_odds:
 
-        game_id = _odds_game_id(item)
+        game_id = _odds_game_id(
+            item
+        )
 
         game = game_map.get(
             str(game_id)
@@ -346,8 +376,13 @@ def parse_quotes(
             or []
         )
 
-        if isinstance(bookmakers, dict):
-            bookmakers = [bookmakers]
+        if isinstance(
+            bookmakers,
+            dict,
+        ):
+            bookmakers = [
+                bookmakers
+            ]
 
         for bookmaker in bookmakers:
 
@@ -398,20 +433,27 @@ def parse_quotes(
                         game,
                     )
 
-                    decimal_odds = to_decimal_odds(
-                        value.get("odd")
-                        or value.get("odds")
-                        or value.get("price")
+                    decimal_odds = (
+                        to_decimal_odds(
+                            value.get("odd")
+                            or value.get("odds")
+                            or value.get("price")
+                        )
                     )
 
                     if (
                         side
                         and decimal_odds
-                        and 1.01 <= decimal_odds <= 50
+                        and 1.01
+                        <= decimal_odds
+                        <= 50
                     ):
+
                         quotes.append(
                             Quote(
-                                game_id=str(game.id),
+                                game_id=str(
+                                    game.id
+                                ),
                                 market=market,
                                 bookmaker=bookmaker_name,
                                 side=side,
@@ -424,17 +466,6 @@ def parse_quotes(
 
 # ============================================================
 # MOTOR PRINCIPAL
-#
-# REGLA:
-# 1. RECORRER TODOS LOS PARTIDOS.
-# 2. RECORRER TODOS LOS MERCADOS.
-# 3. CALCULAR TODOS LOS CANDIDATOS.
-# 4. NO DECIDIR DURANTE EL RECORRIDO.
-# 5. AL FINAL COMPARAR TODO.
-# 6. SOLO ENTONCES:
-#       APOSTAR
-#       o
-#       NO APOSTAR
 # ============================================================
 
 def analyze_sport(
@@ -443,7 +474,10 @@ def analyze_sport(
     quotes: list[Quote],
     forms: dict[str, TeamForm],
     config: dict[str, Any],
-    mlb_matchups: dict[str, dict[str, Any]] | None = None,
+    mlb_matchups: dict[
+        str,
+        dict[str, Any],
+    ] | None = None,
 ) -> tuple[
     Candidate | None,
     Candidate | None,
@@ -453,18 +487,23 @@ def analyze_sport(
     filters = config["filters"]
     model = config["model"]
 
-    all_candidates: list[Candidate] = []
+    all_candidates: list[
+        Candidate
+    ] = []
+
     notes: list[str] = []
 
-    games_total = len(games)
+    games_total = len(
+        games
+    )
+
     games_evaluated = 0
     games_without_quotes = 0
     games_insufficient_data = 0
     markets_evaluated = 0
 
     # ========================================================
-    # PRIMERA FASE
-    # ESTUDIAR TODOS LOS PARTIDOS
+    # ANALIZAR TODOS LOS PARTIDOS
     # ========================================================
 
     for game in games:
@@ -472,8 +511,100 @@ def analyze_sport(
         game_quotes = [
             quote
             for quote in quotes
-            if quote.game_id == str(game.id)
+            if quote.game_id
+            == str(game.id)
         ]
+
+        home_form = forms.get(
+            str(game.home.id),
+            _empty_form(),
+        )
+
+        away_form = forms.get(
+            str(game.away.id),
+            _empty_form(),
+        )
+
+        matchup = (
+            (mlb_matchups or {}).get(
+                str(game.id),
+                {},
+            )
+            if sport == "MLB"
+            else {}
+        )
+
+        # ====================================================
+        # MLB SIN CUOTAS
+        #
+        # NO DESCARTAR EL PARTIDO.
+        # ====================================================
+
+        if (
+            sport == "MLB"
+            and not game_quotes
+        ):
+
+            games_without_quotes += 1
+
+            generated = (
+                _generate_mlb_without_market(
+                    game=game,
+                    home_form=home_form,
+                    away_form=away_form,
+                    matchup=matchup,
+                    config=config,
+                )
+            )
+
+            if generated:
+
+                all_candidates.extend(
+                    generated
+                )
+
+                games_evaluated += 1
+
+                markets_evaluated += (
+                    len(
+                        {
+                            candidate.market
+                            for candidate
+                            in generated
+                        }
+                    )
+                )
+
+                notes.append(
+                    (
+                        f"{game.away.name} @ "
+                        f"{game.home.name}: "
+                        "MLB calculado SIN cuotas "
+                        "de mercado; se utilizó "
+                        "exclusivamente el modelo "
+                        "deportivo."
+                    )
+                )
+
+            else:
+
+                games_insufficient_data += 1
+
+                notes.append(
+                    (
+                        f"{game.away.name} @ "
+                        f"{game.home.name}: "
+                        "DATOS INSUFICIENTES - "
+                        "sin cuotas y sin datos MLB "
+                        "suficientes para calcular."
+                    )
+                )
+
+            continue
+
+        # ====================================================
+        # NFL/NBA SIGUEN NECESITANDO CUOTAS
+        # ====================================================
 
         if not game_quotes:
 
@@ -489,16 +620,6 @@ def analyze_sport(
             )
 
             continue
-
-        home_form = forms.get(
-            str(game.home.id),
-            _empty_form(),
-        )
-
-        away_form = forms.get(
-            str(game.away.id),
-            _empty_form(),
-        )
 
         markets = sorted(
             {
@@ -529,11 +650,14 @@ def analyze_sport(
             market_quotes = [
                 quote
                 for quote in game_quotes
-                if quote.market == market_name
+                if quote.market
+                == market_name
             ]
 
-            book_pairs = _bookmaker_pairs(
-                market_quotes
+            book_pairs = (
+                _bookmaker_pairs(
+                    market_quotes
+                )
             )
 
             if not book_pairs:
@@ -556,30 +680,27 @@ def analyze_sport(
             market_home_probability = (
                 sum(
                     devig_two_way(
-                        pair["home"].decimal_odds,
-                        pair["away"].decimal_odds,
+                        pair[
+                            "home"
+                        ].decimal_odds,
+                        pair[
+                            "away"
+                        ].decimal_odds,
                     )[0]
-                    for pair in book_pairs.values()
+                    for pair
+                    in book_pairs.values()
                 )
                 / len(book_pairs)
             )
 
-            matchup = (
-                (mlb_matchups or {}).get(
-                    str(game.id),
-                    {},
-                )
-                if sport == "MLB"
-                else {}
-            )
-
             # =================================================
-            # MLB - PRIMERAS 5 ENTRADAS
+            # MLB F5
             # =================================================
 
             if (
                 sport == "MLB"
-                and market_name == "Primeras 5 entradas"
+                and market_name
+                == "Primeras 5 entradas"
             ):
 
                 form_home_probability = (
@@ -588,15 +709,18 @@ def analyze_sport(
                     )
                 )
 
-                if form_home_probability is None:
+                if (
+                    form_home_probability
+                    is None
+                ):
 
                     notes.append(
                         (
                             f"{game.away.name} @ "
                             f"{game.home.name} - F5: "
                             "DATOS INSUFICIENTES - "
-                            "faltan abridores u "
-                            "ofensiva verificable."
+                            "faltan datos deportivos "
+                            "para calcular F5."
                         )
                     )
 
@@ -605,50 +729,40 @@ def analyze_sport(
                 pitcher_complete = True
 
             # =================================================
-            # MLB - GANADOR FINAL
+            # MLB FINAL
             # =================================================
 
             elif (
                 sport == "MLB"
-                and market_name == "Ganador del partido"
+                and market_name
+                == "Ganador del partido"
             ):
 
-                if mlb_matchups is None:
+                form_home_probability = (
+                    full_game_home_probability(
+                        matchup
+                    )
+                )
 
-                    form_home_probability = (
-                        form_home_probability_for_game(
-                            sport,
-                            home_form,
-                            away_form,
+                if (
+                    form_home_probability
+                    is None
+                ):
+
+                    notes.append(
+                        (
+                            f"{game.away.name} @ "
+                            f"{game.home.name} - "
+                            "ganador final: "
+                            "DATOS INSUFICIENTES - "
+                            "faltan datos MLB "
+                            "esenciales."
                         )
                     )
 
-                    pitcher_complete = False
+                    continue
 
-                else:
-
-                    form_home_probability = (
-                        full_game_home_probability(
-                            matchup
-                        )
-                    )
-
-                    if form_home_probability is None:
-
-                        notes.append(
-                            (
-                                f"{game.away.name} @ "
-                                f"{game.home.name} - "
-                                "ganador final: "
-                                "DATOS INSUFICIENTES - "
-                                "faltan datos MLB "
-                                "esenciales."
-                            )
-                        )
-
-                        continue
-
-                    pitcher_complete = True
+                pitcher_complete = True
 
             # =================================================
             # NFL / NBA
@@ -673,7 +787,11 @@ def analyze_sport(
                 )
                 / max(
                     1,
-                    int(config["history_games"]),
+                    int(
+                        config[
+                            "history_games"
+                        ]
+                    ),
                 )
             )
 
@@ -682,10 +800,14 @@ def analyze_sport(
                     market_home_probability,
                     form_home_probability,
                     float(
-                        model["market_weight"]
+                        model[
+                            "market_weight"
+                        ]
                     ),
                     float(
-                        model["form_weight"]
+                        model[
+                            "form_weight"
+                        ]
                     ),
                     sample_factor,
                     float(
@@ -700,22 +822,21 @@ def analyze_sport(
                 home_form,
                 away_form,
                 len(book_pairs),
-                int(config["history_games"]),
+                int(
+                    config[
+                        "history_games"
+                    ]
+                ),
                 pitcher_complete,
             )
 
-            # =================================================
-            # CALIDAD MLB
-            # =================================================
-
-            if (
-                sport == "MLB"
-                and mlb_matchups is not None
-            ):
+            if sport == "MLB":
 
                 mlb_quality = int(
                     (
-                        matchup.get("completeness")
+                        matchup.get(
+                            "completeness"
+                        )
                         or {}
                     ).get(
                         "score",
@@ -752,22 +873,21 @@ def analyze_sport(
                     )
                 )
 
-            # =================================================
-            # CALCULAR HOME Y AWAY
-            #
-            # IMPORTANTE:
-            # TODAVÍA NO ELEGIMOS GANADOR.
-            # =================================================
-
-            for side in ("home", "away"):
+            for side in (
+                "home",
+                "away",
+            ):
 
                 best = max(
                     (
                         quote
-                        for quote in market_quotes
-                        if quote.side == side
+                        for quote
+                        in market_quotes
+                        if quote.side
+                        == side
                     ),
-                    key=lambda quote: quote.decimal_odds,
+                    key=lambda quote:
+                        quote.decimal_odds,
                     default=None,
                 )
 
@@ -777,8 +897,10 @@ def analyze_sport(
                 probability = (
                     combined_home_probability
                     if side == "home"
-                    else 1.0
-                    - combined_home_probability
+                    else (
+                        1.0
+                        - combined_home_probability
+                    )
                 )
 
                 break_even = (
@@ -854,7 +976,9 @@ def analyze_sport(
                 all_candidates.append(
                     Candidate(
                         sport=sport,
-                        game_id=str(game.id),
+                        game_id=str(
+                            game.id
+                        ),
                         matchup=(
                             f"{game.away.name} @ "
                             f"{game.home.name}"
@@ -863,12 +987,22 @@ def analyze_sport(
                         market=market_name,
                         selection=selection,
                         bookmaker=best.bookmaker,
-                        decimal_odds=best.decimal_odds,
-                        model_probability=probability,
-                        break_even_probability=break_even,
+                        decimal_odds=(
+                            best.decimal_odds
+                        ),
+                        model_probability=(
+                            probability
+                        ),
+                        break_even_probability=(
+                            break_even
+                        ),
                         edge=edge,
-                        expected_value=expected_value,
-                        bookmakers=len(book_pairs),
+                        expected_value=(
+                            expected_value
+                        ),
+                        bookmakers=(
+                            len(book_pairs)
+                        ),
                         data_quality=quality,
                         passes_filters=passes,
                         reasons=reason_lines,
@@ -883,20 +1017,12 @@ def analyze_sport(
             games_insufficient_data += 1
 
     # ========================================================
-    # SEGUNDA FASE
-    # TODOS LOS PARTIDOS YA FUERON RECORRIDOS.
-    # AHORA SÍ SE COMPARAN LOS RESULTADOS.
+    # COMPARAR TODOS
     # ========================================================
 
     best_observed = max(
         all_candidates,
-        key=lambda candidate: (
-            candidate.passes_filters,
-            candidate.data_quality,
-            candidate.model_probability,
-            candidate.expected_value,
-            candidate.edge,
-        ),
+        key=_candidate_ranking,
         default=None,
     )
 
@@ -906,31 +1032,14 @@ def analyze_sport(
         if candidate.passes_filters
     ]
 
-    # ========================================================
-    # MEJOR APUESTA REAL DEL DEPORTE
-    #
-    # PRIORIZA:
-    # 1. CALIDAD DE DATOS
-    # 2. PROBABILIDAD DEL MODELO
-    # 3. VALOR ESPERADO
-    # 4. EDGE
-    # 5. CANTIDAD DE CASAS
-    # ========================================================
-
     recommendation = max(
         eligible,
-        key=lambda candidate: (
-            candidate.data_quality,
-            candidate.model_probability,
-            candidate.expected_value,
-            candidate.edge,
-            candidate.bookmakers,
-        ),
+        key=_candidate_ranking,
         default=None,
     )
 
     # ========================================================
-    # RESUMEN DEL ESCANEO COMPLETO
+    # RESUMEN
     # ========================================================
 
     notes.append(
@@ -950,7 +1059,7 @@ def analyze_sport(
         notes.append(
             (
                 f"{games_without_quotes} partido(s) "
-                "sin cuotas comparables."
+                "sin cuotas de mercado."
             )
         )
 
@@ -990,15 +1099,30 @@ def analyze_sport(
 
         notes.append(
             (
-                "NO APOSTAR REAL: todos los candidatos "
-                "calculables fueron comparados y ninguno "
-                "superó simultáneamente los filtros "
-                "mínimos de probabilidad, edge, valor "
-                "esperado, casas, historial y calidad."
+                "NO APOSTAR REAL: se estudiaron y "
+                "compararon todos los candidatos "
+                "calculables y ninguno alcanzó los "
+                "requisitos del modelo."
             )
         )
 
     else:
+
+        if (
+            recommendation.decimal_odds
+            is None
+        ):
+
+            market_text = (
+                "SIN CUOTAS - MODELO DEPORTIVO"
+            )
+
+        else:
+
+            market_text = (
+                f"cuota "
+                f"{recommendation.decimal_odds:.2f}"
+            )
 
         notes.append(
             (
@@ -1010,8 +1134,7 @@ def analyze_sport(
                 f"{recommendation.model_probability:.1%} | "
                 f"calidad "
                 f"{recommendation.data_quality}/100 | "
-                f"EV "
-                f"{recommendation.expected_value:.1%}."
+                f"{market_text}."
             )
         )
 
@@ -1019,6 +1142,287 @@ def analyze_sport(
         recommendation,
         best_observed,
         notes,
+    )
+
+
+# ============================================================
+# MLB SIN CUOTAS
+# ============================================================
+
+def _generate_mlb_without_market(
+    game: Game,
+    home_form: TeamForm,
+    away_form: TeamForm,
+    matchup: dict[str, Any],
+    config: dict[str, Any],
+) -> list[Candidate]:
+
+    if not matchup:
+        return []
+
+    filters = config["filters"]
+
+    mlb_config = (
+        config.get("mlb")
+        or {}
+    )
+
+    completeness = (
+        matchup.get(
+            "completeness"
+        )
+        or {}
+    )
+
+    mlb_quality = int(
+        completeness.get(
+            "score",
+            0,
+        )
+        or 0
+    )
+
+    minimum_factor_coverage = int(
+        mlb_config.get(
+            "minimum_factor_coverage",
+            55,
+        )
+    )
+
+    minimum_quality = int(
+        filters[
+            "minimum_data_quality"
+        ]
+    )
+
+    required_quality = max(
+        minimum_quality,
+        minimum_factor_coverage,
+    )
+
+    history_ok = (
+        min(
+            home_form.games,
+            away_form.games,
+        )
+        >= int(
+            filters[
+                "minimum_history_games"
+            ]
+        )
+    )
+
+    reason_lines = (
+        (
+            "Sin cuotas disponibles: "
+            "selección calculada exclusivamente "
+            "por los datos deportivos MLB."
+        ),
+        (
+            f"Forma {game.home.name}: "
+            f"{home_form.wins}-"
+            f"{home_form.losses}; "
+            f"{game.away.name}: "
+            f"{away_form.wins}-"
+            f"{away_form.losses}"
+        ),
+    ) + matchup_reason_lines(
+        matchup
+    )
+
+    candidates: list[
+        Candidate
+    ] = []
+
+    # ========================================================
+    # GANADOR FINAL
+    # ========================================================
+
+    if mlb_config.get(
+        "evaluate_final_winner",
+        True,
+    ):
+
+        home_probability = (
+            full_game_home_probability(
+                matchup
+            )
+        )
+
+        if (
+            home_probability
+            is not None
+        ):
+
+            _append_no_market_candidates(
+                candidates=candidates,
+                game=game,
+                market=(
+                    "Ganador del partido"
+                ),
+                home_probability=(
+                    home_probability
+                ),
+                quality=mlb_quality,
+                history_ok=history_ok,
+                required_quality=(
+                    required_quality
+                ),
+                minimum_probability=float(
+                    filters[
+                        "minimum_probability"
+                    ]
+                ),
+                reasons=reason_lines,
+            )
+
+    # ========================================================
+    # F5
+    # ========================================================
+
+    if mlb_config.get(
+        "evaluate_first_five",
+        True,
+    ):
+
+        home_probability = (
+            first_five_home_probability(
+                matchup
+            )
+        )
+
+        if (
+            home_probability
+            is not None
+        ):
+
+            _append_no_market_candidates(
+                candidates=candidates,
+                game=game,
+                market=(
+                    "Primeras 5 entradas"
+                ),
+                home_probability=(
+                    home_probability
+                ),
+                quality=mlb_quality,
+                history_ok=history_ok,
+                required_quality=(
+                    required_quality
+                ),
+                minimum_probability=float(
+                    filters[
+                        "minimum_probability"
+                    ]
+                ),
+                reasons=reason_lines,
+            )
+
+    return candidates
+
+
+def _append_no_market_candidates(
+    candidates: list[Candidate],
+    game: Game,
+    market: str,
+    home_probability: float,
+    quality: int,
+    history_ok: bool,
+    required_quality: int,
+    minimum_probability: float,
+    reasons: tuple[str, ...],
+) -> None:
+
+    for side in (
+        "home",
+        "away",
+    ):
+
+        probability = (
+            home_probability
+            if side == "home"
+            else 1.0 - home_probability
+        )
+
+        selection = (
+            game.home.name
+            if side == "home"
+            else game.away.name
+        )
+
+        # Sin precio de mercado NO podemos calcular
+        # break-even, edge ni EV.
+        #
+        # Por eso esos valores quedan None.
+        passes = (
+            probability
+            >= minimum_probability
+            and quality
+            >= required_quality
+            and history_ok
+        )
+
+        candidates.append(
+            Candidate(
+                sport="MLB",
+                game_id=str(
+                    game.id
+                ),
+                matchup=(
+                    f"{game.away.name} @ "
+                    f"{game.home.name}"
+                ),
+                start=game.start,
+                market=market,
+                selection=selection,
+                bookmaker=(
+                    "Sin cuotas disponibles"
+                ),
+                decimal_odds=None,
+                model_probability=(
+                    probability
+                ),
+                break_even_probability=None,
+                edge=None,
+                expected_value=None,
+                bookmakers=0,
+                data_quality=quality,
+                passes_filters=passes,
+                reasons=reasons,
+            )
+        )
+
+
+# ============================================================
+# RANKING DE CANDIDATOS
+# ============================================================
+
+def _candidate_ranking(
+    candidate: Candidate,
+) -> tuple[
+    int,
+    float,
+    float,
+    float,
+    int,
+]:
+
+    return (
+        candidate.data_quality,
+        candidate.model_probability,
+        (
+            candidate.expected_value
+            if candidate.expected_value
+            is not None
+            else -1.0
+        ),
+        (
+            candidate.edge
+            if candidate.edge
+            is not None
+            else -1.0
+        ),
+        candidate.bookmakers,
     )
 
 
@@ -1066,13 +1470,15 @@ def form_home_probability_for_game(
         0.82,
         max(
             0.18,
-            sigmoid(logit_value),
+            sigmoid(
+                logit_value
+            ),
         ),
     )
 
 
 # ============================================================
-# COMBINAR PROBABILIDADES
+# COMBINAR MERCADO + MODELO
 # ============================================================
 
 def combine_probabilities(
@@ -1092,10 +1498,14 @@ def combine_probabilities(
 
     blended_logit = (
         market_weight
-        * logit(market_probability)
+        * logit(
+            market_probability
+        )
         +
         form_weight
-        * logit(form_probability)
+        * logit(
+            form_probability
+        )
     ) / total_weight
 
     raw = sigmoid(
@@ -1112,8 +1522,7 @@ def combine_probabilities(
 
     shrunk = (
         0.5
-        +
-        (
+        + (
             raw
             - 0.5
         )
@@ -1123,7 +1532,8 @@ def combine_probabilities(
     return min(
         maximum_probability,
         max(
-            1.0 - maximum_probability,
+            1.0
+            - maximum_probability,
             shrunk,
         ),
     )
@@ -1192,7 +1602,6 @@ def classify_market(
         market_name
     )
 
-    # MLB F5
     if (
         sport == "MLB"
         and any(
@@ -1218,7 +1627,9 @@ def classify_market(
                 "handicap",
             )
         ):
-            return "Primeras 5 entradas"
+            return (
+                "Primeras 5 entradas"
+            )
 
     moneyline_tokens = (
         "moneyline",
@@ -1245,14 +1656,18 @@ def classify_market(
     if (
         any(
             token in name
-            for token in moneyline_tokens
+            for token
+            in moneyline_tokens
         )
         and not any(
             token in name
-            for token in excluded
+            for token
+            in excluded
         )
     ):
-        return "Ganador del partido"
+        return (
+            "Ganador del partido"
+        )
 
     return None
 
@@ -1266,16 +1681,22 @@ def selection_side(
     game: Game,
 ) -> str | None:
 
-    normalized = _normalized_text(
-        label
+    normalized = (
+        _normalized_text(
+            label
+        )
     )
 
-    home_name = _normalized_text(
-        game.home.name
+    home_name = (
+        _normalized_text(
+            game.home.name
+        )
     )
 
-    away_name = _normalized_text(
-        game.away.name
+    away_name = (
+        _normalized_text(
+            game.away.name
+        )
     )
 
     if (
@@ -1289,8 +1710,10 @@ def selection_side(
         or (
             home_name
             and (
-                home_name in normalized
-                or normalized in home_name
+                home_name
+                in normalized
+                or normalized
+                in home_name
             )
         )
     ):
@@ -1309,8 +1732,10 @@ def selection_side(
         or (
             away_name
             and (
-                away_name in normalized
-                or normalized in away_name
+                away_name
+                in normalized
+                or normalized
+                in away_name
             )
         )
     ):
@@ -1320,20 +1745,25 @@ def selection_side(
 
 
 # ============================================================
-# QUITAR MARGEN DE LA CASA
+# QUITAR MARGEN
 # ============================================================
 
 def devig_two_way(
     home_odds: float,
     away_odds: float,
-) -> tuple[float, float]:
+) -> tuple[
+    float,
+    float,
+]:
 
     home_implied = (
-        1.0 / home_odds
+        1.0
+        / home_odds
     )
 
     away_implied = (
-        1.0 / away_odds
+        1.0
+        / away_odds
     )
 
     total = (
@@ -1342,13 +1772,15 @@ def devig_two_way(
     )
 
     return (
-        home_implied / total,
-        away_implied / total,
+        home_implied
+        / total,
+        away_implied
+        / total,
     )
 
 
 # ============================================================
-# CONVERTIR CUOTAS
+# CUOTAS DECIMALES
 # ============================================================
 
 def to_decimal_odds(
@@ -1356,7 +1788,9 @@ def to_decimal_odds(
 ) -> float | None:
 
     try:
-        number = float(value)
+        number = float(
+            value
+        )
 
     except (
         TypeError,
@@ -1405,11 +1839,14 @@ def score_for_side(
 
     if (
         side == "away"
-        and "away" not in scores
+        and "away"
+        not in scores
     ):
         key = "visitors"
 
-    block = scores.get(key)
+    block = scores.get(
+        key
+    )
 
     if block is None:
         return None
@@ -1422,9 +1859,14 @@ def score_for_side(
             str,
         ),
     ):
-        return _optional_float(block)
+        return _optional_float(
+            block
+        )
 
-    if isinstance(block, dict):
+    if isinstance(
+        block,
+        dict,
+    ):
 
         for field in (
             "total",
@@ -1435,32 +1877,41 @@ def score_for_side(
 
             if (
                 field in block
-                and block[field] is not None
+                and block[
+                    field
+                ] is not None
             ):
-                return _optional_float(
-                    block[field]
+                return (
+                    _optional_float(
+                        block[
+                            field
+                        ]
+                    )
                 )
 
     return None
 
 
 # ============================================================
-# PARTIDO TERMINADO
+# TERMINADO
 # ============================================================
 
 def is_finished(
     status: str,
 ) -> bool:
 
-    normalized = _normalized_text(
-        status
+    normalized = (
+        _normalized_text(
+            status
+        )
     )
 
     return (
         normalized
         in FINISHED_STATUS_WORDS
         or any(
-            token in normalized
+            token
+            in normalized
             for token in (
                 "finished",
                 "final",
@@ -1480,10 +1931,11 @@ def sigmoid(
 
     return (
         1.0
-        /
-        (
+        / (
             1.0
-            + math.exp(-value)
+            + math.exp(
+                -value
+            )
         )
     )
 
@@ -1502,9 +1954,9 @@ def logit(
 
     return math.log(
         clipped
-        /
-        (
-            1.0 - clipped
+        / (
+            1.0
+            - clipped
         )
     )
 
@@ -1515,22 +1967,35 @@ def logit(
 
 def _bookmaker_pairs(
     quotes: list[Quote],
-) -> dict[str, dict[str, Quote]]:
+) -> dict[
+    str,
+    dict[
+        str,
+        Quote,
+    ],
+]:
 
     grouped: dict[
         str,
-        dict[str, Quote],
+        dict[
+            str,
+            Quote,
+        ],
     ] = {}
 
     for quote in quotes:
 
-        current = grouped.setdefault(
-            quote.bookmaker,
-            {},
+        current = (
+            grouped.setdefault(
+                quote.bookmaker,
+                {},
+            )
         )
 
-        existing = current.get(
-            quote.side
+        existing = (
+            current.get(
+                quote.side
+            )
         )
 
         if (
@@ -1553,27 +2018,76 @@ def _bookmaker_pairs(
     }
 
 
+def _candidate_ranking(
+    candidate: Candidate,
+) -> tuple[
+    int,
+    float,
+    float,
+    float,
+    int,
+]:
+
+    return (
+        candidate.data_quality,
+        candidate.model_probability,
+        (
+            candidate.expected_value
+            if candidate.expected_value
+            is not None
+            else -1.0
+        ),
+        (
+            candidate.edge
+            if candidate.edge
+            is not None
+            else -1.0
+        ),
+        candidate.bookmakers,
+    )
+
+
 def _odds_game_id(
     item: dict[str, Any],
 ) -> Any:
 
-    game = item.get("game")
+    game = item.get(
+        "game"
+    )
 
-    if isinstance(game, dict):
-        return game.get("id")
+    if isinstance(
+        game,
+        dict,
+    ):
+        return game.get(
+            "id"
+        )
 
     if game is not None:
         return game
 
-    fixture = item.get("fixture")
+    fixture = item.get(
+        "fixture"
+    )
 
-    if isinstance(fixture, dict):
-        return fixture.get("id")
+    if isinstance(
+        fixture,
+        dict,
+    ):
+        return fixture.get(
+            "id"
+        )
 
     return (
-        item.get("game_id")
-        or item.get("fixture_id")
-        or item.get("id")
+        item.get(
+            "game_id"
+        )
+        or item.get(
+            "fixture_id"
+        )
+        or item.get(
+            "id"
+        )
     )
 
 
@@ -1582,12 +2096,16 @@ def _team_name(
 ) -> str:
 
     name = str(
-        team.get("name")
+        team.get(
+            "name"
+        )
         or ""
     ).strip()
 
     nickname = str(
-        team.get("nickname")
+        team.get(
+            "nickname"
+        )
         or ""
     ).strip()
 
@@ -1596,6 +2114,7 @@ def _team_name(
         and nickname.lower()
         not in name.lower()
     ):
+
         return (
             f"{name} {nickname}"
         ).strip()
@@ -1609,11 +2128,16 @@ def _season_number(
 
     match = re.search(
         r"(20\d{2})",
-        str(value or ""),
+        str(
+            value
+            or ""
+        ),
     )
 
     return (
-        int(match.group(1))
+        int(
+            match.group(1)
+        )
         if match
         else datetime.utcnow().year
     )
@@ -1623,20 +2147,33 @@ def _start_time(
     raw: dict[str, Any],
 ) -> str:
 
-    date = raw.get("date")
+    date = raw.get(
+        "date"
+    )
 
-    if isinstance(date, dict):
+    if isinstance(
+        date,
+        dict,
+    ):
 
         return str(
-            date.get("start")
-            or date.get("date")
+            date.get(
+                "start"
+            )
+            or date.get(
+                "date"
+            )
             or ""
         )
 
     return str(
         date
-        or raw.get("time")
-        or raw.get("timestamp")
+        or raw.get(
+            "time"
+        )
+        or raw.get(
+            "timestamp"
+        )
         or ""
     )
 
@@ -1645,19 +2182,29 @@ def _status_text(
     raw: dict[str, Any],
 ) -> str:
 
-    status = raw.get("status")
+    status = raw.get(
+        "status"
+    )
 
-    if isinstance(status, dict):
+    if isinstance(
+        status,
+        dict,
+    ):
 
         values = [
-            status.get("short"),
-            status.get("long"),
+            status.get(
+                "short"
+            ),
+            status.get(
+                "long"
+            ),
         ]
 
         return " ".join(
             str(value)
             for value in values
-            if value not in (
+            if value
+            not in (
                 None,
                 "",
             )
@@ -1673,7 +2220,9 @@ def _sort_timestamp(
     raw: dict[str, Any],
 ) -> float:
 
-    timestamp = raw.get("timestamp")
+    timestamp = raw.get(
+        "timestamp"
+    )
 
     if isinstance(
         timestamp,
@@ -1682,9 +2231,13 @@ def _sort_timestamp(
             float,
         ),
     ):
-        return float(timestamp)
+        return float(
+            timestamp
+        )
 
-    text = _start_time(raw)
+    text = _start_time(
+        raw
+    )
 
     try:
 
@@ -1735,7 +2288,9 @@ def _optional_float(
 ) -> float | None:
 
     try:
-        return float(value)
+        return float(
+            value
+        )
 
     except (
         TypeError,
@@ -1755,4 +2310,4 @@ def _empty_form() -> TeamForm:
         0.0,
         0.0,
         0.0,
-        )
+    )
