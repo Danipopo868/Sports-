@@ -9,7 +9,7 @@ import streamlit as st
 
 
 ROOT = Path(__file__).resolve().parent
-DATA_FILE = ROOT / "dashboard_data" / "latest.json"
+DATA_FILE = ROOT / "reports" / "latest.json"
 HISTORY_FILE = ROOT / "dashboard_data" / "prediction_history.json"
 SPORT_NAMES = {
     "MLB": "MLB · Béisbol",
