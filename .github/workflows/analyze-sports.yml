@@ -16,106 +16,101 @@ jobs:
     timeout-minutes: 190
 
     steps:
+
+      # ======================================================
+      # DESCARGAR REPOSITORIO
+      # ======================================================
+
       - name: Descargar repositorio
         uses: actions/checkout@v4
         with:
-          ref: main
           fetch-depth: 0
 
-      - name: Abrir proyecto
-        run: |
-          rm -rf proyecto
-          mkdir -p proyecto
-          unzip -q -o sports-predictor-github.zip -d proyecto
 
-      - name: Usar archivos actualizados
-        run: |
-          if [ -f sports_predictor/main.py ]; then
-            cp sports_predictor/main.py proyecto/sports-predictor-github/sports_predictor/main.py
-          fi
-
-          if [ -f sports_predictor/engine.py ]; then
-            cp sports_predictor/engine.py proyecto/sports-predictor-github/sports_predictor/engine.py
-          fi
-
-          if [ -f mlb.py ]; then
-            cp mlb.py proyecto/sports-predictor-github/sports_predictor/mlb.py
-          fi
-
-          if [ -f Engine.py ]; then
-            cp Engine.py proyecto/sports-predictor-github/sports_predictor/engine.py
-          fi
+      # ======================================================
+      # PYTHON
+      # ======================================================
 
       - name: Configurar Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+          cache: "pip"
+
+
+      # ======================================================
+      # INSTALAR DEPENDENCIAS
+      # ======================================================
 
       - name: Instalar dependencias
-        run: pip install -r requirements.txt
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-      - name: Probar cálculos
-        working-directory: proyecto/sports-predictor-github
-        run: python -m unittest discover -s tests -v
 
-      - name: Ejecutar analisis y actualizar Streamlit
+      # ======================================================
+      # COMPROBAR ARCHIVOS
+      # ======================================================
+
+      - name: Verificar proyecto
+        run: |
+          echo "=== ARCHIVOS ==="
+          find . -maxdepth 3 -type f | sort
+
+          echo "=== COMPROBAR PYTHON ==="
+          python -m py_compile \
+            sports_predictor/api.py \
+            sports_predictor/engine.py \
+            sports_predictor/history.py \
+            sports_predictor/main.py \
+            sports_predictor/mlb.py \
+            sports_predictor/report.py \
+            streamlit_app.py
+
+
+      # ======================================================
+      # CREAR CARPETAS NECESARIAS
+      # ======================================================
+
+      - name: Crear carpetas
+        run: |
+          mkdir -p reports
+          mkdir -p dashboard_data
+
+
+      # ======================================================
+      # ANALIZAR DURANTE 3 HORAS
+      # ======================================================
+
+      - name: Ejecutar Sports Predictor
         env:
           API_SPORTS_KEY: ${{ secrets.API_SPORTS_KEY }}
+          PYTHONUNBUFFERED: "1"
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          python -m sports_predictor.main \
+            --duration-minutes 180 \
+            --interval-minutes 15
 
-          END=$((SECONDS + 10800))
-          SCAN=0
 
-          while [ $SECONDS -lt $END ]; do
-            SCAN=$((SCAN + 1))
+      # ======================================================
+      # GUARDAR REPORTES E HISTORIAL
+      # ======================================================
 
-            echo "========================================"
-            echo "ESCANEO #$SCAN"
-            echo "========================================"
-
-            cd "$GITHUB_WORKSPACE/proyecto/sports-predictor-github"
-
-            python -m sports_predictor.main \
-              --once \
-              --output "$GITHUB_WORKSPACE/proyecto/sports-predictor-github/reports"
-
-            cd "$GITHUB_WORKSPACE"
-
-            mkdir -p dashboard_data
-
-            if [ -f proyecto/sports-predictor-github/dashboard_data/state.json ]; then
-              cp proyecto/sports-predictor-github/dashboard_data/state.json dashboard_data/state.json
-
-              git add dashboard_data/state.json
-
-              if ! git diff --cached --quiet; then
-                git commit -m "Actualizar dashboard deportivo"
-                git pull --rebase origin main
-                git push origin HEAD:main
-              fi
-            else
-              echo "ERROR: no se genero dashboard_data/state.json"
-            fi
-
-            if [ $SECONDS -lt $END ]; then
-              sleep 900
-            fi
-          done
-
-      - name: Mostrar resultado
+      - name: Guardar resultados en GitHub
         if: always()
-        working-directory: proyecto/sports-predictor-github
         run: |
-          if [ -f reports/latest.md ]; then
-            cat reports/latest.md >> "$GITHUB_STEP_SUMMARY"
+          git config user.name "sports-predictor-bot"
+          git config user.email "sports-predictor-bot@users.noreply.github.com"
+
+          git add reports/ dashboard_data/
+
+          if git diff --cached --quiet; then
+            echo "No hay cambios nuevos para guardar."
+            exit 0
           fi
 
-      - name: Guardar reportes
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: reporte-deportivo
-          path: proyecto/sports-predictor-github/reports/
-          retention-days: 14
+          git commit -m "Actualizar análisis deportivo e historial"
+
+          git pull --rebase origin main || true
+
+          git push origin main
