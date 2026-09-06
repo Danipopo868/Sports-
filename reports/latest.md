@@ -2,7 +2,7 @@
 
 Fecha analizada: 2026-09-06
 
-Generado: 2026-09-06T11:07:06.295962-05:00
+Generado: 2026-09-06T12:21:00.837997-05:00
 
 Escaneo: 1
 
@@ -72,7 +72,7 @@ Factores:
 - Washington Nationals @ Los Angeles Dodgers: MLB calculado SIN cuotas de mercado; se utilizó exclusivamente el modelo deportivo.
 - ESCANEO COMPLETO MLB: 15 partido(s) encontrados; 15 partido(s) evaluados; 30 mercado(s) calculados; 60 candidato(s) calculados; 23 candidato(s) superaron todos los filtros.
 - 15 partido(s) sin cuotas de mercado.
-- APUESTA SELECCIONADA DESPUÉS DE COMPARAR TODOS LOS CANDIDATOS: Milwaukee Brewers | Ganador del partido | probabilidad 66.3% | calidad 100/100 | SIN CUOTAS - MODELO DEPORTIVO.
+- APUESTA SELECCIONADA DESPUÉS DE COMPARAR TODOS LOS CANDIDATOS: Milwaukee Brewers | Ganador del partido | probabilidad 64.4% | calidad 100/100 | SIN CUOTAS - MODELO DEPORTIVO.
 - 🔒 GANADOR FINAL bloqueado: Milwaukee Brewers. No puede cambiarse mientras siga PENDIENTE.
 
 ## NFL
