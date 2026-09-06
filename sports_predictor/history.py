@@ -57,11 +57,35 @@ def _same_team(a: Any, b: Any) -> bool:
     )
 
 
+def _normalize_market(value: Any) -> str:
+    text = str(value or "").lower().strip()
+
+    if (
+        "primeras 5" in text
+        or "first 5" in text
+        or "first five" in text
+        or "f5" in text
+    ):
+        return "f5"
+
+    if (
+        "ganador" in text
+        or "moneyline" in text
+        or "winner" in text
+    ):
+        return "final"
+
+    return text
+
+
 # ============================================================
 # CARGAR / GUARDAR HISTORIAL
 # ============================================================
 
-def load_history(path: str | Path) -> list[dict[str, Any]]:
+def load_history(
+    path: str | Path,
+) -> list[dict[str, Any]]:
+
     path = Path(path)
 
     if not path.exists():
@@ -69,7 +93,9 @@ def load_history(path: str | Path) -> list[dict[str, Any]]:
 
     try:
         data = json.loads(
-            path.read_text(encoding="utf-8")
+            path.read_text(
+                encoding="utf-8"
+            )
         )
 
         if isinstance(data, list):
@@ -85,6 +111,7 @@ def save_history(
     path: str | Path,
     rows: list[dict[str, Any]],
 ) -> None:
+
     path = Path(path)
 
     path.parent.mkdir(
@@ -103,7 +130,7 @@ def save_history(
 
 
 # ============================================================
-# IDENTIFICADOR FIJO DE PREDICCIÓN
+# IDENTIFICADOR FIJO
 # ============================================================
 
 def prediction_id(
@@ -111,33 +138,22 @@ def prediction_id(
     game_id: Any,
     market: str,
 ) -> str:
-    """
-    IMPORTANTE:
-
-    El ID NO incluye la selección.
-
-    Por ejemplo:
-
-    MLB + juego 123 + Ganador del partido
-
-    siempre genera el mismo ID aunque después
-    el motor quisiera cambiar Yankees por Red Sox.
-
-    Eso permite bloquear la primera predicción.
-    """
 
     return (
         f"{str(sport).upper()}|"
         f"{str(game_id)}|"
-        f"{str(market).lower().strip()}"
+        f"{_normalize_market(market)}"
     )
 
 
 # ============================================================
-# EXTRAER DATOS DEL PARTIDO
+# DATOS DEL PARTIDO
 # ============================================================
 
-def _game_id(game: dict[str, Any]) -> Any:
+def _game_id(
+    game: dict[str, Any],
+) -> Any:
+
     return (
         game.get("id")
         or game.get("game_id")
@@ -149,7 +165,10 @@ def _team_names(
     game: dict[str, Any],
 ) -> tuple[str, str]:
 
-    teams = game.get("teams") or {}
+    teams = (
+        game.get("teams")
+        or {}
+    )
 
     away = (
         game.get("away_name")
@@ -162,16 +181,30 @@ def _team_names(
     )
 
     if isinstance(teams, dict):
-        away_data = teams.get("away") or {}
-        home_data = teams.get("home") or {}
 
-        if isinstance(away_data, dict):
+        away_data = (
+            teams.get("away")
+            or {}
+        )
+
+        home_data = (
+            teams.get("home")
+            or {}
+        )
+
+        if isinstance(
+            away_data,
+            dict,
+        ):
             away = (
                 away
                 or away_data.get("name")
             )
 
-        if isinstance(home_data, dict):
+        if isinstance(
+            home_data,
+            dict,
+        ):
             home = (
                 home
                 or home_data.get("name")
@@ -183,9 +216,16 @@ def _team_names(
     )
 
 
+# ============================================================
+# MARCADOR FINAL
+# ============================================================
+
 def _score(
     game: dict[str, Any],
-) -> tuple[float | None, float | None]:
+) -> tuple[
+    float | None,
+    float | None,
+]:
 
     scores = (
         game.get("scores")
@@ -225,9 +265,16 @@ def _score(
     )
 
 
+# ============================================================
+# MARCADOR F5
+# ============================================================
+
 def _first_five_scores(
     game: dict[str, Any],
-) -> tuple[float | None, float | None]:
+) -> tuple[
+    float | None,
+    float | None,
+]:
 
     scores = (
         game.get("scores")
@@ -243,14 +290,20 @@ def _first_five_scores(
         or game.get("innings")
     )
 
-    if not isinstance(innings, dict):
+    if not isinstance(
+        innings,
+        dict,
+    ):
         return None, None
 
     away_total = 0.0
     home_total = 0.0
     found = False
 
-    for inning_number in range(1, 6):
+    for inning_number in range(
+        1,
+        6,
+    ):
 
         key_options = [
             str(inning_number),
@@ -265,7 +318,10 @@ def _first_five_scores(
                 inning = innings[key]
                 break
 
-        if not isinstance(inning, dict):
+        if not isinstance(
+            inning,
+            dict,
+        ):
             continue
 
         away = _safe_float(
@@ -287,8 +343,15 @@ def _first_five_scores(
     if not found:
         return None, None
 
-    return away_total, home_total
+    return (
+        away_total,
+        home_total,
+    )
 
+
+# ============================================================
+# ¿PARTIDO TERMINADO?
+# ============================================================
 
 def _is_finished_game(
     game: dict[str, Any],
@@ -308,7 +371,9 @@ def _is_finished_game(
             or ""
         )
 
-    status = str(status).upper()
+    status = str(
+        status
+    ).upper()
 
     finished_words = (
         "FT",
@@ -327,7 +392,7 @@ def _is_finished_game(
 
 
 # ============================================================
-# ENCONTRAR PARTIDO
+# BUSCAR PARTIDO EN RESPUESTA DE API
 # ============================================================
 
 def _find_game(
@@ -336,15 +401,23 @@ def _find_game(
 ) -> dict[str, Any] | None:
 
     wanted_id = str(
-        row.get("game_id") or ""
+        row.get("game_id")
+        or ""
     )
+
+    # --------------------------------------------------------
+    # BUSCAR POR ID
+    # --------------------------------------------------------
 
     for raw_game in games:
 
-        game = _as_dict(raw_game)
+        game = _as_dict(
+            raw_game
+        )
 
         current_id = str(
-            _game_id(game) or ""
+            _game_id(game)
+            or ""
         )
 
         if (
@@ -354,19 +427,38 @@ def _find_game(
         ):
             return game
 
-    wanted_away = row.get("away_team")
-    wanted_home = row.get("home_team")
+    # --------------------------------------------------------
+    # FALLBACK POR EQUIPOS
+    # --------------------------------------------------------
+
+    wanted_away = (
+        row.get("away_team")
+    )
+
+    wanted_home = (
+        row.get("home_team")
+    )
 
     for raw_game in games:
 
-        game = _as_dict(raw_game)
+        game = _as_dict(
+            raw_game
+        )
 
-        away, home = _team_names(game)
+        away, home = (
+            _team_names(game)
+        )
 
         if (
-            _same_team(away, wanted_away)
+            _same_team(
+                away,
+                wanted_away,
+            )
             and
-            _same_team(home, wanted_home)
+            _same_team(
+                home,
+                wanted_home,
+            )
         ):
             return game
 
@@ -374,7 +466,7 @@ def _find_game(
 
 
 # ============================================================
-# RESOLVER RESULTADO
+# RESOLVER PREDICCIÓN
 # ============================================================
 
 def _resolve_prediction(
@@ -382,27 +474,30 @@ def _resolve_prediction(
     game: dict[str, Any],
 ) -> None:
 
-    market = str(
-        row.get("market") or ""
-    ).lower()
-
-    selection = row.get("selection")
-
-    away_team, home_team = _team_names(
-        game
+    market_type = (
+        _normalize_market(
+            row.get("market")
+        )
     )
 
-    # --------------------------------------------------------
-    # F5
-    # --------------------------------------------------------
+    selection = (
+        row.get("selection")
+    )
 
-    if (
-        "primeras 5" in market
-        or "f5" in market
-    ):
+    away_team, home_team = (
+        _team_names(game)
+    )
+
+    # ========================================================
+    # F5
+    # ========================================================
+
+    if market_type == "f5":
 
         away_score, home_score = (
-            _first_five_scores(game)
+            _first_five_scores(
+                game
+            )
         )
 
         if (
@@ -411,20 +506,27 @@ def _resolve_prediction(
         ):
             return
 
-        row["away_f5"] = away_score
-        row["home_f5"] = home_score
+        row["away_f5"] = (
+            away_score
+        )
 
-    # --------------------------------------------------------
+        row["home_f5"] = (
+            home_score
+        )
+
+    # ========================================================
     # GANADOR FINAL
-    # --------------------------------------------------------
+    # ========================================================
 
     else:
 
-        if not _is_finished_game(game):
+        if not _is_finished_game(
+            game
+        ):
             return
 
-        away_score, home_score = _score(
-            game
+        away_score, home_score = (
+            _score(game)
         )
 
         if (
@@ -433,19 +535,34 @@ def _resolve_prediction(
         ):
             return
 
-        row["away_score"] = away_score
-        row["home_score"] = home_score
+        row["away_score"] = (
+            away_score
+        )
 
-    # --------------------------------------------------------
+        row["home_score"] = (
+            home_score
+        )
+
+    # ========================================================
     # EMPATE
-    # --------------------------------------------------------
+    # ========================================================
 
     if away_score == home_score:
+
         row["status"] = "EMPATE"
+
         row["resolved_at"] = (
-            datetime.now().astimezone().isoformat()
+            datetime
+            .now()
+            .astimezone()
+            .isoformat()
         )
+
         return
+
+    # ========================================================
+    # GANADOR REAL
+    # ========================================================
 
     winning_team = (
         away_team
@@ -458,16 +575,72 @@ def _resolve_prediction(
         winning_team,
     ):
         row["status"] = "GANADA"
+
     else:
         row["status"] = "PERDIDA"
 
     row["resolved_at"] = (
-        datetime.now().astimezone().isoformat()
+        datetime
+        .now()
+        .astimezone()
+        .isoformat()
     )
 
 
 # ============================================================
-# BLOQUEO: ¿YA EXISTE PREDICCIÓN?
+# BUSCAR PREDICCIÓN ACTIVA BLOQUEADA
+# ============================================================
+
+def get_active_prediction(
+    rows: list[dict[str, Any]],
+    sport: str,
+    market: str,
+) -> dict[str, Any] | None:
+
+    wanted_sport = str(
+        sport
+    ).upper()
+
+    wanted_market = (
+        _normalize_market(
+            market
+        )
+    )
+
+    for row in rows:
+
+        if (
+            str(
+                row.get(
+                    "sport",
+                    ""
+                )
+            ).upper()
+            != wanted_sport
+        ):
+            continue
+
+        if (
+            _normalize_market(
+                row.get("market")
+            )
+            != wanted_market
+        ):
+            continue
+
+        if (
+            row.get("status")
+            != "PENDIENTE"
+        ):
+            continue
+
+        return row
+
+    return None
+
+
+# ============================================================
+# ¿ESTÁ BLOQUEADO ESE PARTIDO?
 # ============================================================
 
 def prediction_locked(
@@ -484,7 +657,10 @@ def prediction_locked(
     )
 
     return any(
-        row.get("prediction_id") == pid
+        row.get(
+            "prediction_id"
+        )
+        == pid
         for row in rows
     )
 
@@ -506,20 +682,28 @@ def update_history(
     )
 
     # ========================================================
-    # 1. PRIMERO ACTUALIZAR RESULTADOS EXISTENTES
+    # 1. RESOLVER PRIMERO APUESTAS EXISTENTES
     # ========================================================
 
     for row in rows:
 
         if (
             str(
-                row.get("sport")
+                row.get(
+                    "sport",
+                    ""
+                )
             ).upper()
-            != str(sport).upper()
+            != str(
+                sport
+            ).upper()
         ):
             continue
 
-        if row.get("status") != "PENDIENTE":
+        if (
+            row.get("status")
+            != "PENDIENTE"
+        ):
             continue
 
         game = _find_game(
@@ -527,14 +711,21 @@ def update_history(
             row,
         )
 
-        if game:
+        if game is not None:
+
             _resolve_prediction(
                 row,
                 game,
             )
 
+    # Guardar posibles resultados
+    save_history(
+        path,
+        rows,
+    )
+
     # ========================================================
-    # 2. SI NO HAY NUEVA RECOMENDACIÓN, SOLO GUARDAR
+    # 2. LEER NUEVA RECOMENDACIÓN
     # ========================================================
 
     recommendation_data = (
@@ -544,11 +735,6 @@ def update_history(
     )
 
     if not recommendation_data:
-
-        save_history(
-            path,
-            rows,
-        )
 
         return history_summary(
             rows
@@ -583,8 +769,60 @@ def update_history(
         or ""
     )
 
+    market_type = (
+        _normalize_market(
+            market
+        )
+    )
+
     # ========================================================
-    # 3. BLOQUEO ABSOLUTO
+    # 3. BLOQUEO GLOBAL POR DEPORTE + MERCADO
+    #
+    # EJEMPLO MLB:
+    #
+    # GANADOR FINAL:
+    # Solo 1 pendiente.
+    #
+    # F5:
+    # Solo 1 pendiente.
+    #
+    # Pueden existir simultáneamente:
+    #
+    # Yankees GANADOR FINAL 🔒
+    # Dodgers F5 🔒
+    #
+    # Pero mientras estén pendientes NO pueden cambiar.
+    # ========================================================
+
+    active_prediction = (
+        get_active_prediction(
+            rows,
+            sport,
+            market,
+        )
+    )
+
+    if active_prediction is not None:
+
+        active_prediction[
+            "locked"
+        ] = True
+
+        active_prediction[
+            "market_type"
+        ] = market_type
+
+        save_history(
+            path,
+            rows,
+        )
+
+        return history_summary(
+            rows
+        )
+
+    # ========================================================
+    # 4. NO REPETIR EL MISMO PARTIDO + MERCADO
     # ========================================================
 
     pid = prediction_id(
@@ -606,20 +844,6 @@ def update_history(
 
     if existing is not None:
 
-        # ====================================================
-        # MUY IMPORTANTE:
-        #
-        # YA EXISTE PREDICCIÓN PARA ESTE PARTIDO + MERCADO.
-        #
-        # NO CAMBIAMOS:
-        # - selección
-        # - probabilidad original
-        # - mercado
-        # - hora
-        #
-        # Aunque el motor ahora diga otro ganador.
-        # ====================================================
-
         existing[
             "locked"
         ] = True
@@ -634,7 +858,7 @@ def update_history(
         )
 
     # ========================================================
-    # 4. CREAR LA PRIMERA Y ÚNICA PREDICCIÓN
+    # 5. EQUIPOS
     # ========================================================
 
     away_team = (
@@ -649,11 +873,15 @@ def update_history(
         )
     )
 
-    # Intentar obtener nombres desde matchup
+    # Intentar sacar equipos del matchup
     if (
-        (not away_team or not home_team)
-        and " vs " in matchup.lower()
+        (
+            not away_team
+            or not home_team
+        )
+        and matchup
     ):
+
         parts = re.split(
             r"\s+vs\.?\s+",
             matchup,
@@ -662,6 +890,7 @@ def update_history(
         )
 
         if len(parts) == 2:
+
             away_team = (
                 away_team
                 or parts[0].strip()
@@ -671,6 +900,10 @@ def update_history(
                 home_team
                 or parts[1].strip()
             )
+
+    # ========================================================
+    # 6. PROBABILIDAD
+    # ========================================================
 
     probability = (
         recommendation_data.get(
@@ -683,6 +916,28 @@ def update_history(
             probability
         )
     )
+
+    if probability_number is None:
+
+        probability_pct = None
+
+    elif probability_number <= 1:
+
+        probability_pct = round(
+            probability_number * 100,
+            2,
+        )
+
+    else:
+
+        probability_pct = round(
+            probability_number,
+            2,
+        )
+
+    # ========================================================
+    # 7. CREAR LA PRIMERA Y ÚNICA APUESTA ACTIVA
+    # ========================================================
 
     row = {
         "prediction_id":
@@ -709,6 +964,9 @@ def update_history(
         "market":
             market,
 
+        "market_type":
+            market_type,
+
         "selection":
             selection,
 
@@ -716,18 +974,7 @@ def update_history(
             probability_number,
 
         "model_probability_pct":
-            (
-                round(
-                    probability_number * 100,
-                    2,
-                )
-                if (
-                    probability_number
-                    is not None
-                    and probability_number <= 1
-                )
-                else probability_number
-            ),
+            probability_pct,
 
         "data_quality":
             recommendation_data.get(
@@ -751,6 +998,10 @@ def update_history(
 
         "status":
             "PENDIENTE",
+
+        # ----------------------------------------------------
+        # BLOQUEADA DESDE EL MOMENTO DE CREARSE
+        # ----------------------------------------------------
 
         "locked":
             True,
@@ -786,7 +1037,7 @@ def update_history(
 
 
 # ============================================================
-# RESUMEN
+# RESUMEN GENERAL
 # ============================================================
 
 def history_summary(
@@ -794,22 +1045,26 @@ def history_summary(
 ) -> dict[str, Any]:
 
     ganadas = sum(
-        row.get("status") == "GANADA"
+        row.get("status")
+        == "GANADA"
         for row in rows
     )
 
     perdidas = sum(
-        row.get("status") == "PERDIDA"
+        row.get("status")
+        == "PERDIDA"
         for row in rows
     )
 
     empates = sum(
-        row.get("status") == "EMPATE"
+        row.get("status")
+        == "EMPATE"
         for row in rows
     )
 
     pendientes = sum(
-        row.get("status") == "PENDIENTE"
+        row.get("status")
+        == "PENDIENTE"
         for row in rows
     )
 
@@ -820,7 +1075,9 @@ def history_summary(
 
     win_rate = (
         round(
-            100.0 * ganadas / resolved,
+            100.0
+            * ganadas
+            / resolved,
             2,
         )
         if resolved
@@ -854,7 +1111,10 @@ def history_summary(
 
 def history_summary_by_market(
     rows: list[dict[str, Any]],
-) -> dict[str, dict[str, Any]]:
+) -> dict[
+    str,
+    dict[str, Any],
+]:
 
     markets: dict[
         str,
@@ -913,4 +1173,4 @@ def clear_history(
     save_history(
         path,
         [],
-    )
+            )
