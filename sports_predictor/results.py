@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import os
+import traceback
 from datetime import datetime
 from pathlib import Path
 from typing import Any
@@ -60,8 +61,6 @@ def prediction_date(
     row: dict[str, Any],
 ) -> str | None:
 
-    # Compatibilidad con versiones del historial
-    # que tengan un campo "date".
     date_value = str(
         row.get("date")
         or ""
@@ -70,10 +69,6 @@ def prediction_date(
     if date_value:
         return date_value[:10]
 
-    # Historial normal:
-    #
-    # created_at =
-    # 2026-09-06T10:30:00-05:00
     created_at = str(
         row.get("created_at")
         or ""
@@ -187,9 +182,6 @@ def main() -> None:
 
     # ========================================================
     # AGRUPAR POR DEPORTE + FECHA
-    #
-    # De esta forma solamente consultamos
-    # las fechas realmente necesarias.
     # ========================================================
 
     consultas: set[
@@ -256,24 +248,12 @@ def main() -> None:
 
         try:
 
-            # ------------------------------------------------
-            # OBTENER PARTIDOS
-            # ------------------------------------------------
-
             games_result = (
                 client.games_for_date(
                     sport,
                     date_iso,
                 )
             )
-
-            # ------------------------------------------------
-            # NORMALIZAR
-            #
-            # API devuelve diccionarios RAW.
-            # history.update_history necesita
-            # objetos Game.
-            # ------------------------------------------------
 
             games = normalize_games(
                 sport,
@@ -287,21 +267,6 @@ def main() -> None:
                     "normalizado(s)."
                 )
             )
-
-            # ------------------------------------------------
-            # ACTUALIZAR SOLAMENTE RESULTADOS
-            #
-            # IMPORTANTE:
-            #
-            # recommendations=[]
-            #
-            # significa que este proceso NO crea
-            # picks nuevos.
-            #
-            # Solamente intenta resolver las
-            # selecciones que ya existen en el
-            # historial.
-            # ------------------------------------------------
 
             update_history(
                 path=HISTORY_FILE,
@@ -329,8 +294,14 @@ def main() -> None:
                 )
             )
 
+            print(
+                "TRACEBACK COMPLETO:"
+            )
+
+            traceback.print_exc()
+
     # ========================================================
-    # RECARGAR HISTORIAL DESPUÉS DE ACTUALIZAR
+    # RECARGAR HISTORIAL
     # ========================================================
 
     history = load_history(
@@ -373,12 +344,6 @@ def main() -> None:
         )
     )
 
-    # history_summary devuelve win_rate
-    # como decimal:
-    #
-    # 0.75 = 75%
-    #
-    # Por eso multiplicamos por 100.
     win_rate = (
         float(
             summary.get(
