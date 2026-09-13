@@ -47,10 +47,24 @@ class ApiSportsClient:
 
         self._batch_odds_supported: dict[str, bool] = {}
 
-        # Si API-Sports deja de estar disponible
-        # para MLB durante esta ejecución,
-        # usamos MLB Stats API.
-        self._mlb_api_sports_available = True
+        # ====================================================
+        # MLB
+        #
+        # IMPORTANTE:
+        # Partidos/historial y cuotas tienen estados separados.
+        #
+        # Un fallo de cuotas NO debe desactivar los partidos.
+        # ====================================================
+
+        self._mlb_games_api_sports_available = True
+        self._mlb_odds_api_sports_available = True
+
+        # Indica de dónde salieron los juegos MLB
+        # de la consulta actual.
+        #
+        # Si son MLB Stats API, sus IDs NO se deben enviar
+        # a API-Sports.
+        self._mlb_using_stats_api = False
 
     # ========================================================
     # API-SPORTS
@@ -103,6 +117,9 @@ class ApiSportsClient:
 
         last_error: Exception | None = None
 
+        payload: dict[str, Any] = {}
+        remaining: int | None = None
+
         for attempt in range(3):
 
             try:
@@ -124,23 +141,32 @@ class ApiSportsClient:
                         )
                     )
 
-                    remaining = (
-                        int(remaining_raw)
-                        if remaining_raw
-                        else None
-                    )
+                    try:
+                        remaining = (
+                            int(remaining_raw)
+                            if remaining_raw is not None
+                            else None
+                        )
+                    except (
+                        TypeError,
+                        ValueError,
+                    ):
+                        remaining = None
 
                     break
 
             except urllib.error.HTTPError as exc:
 
-                body = (
-                    exc.read()
-                    .decode(
-                        "utf-8",
-                        errors="replace",
-                    )[:1000]
-                )
+                try:
+                    body = (
+                        exc.read()
+                        .decode(
+                            "utf-8",
+                            errors="replace",
+                        )[:1000]
+                    )
+                except Exception:
+                    body = ""
 
                 last_error = ApiSportsError(
                     f"{sport} {endpoint}: "
@@ -193,20 +219,6 @@ class ApiSportsClient:
         )
 
         if provider_errors:
-
-            text = str(
-                provider_errors
-            ).lower()
-
-            if (
-                sport == "MLB"
-                and (
-                    "request limit" in text
-                    or "limit for the day" in text
-                    or "rate limit" in text
-                )
-            ):
-                self._mlb_api_sports_available = False
 
             raise ApiSportsError(
                 f"{sport} {endpoint}: "
@@ -327,9 +339,7 @@ class ApiSportsClient:
     # ========================================================
     # CONVERTIR MLB STATS -> FORMATO INTERNO
     #
-    # IMPORTANTE:
-    # También conservamos innings individuales para poder
-    # resolver correctamente apuestas de Primeras 5 entradas.
+    # Conserva innings individuales para F5.
     # ========================================================
 
     def _convert_mlb_game(
@@ -393,7 +403,10 @@ class ApiSportsClient:
                         )
                     ).timestamp()
                 )
-            except ValueError:
+            except (
+                ValueError,
+                TypeError,
+            ):
                 timestamp = None
 
         season_value = (
@@ -442,18 +455,12 @@ class ApiSportsClient:
 
             innings.append(
                 {
-                    "num": (
-                        inning.get("num")
+                    "num": inning.get("num"),
+                    "away": away_inning.get(
+                        "runs"
                     ),
-                    "away": (
-                        away_inning.get(
-                            "runs"
-                        )
-                    ),
-                    "home": (
-                        home_inning.get(
-                            "runs"
-                        )
+                    "home": home_inning.get(
+                        "runs"
                     ),
                 }
             )
@@ -511,8 +518,6 @@ class ApiSportsClient:
                 },
             },
 
-            # Marcador inning por inning.
-            # history.py lo utilizará para F5.
             "innings": innings,
 
             "_source": "MLB_STATS_API",
@@ -523,8 +528,7 @@ class ApiSportsClient:
     # ========================================================
     # MLB SCHEDULE
     #
-    # hydrate=linescore obliga a MLB Stats API a incluir
-    # marcador inning por inning.
+    # hydrate=linescore incluye marcador inning por inning.
     # ========================================================
 
     def _mlb_schedule(
@@ -563,6 +567,12 @@ class ApiSportsClient:
             or []
         ):
 
+            if not isinstance(
+                date_block,
+                dict,
+            ):
+                continue
+
             for game in (
                 date_block.get("games")
                 or []
@@ -585,7 +595,45 @@ class ApiSportsClient:
         )
 
     # ========================================================
+    # TEMPORADA NFL PARA UNA FECHA
+    #
+    # Enero/febrero pertenecen a la temporada
+    # iniciada el año anterior.
+    # ========================================================
+
+    @staticmethod
+    def _nfl_season_for_date(
+        date_iso: str,
+    ) -> int:
+
+        try:
+
+            parsed = datetime.strptime(
+                date_iso,
+                "%Y-%m-%d",
+            )
+
+            if parsed.month <= 2:
+                return parsed.year - 1
+
+            return parsed.year
+
+        except ValueError:
+
+            now = datetime.now(
+                timezone.utc
+            )
+
+            if now.month <= 2:
+                return now.year - 1
+
+            return now.year
+
+    # ========================================================
     # TODOS LOS PARTIDOS DEL DÍA
+    #
+    # NFL:
+    # league=1 + season + date
     #
     # MLB:
     # API-Sports -> si falla -> MLB Stats API
@@ -597,17 +645,67 @@ class ApiSportsClient:
         date_iso: str,
     ) -> ApiResult:
 
-        if sport != "MLB":
+        # ====================================================
+        # NFL
+        # ====================================================
+
+        if sport == "NFL":
+
+            nfl_season = (
+                self._nfl_season_for_date(
+                    date_iso
+                )
+            )
+
+            print(
+                "NFL: buscando partidos "
+                f"fecha={date_iso}, "
+                "league=1, "
+                f"season={nfl_season}"
+            )
+
+            result = self._get(
+                "NFL",
+                "games",
+                {
+                    "league": 1,
+                    "season": nfl_season,
+                    "date": date_iso,
+                },
+            )
+
+            print(
+                "NFL: "
+                f"{len(result.response)} "
+                "partidos encontrados."
+            )
+
+            return result
+
+        # ====================================================
+        # NBA
+        # ====================================================
+
+        if sport == "NBA":
 
             return self._get(
-                sport,
+                "NBA",
                 "games",
                 {
                     "date": date_iso,
                 },
             )
 
-        if self._mlb_api_sports_available:
+        # ====================================================
+        # MLB
+        # ====================================================
+
+        if sport != "MLB":
+            raise ValueError(
+                f"Deporte desconocido: {sport}"
+            )
+
+        if self._mlb_games_api_sports_available:
 
             try:
 
@@ -620,14 +718,26 @@ class ApiSportsClient:
                 )
 
                 if result.response:
+
+                    self._mlb_using_stats_api = False
+
+                    print(
+                        "MLB: partidos obtenidos "
+                        "desde API-Sports."
+                    )
+
                     return result
 
             except ApiSportsError as exc:
 
-                self._mlb_api_sports_available = False
+                self._mlb_games_api_sports_available = False
 
                 print(
-                    "MLB: API-Sports no disponible. "
+                    "MLB: API-Sports no disponible "
+                    "para partidos."
+                )
+
+                print(
                     "Activando MLB Stats API."
                 )
 
@@ -635,13 +745,16 @@ class ApiSportsClient:
                     f"Motivo: {exc}"
                 )
 
+        self._mlb_using_stats_api = True
+
         result = self._mlb_schedule(
             date_iso=date_iso,
         )
 
         print(
-            "MLB: partidos obtenidos desde "
-            "MLB Stats API."
+            "MLB: "
+            f"{len(result.response)} "
+            "partidos obtenidos desde MLB Stats API."
         )
 
         return result
@@ -649,7 +762,8 @@ class ApiSportsClient:
     # ========================================================
     # HISTORIAL DE EQUIPO
     #
-    # MLB también tiene fallback.
+    # IMPORTANTE:
+    # No mezclar IDs de API-Sports con MLB Stats API.
     # ========================================================
 
     def team_history(
@@ -659,10 +773,30 @@ class ApiSportsClient:
         season: int | str,
     ) -> ApiResult:
 
-        if sport != "MLB":
+        # ====================================================
+        # NFL
+        # ====================================================
+
+        if sport == "NFL":
 
             return self._get(
-                sport,
+                "NFL",
+                "games",
+                {
+                    "team": team_id,
+                    "league": 1,
+                    "season": season,
+                },
+            )
+
+        # ====================================================
+        # NBA
+        # ====================================================
+
+        if sport == "NBA":
+
+            return self._get(
+                "NBA",
                 "games",
                 {
                     "team": team_id,
@@ -670,48 +804,79 @@ class ApiSportsClient:
                 },
             )
 
-        # Si los IDs provienen de MLB Stats,
-        # consultar directamente MLB Stats.
-        if not self._mlb_api_sports_available:
+        if sport != "MLB":
+            raise ValueError(
+                f"Deporte desconocido: {sport}"
+            )
+
+        # ====================================================
+        # MLB Stats API
+        #
+        # Si los partidos actuales vinieron de MLB Stats,
+        # los team_id también pertenecen a MLB Stats.
+        # ====================================================
+
+        if self._mlb_using_stats_api:
 
             return self._mlb_schedule(
                 team_id=team_id,
                 season=season,
             )
 
-        try:
+        # ====================================================
+        # MLB API-Sports
+        # ====================================================
 
-            result = self._get(
-                "MLB",
-                "games",
-                {
-                    "team": team_id,
-                    "season": season,
-                },
-            )
+        if self._mlb_games_api_sports_available:
 
-            if result.response:
-                return result
+            try:
 
-        except ApiSportsError:
+                return self._get(
+                    "MLB",
+                    "games",
+                    {
+                        "team": team_id,
+                        "season": season,
+                    },
+                )
 
-            self._mlb_api_sports_available = False
+            except ApiSportsError as exc:
 
-        return self._mlb_schedule(
-            team_id=team_id,
-            season=season,
+                self._mlb_games_api_sports_available = False
+
+                print(
+                    "MLB: falló historial en API-Sports."
+                )
+
+                print(
+                    f"Motivo: {exc}"
+                )
+
+                # MUY IMPORTANTE:
+                # Este team_id vino de API-Sports.
+                # No podemos enviarlo automáticamente
+                # a MLB Stats porque los IDs pueden ser
+                # diferentes.
+                #
+                # Devolver vacío es más seguro que mezclar
+                # información de equipos incorrectos.
+
+                return ApiResult(
+                    response=[],
+                    remaining_requests=None,
+                )
+
+        return ApiResult(
+            response=[],
+            remaining_requests=None,
         )
 
     # ========================================================
     # CUOTAS
     #
-    # MLB Stats NO TIENE CUOTAS.
+    # MLB Stats API NO TIENE CUOTAS.
     #
-    # Si API-Sports no está disponible:
-    # devolver [].
-    #
-    # engine.py decidirá usando el modelo MLB,
-    # SIN INVENTAR precios.
+    # Un fallo de cuotas MLB NO desactiva los partidos MLB.
     # ========================================================
 
     def odds_for_date(
@@ -721,9 +886,40 @@ class ApiSportsClient:
         game_ids: list[int | str],
     ) -> ApiResult:
 
+        # ====================================================
+        # MLB obtenido desde MLB Stats API
+        #
+        # Esos game_id NO son game_id de API-Sports.
+        # No se pueden mezclar.
+        # ====================================================
+
         if (
             sport == "MLB"
-            and not self._mlb_api_sports_available
+            and self._mlb_using_stats_api
+        ):
+
+            print(
+                "MLB: los juegos actuales vienen de "
+                "MLB Stats API."
+            )
+
+            print(
+                "No se consultarán cuotas con esos IDs "
+                "en API-Sports."
+            )
+
+            return ApiResult(
+                response=[],
+                remaining_requests=None,
+            )
+
+        # ====================================================
+        # MLB: cuotas ya marcadas como no disponibles
+        # ====================================================
+
+        if (
+            sport == "MLB"
+            and not self._mlb_odds_api_sports_available
         ):
 
             print(
@@ -735,6 +931,11 @@ class ApiSportsClient:
                 response=[],
                 remaining_requests=None,
             )
+
+        # ====================================================
+        # PRIMER INTENTO:
+        # TODAS LAS CUOTAS DEL DÍA EN UNA SOLA CONSULTA
+        # ====================================================
 
         batch = ApiResult(
             response=[],
@@ -776,11 +977,16 @@ class ApiSportsClient:
 
                 if sport == "MLB":
 
-                    self._mlb_api_sports_available = False
+                    self._mlb_odds_api_sports_available = False
 
                     print(
-                        "MLB: cuotas no disponibles. "
-                        "Continuando con modelo deportivo."
+                        "MLB: cuotas API-Sports "
+                        "no disponibles."
+                    )
+
+                    print(
+                        "Los partidos/historial MLB "
+                        "seguirán funcionando."
                     )
 
                     print(
@@ -791,6 +997,11 @@ class ApiSportsClient:
                         response=[],
                         remaining_requests=None,
                     )
+
+        # ====================================================
+        # FALLBACK:
+        # CUOTA POR PARTIDO
+        # ====================================================
 
         combined: list[
             dict[str, Any]
@@ -838,12 +1049,16 @@ class ApiSportsClient:
 
                     if sport == "MLB":
 
-                        self._mlb_api_sports_available = False
+                        self._mlb_odds_api_sports_available = False
 
                         print(
-                            "MLB: límite/error de cuotas. "
-                            "Se detienen más consultas "
-                            "API-Sports para MLB."
+                            "MLB: límite/error de cuotas."
+                        )
+
+                        print(
+                            "Se detienen nuevas consultas "
+                            "de CUOTAS MLB, pero NO "
+                            "los partidos."
                         )
 
                         print(
@@ -861,4 +1076,4 @@ class ApiSportsClient:
         return ApiResult(
             response=combined,
             remaining_requests=remaining,
-                )
+        )
