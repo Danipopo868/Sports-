@@ -116,10 +116,12 @@ def normalize_games(
         )
 
         game_block = raw.get("game")
+
         if not isinstance(game_block, dict):
             game_block = {}
 
         game_id = raw.get("id")
+
         if game_id is None:
             game_id = game_block.get("id")
 
@@ -227,17 +229,13 @@ def calculate_team_form(
         ):
             continue
 
-        if (
-            str(game.home.id)
-            == str(team_id)
-        ):
+        if str(game.home.id) == str(team_id):
+
             scored = home_score
             allowed = away_score
 
-        elif (
-            str(game.away.id)
-            == str(team_id)
-        ):
+        elif str(game.away.id) == str(team_id):
+
             scored = away_score
             allowed = home_score
 
@@ -293,9 +291,7 @@ def calculate_team_form(
         - losses
     )
 
-    total = len(
-        selected
-    )
+    total = len(selected)
 
     if not total:
         return TeamForm(
@@ -521,6 +517,13 @@ def analyze_sport(
             if quote.game_id
             == str(game.id)
         ]
+
+        # ================================================================
+        # MLB
+        #
+        # Modelo deportivo puro.
+        # Las cuotas son solo referencia.
+        # ================================================================
 
         if sport == "MLB":
 
@@ -800,6 +803,162 @@ def analyze_sport(
 
             continue
 
+        # ================================================================
+        # NFL SIN CUOTAS
+        #
+        # Si ESPN trae partidos pero no existen cuotas compatibles,
+        # analiza por forma reciente + margen de puntos.
+        # ================================================================
+
+        if (
+            sport == "NFL"
+            and not game_quotes
+        ):
+
+            home_probability = (
+                form_home_probability_for_game(
+                    sport,
+                    home_form,
+                    away_form,
+                )
+            )
+
+            side = (
+                "home"
+                if home_probability
+                >= 0.5
+                else "away"
+            )
+
+            probability = (
+                home_probability
+                if side == "home"
+                else 1.0
+                - home_probability
+            )
+
+            selection = (
+                game.home.name
+                if side == "home"
+                else game.away.name
+            )
+
+            history_games = int(
+                config[
+                    "history_games"
+                ]
+            )
+
+            history_count = min(
+                home_form.games,
+                away_form.games,
+            )
+
+            history_ok = (
+                history_count
+                >= int(
+                    filters[
+                        "minimum_history_games"
+                    ]
+                )
+            )
+
+            quality = min(
+                100,
+                round(
+                    100
+                    * history_count
+                    / max(
+                        1,
+                        history_games,
+                    )
+                ),
+            )
+
+            passes = all(
+                (
+                    probability
+                    >= float(
+                        filters[
+                            "minimum_probability"
+                        ]
+                    ),
+                    quality
+                    >= int(
+                        filters[
+                            "minimum_data_quality"
+                        ]
+                    ),
+                    history_ok,
+                )
+            )
+
+            reason_lines = (
+                (
+                    "Modelo NFL sin cuotas: "
+                    f"{probability * 100:.1f}% "
+                    f"para {selection}"
+                ),
+                (
+                    f"Forma {game.home.name}: "
+                    f"{home_form.wins}-"
+                    f"{home_form.losses}; "
+                    f"{game.away.name}: "
+                    f"{away_form.wins}-"
+                    f"{away_form.losses}"
+                ),
+                (
+                    "Predicción calculada con "
+                    "forma reciente y margen "
+                    "de puntos; cuotas no utilizadas"
+                ),
+            )
+
+            all_candidates.append(
+                Candidate(
+                    sport=sport,
+                    game_id=str(
+                        game.id
+                    ),
+                    matchup=(
+                        f"{game.away.name} "
+                        f"@ {game.home.name}"
+                    ),
+                    start=game.start,
+                    market=(
+                        "Ganador del partido"
+                    ),
+                    selection=selection,
+                    bookmaker=(
+                        "SIN CUOTAS — "
+                        "MODELO NFL"
+                    ),
+                    decimal_odds=0.0,
+                    model_probability=(
+                        probability
+                    ),
+                    break_even_probability=(
+                        0.0
+                    ),
+                    edge=0.0,
+                    expected_value=0.0,
+                    bookmakers=0,
+                    data_quality=quality,
+                    passes_filters=(
+                        passes
+                    ),
+                    reasons=(
+                        reason_lines
+                    ),
+                )
+            )
+
+            continue
+
+        # ================================================================
+        # NBA y NFL cuando sí existen cuotas
+        # ================================================================
+
         if not game_quotes:
             continue
 
@@ -947,8 +1106,7 @@ def analyze_sport(
 
                 probability = (
                     combined_home_probability
-                    if side
-                    == "home"
+                    if side == "home"
                     else 1.0
                     - combined_home_probability
                 )
@@ -1021,8 +1179,7 @@ def analyze_sport(
 
                 selection = (
                     game.home.name
-                    if side
-                    == "home"
+                    if side == "home"
                     else game.away.name
                 )
 
@@ -1074,7 +1231,39 @@ def analyze_sport(
                     )
                 )
 
+    # ================================================================
+    # RANKING
+    # ================================================================
+
     if sport == "MLB":
+
+        best_observed = max(
+            all_candidates,
+            key=lambda candidate: (
+                candidate.model_probability,
+                candidate.data_quality,
+            ),
+            default=None,
+        )
+
+        eligible = sorted(
+            (
+                candidate
+                for candidate
+                in all_candidates
+                if candidate.passes_filters
+            ),
+            key=lambda candidate: (
+                candidate.model_probability,
+                candidate.data_quality,
+            ),
+            reverse=True,
+        )
+
+    elif (
+        sport == "NFL"
+        and not quotes
+    ):
 
         best_observed = max(
             all_candidates,
@@ -1125,6 +1314,10 @@ def analyze_sport(
             reverse=True,
         )
 
+    # ================================================================
+    # HASTA 2 PARTIDOS DISTINTOS
+    # ================================================================
+
     recommendations: list[
         Candidate
     ] = []
@@ -1157,6 +1350,10 @@ def analyze_sport(
         ):
             break
 
+    # ================================================================
+    # NOTAS
+    # ================================================================
+
     if not games:
 
         notes.append(
@@ -1174,6 +1371,19 @@ def analyze_sport(
             "el ganador se calculó "
             "únicamente con el modelo "
             "deportivo de MLB Stats API."
+        )
+
+    elif (
+        sport == "NFL"
+        and not quotes
+    ):
+
+        notes.append(
+            "NFL analizado SIN cuotas: "
+            "la selección se calculó "
+            "con forma reciente y margen "
+            "de puntos; las cuotas no "
+            "participaron en la decisión."
         )
 
     elif (
@@ -1200,6 +1410,19 @@ def analyze_sport(
                 "probabilidad mínima y "
                 "la cobertura mínima "
                 "de factores."
+            )
+
+        elif (
+            sport == "NFL"
+            and not quotes
+        ):
+
+            notes.append(
+                "Ningún juego NFL superó "
+                "simultáneamente la "
+                "probabilidad mínima, "
+                "la calidad mínima y "
+                "el historial mínimo exigido."
             )
 
         elif quotes:
@@ -2223,4 +2446,4 @@ def _empty_form() -> TeamForm:
         0.0,
         0.0,
         0.0,
-            )
+        )
