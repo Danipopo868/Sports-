@@ -115,7 +115,14 @@ def normalize_games(
             or {}
         )
 
+        game_block = raw.get("game")
+        if not isinstance(game_block, dict):
+            game_block = {}
+
         game_id = raw.get("id")
+        if game_id is None:
+            game_id = game_block.get("id")
+
         home_id = home_raw.get("id")
         away_id = away_raw.get("id")
 
@@ -515,17 +522,6 @@ def analyze_sport(
             == str(game.id)
         ]
 
-        # ================================================================
-        # MLB
-        #
-        # EL GANADOR LO DECIDE EL MODELO DEPORTIVO.
-        #
-        # NO necesita cuotas para analizar.
-        #
-        # Las cuotas, si existen, SOLO se muestran como
-        # información y NO cambian la predicción.
-        # ================================================================
-
         if sport == "MLB":
 
             matchup = (
@@ -616,10 +612,6 @@ def analyze_sport(
 
                         continue
 
-                # --------------------------------------------------------
-                # Selección deportiva pura
-                # --------------------------------------------------------
-
                 side = (
                     "home"
                     if home_probability
@@ -669,16 +661,6 @@ def analyze_sport(
                     minimum_factor_coverage,
                 )
 
-                # En MLB NO obligamos a disponer
-                # del historial de API-Sports.
-                #
-                # mlb.py ya obtiene y usa:
-                # forma reciente, abridores,
-                # ofensiva, splits, bullpen,
-                # carga bullpen, BvP,
-                # alineaciones, descanso,
-                # estadio y clima.
-
                 quality = completeness
 
                 passes = all(
@@ -693,13 +675,6 @@ def analyze_sport(
                         >= minimum_quality,
                     )
                 )
-
-                # --------------------------------------------------------
-                # Cuotas opcionales
-                #
-                # Solo referencia visual.
-                # NO intervienen en passes ni probability.
-                # --------------------------------------------------------
 
                 market_quotes = [
                     quote
@@ -824,12 +799,6 @@ def analyze_sport(
                 )
 
             continue
-
-        # ================================================================
-        # NFL / NBA
-        #
-        # Conserva la lógica anterior.
-        # ================================================================
 
         if not game_quotes:
             continue
@@ -1105,10 +1074,6 @@ def analyze_sport(
                     )
                 )
 
-    # ================================================================
-    # RANKING
-    # ================================================================
-
     if sport == "MLB":
 
         best_observed = max(
@@ -1160,10 +1125,6 @@ def analyze_sport(
             reverse=True,
         )
 
-    # ================================================================
-    # ELEGIR HASTA 2 PARTIDOS DISTINTOS
-    # ================================================================
-
     recommendations: list[
         Candidate
     ] = []
@@ -1195,10 +1156,6 @@ def analyze_sport(
             == 2
         ):
             break
-
-    # ================================================================
-    # NOTAS
-    # ================================================================
 
     if not games:
 
@@ -1937,6 +1894,75 @@ def _start_time(
     raw: dict[str, Any],
 ) -> str:
 
+    game_block = raw.get(
+        "game"
+    )
+
+    if isinstance(
+        game_block,
+        dict,
+    ):
+
+        game_date = (
+            game_block.get(
+                "date"
+            )
+        )
+
+        if isinstance(
+            game_date,
+            dict,
+        ):
+
+            date_text = str(
+                game_date.get(
+                    "date"
+                )
+                or ""
+            ).strip()
+
+            time_text = str(
+                game_date.get(
+                    "time"
+                )
+                or ""
+            ).strip()
+
+            if (
+                date_text
+                and time_text
+            ):
+                return (
+                    f"{date_text}"
+                    f"T{time_text}"
+                )
+
+            if date_text:
+                return date_text
+
+            timestamp = (
+                game_date.get(
+                    "timestamp"
+                )
+            )
+
+            if timestamp not in (
+                None,
+                "",
+            ):
+                return str(
+                    timestamp
+                )
+
+        elif game_date not in (
+            None,
+            "",
+        ):
+
+            return str(
+                game_date
+            )
+
     date = raw.get(
         "date"
     )
@@ -1945,6 +1971,7 @@ def _start_time(
         date,
         dict,
     ):
+
         return str(
             date.get(
                 "start"
@@ -1970,6 +1997,63 @@ def _start_time(
 def _status_text(
     raw: dict[str, Any],
 ) -> str:
+
+    game_block = raw.get(
+        "game"
+    )
+
+    if isinstance(
+        game_block,
+        dict,
+    ):
+
+        game_status = (
+            game_block.get(
+                "status"
+            )
+        )
+
+        if isinstance(
+            game_status,
+            dict,
+        ):
+
+            values = [
+                game_status.get(
+                    "short"
+                ),
+                game_status.get(
+                    "long"
+                ),
+            ]
+
+            text = " ".join(
+                str(
+                    value
+                )
+                for value
+                in values
+                if value
+                not in (
+                    None,
+                    "",
+                )
+            )
+
+            if text:
+                return text
+
+        elif (
+            game_status
+            not in (
+                None,
+                "",
+            )
+        ):
+
+            return str(
+                game_status
+            )
 
     status = raw.get(
         "status"
@@ -2012,6 +2096,44 @@ def _sort_timestamp(
     raw: dict[str, Any],
 ) -> float:
 
+    game_block = raw.get(
+        "game"
+    )
+
+    if isinstance(
+        game_block,
+        dict,
+    ):
+
+        game_date = (
+            game_block.get(
+                "date"
+            )
+        )
+
+        if isinstance(
+            game_date,
+            dict,
+        ):
+
+            timestamp = (
+                game_date.get(
+                    "timestamp"
+                )
+            )
+
+            if isinstance(
+                timestamp,
+                (
+                    int,
+                    float,
+                ),
+            ):
+
+                return float(
+                    timestamp
+                )
+
     timestamp = (
         raw.get(
             "timestamp"
@@ -2025,6 +2147,7 @@ def _sort_timestamp(
             float,
         ),
     ):
+
         return float(
             timestamp
         )
@@ -2100,4 +2223,4 @@ def _empty_form() -> TeamForm:
         0.0,
         0.0,
         0.0,
-        )
+            )
