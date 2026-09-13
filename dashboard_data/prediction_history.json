@@ -280,8 +280,11 @@
     "edge": 0.0,
     "expected_value": 0.0,
     "data_quality": 100,
-    "status": "PENDIENTE",
-    "result": null
+    "status": "RESUELTA",
+    "result": "PERDIDA",
+    "winner": "Athletics",
+    "final_score": "Seattle Mariners 7 - Athletics 8",
+    "resolved_at": "2026-09-13T18:41:58.967204-05:00"
   },
   {
     "key": "MLB|185828|Ganador del partido|St.Louis Cardinals",
