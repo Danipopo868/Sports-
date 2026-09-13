@@ -1,6 +1,6 @@
 # Reporte del analizador deportivo
 
-Actualizado: **2026-09-13T14:48:20.089117-05:00**
+Actualizado: **2026-09-13T14:57:52.876229-05:00**
 Fecha deportiva analizada: **2026-09-13**
 Escaneo de la sesión: **#1**
 
@@ -62,13 +62,15 @@ Escaneo de la sesión: **#1**
 - Estadio/clima: Sutter Health Park | Sunny 76.0
 - Cobertura de factores MLB: 100/100
 
-Partidos revisados: 23 · Cuotas válidas: 0
+Partidos revisados: 22 · Cuotas válidas: 0
 
 ## NFL — Fútbol americano
 
-**NO APOSTAR — datos incompletos**
+**NO APOSTAR**
 
-Motivo: NFL games: {'plan': 'Free plans do not have access to this season, try from 2022 to 2024.'}
+- No hay partidos disponibles para la fecha analizada.
+
+Partidos revisados: 0 · Cuotas válidas: 0
 
 ## NBA — Baloncesto
 
