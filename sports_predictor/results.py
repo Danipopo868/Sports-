@@ -8,6 +8,7 @@ from typing import Any
 from zoneinfo import ZoneInfo
 
 from .api import ApiSportsClient
+from .engine import normalize_games
 from .history import (
     history_summary,
     load_history,
@@ -59,8 +60,8 @@ def prediction_date(
     row: dict[str, Any],
 ) -> str | None:
 
-    # Si en alguna versión del historial
-    # existe "date", lo aceptamos.
+    # Compatibilidad con versiones del historial
+    # que tengan un campo "date".
     date_value = str(
         row.get("date")
         or ""
@@ -69,8 +70,10 @@ def prediction_date(
     if date_value:
         return date_value[:10]
 
-    # Historial actual:
-    # created_at = 2026-09-06T10:30:00-05:00
+    # Historial normal:
+    #
+    # created_at =
+    # 2026-09-06T10:30:00-05:00
     created_at = str(
         row.get("created_at")
         or ""
@@ -158,9 +161,7 @@ def main() -> None:
 
     print()
     print("=" * 60)
-    print(
-        "REVISOR DE RESULTADOS"
-    )
+    print("REVISOR DE RESULTADOS")
     print(
         f"Hora: {now.isoformat()}"
     )
@@ -187,7 +188,8 @@ def main() -> None:
     # ========================================================
     # AGRUPAR POR DEPORTE + FECHA
     #
-    # Solo consultamos lo necesario.
+    # De esta forma solamente consultamos
+    # las fechas realmente necesarias.
     # ========================================================
 
     consultas: set[
@@ -254,6 +256,10 @@ def main() -> None:
 
         try:
 
+            # ------------------------------------------------
+            # OBTENER PARTIDOS
+            # ------------------------------------------------
+
             games_result = (
                 client.games_for_date(
                     sport,
@@ -261,23 +267,48 @@ def main() -> None:
                 )
             )
 
+            # ------------------------------------------------
+            # NORMALIZAR
+            #
+            # API devuelve diccionarios RAW.
+            # history.update_history necesita
+            # objetos Game.
+            # ------------------------------------------------
+
+            games = normalize_games(
+                sport,
+                games_result.response,
+            )
+
+            print(
+                (
+                    f"{sport}: "
+                    f"{len(games)} partido(s) "
+                    "normalizado(s)."
+                )
+            )
+
+            # ------------------------------------------------
+            # ACTUALIZAR SOLAMENTE RESULTADOS
+            #
             # IMPORTANTE:
             #
-            # history.py trabaja con la respuesta
-            # RAW de API-Sports para encontrar:
-            # - game_id
-            # - equipos
-            # - status
-            # - marcador
+            # recommendations=[]
             #
-            # recommendation=None garantiza que
-            # este proceso NO crea una apuesta.
+            # significa que este proceso NO crea
+            # picks nuevos.
+            #
+            # Solamente intenta resolver las
+            # selecciones que ya existen en el
+            # historial.
+            # ------------------------------------------------
+
             update_history(
                 path=HISTORY_FILE,
                 sport=sport,
-                games=games_result.response,
-                recommendation=None,
-                now=now,
+                games=games,
+                recommendations=[],
+                generated_at=now,
             )
 
             print(
@@ -299,15 +330,63 @@ def main() -> None:
             )
 
     # ========================================================
-    # RESUMEN ACTUALIZADO
+    # RECARGAR HISTORIAL DESPUÉS DE ACTUALIZAR
     # ========================================================
 
     history = load_history(
         HISTORY_FILE
     )
 
+    # ========================================================
+    # RESUMEN
+    # ========================================================
+
     summary = history_summary(
         history
+    )
+
+    won = int(
+        summary.get(
+            "won",
+            0,
+        )
+    )
+
+    lost = int(
+        summary.get(
+            "lost",
+            0,
+        )
+    )
+
+    resolved = int(
+        summary.get(
+            "resolved",
+            0,
+        )
+    )
+
+    pending = int(
+        summary.get(
+            "pending",
+            0,
+        )
+    )
+
+    # history_summary devuelve win_rate
+    # como decimal:
+    #
+    # 0.75 = 75%
+    #
+    # Por eso multiplicamos por 100.
+    win_rate = (
+        float(
+            summary.get(
+                "win_rate",
+                0.0,
+            )
+        )
+        * 100.0
     )
 
     print()
@@ -319,35 +398,35 @@ def main() -> None:
     print(
         (
             "GANADAS:    "
-            f"{summary.get('ganadas', 0)}"
+            f"{won}"
         )
     )
 
     print(
         (
             "PERDIDAS:   "
-            f"{summary.get('perdidas', 0)}"
+            f"{lost}"
         )
     )
 
     print(
         (
-            "EMPATES:    "
-            f"{summary.get('empates', 0)}"
+            "RESUELTAS:  "
+            f"{resolved}"
         )
     )
 
     print(
         (
             "PENDIENTES: "
-            f"{summary.get('pendientes', 0)}"
+            f"{pending}"
         )
     )
 
     print(
         (
             "WIN RATE:   "
-            f"{summary.get('win_rate', 0.0):.2f}%"
+            f"{win_rate:.2f}%"
         )
     )
 
