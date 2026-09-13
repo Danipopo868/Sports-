@@ -1,6 +1,6 @@
 # Reporte del analizador deportivo
 
-Actualizado: **2026-09-13T11:37:19.299032-05:00**
+Actualizado: **2026-09-13T14:48:20.089117-05:00**
 Fecha deportiva analizada: **2026-09-13**
 Escaneo de la sesión: **#1**
 
@@ -12,36 +12,9 @@ Escaneo de la sesión: **#1**
 
 **APUESTA CON VALOR DETECTADA**
 
-- Partido: Chicago White Sox @ St.Louis Cardinals
+- Partido: Baltimore Orioles @ Toronto Blue Jays
 - Mercado: Primeras 5 entradas
-- Selección: **St.Louis Cardinals**
-- Mejor cuota decimal: **0.00** (SIN CUOTAS — MODELO MLB)
-- Probabilidad estimada: **67.7%**
-- Punto de equilibrio: 0.0%
-- Ventaja calculada: **0.0%**
-- Valor esperado por unidad: **0.0%**
-- Casas comparadas: 0
-- Calidad de datos: 91/100
-- Modelo MLB puro: 67.7% para St.Louis Cardinals
-- Cuotas del mercado NO usadas para decidir el ganador
-- Abridores: David Sandlin vs Michael McGreevy
-- OPS temporada: visitante 0.723 | local 0.703
-- OPS split L/R: visitante 0.723 | local 0.703
-- Bullpen/Staff ERA: visitante 4.16 | local 4.31
-- Descanso: visitante 0 día(s) | local 0 día(s)
-- Carga bullpen 3d: visitante 18.7 IP | local 10.7 IP
-- Alineaciones confirmadas: visitante Sí | local Sí
-- BvP suficiente: visitante Sí | local No
-- Estadio/clima: Busch Stadium | Partly Cloudy 83.0
-- Cobertura de factores MLB: 91/100
-
-### APUESTA #2
-
-**APUESTA CON VALOR DETECTADA**
-
-- Partido: New York Mets @ New York Yankees
-- Mercado: Primeras 5 entradas
-- Selección: **New York Yankees**
+- Selección: **Toronto Blue Jays**
 - Mejor cuota decimal: **0.00** (SIN CUOTAS — MODELO MLB)
 - Probabilidad estimada: **67.3%**
 - Punto de equilibrio: 0.0%
@@ -49,39 +22,58 @@ Escaneo de la sesión: **#1**
 - Valor esperado por unidad: **0.0%**
 - Casas comparadas: 0
 - Calidad de datos: 100/100
-- Modelo MLB puro: 67.3% para New York Yankees
+- Modelo MLB puro: 67.3% para Toronto Blue Jays
 - Cuotas del mercado NO usadas para decidir el ganador
-- Abridores: Christian Scott vs Cam Schlittler
-- OPS temporada: visitante 0.706 | local 0.721
-- OPS split L/R: visitante 0.706 | local 0.721
-- Bullpen/Staff ERA: visitante 4.19 | local 3.26
+- Abridores: Trevor Rogers vs Dylan Cease
+- OPS temporada: visitante 0.709 | local 0.696
+- OPS split L/R: visitante 0.709 | local 0.696
+- Bullpen/Staff ERA: visitante 4.18 | local 3.90
 - Descanso: visitante 0 día(s) | local 0 día(s)
-- Carga bullpen 3d: visitante 5.0 IP | local 13.0 IP
+- Carga bullpen 3d: visitante 9.0 IP | local 11.0 IP
 - Alineaciones confirmadas: visitante Sí | local Sí
 - BvP suficiente: visitante Sí | local Sí
-- Estadio/clima: Yankee Stadium | Rain 72.0
+- Estadio/clima: Rogers Centre | Partly Cloudy 78.0
 - Cobertura de factores MLB: 100/100
 
-Partidos revisados: 29 · Cuotas válidas: 0
+### APUESTA #2
+
+**APUESTA CON VALOR DETECTADA**
+
+- Partido: Seattle Mariners @ Athletics
+- Mercado: Ganador del partido
+- Selección: **Seattle Mariners**
+- Mejor cuota decimal: **0.00** (SIN CUOTAS — MODELO MLB)
+- Probabilidad estimada: **66.3%**
+- Punto de equilibrio: 0.0%
+- Ventaja calculada: **0.0%**
+- Valor esperado por unidad: **0.0%**
+- Casas comparadas: 0
+- Calidad de datos: 100/100
+- Modelo MLB puro: 66.3% para Seattle Mariners
+- Cuotas del mercado NO usadas para decidir el ganador
+- Abridores: Bryce Miller vs Jacob Lopez
+- OPS temporada: visitante 0.691 | local 0.720
+- OPS split L/R: visitante 0.691 | local 0.720
+- Bullpen/Staff ERA: visitante 4.19 | local 5.41
+- Descanso: visitante 0 día(s) | local 0 día(s)
+- Carga bullpen 3d: visitante 8.0 IP | local 12.0 IP
+- Alineaciones confirmadas: visitante Sí | local Sí
+- BvP suficiente: visitante Sí | local Sí
+- Estadio/clima: Sutter Health Park | Sunny 76.0
+- Cobertura de factores MLB: 100/100
+
+Partidos revisados: 23 · Cuotas válidas: 0
 
 ## NFL — Fútbol americano
 
-**NO APOSTAR**
+**NO APOSTAR — datos incompletos**
 
-- No hay partidos disponibles para la fecha analizada.
-
-Partidos revisados: 0 · Cuotas válidas: 0
+Motivo: NFL games: {'plan': 'Free plans do not have access to this season, try from 2022 to 2024.'}
 
 ## NBA — Baloncesto
 
 **NO APOSTAR**
 
-- Ninguna opción superó simultáneamente todos los filtros de valor y calidad.
+- No llegaron cuotas comparables; sin precio no se puede calcular rentabilidad.
 
-La opción más cercana fue descartada:
-- Heidelberg — Ganador del partido
-- Probabilidad estimada: 46.8%
-- Ventaja: 23.0%; valor esperado: 96.6%
-- Calidad de datos: 45/100
-
-Partidos revisados: 4 · Cuotas válidas: 84
+Partidos revisados: 1 · Cuotas válidas: 0
