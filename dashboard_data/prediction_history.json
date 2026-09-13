@@ -282,5 +282,23 @@
     "data_quality": 100,
     "status": "PENDIENTE",
     "result": null
+  },
+  {
+    "key": "MLB|185828|Ganador del partido|St.Louis Cardinals",
+    "pick_number": 2,
+    "created_at": "2026-09-13T20:52:21.701886",
+    "sport": "MLB",
+    "game_id": "185828",
+    "matchup": "Chicago White Sox @ St.Louis Cardinals",
+    "start": "2026-09-13T18:15:00+00:00",
+    "market": "Ganador del partido",
+    "selection": "St.Louis Cardinals",
+    "probability": 0.6158569684208929,
+    "odds": 0.0,
+    "edge": 0.0,
+    "expected_value": 0.0,
+    "data_quality": 91,
+    "status": "PENDIENTE",
+    "result": null
   }
 ]
