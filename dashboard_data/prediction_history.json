@@ -58,8 +58,11 @@
     "edge": 0.0,
     "expected_value": 0.0,
     "data_quality": 91,
-    "status": "PENDIENTE",
-    "result": null
+    "status": "RESUELTA",
+    "result": "EMPATE",
+    "winner": null,
+    "final_score": "Detroit Tigers 2 - Cleveland Guardians 2 (F5)",
+    "resolved_at": "2026-09-13T01:32:02.556709-05:00"
   },
   {
     "key": "MLB|823822|Primeras 5 entradas|Chicago Cubs",
@@ -76,8 +79,11 @@
     "edge": 0.0,
     "expected_value": 0.0,
     "data_quality": 100,
-    "status": "PENDIENTE",
-    "result": null
+    "status": "RESUELTA",
+    "result": "PERDIDA",
+    "winner": "Miami Marlins",
+    "final_score": "Chicago Cubs 3 - Miami Marlins 8 (F5)",
+    "resolved_at": "2026-09-13T01:32:02.556709-05:00"
   },
   {
     "key": "MLB|185656|Ganador del partido|New York Yankees",
@@ -94,8 +100,11 @@
     "edge": 0.0,
     "expected_value": 0.0,
     "data_quality": 100,
-    "status": "PENDIENTE",
-    "result": null
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "New York Yankees",
+    "final_score": "Colorado Rockies 1 - New York Yankees 6",
+    "resolved_at": "2026-09-13T01:32:02.556709-05:00"
   },
   {
     "key": "MLB|185650|Primeras 5 entradas|San Diego Padres",
@@ -112,8 +121,11 @@
     "edge": 0.0,
     "expected_value": 0.0,
     "data_quality": 91,
-    "status": "PENDIENTE",
-    "result": null
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "San Diego Padres",
+    "final_score": "Washington Nationals 2 - San Diego Padres 7 (F5)",
+    "resolved_at": "2026-09-13T01:32:02.556709-05:00"
   },
   {
     "key": "MLB|185714|Ganador del partido|New York Yankees",
@@ -130,8 +142,11 @@
     "edge": 0.0,
     "expected_value": 0.0,
     "data_quality": 73,
-    "status": "PENDIENTE",
-    "result": null
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "New York Yankees",
+    "final_score": "Colorado Rockies 1 - New York Yankees 6",
+    "resolved_at": "2026-09-13T01:32:02.556709-05:00"
   },
   {
     "key": "MLB|185712|Primeras 5 entradas|Philadelphia Phillies",
@@ -148,8 +163,11 @@
     "edge": 0.0,
     "expected_value": 0.0,
     "data_quality": 100,
-    "status": "PENDIENTE",
-    "result": null
+    "status": "RESUELTA",
+    "result": "PERDIDA",
+    "winner": "Houston Astros",
+    "final_score": "Houston Astros 6 - Philadelphia Phillies 5 (F5)",
+    "resolved_at": "2026-09-13T01:32:02.556709-05:00"
   },
   {
     "key": "MLB|185718|Primeras 5 entradas|Washington Nationals",
@@ -166,8 +184,11 @@
     "edge": 0.0,
     "expected_value": 0.0,
     "data_quality": 73,
-    "status": "PENDIENTE",
-    "result": null
+    "status": "RESUELTA",
+    "result": "EMPATE",
+    "winner": null,
+    "final_score": "Los Angeles Angels 1 - Washington Nationals 1 (F5)",
+    "resolved_at": "2026-09-13T01:32:02.556709-05:00"
   },
   {
     "key": "MLB|185724|Primeras 5 entradas|Atlanta Braves",
@@ -184,7 +205,10 @@
     "edge": 0.0,
     "expected_value": 0.0,
     "data_quality": 73,
-    "status": "PENDIENTE",
-    "result": null
+    "status": "RESUELTA",
+    "result": "PERDIDA",
+    "winner": "Philadelphia Phillies",
+    "final_score": "Philadelphia Phillies 3 - Atlanta Braves 1 (F5)",
+    "resolved_at": "2026-09-13T01:32:02.556709-05:00"
   }
 ]
