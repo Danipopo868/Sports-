@@ -77,16 +77,6 @@ def save_history(
 
 # ============================================================
 # NORMALIZAR NOMBRES
-#
-# Se usa para poder emparejar:
-#
-# API-Sports:
-#   game_id = X
-#
-# MLB Stats:
-#   gamePk = Y
-#
-# aunque sean el mismo partido.
 # ============================================================
 
 def _normalize_name(
@@ -119,15 +109,7 @@ def _normalize_name(
 
 
 # ============================================================
-# OBTENER EQUIPOS DEL MATCHUP GUARDADO
-#
-# El historial guarda:
-#
-#   "Boston Red Sox @ New York Yankees"
-#
-# Devuelve:
-#
-#   away, home
+# SACAR VISITANTE + LOCAL DEL MATCHUP
 # ============================================================
 
 def _matchup_teams(
@@ -139,8 +121,7 @@ def _matchup_teams(
 
     matchup = str(
         row.get(
-            "matchup",
-            "",
+            "matchup"
         )
         or ""
     ).strip()
@@ -148,34 +129,40 @@ def _matchup_teams(
     if "@" not in matchup:
         return None
 
-    away,
-    home = matchup.split(
+    parts = matchup.split(
         "@",
         1,
     )
 
-    away = _normalize_name(
-        away
+    if len(parts) != 2:
+        return None
+
+    expected_away = (
+        _normalize_name(
+            parts[0]
+        )
     )
 
-    home = _normalize_name(
-        home
+    expected_home = (
+        _normalize_name(
+            parts[1]
+        )
     )
 
-    if not away or not home:
+    if (
+        not expected_away
+        or not expected_home
+    ):
         return None
 
     return (
-        away,
-        home,
+        expected_away,
+        expected_home,
     )
 
 
 # ============================================================
-# TIMESTAMP AUXILIAR
-#
-# Se usa solo si hay doble cartelera:
-# mismos dos equipos el mismo día.
+# CONVERTIR FECHA A TIMESTAMP
 # ============================================================
 
 def _timestamp(
@@ -203,19 +190,15 @@ def _timestamp(
         TypeError,
         ValueError,
     ):
-
         return None
 
 
 # ============================================================
 # BUSCAR PARTIDO
 #
-# PRIORIDAD:
-#
-# 1. game_id exacto
+# 1. ID exacto
 # 2. visitante + local
-# 3. si hay doble cartelera, elegir el más cercano
-#    por hora de inicio
+# 3. si hay doble cartelera, horario más cercano
 # ============================================================
 
 def _find_game(
@@ -224,15 +207,11 @@ def _find_game(
     game_map: dict[str, Game],
 ) -> Game | None:
 
-    # --------------------------------------------------------
-    # 1. ID exacto
-    # --------------------------------------------------------
-
     game_id = str(
         row.get(
-            "game_id",
-            "",
+            "game_id"
         )
+        or ""
     )
 
     if game_id:
@@ -244,19 +223,19 @@ def _find_game(
         if exact is not None:
             return exact
 
-    # --------------------------------------------------------
-    # 2. Matchup visitante @ local
-    # --------------------------------------------------------
-
-    teams = _matchup_teams(
-        row
+    matchup_teams = (
+        _matchup_teams(
+            row
+        )
     )
 
-    if teams is None:
+    if matchup_teams is None:
         return None
 
-    away_expected,
-    home_expected = teams
+    (
+        expected_away,
+        expected_home,
+    ) = matchup_teams
 
     candidates: list[
         Game
@@ -264,23 +243,23 @@ def _find_game(
 
     for game in games:
 
-        away_actual = (
+        actual_away = (
             _normalize_name(
                 game.away.name
             )
         )
 
-        home_actual = (
+        actual_home = (
             _normalize_name(
                 game.home.name
             )
         )
 
         if (
-            away_actual
-            == away_expected
-            and home_actual
-            == home_expected
+            actual_away
+            == expected_away
+            and actual_home
+            == expected_home
         ):
 
             candidates.append(
@@ -293,11 +272,6 @@ def _find_game(
     if len(candidates) == 1:
         return candidates[0]
 
-    # --------------------------------------------------------
-    # 3. Doble cartelera:
-    # elegir el horario más cercano.
-    # --------------------------------------------------------
-
     row_start = _timestamp(
         row.get(
             "start"
@@ -307,7 +281,7 @@ def _find_game(
     if row_start is None:
         return None
 
-    scored: list[
+    timed: list[
         tuple[
             float,
             Game,
@@ -323,7 +297,7 @@ def _find_game(
         if game_start is None:
             continue
 
-        scored.append(
+        timed.append(
             (
                 abs(
                     game_start
@@ -333,57 +307,125 @@ def _find_game(
             )
         )
 
-    if not scored:
+    if not timed:
         return None
 
-    scored.sort(
+    timed.sort(
         key=lambda item: item[0]
     )
 
-    return scored[0][1]
+    return timed[0][1]
 
 
 # ============================================================
-# CONVERTIR VALOR A FLOAT
+# EXTRAER UN NÚMERO SEGURO
+#
+# IMPORTANTE:
+# Maneja:
+#   int
+#   float
+#   dict
+#   list
+#   tuple
+#
+# Así una tupla nunca llega directamente a una suma.
 # ============================================================
 
-def _float_or_none(
+def _number(
     value: Any,
 ) -> float | None:
 
-    try:
+    if value is None:
+        return None
 
-        if value is None:
-            return None
-
+    if isinstance(
+        value,
+        bool,
+    ):
         return float(
             value
+        )
+
+    if isinstance(
+        value,
+        (
+            int,
+            float,
+        ),
+    ):
+        return float(
+            value
+        )
+
+    if isinstance(
+        value,
+        dict,
+    ):
+
+        for key in (
+            "runs",
+            "total",
+            "score",
+            "points",
+            "value",
+        ):
+
+            if key not in value:
+                continue
+
+            found = _number(
+                value.get(
+                    key
+                )
+            )
+
+            if found is not None:
+                return found
+
+        return None
+
+    if isinstance(
+        value,
+        (
+            list,
+            tuple,
+        ),
+    ):
+
+        if len(value) == 1:
+
+            return _number(
+                value[0]
+            )
+
+        for item in value:
+
+            found = _number(
+                item
+            )
+
+            if found is not None:
+                return found
+
+        return None
+
+    try:
+
+        return float(
+            str(
+                value
+            ).strip()
         )
 
     except (
         TypeError,
         ValueError,
     ):
-
         return None
 
 
 # ============================================================
-# EXTRAER MARCADOR F5
-#
-# Usa los innings que api.py guarda:
-#
-# "innings": [
-#   {
-#       "num": 1,
-#       "away": 0,
-#       "home": 1
-#   },
-#   ...
-# ]
-#
-# También tiene respaldo leyendo _mlb_raw.linescore.innings
-# si existiera directamente.
+# MARCADOR PRIMERAS 5 ENTRADAS
 # ============================================================
 
 def _first_five_score(
@@ -401,8 +443,7 @@ def _first_five_score(
     )
 
     # --------------------------------------------------------
-    # RESPALDO:
-    # MLB RAW original
+    # RESPALDO: MLB RAW
     # --------------------------------------------------------
 
     if not innings:
@@ -437,8 +478,8 @@ def _first_five_score(
     inning_map: dict[
         int,
         tuple[
-            float | None,
-            float | None,
+            float,
+            float,
         ],
     ] = {}
 
@@ -450,17 +491,19 @@ def _first_five_score(
         ):
             continue
 
-        num_raw = (
-            inning.get(
-                "num"
-            )
-            or inning.get(
-                "inning"
-            )
+        num_raw = inning.get(
+            "num"
         )
 
+        if num_raw is None:
+
+            num_raw = inning.get(
+                "inning"
+            )
+
         try:
-            num = int(
+
+            inning_num = int(
                 num_raw
             )
 
@@ -471,74 +514,42 @@ def _first_five_score(
             continue
 
         if (
-            num < 1
-            or num > 5
+            inning_num < 1
+            or inning_num > 5
         ):
             continue
 
-        # ----------------------------------------------------
-        # FORMATO NORMALIZADO
-        #
-        # away: 1
-        # home: 0
-        # ----------------------------------------------------
-
-        away_raw = inning.get(
-            "away"
-        )
-
-        home_raw = inning.get(
-            "home"
-        )
-
-        # ----------------------------------------------------
-        # FORMATO MLB ORIGINAL
-        #
-        # away: {"runs": 1}
-        # home: {"runs": 0}
-        # ----------------------------------------------------
-
-        if isinstance(
-            away_raw,
-            dict,
-        ):
-
-            away_raw = away_raw.get(
-                "runs"
+        visitor_runs = _number(
+            inning.get(
+                "away"
             )
+        )
 
-        if isinstance(
-            home_raw,
-            dict,
-        ):
-
-            home_raw = home_raw.get(
-                "runs"
+        home_runs = _number(
+            inning.get(
+                "home"
             )
-
-        away_runs = _float_or_none(
-            away_raw
         )
 
-        home_runs = _float_or_none(
-            home_raw
-        )
+        if (
+            visitor_runs is None
+            or home_runs is None
+        ):
+            continue
 
         inning_map[
-            num
+            inning_num
         ] = (
-            away_runs,
+            visitor_runs,
             home_runs,
         )
 
     # --------------------------------------------------------
-    # Necesitamos innings 1,2,3,4,5.
-    #
-    # No inventamos resultados si falta alguno.
+    # NECESITAMOS LOS 5 INNINGS COMPLETOS
     # --------------------------------------------------------
 
-    if not all(
-        number in inning_map
+    if any(
+        number not in inning_map
         for number in range(
             1,
             6,
@@ -546,36 +557,45 @@ def _first_five_score(
     ):
         return None
 
-    away_total = 0.0
-    home_total = 0.0
+    # --------------------------------------------------------
+    # SUMA SEGURA
+    #
+    # Los valores ya son float.
+    # No hacemos += con objetos desconocidos.
+    # --------------------------------------------------------
 
-    for number in range(
-        1,
-        6,
-    ):
+    visitor_total = sum(
+        float(
+            inning_map[
+                number
+            ][0]
+        )
+        for number in range(
+            1,
+            6,
+        )
+    )
 
-        away_runs,
-        home_runs = inning_map[
-            number
-        ]
-
-        if (
-            away_runs is None
-            or home_runs is None
-        ):
-            return None
-
-        away_total += away_runs
-        home_total += home_runs
+    home_total = sum(
+        float(
+            inning_map[
+                number
+            ][1]
+        )
+        for number in range(
+            1,
+            6,
+        )
+    )
 
     return (
         home_total,
-        away_total,
+        visitor_total,
     )
 
 
 # ============================================================
-# COMPARAR SELECCIÓN CON GANADOR
+# COMPARAR SELECCIÓN
 # ============================================================
 
 def _selection_matches(
@@ -595,7 +615,7 @@ def _selection_matches(
 
 
 # ============================================================
-# MARCAR UNA FILA COMO RESUELTA
+# MARCAR FILA RESUELTA
 # ============================================================
 
 def _resolve_row(
@@ -652,7 +672,7 @@ def update_history(
     }
 
     # ========================================================
-    # RESOLVER SELECCIONES ANTERIORES
+    # RESOLVER PICKS PENDIENTES
     # ========================================================
 
     for row in rows:
@@ -660,9 +680,9 @@ def update_history(
         if (
             str(
                 row.get(
-                    "sport",
-                    ""
+                    "sport"
                 )
+                or ""
             ).upper()
             != sport.upper()
         ):
@@ -671,9 +691,9 @@ def update_history(
         if (
             str(
                 row.get(
-                    "status",
-                    ""
+                    "status"
                 )
+                or ""
             ).upper()
             != "PENDIENTE"
         ):
@@ -681,8 +701,7 @@ def update_history(
 
         market = str(
             row.get(
-                "market",
-                ""
+                "market"
             )
             or ""
         ).strip()
@@ -692,13 +711,6 @@ def update_history(
             "Primeras 5 entradas",
         }:
             continue
-
-        # ----------------------------------------------------
-        # Buscar juego.
-        #
-        # Primero ID.
-        # Luego visitante + local.
-        # ----------------------------------------------------
 
         game = _find_game(
             row,
@@ -723,32 +735,44 @@ def update_history(
             ):
                 continue
 
-            home_score = score_for_side(
-                game.raw,
-                "home",
+            home_score = (
+                score_for_side(
+                    game.raw,
+                    "home",
+                )
             )
 
-            away_score = score_for_side(
-                game.raw,
-                "away",
+            visitor_score = (
+                score_for_side(
+                    game.raw,
+                    "away",
+                )
+            )
+
+            home_score = _number(
+                home_score
+            )
+
+            visitor_score = _number(
+                visitor_score
             )
 
             if (
                 home_score is None
-                or away_score is None
+                or visitor_score is None
             ):
                 continue
 
-            # ------------------------------------------------
-            # Empate.
-            #
-            # MLB normalmente no termina empatado,
-            # pero para otros deportes puede ocurrir.
-            # ------------------------------------------------
+            score_text = (
+                f"{game.away.name} "
+                f"{visitor_score:g} - "
+                f"{game.home.name} "
+                f"{home_score:g}"
+            )
 
             if (
                 home_score
-                == away_score
+                == visitor_score
             ):
 
                 _resolve_row(
@@ -756,10 +780,7 @@ def update_history(
                     result="EMPATE",
                     winner=None,
                     final_score=(
-                        f"{game.away.name} "
-                        f"{away_score:g} - "
-                        f"{game.home.name} "
-                        f"{home_score:g}"
+                        score_text
                     ),
                     generated_at=(
                         generated_at
@@ -771,7 +792,7 @@ def update_history(
             winner = (
                 game.home.name
                 if home_score
-                > away_score
+                > visitor_score
                 else game.away.name
             )
 
@@ -791,10 +812,7 @@ def update_history(
                 result=result,
                 winner=winner,
                 final_score=(
-                    f"{game.away.name} "
-                    f"{away_score:g} - "
-                    f"{game.home.name} "
-                    f"{home_score:g}"
+                    score_text
                 ),
                 generated_at=(
                     generated_at
@@ -807,96 +825,86 @@ def update_history(
         # PRIMERAS 5 ENTRADAS
         # ====================================================
 
-        if (
-            market
-            == "Primeras 5 entradas"
-        ):
-
-            # No necesitamos esperar al final del juego.
-            #
-            # En cuanto existan completos los innings 1-5
-            # podemos determinar el resultado F5.
-
-            first_five = _first_five_score(
+        first_five = (
+            _first_five_score(
                 game.raw
             )
+        )
 
-            if first_five is None:
-                continue
+        if first_five is None:
+            continue
 
+        (
             home_f5,
-            away_f5 = first_five
+            visitor_f5,
+        ) = first_five
 
-            f5_score_text = (
-                f"{game.away.name} "
-                f"{away_f5:g} - "
-                f"{game.home.name} "
-                f"{home_f5:g} "
-                "(F5)"
-            )
+        score_text = (
+            f"{game.away.name} "
+            f"{visitor_f5:g} - "
+            f"{game.home.name} "
+            f"{home_f5:g} "
+            "(F5)"
+        )
 
-            # ------------------------------------------------
-            # EMPATE F5
-            # ------------------------------------------------
+        # ----------------------------------------------------
+        # EMPATE F5
+        # ----------------------------------------------------
 
-            if (
-                home_f5
-                == away_f5
-            ):
-
-                _resolve_row(
-                    row,
-                    result="EMPATE",
-                    winner=None,
-                    final_score=(
-                        f5_score_text
-                    ),
-                    generated_at=(
-                        generated_at
-                    ),
-                )
-
-                continue
-
-            winner = (
-                game.home.name
-                if home_f5
-                > away_f5
-                else game.away.name
-            )
-
-            result = (
-                "GANADA"
-                if _selection_matches(
-                    row.get(
-                        "selection"
-                    ),
-                    winner,
-                )
-                else "PERDIDA"
-            )
+        if (
+            home_f5
+            == visitor_f5
+        ):
 
             _resolve_row(
                 row,
-                result=result,
-                winner=winner,
+                result="EMPATE",
+                winner=None,
                 final_score=(
-                    f5_score_text
+                    score_text
                 ),
                 generated_at=(
                     generated_at
                 ),
             )
 
+            continue
+
+        winner = (
+            game.home.name
+            if home_f5
+            > visitor_f5
+            else game.away.name
+        )
+
+        result = (
+            "GANADA"
+            if _selection_matches(
+                row.get(
+                    "selection"
+                ),
+                winner,
+            )
+            else "PERDIDA"
+        )
+
+        _resolve_row(
+            row,
+            result=result,
+            winner=winner,
+            final_score=(
+                score_text
+            ),
+            generated_at=(
+                generated_at
+            ),
+        )
+
     # ========================================================
-    # GUARDAR NUEVAS SELECCIONES
+    # GUARDAR NUEVAS RECOMENDACIONES
     #
-    # results.py pasa recommendations=[].
-    #
-    # Por tanto el revisor de resultados NO crea picks.
-    #
-    # El escáner normal sí puede seguir usando esta función
-    # para guardar hasta dos selecciones.
+    # results.py usa recommendations=[]
+    # así que NO crea picks nuevos.
     # ========================================================
 
     for (
@@ -916,86 +924,87 @@ def update_history(
             f"{recommendation.selection}"
         )
 
-        if not any(
+        if any(
             row.get(
                 "key"
             )
             == key
             for row in rows
         ):
+            continue
 
-            rows.append(
-                {
-                    "key": key,
+        rows.append(
+            {
+                "key": key,
 
-                    "pick_number": (
-                        pick_number
-                    ),
+                "pick_number": (
+                    pick_number
+                ),
 
-                    "created_at": (
-                        generated_at
-                        .isoformat()
-                    ),
+                "created_at": (
+                    generated_at
+                    .isoformat()
+                ),
 
-                    "sport": sport,
+                "sport": sport,
 
-                    "game_id": (
-                        recommendation
-                        .game_id
-                    ),
+                "game_id": (
+                    recommendation
+                    .game_id
+                ),
 
-                    "matchup": (
-                        recommendation
-                        .matchup
-                    ),
+                "matchup": (
+                    recommendation
+                    .matchup
+                ),
 
-                    "start": (
-                        recommendation
-                        .start
-                    ),
+                "start": (
+                    recommendation
+                    .start
+                ),
 
-                    "market": (
-                        recommendation
-                        .market
-                    ),
+                "market": (
+                    recommendation
+                    .market
+                ),
 
-                    "selection": (
-                        recommendation
-                        .selection
-                    ),
+                "selection": (
+                    recommendation
+                    .selection
+                ),
 
-                    "probability": (
-                        recommendation
-                        .model_probability
-                    ),
+                "probability": (
+                    recommendation
+                    .model_probability
+                ),
 
-                    "odds": (
-                        recommendation
-                        .decimal_odds
-                    ),
+                "odds": (
+                    recommendation
+                    .decimal_odds
+                ),
 
-                    "edge": (
-                        recommendation
-                        .edge
-                    ),
+                "edge": (
+                    recommendation
+                    .edge
+                ),
 
-                    "expected_value": (
-                        recommendation
-                        .expected_value
-                    ),
+                "expected_value": (
+                    recommendation
+                    .expected_value
+                ),
 
-                    "data_quality": (
-                        recommendation
-                        .data_quality
-                    ),
+                "data_quality": (
+                    recommendation
+                    .data_quality
+                ),
 
-                    "status": (
-                        "PENDIENTE"
-                    ),
+                "status": (
+                    "PENDIENTE"
+                ),
 
-                    "result": None,
-                }
-            )
+                "result": None,
+            }
+        )
 
     save_history(
         path,
@@ -1049,25 +1058,14 @@ def history_summary(
     pending = sum(
         str(
             row.get(
-                "status",
-                ""
+                "status"
             )
+            or ""
         ).upper()
         == "PENDIENTE"
         for row in rows
     )
 
-    # Win rate excluye empates.
-    #
-    # Ejemplo:
-    #
-    # 5 GANADAS
-    # 3 PERDIDAS
-    # 2 EMPATES
-    #
-    # win_rate = 5 / 8
-    #
-    # Los pushes no cuentan como victoria ni derrota.
     decisions = (
         won
         + lost
