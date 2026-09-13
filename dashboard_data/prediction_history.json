@@ -32,13 +32,16 @@
       "Estadio/clima: Great American Ball Park | Sunny 76.0",
       "Cobertura de factores MLB: 100/100"
     ],
-    "status": "PENDIENTE",
+    "status": "RESUELTA",
     "locked": true,
-    "resolved_at": null,
+    "resolved_at": "2026-09-13T01:04:11.343385-05:00",
     "away_score": null,
     "home_score": null,
     "away_f5": null,
-    "home_f5": null
+    "home_f5": null,
+    "winner": "Cincinnati Reds",
+    "final_score": "Milwaukee Brewers 8 - Cincinnati Reds 12",
+    "result": "PERDIDA"
   },
   {
     "key": "MLB|824385|Primeras 5 entradas|Cleveland Guardians",
