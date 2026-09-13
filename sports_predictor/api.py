@@ -47,8 +47,9 @@ class ApiSportsClient:
 
         self._batch_odds_supported: dict[str, bool] = {}
 
-        # Si API-Sports nos dice que se acabó el límite MLB,
-        # dejamos de insistir durante esta ejecución.
+        # Si API-Sports deja de estar disponible
+        # para MLB durante esta ejecución,
+        # usamos MLB Stats API.
         self._mlb_api_sports_available = True
 
     # ========================================================
@@ -325,6 +326,10 @@ class ApiSportsClient:
 
     # ========================================================
     # CONVERTIR MLB STATS -> FORMATO INTERNO
+    #
+    # IMPORTANTE:
+    # También conservamos innings individuales para poder
+    # resolver correctamente apuestas de Primeras 5 entradas.
     # ========================================================
 
     def _convert_mlb_game(
@@ -399,6 +404,60 @@ class ApiSportsClient:
             ).year
         )
 
+        # ====================================================
+        # MARCADOR POR INNING
+        # ====================================================
+
+        linescore = (
+            game.get("linescore")
+            or {}
+        )
+
+        innings_raw = (
+            linescore.get("innings")
+            or []
+        )
+
+        innings: list[
+            dict[str, Any]
+        ] = []
+
+        for inning in innings_raw:
+
+            if not isinstance(
+                inning,
+                dict,
+            ):
+                continue
+
+            away_inning = (
+                inning.get("away")
+                or {}
+            )
+
+            home_inning = (
+                inning.get("home")
+                or {}
+            )
+
+            innings.append(
+                {
+                    "num": (
+                        inning.get("num")
+                    ),
+                    "away": (
+                        away_inning.get(
+                            "runs"
+                        )
+                    ),
+                    "home": (
+                        home_inning.get(
+                            "runs"
+                        )
+                    ),
+                }
+            )
+
         return {
             "id": game.get("gamePk"),
 
@@ -452,10 +511,21 @@ class ApiSportsClient:
                 },
             },
 
+            # Marcador inning por inning.
+            # history.py lo utilizará para F5.
+            "innings": innings,
+
             "_source": "MLB_STATS_API",
 
             "_mlb_raw": game,
         }
+
+    # ========================================================
+    # MLB SCHEDULE
+    #
+    # hydrate=linescore obliga a MLB Stats API a incluir
+    # marcador inning por inning.
+    # ========================================================
 
     def _mlb_schedule(
         self,
@@ -467,6 +537,7 @@ class ApiSportsClient:
 
         params: dict[str, Any] = {
             "sportId": 1,
+            "hydrate": "linescore",
         }
 
         if date_iso:
