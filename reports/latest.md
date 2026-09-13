@@ -1,7 +1,7 @@
 # Reporte del analizador deportivo
 
-Actualizado: **2026-09-11T13:37:48.258419-05:00**
-Fecha deportiva analizada: **2026-09-11**
+Actualizado: **2026-09-13T11:37:19.299032-05:00**
+Fecha deportiva analizada: **2026-09-13**
 Escaneo de la sesión: **#1**
 
 > Las probabilidades son estimaciones. El sistema puede indicar NO APOSTAR y nunca garantiza ganancias.
@@ -12,57 +12,57 @@ Escaneo de la sesión: **#1**
 
 **APUESTA CON VALOR DETECTADA**
 
-- Partido: Los Angeles Angels @ Washington Nationals
+- Partido: Chicago White Sox @ St.Louis Cardinals
 - Mercado: Primeras 5 entradas
-- Selección: **Washington Nationals**
+- Selección: **St.Louis Cardinals**
 - Mejor cuota decimal: **0.00** (SIN CUOTAS — MODELO MLB)
-- Probabilidad estimada: **71.2%**
+- Probabilidad estimada: **67.7%**
 - Punto de equilibrio: 0.0%
 - Ventaja calculada: **0.0%**
 - Valor esperado por unidad: **0.0%**
 - Casas comparadas: 0
-- Calidad de datos: 73/100
-- Modelo MLB puro: 71.2% para Washington Nationals
+- Calidad de datos: 91/100
+- Modelo MLB puro: 67.7% para St.Louis Cardinals
 - Cuotas del mercado NO usadas para decidir el ganador
-- Abridores: Yusei Kikuchi vs Cade Cavalli
-- OPS temporada: visitante 0.682 | local 0.750
-- OPS split L/R: visitante 0.682 | local 0.750
-- Bullpen/Staff ERA: visitante 4.20 | local 4.75
-- Descanso: visitante 1 día(s) | local 1 día(s)
-- Carga bullpen 3d: visitante 6.0 IP | local 10.0 IP
-- Alineaciones confirmadas: visitante No | local No
-- BvP suficiente: visitante No | local No
-- Estadio/clima: Nationals Park | N/D 
-- Cobertura de factores MLB: 73/100
+- Abridores: David Sandlin vs Michael McGreevy
+- OPS temporada: visitante 0.723 | local 0.703
+- OPS split L/R: visitante 0.723 | local 0.703
+- Bullpen/Staff ERA: visitante 4.16 | local 4.31
+- Descanso: visitante 0 día(s) | local 0 día(s)
+- Carga bullpen 3d: visitante 18.7 IP | local 10.7 IP
+- Alineaciones confirmadas: visitante Sí | local Sí
+- BvP suficiente: visitante Sí | local No
+- Estadio/clima: Busch Stadium | Partly Cloudy 83.0
+- Cobertura de factores MLB: 91/100
 
 ### APUESTA #2
 
 **APUESTA CON VALOR DETECTADA**
 
-- Partido: Philadelphia Phillies @ Atlanta Braves
+- Partido: New York Mets @ New York Yankees
 - Mercado: Primeras 5 entradas
-- Selección: **Atlanta Braves**
+- Selección: **New York Yankees**
 - Mejor cuota decimal: **0.00** (SIN CUOTAS — MODELO MLB)
-- Probabilidad estimada: **70.6%**
+- Probabilidad estimada: **67.3%**
 - Punto de equilibrio: 0.0%
 - Ventaja calculada: **0.0%**
 - Valor esperado por unidad: **0.0%**
 - Casas comparadas: 0
-- Calidad de datos: 73/100
-- Modelo MLB puro: 70.6% para Atlanta Braves
+- Calidad de datos: 100/100
+- Modelo MLB puro: 67.3% para New York Yankees
 - Cuotas del mercado NO usadas para decidir el ganador
-- Abridores: Aaron Nola vs Chris Sale
-- OPS temporada: visitante 0.712 | local 0.717
-- OPS split L/R: visitante 0.712 | local 0.717
-- Bullpen/Staff ERA: visitante 3.98 | local 3.58
+- Abridores: Christian Scott vs Cam Schlittler
+- OPS temporada: visitante 0.706 | local 0.721
+- OPS split L/R: visitante 0.706 | local 0.721
+- Bullpen/Staff ERA: visitante 4.19 | local 3.26
 - Descanso: visitante 0 día(s) | local 0 día(s)
-- Carga bullpen 3d: visitante 9.0 IP | local 12.0 IP
-- Alineaciones confirmadas: visitante No | local No
-- BvP suficiente: visitante No | local No
-- Estadio/clima: Truist Park | N/D 
-- Cobertura de factores MLB: 73/100
+- Carga bullpen 3d: visitante 5.0 IP | local 13.0 IP
+- Alineaciones confirmadas: visitante Sí | local Sí
+- BvP suficiente: visitante Sí | local Sí
+- Estadio/clima: Yankee Stadium | Rain 72.0
+- Cobertura de factores MLB: 100/100
 
-Partidos revisados: 21 · Cuotas válidas: 0
+Partidos revisados: 29 · Cuotas válidas: 0
 
 ## NFL — Fútbol americano
 
@@ -79,9 +79,9 @@ Partidos revisados: 0 · Cuotas válidas: 0
 - Ninguna opción superó simultáneamente todos los filtros de valor y calidad.
 
 La opción más cercana fue descartada:
-- Hamburg — Ganador del partido
-- Probabilidad estimada: 48.8%
-- Ventaja: 11.8%; valor esperado: 31.8%
+- Heidelberg — Ganador del partido
+- Probabilidad estimada: 46.8%
+- Ventaja: 23.0%; valor esperado: 96.6%
 - Calidad de datos: 45/100
 
-Partidos revisados: 2 · Cuotas válidas: 16
+Partidos revisados: 4 · Cuotas válidas: 84
