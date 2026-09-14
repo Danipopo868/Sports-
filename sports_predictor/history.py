@@ -319,16 +319,6 @@ def _find_game(
 
 # ============================================================
 # EXTRAER UN NÚMERO SEGURO
-#
-# IMPORTANTE:
-# Maneja:
-#   int
-#   float
-#   dict
-#   list
-#   tuple
-#
-# Así una tupla nunca llega directamente a una suma.
 # ============================================================
 
 def _number(
@@ -426,6 +416,9 @@ def _number(
 
 # ============================================================
 # MARCADOR PRIMERAS 5 ENTRADAS
+#
+# REPARACIÓN:
+# Combina la fuente principal con el respaldo MLB.
 # ============================================================
 
 def _first_five_score(
@@ -435,25 +428,42 @@ def _first_five_score(
     float,
 ] | None:
 
-    innings = (
-        raw.get(
-            "innings"
-        )
-        or []
+    inning_sources: list[
+        list[Any]
+    ] = []
+
+    # --------------------------------------------------------
+    # FUENTE PRINCIPAL
+    # --------------------------------------------------------
+
+    primary_innings = raw.get(
+        "innings"
     )
 
-    # --------------------------------------------------------
-    # RESPALDO: MLB RAW
-    # --------------------------------------------------------
+    if isinstance(
+        primary_innings,
+        list,
+    ):
 
-    if not innings:
-
-        mlb_raw = (
-            raw.get(
-                "_mlb_raw"
-            )
-            or {}
+        inning_sources.append(
+            primary_innings
         )
+
+    # --------------------------------------------------------
+    # RESPALDO MLB
+    # --------------------------------------------------------
+
+    mlb_raw = (
+        raw.get(
+            "_mlb_raw"
+        )
+        or {}
+    )
+
+    if isinstance(
+        mlb_raw,
+        dict,
+    ):
 
         linescore = (
             mlb_raw.get(
@@ -462,17 +472,28 @@ def _first_five_score(
             or {}
         )
 
-        innings = (
-            linescore.get(
-                "innings"
-            )
-            or []
-        )
+        if isinstance(
+            linescore,
+            dict,
+        ):
 
-    if not isinstance(
-        innings,
-        list,
-    ):
+            mlb_innings = (
+                linescore.get(
+                    "innings"
+                )
+                or []
+            )
+
+            if isinstance(
+                mlb_innings,
+                list,
+            ):
+
+                inning_sources.append(
+                    mlb_innings
+                )
+
+    if not inning_sources:
         return None
 
     inning_map: dict[
@@ -483,69 +504,75 @@ def _first_five_score(
         ],
     ] = {}
 
-    for inning in innings:
+    for innings in inning_sources:
 
-        if not isinstance(
-            inning,
-            dict,
-        ):
-            continue
+        for inning in innings:
 
-        num_raw = inning.get(
-            "num"
-        )
-
-        if num_raw is None:
+            if not isinstance(
+                inning,
+                dict,
+            ):
+                continue
 
             num_raw = inning.get(
-                "inning"
+                "num"
             )
 
-        try:
+            if num_raw is None:
 
-            inning_num = int(
-                num_raw
+                num_raw = inning.get(
+                    "inning"
+                )
+
+            try:
+
+                inning_num = int(
+                    num_raw
+                )
+
+            except (
+                TypeError,
+                ValueError,
+            ):
+                continue
+
+            if (
+                inning_num < 1
+                or inning_num > 5
+            ):
+                continue
+
+            visitor_runs = _number(
+                inning.get(
+                    "away"
+                )
             )
 
-        except (
-            TypeError,
-            ValueError,
-        ):
-            continue
-
-        if (
-            inning_num < 1
-            or inning_num > 5
-        ):
-            continue
-
-        visitor_runs = _number(
-            inning.get(
-                "away"
+            home_runs = _number(
+                inning.get(
+                    "home"
+                )
             )
-        )
 
-        home_runs = _number(
-            inning.get(
-                "home"
+            if (
+                visitor_runs is None
+                or home_runs is None
+            ):
+                continue
+
+            inning_map[
+                inning_num
+            ] = (
+                float(
+                    visitor_runs
+                ),
+                float(
+                    home_runs
+                ),
             )
-        )
-
-        if (
-            visitor_runs is None
-            or home_runs is None
-        ):
-            continue
-
-        inning_map[
-            inning_num
-        ] = (
-            visitor_runs,
-            home_runs,
-        )
 
     # --------------------------------------------------------
-    # NECESITAMOS LOS 5 INNINGS COMPLETOS
+    # ENTRE AMBAS FUENTES DEBEN ESTAR LOS INNINGS 1-5
     # --------------------------------------------------------
 
     if any(
@@ -557,19 +584,10 @@ def _first_five_score(
     ):
         return None
 
-    # --------------------------------------------------------
-    # SUMA SEGURA
-    #
-    # Los valores ya son float.
-    # No hacemos += con objetos desconocidos.
-    # --------------------------------------------------------
-
     visitor_total = sum(
-        float(
-            inning_map[
-                number
-            ][0]
-        )
+        inning_map[
+            number
+        ][0]
         for number in range(
             1,
             6,
@@ -577,11 +595,9 @@ def _first_five_score(
     )
 
     home_total = sum(
-        float(
-            inning_map[
-                number
-            ][1]
-        )
+        inning_map[
+            number
+        ][1]
         for number in range(
             1,
             6,
