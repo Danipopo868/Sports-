@@ -315,5 +315,41 @@
     "winner": "St.Louis Cardinals",
     "final_score": "Chicago White Sox 1 - St.Louis Cardinals 3",
     "resolved_at": "2026-09-13T16:18:17.013238-05:00"
+  },
+  {
+    "key": "MLB|185833|Ganador del partido|Los Angeles Dodgers",
+    "pick_number": 1,
+    "created_at": "2026-09-14T17:43:38.933246",
+    "sport": "MLB",
+    "game_id": "185833",
+    "matchup": "Los Angeles Dodgers @ Cincinnati Reds",
+    "start": "2026-09-14T22:40:00+00:00",
+    "market": "Ganador del partido",
+    "selection": "Los Angeles Dodgers",
+    "probability": 0.7590056315570065,
+    "odds": 0.0,
+    "edge": 0.0,
+    "expected_value": 0.0,
+    "data_quality": 73,
+    "status": "PENDIENTE",
+    "result": null
+  },
+  {
+    "key": "MLB|185838|Ganador del partido|New York Yankees",
+    "pick_number": 2,
+    "created_at": "2026-09-14T17:43:38.933246",
+    "sport": "MLB",
+    "game_id": "185838",
+    "matchup": "New York Yankees @ Minnesota Twins",
+    "start": "2026-09-14T23:40:00+00:00",
+    "market": "Ganador del partido",
+    "selection": "New York Yankees",
+    "probability": 0.6098215692927524,
+    "odds": 0.0,
+    "edge": 0.0,
+    "expected_value": 0.0,
+    "data_quality": 73,
+    "status": "PENDIENTE",
+    "result": null
   }
 ]
