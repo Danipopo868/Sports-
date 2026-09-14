@@ -249,7 +249,7 @@ def main() -> None:
         try:
 
             games_result = (
-                client.games_for_date(
+                client.result_games_for_date(
                     sport,
                     date_iso,
                 )
