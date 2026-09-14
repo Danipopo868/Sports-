@@ -226,8 +226,11 @@
     "edge": 0.0,
     "expected_value": 0.0,
     "data_quality": 91,
-    "status": "PENDIENTE",
-    "result": null
+    "status": "RESUELTA",
+    "result": "PERDIDA",
+    "winner": "Chicago White Sox",
+    "final_score": "Chicago White Sox 1 - St. Louis Cardinals 0 (F5)",
+    "resolved_at": "2026-09-13T19:24:37.693958-05:00"
   },
   {
     "key": "MLB|185821|Primeras 5 entradas|New York Yankees",
@@ -244,8 +247,11 @@
     "edge": 0.0,
     "expected_value": 0.0,
     "data_quality": 100,
-    "status": "PENDIENTE",
-    "result": null
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "New York Yankees",
+    "final_score": "New York Mets 0 - New York Yankees 2 (F5)",
+    "resolved_at": "2026-09-13T19:24:37.693958-05:00"
   },
   {
     "key": "MLB|185823|Primeras 5 entradas|Toronto Blue Jays",
@@ -262,8 +268,11 @@
     "edge": 0.0,
     "expected_value": 0.0,
     "data_quality": 100,
-    "status": "PENDIENTE",
-    "result": null
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Toronto Blue Jays",
+    "final_score": "Baltimore Orioles 1 - Toronto Blue Jays 4 (F5)",
+    "resolved_at": "2026-09-13T19:24:37.693958-05:00"
   },
   {
     "key": "MLB|185830|Ganador del partido|Seattle Mariners",
