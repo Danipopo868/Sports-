@@ -1208,6 +1208,56 @@ class ApiSportsClient:
         )
 
     # ========================================================
+    # PARTIDOS PARA RESOLVER RESULTADOS
+    #
+    # MLB USA MLB STATS API PRIMERO PARA OBTENER
+    # LINESCORE COMPLETO Y RESOLVER F5.
+    #
+    # ESTO NO CAMBIA LA FUENTE NORMAL DE PREDICCIONES.
+    # ========================================================
+
+    def result_games_for_date(
+        self,
+        sport: str,
+        date_iso: str,
+    ) -> ApiResult:
+
+        if sport == "MLB":
+
+            try:
+
+                result = self._mlb_schedule(
+                    date_iso=date_iso,
+                )
+
+                if result.response:
+
+                    print(
+                        "MLB RESULTADOS: "
+                        "usando MLB Stats API "
+                        "con linescore."
+                    )
+
+                    return result
+
+            except ApiSportsError as exc:
+
+                print(
+                    "MLB RESULTADOS: "
+                    "MLB Stats API falló. "
+                    "Usando respaldo normal."
+                )
+
+                print(
+                    f"Motivo: {exc}"
+                )
+
+        return self.games_for_date(
+            sport,
+            date_iso,
+        )
+
+    # ========================================================
     # TODOS LOS PARTIDOS DEL DÍA
     # ========================================================
 
@@ -1368,10 +1418,6 @@ class ApiSportsClient:
         season: int | str,
     ) -> ApiResult:
 
-        # ====================================================
-        # NFL
-        # ====================================================
-
         if sport == "NFL":
 
             if self._nfl_using_espn:
@@ -1410,10 +1456,6 @@ class ApiSportsClient:
                     remaining_requests=None,
                 )
 
-        # ====================================================
-        # NBA
-        # ====================================================
-
         if sport == "NBA":
 
             return self._get(
@@ -1424,10 +1466,6 @@ class ApiSportsClient:
                     "season": season,
                 },
             )
-
-        # ====================================================
-        # MLB
-        # ====================================================
 
         if sport != "MLB":
 
@@ -1480,10 +1518,6 @@ class ApiSportsClient:
         game_ids: list[int | str],
     ) -> ApiResult:
 
-        # ====================================================
-        # NFL ESPN
-        # ====================================================
-
         if (
             sport == "NFL"
             and self._nfl_using_espn
@@ -1509,10 +1543,6 @@ class ApiSportsClient:
                 response=[],
                 remaining_requests=None,
             )
-
-        # ====================================================
-        # MLB STATS
-        # ====================================================
 
         if (
             sport == "MLB"
@@ -1540,10 +1570,6 @@ class ApiSportsClient:
                 response=[],
                 remaining_requests=None,
             )
-
-        # ====================================================
-        # CUOTAS POR FECHA
-        # ====================================================
 
         batch = ApiResult(
             response=[],
@@ -1618,10 +1644,6 @@ class ApiSportsClient:
                         response=[],
                         remaining_requests=None,
                     )
-
-        # ====================================================
-        # FALLBACK DE CUOTAS POR PARTIDO
-        # ====================================================
 
         combined: list[
             dict[str, Any]
