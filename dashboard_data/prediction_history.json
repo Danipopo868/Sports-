@@ -352,7 +352,10 @@
     "edge": 0.0,
     "expected_value": 0.0,
     "data_quality": 73,
-    "status": "PENDIENTE",
-    "result": null
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "New York Yankees",
+    "final_score": "New York Yankees 8 - Minnesota Twins 3",
+    "resolved_at": "2026-09-14T22:25:09.508176-05:00"
   }
 ]
