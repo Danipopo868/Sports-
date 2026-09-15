@@ -331,8 +331,11 @@
     "edge": 0.0,
     "expected_value": 0.0,
     "data_quality": 73,
-    "status": "PENDIENTE",
-    "result": null
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Los Angeles Dodgers",
+    "final_score": "Los Angeles Dodgers 4 - Cincinnati Reds 1",
+    "resolved_at": "2026-09-14T20:25:10.767300-05:00"
   },
   {
     "key": "MLB|185838|Ganador del partido|New York Yankees",
