@@ -373,8 +373,11 @@
     "edge": 0.0,
     "expected_value": 0.0,
     "data_quality": 73,
-    "status": "PENDIENTE",
-    "result": null
+    "status": "RESUELTA",
+    "result": "EMPATE",
+    "winner": null,
+    "final_score": "Philadelphia Phillies 3 - Washington Nationals 3 (F5)",
+    "resolved_at": "2026-09-15T19:28:27.200334-05:00"
   },
   {
     "key": "MLB|185846|Primeras 5 entradas|Los Angeles Dodgers",
@@ -391,7 +394,10 @@
     "edge": 0.0,
     "expected_value": 0.0,
     "data_quality": 73,
-    "status": "PENDIENTE",
-    "result": null
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Los Angeles Dodgers",
+    "final_score": "Los Angeles Dodgers 3 - Cincinnati Reds 0 (F5)",
+    "resolved_at": "2026-09-15T19:28:27.200334-05:00"
   }
 ]
