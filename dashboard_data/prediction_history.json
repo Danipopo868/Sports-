@@ -436,7 +436,10 @@
     "edge": 0.0,
     "expected_value": 0.0,
     "data_quality": 91,
-    "status": "PENDIENTE",
-    "result": null
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Tampa Bay Rays",
+    "final_score": "Athletics 3 - Tampa Bay Rays 4",
+    "resolved_at": "2026-09-16T20:22:01.601379-05:00"
   }
 ]
