@@ -478,7 +478,10 @@
     "edge": 0.0,
     "expected_value": 0.0,
     "data_quality": 73,
-    "status": "PENDIENTE",
-    "result": null
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "San Diego Padres",
+    "final_score": "San Diego Padres 9 - Colorado Rockies 2",
+    "resolved_at": "2026-09-17T18:32:12.958651-05:00"
   }
 ]
