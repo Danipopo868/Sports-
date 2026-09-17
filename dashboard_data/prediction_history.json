@@ -457,8 +457,11 @@
     "edge": 0.0,
     "expected_value": 0.0,
     "data_quality": 100,
-    "status": "PENDIENTE",
-    "result": null
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Tampa Bay Rays",
+    "final_score": "Athletics 0 - Tampa Bay Rays 6 (F5)",
+    "resolved_at": "2026-09-17T15:17:30.589291-05:00"
   },
   {
     "key": "MLB|186582|Ganador del partido|San Diego Padres",
