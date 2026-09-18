@@ -483,5 +483,41 @@
     "winner": "San Diego Padres",
     "final_score": "San Diego Padres 9 - Colorado Rockies 2",
     "resolved_at": "2026-09-17T18:32:12.958651-05:00"
+  },
+  {
+    "key": "MLB|186591|Ganador del partido|Cleveland Guardians",
+    "pick_number": 1,
+    "created_at": "2026-09-18T17:54:16.317586",
+    "sport": "MLB",
+    "game_id": "186591",
+    "matchup": "Athletics @ Cleveland Guardians",
+    "start": "2026-09-18T23:10:00+00:00",
+    "market": "Ganador del partido",
+    "selection": "Cleveland Guardians",
+    "probability": 0.83,
+    "odds": 0.0,
+    "edge": 0.0,
+    "expected_value": 0.0,
+    "data_quality": 73,
+    "status": "PENDIENTE",
+    "result": null
+  },
+  {
+    "key": "MLB|186588|Ganador del partido|Chicago Cubs",
+    "pick_number": 2,
+    "created_at": "2026-09-18T17:54:16.317586",
+    "sport": "MLB",
+    "game_id": "186588",
+    "matchup": "Chicago Cubs @ Cincinnati Reds",
+    "start": "2026-09-18T22:40:00+00:00",
+    "market": "Ganador del partido",
+    "selection": "Chicago Cubs",
+    "probability": 0.6103047243319517,
+    "odds": 0.0,
+    "edge": 0.0,
+    "expected_value": 0.0,
+    "data_quality": 73,
+    "status": "PENDIENTE",
+    "result": null
   }
 ]
