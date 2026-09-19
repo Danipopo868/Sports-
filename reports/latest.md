@@ -1,7 +1,7 @@
 # Reporte del analizador deportivo
 
-Actualizado: **2026-09-18T12:54:01.071965-05:00**
-Fecha deportiva analizada: **2026-09-18**
+Actualizado: **2026-09-19T10:30:23.328498-05:00**
+Fecha deportiva analizada: **2026-09-19**
 Escaneo de la sesión: **#1**
 
 > Las probabilidades son estimaciones. El sistema puede indicar NO APOSTAR y nunca garantiza ganancias.
@@ -16,20 +16,20 @@ Escaneo de la sesión: **#1**
 - Mercado: Ganador del partido
 - Selección: **Cleveland Guardians**
 - Mejor cuota decimal: **0.00** (SIN CUOTAS — MODELO MLB)
-- Probabilidad estimada: **83.0%**
+- Probabilidad estimada: **69.3%**
 - Punto de equilibrio: 0.0%
 - Ventaja calculada: **0.0%**
 - Valor esperado por unidad: **0.0%**
 - Casas comparadas: 0
 - Calidad de datos: 73/100
-- Modelo MLB puro: 83.0% para Cleveland Guardians
+- Modelo MLB puro: 69.3% para Cleveland Guardians
 - Cuotas del mercado NO usadas para decidir el ganador
-- Abridores: Mason Barnett vs Daniel Espino
-- OPS temporada: visitante 0.719 | local 0.689
-- OPS split L/R: visitante 0.719 | local 0.689
-- Bullpen/Staff ERA: visitante 5.41 | local 3.80
-- Descanso: visitante 0 día(s) | local 1 día(s)
-- Carga bullpen 3d: visitante 11.3 IP | local 8.0 IP
+- Abridores: Jacob Lopez vs Tanner Bibee
+- OPS temporada: visitante 0.717 | local 0.690
+- OPS split L/R: visitante 0.717 | local 0.690
+- Bullpen/Staff ERA: visitante 5.41 | local 3.79
+- Descanso: visitante 0 día(s) | local 0 día(s)
+- Carga bullpen 3d: visitante 14.7 IP | local 11.0 IP
 - Alineaciones confirmadas: visitante No | local No
 - BvP suficiente: visitante No | local No
 - Estadio/clima: Progressive Field | N/D 
@@ -43,26 +43,26 @@ Escaneo de la sesión: **#1**
 - Mercado: Ganador del partido
 - Selección: **Chicago Cubs**
 - Mejor cuota decimal: **0.00** (SIN CUOTAS — MODELO MLB)
-- Probabilidad estimada: **61.0%**
+- Probabilidad estimada: **68.6%**
 - Punto de equilibrio: 0.0%
 - Ventaja calculada: **0.0%**
 - Valor esperado por unidad: **0.0%**
 - Casas comparadas: 0
 - Calidad de datos: 73/100
-- Modelo MLB puro: 61.0% para Chicago Cubs
+- Modelo MLB puro: 68.6% para Chicago Cubs
 - Cuotas del mercado NO usadas para decidir el ganador
-- Abridores: Clay Holmes vs Chase Burns
+- Abridores: Matthew Boyd vs Nick Lodolo
 - OPS temporada: visitante 0.771 | local 0.703
 - OPS split L/R: visitante 0.771 | local 0.703
-- Bullpen/Staff ERA: visitante 4.19 | local 4.87
-- Descanso: visitante 1 día(s) | local 0 día(s)
-- Carga bullpen 3d: visitante 6.3 IP | local 14.0 IP
+- Bullpen/Staff ERA: visitante 4.21 | local 4.87
+- Descanso: visitante 0 día(s) | local 0 día(s)
+- Carga bullpen 3d: visitante 5.7 IP | local 16.0 IP
 - Alineaciones confirmadas: visitante No | local No
 - BvP suficiente: visitante No | local No
 - Estadio/clima: Great American Ball Park | N/D 
 - Cobertura de factores MLB: 73/100
 
-Partidos revisados: 18 · Cuotas válidas: 0
+Partidos revisados: 24 · Cuotas válidas: 0
 
 ## NFL — Fútbol americano
 
@@ -79,9 +79,9 @@ Partidos revisados: 0 · Cuotas válidas: 0
 - Ninguna opción superó simultáneamente todos los filtros de valor y calidad.
 
 La opción más cercana fue descartada:
-- Lokomotiv Kuban — Ganador del partido
-- Probabilidad estimada: 45.3%
-- Ventaja: 22.2%; valor esperado: 96.3%
+- Rahoveci — Ganador del partido
+- Probabilidad estimada: 44.9%
+- Ventaja: 28.9%; valor esperado: 180.7%
 - Calidad de datos: 45/100
 
-Partidos revisados: 22 · Cuotas válidas: 114
+Partidos revisados: 56 · Cuotas válidas: 72
