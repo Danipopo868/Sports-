@@ -499,8 +499,11 @@
     "edge": 0.0,
     "expected_value": 0.0,
     "data_quality": 73,
-    "status": "PENDIENTE",
-    "result": null
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Cleveland Guardians",
+    "final_score": "Athletics 3 - Cleveland Guardians 5",
+    "resolved_at": "2026-09-19T00:49:00.416405-05:00"
   },
   {
     "key": "MLB|186588|Ganador del partido|Chicago Cubs",
@@ -517,7 +520,10 @@
     "edge": 0.0,
     "expected_value": 0.0,
     "data_quality": 73,
-    "status": "PENDIENTE",
-    "result": null
+    "status": "RESUELTA",
+    "result": "PERDIDA",
+    "winner": "Cincinnati Reds",
+    "final_score": "Chicago Cubs 4 - Cincinnati Reds 6",
+    "resolved_at": "2026-09-19T00:49:00.416405-05:00"
   }
 ]
