@@ -541,8 +541,11 @@
     "edge": 0.0,
     "expected_value": 0.0,
     "data_quality": 73,
-    "status": "PENDIENTE",
-    "result": null
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Cleveland Guardians",
+    "final_score": "Athletics 6 - Cleveland Guardians 12",
+    "resolved_at": "2026-09-19T20:03:22.273088-05:00"
   },
   {
     "key": "MLB|187284|Ganador del partido|Chicago Cubs",
