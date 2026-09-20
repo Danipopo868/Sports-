@@ -567,5 +567,41 @@
     "winner": "Chicago Cubs",
     "final_score": "Chicago Cubs 5 - Cincinnati Reds 2",
     "resolved_at": "2026-09-20T01:10:32.525432-05:00"
+  },
+  {
+    "key": "MLB|187309|Primeras 5 entradas|Milwaukee Brewers",
+    "pick_number": 1,
+    "created_at": "2026-09-20T16:24:15.965903",
+    "sport": "MLB",
+    "game_id": "187309",
+    "matchup": "Milwaukee Brewers @ Baltimore Orioles",
+    "start": "2026-09-20T23:20:00+00:00",
+    "market": "Primeras 5 entradas",
+    "selection": "Milwaukee Brewers",
+    "probability": 0.7786482695608422,
+    "odds": 0.0,
+    "edge": 0.0,
+    "expected_value": 0.0,
+    "data_quality": 73,
+    "status": "PENDIENTE",
+    "result": null
+  },
+  {
+    "key": "MLB|187298|Ganador del partido|Cleveland Guardians",
+    "pick_number": 2,
+    "created_at": "2026-09-20T16:24:15.965903",
+    "sport": "MLB",
+    "game_id": "187298",
+    "matchup": "Athletics @ Cleveland Guardians",
+    "start": "2026-09-20T17:40:00+00:00",
+    "market": "Ganador del partido",
+    "selection": "Cleveland Guardians",
+    "probability": 0.75160723663822,
+    "odds": 0.0,
+    "edge": 0.0,
+    "expected_value": 0.0,
+    "data_quality": 100,
+    "status": "PENDIENTE",
+    "result": null
   }
 ]
