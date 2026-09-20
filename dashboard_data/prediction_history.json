@@ -562,7 +562,10 @@
     "edge": 0.0,
     "expected_value": 0.0,
     "data_quality": 73,
-    "status": "PENDIENTE",
-    "result": null
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Chicago Cubs",
+    "final_score": "Chicago Cubs 5 - Cincinnati Reds 2",
+    "resolved_at": "2026-09-20T01:10:32.525432-05:00"
   }
 ]
