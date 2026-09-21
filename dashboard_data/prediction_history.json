@@ -583,8 +583,11 @@
     "edge": 0.0,
     "expected_value": 0.0,
     "data_quality": 73,
-    "status": "PENDIENTE",
-    "result": null
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Milwaukee Brewers",
+    "final_score": "Milwaukee Brewers 2 - Baltimore Orioles 0 (F5)",
+    "resolved_at": "2026-09-20T23:51:46.120709-05:00"
   },
   {
     "key": "MLB|187298|Ganador del partido|Cleveland Guardians",
