@@ -601,7 +601,10 @@
     "edge": 0.0,
     "expected_value": 0.0,
     "data_quality": 100,
-    "status": "PENDIENTE",
-    "result": null
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Cleveland Guardians",
+    "final_score": "Athletics 0 - Cleveland Guardians 1",
+    "resolved_at": "2026-09-20T19:12:56.956218-05:00"
   }
 ]
