@@ -625,7 +625,10 @@
     "edge": 0.0,
     "expected_value": 0.0,
     "data_quality": 73,
-    "status": "PENDIENTE",
-    "result": null
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Detroit Tigers",
+    "final_score": "Washington Nationals 2 - Detroit Tigers 9",
+    "resolved_at": "2026-09-21T23:47:50.032895-05:00"
   }
 ]
