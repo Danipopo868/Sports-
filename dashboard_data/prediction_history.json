@@ -646,8 +646,11 @@
     "edge": 0.0,
     "expected_value": 0.0,
     "data_quality": 73,
-    "status": "PENDIENTE",
-    "result": null
+    "status": "RESUELTA",
+    "result": "PERDIDA",
+    "winner": "Miami Marlins",
+    "final_score": "Miami Marlins 1 - Chicago Cubs 0 (F5)",
+    "resolved_at": "2026-09-23T00:55:30.147112-05:00"
   },
   {
     "key": "MLB|187493|Ganador del partido|Atlanta Braves",
@@ -664,7 +667,10 @@
     "edge": 0.0,
     "expected_value": 0.0,
     "data_quality": 73,
-    "status": "PENDIENTE",
-    "result": null
+    "status": "RESUELTA",
+    "result": "PERDIDA",
+    "winner": "Cincinnati Reds",
+    "final_score": "Cincinnati Reds 4 - Atlanta Braves 0",
+    "resolved_at": "2026-09-23T00:55:30.147112-05:00"
   }
 ]
