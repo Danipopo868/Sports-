@@ -13,21 +13,11 @@ import streamlit as st
 # ============================================================
 
 ROOT = Path(__file__).resolve().parent
-
 DATA_FILE = ROOT / "reports" / "latest.json"
-
-HISTORY_FILE = (
-    ROOT
-    / "dashboard_data"
-    / "prediction_history.json"
-)
+HISTORY_FILE = ROOT / "dashboard_data" / "prediction_history.json"
 
 DEFAULT_STAKE = 100.0
 
-
-# ============================================================
-# DEPORTES
-# ============================================================
 
 SPORT_NAMES = {
     "MLB": "Major League Baseball",
@@ -54,14 +44,9 @@ st.set_page_config(
 )
 
 
-# ============================================================
-# CSS
-# ============================================================
-
 st.markdown(
     """
     <style>
-
     .stApp {
         background:
           radial-gradient(
@@ -78,23 +63,11 @@ st.markdown(
         padding-bottom: 3rem;
     }
 
-    h1, h2, h3 {
-        letter-spacing: -0.025em;
-    }
-
     [data-testid="stMetric"] {
         background: rgba(15, 24, 36, 0.92);
         border: 1px solid #273547;
         border-radius: 16px;
         padding: 14px 16px;
-    }
-
-    [data-testid="stMetricLabel"] {
-        color: #9eabbc;
-    }
-
-    [data-testid="stMetricValue"] {
-        color: #f7fafc;
     }
 
     .edge-badge {
@@ -121,7 +94,7 @@ st.markdown(
         gap: 18px;
         padding: 18px 20px;
         margin-bottom: 18px;
-        background: rgba(14, 22, 34, 0.94);
+        background: rgba(14,22,34,.94);
         border: 1px solid #29384b;
         border-radius: 18px;
     }
@@ -135,36 +108,12 @@ st.markdown(
     .sport-code {
         font-size: 1.65rem;
         font-weight: 800;
-        color: #ffffff;
-        line-height: 1.1;
+        color: white;
     }
 
     .sport-name {
-        margin-top: 5px;
         color: #9aa8bb;
         font-size: .95rem;
-    }
-
-    .money-box {
-        margin-top: 14px;
-        margin-bottom: 14px;
-        padding: 16px;
-        border-radius: 16px;
-        border: 1px solid #2e435b;
-        background: rgba(11, 20, 31, 0.95);
-    }
-
-    .money-title {
-        color: #9eabbc;
-        font-size: .82rem;
-        font-weight: 700;
-        margin-bottom: 4px;
-    }
-
-    .money-value {
-        color: #ffffff;
-        font-size: 1.35rem;
-        font-weight: 800;
     }
 
     .footer-note {
@@ -174,7 +123,6 @@ st.markdown(
         padding-top: 1rem;
         font-size: .88rem;
     }
-
     </style>
     """,
     unsafe_allow_html=True,
@@ -182,7 +130,7 @@ st.markdown(
 
 
 # ============================================================
-# CARGAR REPORTE
+# CARGA
 # ============================================================
 
 @st.cache_data(ttl=30)
@@ -193,16 +141,15 @@ def load_snapshot(
 
     del modified
 
-    return json.loads(
-        Path(path).read_text(
-            encoding="utf-8"
+    try:
+        return json.loads(
+            Path(path).read_text(
+                encoding="utf-8"
+            )
         )
-    )
+    except Exception:
+        return {}
 
-
-# ============================================================
-# CARGAR HISTORIAL
-# ============================================================
 
 @st.cache_data(ttl=20)
 def load_history(
@@ -213,18 +160,13 @@ def load_history(
     del modified
 
     try:
-
         data = json.loads(
             Path(path).read_text(
                 encoding="utf-8"
             )
         )
 
-        return (
-            data
-            if isinstance(data, list)
-            else []
-        )
+        return data if isinstance(data, list) else []
 
     except Exception:
         return []
@@ -234,12 +176,9 @@ def load_history(
 # FORMATOS
 # ============================================================
 
-def pct(
-    value: Any,
-) -> str:
+def pct(value: Any) -> str:
 
     try:
-
         number = float(value)
 
         if abs(number) > 1:
@@ -247,19 +186,15 @@ def pct(
 
         return f"{number * 100:.1f}%"
 
-    except (
-        TypeError,
-        ValueError,
-    ):
+    except (TypeError, ValueError):
         return "—"
 
 
-def probability_number(
+def probability_percent(
     value: Any,
 ) -> float | None:
 
     try:
-
         number = float(value)
 
         if abs(number) <= 1:
@@ -267,10 +202,7 @@ def probability_number(
 
         return number
 
-    except (
-        TypeError,
-        ValueError,
-    ):
+    except (TypeError, ValueError):
         return None
 
 
@@ -279,28 +211,23 @@ def money(
     signed: bool = False,
 ) -> str:
 
-    try:
-
-        number = float(value)
-
-        if signed:
-            return f"{number:+,.2f}"
-
-        return f"${number:,.2f}"
-
-    except (
-        TypeError,
-        ValueError,
-    ):
+    if value is None:
         return "—"
 
+    try:
+        number = float(value)
+    except (TypeError, ValueError):
+        return "—"
 
-def display_time(
-    value: str,
-) -> str:
+    if signed:
+        return f"${number:+,.2f}"
+
+    return f"${number:,.2f}"
+
+
+def display_time(value: str) -> str:
 
     try:
-
         parsed = datetime.fromisoformat(
             value.replace(
                 "Z",
@@ -312,95 +239,91 @@ def display_time(
             "%d/%m/%Y · %I:%M %p"
         )
 
-    except (
-        TypeError,
-        ValueError,
-    ):
+    except (TypeError, ValueError):
         return value or "Sin fecha"
 
 
+def valid_odds(
+    value: Any,
+) -> float | None:
+
+    try:
+        odds = float(value)
+    except (TypeError, ValueError):
+        return None
+
+    return odds if odds > 1.0 else None
+
+
 # ============================================================
-# DINERO DE UNA FILA DEL HISTORIAL
+# SEGUIMIENTO FINANCIERO
 # ============================================================
+
+def row_has_financial_data(
+    row: dict[str, Any],
+) -> bool:
+
+    odds = valid_odds(
+        row.get("odds")
+    )
+
+    try:
+        stake_raw = row.get("stake")
+
+        if stake_raw is None:
+            return False
+
+        stake = float(stake_raw)
+
+    except (TypeError, ValueError):
+        return False
+
+    return (
+        odds is not None
+        and stake > 0
+    )
+
 
 def row_stake(
     row: dict[str, Any],
-) -> float:
+) -> float | None:
+
+    if not row_has_financial_data(row):
+        return None
 
     try:
-        return float(
-            row.get(
-                "stake",
-                DEFAULT_STAKE,
-            )
-        )
-
-    except (
-        TypeError,
-        ValueError,
-    ):
-        return DEFAULT_STAKE
-
-
-def row_odds(
-    row: dict[str, Any],
-) -> float:
-
-    try:
-        return float(
-            row.get(
-                "odds",
-                0.0,
-            )
-            or 0.0
-        )
-
-    except (
-        TypeError,
-        ValueError,
-    ):
-        return 0.0
+        return float(row.get("stake"))
+    except (TypeError, ValueError):
+        return None
 
 
 def row_profit_loss(
     row: dict[str, Any],
 ) -> float | None:
 
-    stored = row.get(
-        "profit_loss"
-    )
+    if not row_has_financial_data(row):
+        return None
+
+    stored = row.get("profit_loss")
 
     if stored is not None:
-
         try:
             return float(stored)
-
-        except (
-            TypeError,
-            ValueError,
-        ):
+        except (TypeError, ValueError):
             pass
 
     result = str(
-        row.get(
-            "result",
-            ""
-        )
+        row.get("result") or ""
     ).upper()
 
     stake = row_stake(row)
-    odds = row_odds(row)
+    odds = valid_odds(row.get("odds"))
+
+    if stake is None or odds is None:
+        return None
 
     if result == "GANADA":
-
-        if odds > 1.0:
-            return (
-                stake
-                * odds
-                - stake
-            )
-
-        return None
+        return stake * odds - stake
 
     if result == "PERDIDA":
         return -stake
@@ -411,55 +334,91 @@ def row_profit_loss(
     return None
 
 
+def potential_return(
+    row: dict[str, Any],
+) -> float | None:
+
+    stored = row.get(
+        "potential_return"
+    )
+
+    if stored is not None:
+        try:
+            return float(stored)
+        except (TypeError, ValueError):
+            pass
+
+    stake = row_stake(row)
+    odds = valid_odds(row.get("odds"))
+
+    if stake is None or odds is None:
+        return None
+
+    return stake * odds
+
+
+def potential_profit(
+    row: dict[str, Any],
+) -> float | None:
+
+    stored = row.get(
+        "potential_profit"
+    )
+
+    if stored is not None:
+        try:
+            return float(stored)
+        except (TypeError, ValueError):
+            pass
+
+    returned = potential_return(row)
+    stake = row_stake(row)
+
+    if returned is None or stake is None:
+        return None
+
+    return returned - stake
+
+
 # ============================================================
-# RESUMEN DEL HISTORIAL
+# ESTADÍSTICAS
 # ============================================================
 
 def history_stats(
     rows: list[dict[str, Any]],
     sport: str | None = None,
-) -> dict[str, int | float]:
+) -> dict[str, Any]:
 
     filtered = rows
 
     if sport:
-
         filtered = [
             row
             for row in rows
             if str(
-                row.get(
-                    "sport",
-                    ""
-                )
+                row.get("sport") or ""
             ).upper()
             == sport.upper()
         ]
 
     won = sum(
-        row.get("result")
-        == "GANADA"
+        row.get("result") == "GANADA"
         for row in filtered
     )
 
     lost = sum(
-        row.get("result")
-        == "PERDIDA"
+        row.get("result") == "PERDIDA"
         for row in filtered
     )
 
     tied = sum(
-        row.get("result")
-        == "EMPATE"
+        row.get("result") == "EMPATE"
         for row in filtered
     )
 
     pending = sum(
         str(
-            row.get(
-                "status",
-                ""
-            )
+            row.get("status") or ""
         ).upper()
         == "PENDIENTE"
         for row in filtered
@@ -473,42 +432,54 @@ def history_stats(
         else 0.0
     )
 
-    settled_rows = [
+    financial_rows = [
         row
         for row in filtered
-        if str(
-            row.get(
-                "result",
-                ""
-            )
-        ).upper()
-        in {
-            "GANADA",
-            "PERDIDA",
-            "EMPATE",
-        }
+        if (
+            row.get("result")
+            in {
+                "GANADA",
+                "PERDIDA",
+                "EMPATE",
+            }
+            and row_has_financial_data(row)
+        )
     ]
 
     total_staked = sum(
-        row_stake(row)
-        for row in settled_rows
+        row_stake(row) or 0.0
+        for row in financial_rows
     )
 
     profit_loss = sum(
-        value
-        for row in settled_rows
-        if (
-            value
-            := row_profit_loss(row)
-        )
-        is not None
+        row_profit_loss(row) or 0.0
+        for row in financial_rows
     )
 
     roi = (
-        profit_loss
-        / total_staked
+        profit_loss / total_staked
         if total_staked
         else 0.0
+    )
+
+    real_odds = sum(
+        str(
+            row.get("odds_source") or ""
+        ).upper()
+        in {
+            "REAL",
+            "LIVE_AT_RECOMMENDATION",
+            "HISTORICAL_F5",
+        }
+        for row in financial_rows
+    )
+
+    estimated_odds = sum(
+        str(
+            row.get("odds_source") or ""
+        ).upper()
+        == "ESTIMADA_FULL_GAME"
+        for row in financial_rows
     )
 
     return {
@@ -517,6 +488,9 @@ def history_stats(
         "tied": tied,
         "pending": pending,
         "win_rate": win_rate,
+        "financial_bets": len(financial_rows),
+        "real_odds": real_odds,
+        "estimated_odds": estimated_odds,
         "total_staked": total_staked,
         "profit_loss": profit_loss,
         "roi": roi,
@@ -524,7 +498,7 @@ def history_stats(
 
 
 # ============================================================
-# CABECERA DEL DEPORTE
+# CABECERA DEPORTE
 # ============================================================
 
 def render_sport_header(
@@ -544,27 +518,16 @@ def render_sport_header(
     st.markdown(
         f"""
         <div class="sport-header">
-            <img
-                class="sport-logo"
-                src="{logo}"
-            >
+            <img class="sport-logo" src="{logo}">
             <div>
-                <div class="sport-code">
-                    {sport}
-                </div>
-                <div class="sport-name">
-                    {name}
-                </div>
+                <div class="sport-code">{sport}</div>
+                <div class="sport-name">{name}</div>
             </div>
         </div>
         """,
         unsafe_allow_html=True,
     )
 
-
-# ============================================================
-# MÉTRICAS DEL DEPORTE
-# ============================================================
 
 def render_sport_stats(
     history_rows: list[dict[str, Any]],
@@ -576,9 +539,7 @@ def render_sport_stats(
         sport,
     )
 
-    c1, c2, c3, c4, c5 = st.columns(
-        5
-    )
+    c1, c2, c3, c4, c5 = st.columns(5)
 
     c1.metric(
         "✅ Ganadas",
@@ -595,46 +556,37 @@ def render_sport_stats(
         money(
             stats["profit_loss"],
             signed=True,
-        ),
+        )
+        if stats["financial_bets"]
+        else "—",
     )
 
     c4.metric(
         "💵 Apostado",
-        money(
-            stats["total_staked"]
-        ),
+        money(stats["total_staked"])
+        if stats["financial_bets"]
+        else "—",
     )
 
     c5.metric(
         "📈 ROI",
         (
-            f"{float(stats['roi']) * 100:+.1f}%"
-            if stats["total_staked"]
+            f"{stats['roi'] * 100:+.2f}%"
+            if stats["financial_bets"]
             else "—"
         ),
     )
 
     st.caption(
-        f"Empates: {int(stats['tied'])} · "
-        f"Pendientes: {int(stats['pending'])} · "
-        f"Efectividad: "
-        f"{float(stats['win_rate']) * 100:.1f}%"
-        if (
-            int(stats["won"])
-            + int(stats["lost"])
-        )
-        else (
-            f"Empates: {int(stats['tied'])} · "
-            f"Pendientes: {int(stats['pending'])} · "
-            "Efectividad: —"
-        )
+        f"Empates: {stats['tied']} · "
+        f"Pendientes: {stats['pending']} · "
+        f"Efectividad: {stats['win_rate'] * 100:.1f}% · "
+        f"Con cuota calculable: {stats['financial_bets']}"
     )
-
-    st.write("")
 
 
 # ============================================================
-# CANDIDATO / APUESTA RECOMENDADA
+# CANDIDATO
 # ============================================================
 
 def render_candidate(
@@ -664,11 +616,9 @@ def render_candidate(
         f"{candidate.get('market', 'Mercado sin identificar')}"
     )
 
-    probability, odds, edge, expected_value = (
-        st.columns(4)
-    )
+    c1, c2, c3, c4 = st.columns(4)
 
-    probability.metric(
+    c1.metric(
         "Probabilidad estimada",
         pct(
             candidate.get(
@@ -677,42 +627,25 @@ def render_candidate(
         ),
     )
 
-    try:
-
-        decimal_odds = float(
-            candidate.get(
-                "decimal_odds",
-                0.0,
-            )
-            or 0.0
+    odds = valid_odds(
+        candidate.get(
+            "decimal_odds"
         )
+    )
 
-    except (
-        TypeError,
-        ValueError,
-    ):
-
-        decimal_odds = 0.0
-
-    odds.metric(
+    c2.metric(
         "Mejor cuota",
-        (
-            f"{decimal_odds:.2f}"
-            if decimal_odds > 1.0
-            else "SIN CUOTA"
-        ),
+        f"{odds:.2f}"
+        if odds is not None
+        else "—",
     )
 
-    edge.metric(
+    c3.metric(
         "Ventaja",
-        pct(
-            candidate.get(
-                "edge"
-            )
-        ),
+        pct(candidate.get("edge")),
     )
 
-    expected_value.metric(
+    c4.metric(
         "Valor esperado",
         pct(
             candidate.get(
@@ -721,102 +654,58 @@ def render_candidate(
         ),
     )
 
-    # ========================================================
-    # CUÁNTO PAGARÍA UNA APUESTA DE $100
-    # ========================================================
+    if odds is not None:
 
-    if decimal_odds > 1.0:
+        payout = DEFAULT_STAKE * odds
+        profit = payout - DEFAULT_STAKE
 
-        potential_return = (
-            DEFAULT_STAKE
-            * decimal_odds
+        f1, f2, f3 = st.columns(3)
+
+        f1.metric(
+            "💵 Apuesta",
+            "$100.00",
         )
 
-        potential_profit = (
-            potential_return
-            - DEFAULT_STAKE
+        f2.metric(
+            "💳 Cobro si gana",
+            money(payout),
         )
 
-        p1, p2, p3 = st.columns(
-            3
-        )
-
-        p1.metric(
-            "💵 APUESTAS",
-            money(
-                DEFAULT_STAKE
-            ),
-        )
-
-        p2.metric(
-            "🏦 SI GANA RECIBES",
-            money(
-                potential_return
-            ),
-        )
-
-        p3.metric(
-            "💰 GANANCIA NETA",
-            f"${potential_profit:+,.2f}",
+        f3.metric(
+            "💰 Ganancia neta",
+            money(profit, signed=True),
         )
 
     else:
 
         st.warning(
-            "💵 PAGO NO DISPONIBLE — "
-            "esta recomendación no tiene una cuota válida "
-            "del mercado. No se inventará una ganancia."
+            "No hay cuota válida disponible. "
+            "Esta recomendación no se contará en P/L ni ROI."
         )
 
-    detail_left, detail_right = (
-        st.columns(2)
+    st.write(
+        f"**Casa:** "
+        f"{candidate.get('bookmaker', 'No disponible')}"
     )
 
-    with detail_left:
-
-        st.write(
-            f"**Casa:** "
-            f"{candidate.get('bookmaker', 'No disponible')}"
-        )
-
-        st.write(
-            "**Punto de equilibrio:** "
-            f"{pct(candidate.get('break_even_probability'))}"
-        )
-
-    with detail_right:
-
-        st.write(
-            "**Casas comparadas:** "
-            f"{candidate.get('bookmakers', 0)}"
-        )
-
-        st.write(
-            "**Calidad de datos:** "
-            f"{candidate.get('data_quality', 0)}/100"
-        )
+    st.write(
+        "**Calidad de datos:** "
+        f"{candidate.get('data_quality', 0)}/100"
+    )
 
     reasons = (
-        candidate.get(
-            "reasons"
-        )
+        candidate.get("reasons")
         or []
     )
 
     if reasons:
-
         st.markdown(
             "**Por qué pasó los filtros**"
         )
 
         for reason in reasons:
-
-            st.write(
-                f"• {reason}"
-            )
-
-
-# ============================================================
+            st.write(f"• {reason}")
+    # ============================================================
 # NO APOSTAR
 # ============================================================
 
@@ -824,71 +713,17 @@ def render_no_bet(
     result: dict[str, Any],
 ) -> None:
 
-    st.warning(
-        "NO APOSTAR"
-    )
+    st.warning("NO APOSTAR")
 
     notes = (
-        result.get(
-            "notes"
-        )
+        result.get("notes")
         or [
             "Ninguna opción superó todos los filtros matemáticos y de calidad."
         ]
     )
 
     for note in notes:
-
-        st.write(
-            f"• {note}"
-        )
-
-    best = result.get(
-        "best_observed"
-    )
-
-    if not best:
-        return
-
-    with st.expander(
-        "Ver la opción más cercana que fue descartada"
-    ):
-
-        st.write(
-            f"**{best.get('selection', 'Sin selección')}**"
-        )
-
-        st.caption(
-            f"{best.get('matchup', '')} · "
-            f"{best.get('market', '')}"
-        )
-
-        col1, col2, col3 = st.columns(
-            3
-        )
-
-        col1.metric(
-            "Probabilidad",
-            pct(
-                best.get(
-                    "model_probability"
-                )
-            ),
-        )
-
-        col2.metric(
-            "Ventaja",
-            pct(
-                best.get(
-                    "edge"
-                )
-            ),
-        )
-
-        col3.metric(
-            "Calidad",
-            f"{best.get('data_quality', 0)}/100",
-        )
+        st.write(f"• {note}")
 
 
 # ============================================================
@@ -901,18 +736,14 @@ def render_sport(
     history_rows: list[dict[str, Any]],
 ) -> None:
 
-    render_sport_header(
-        sport
-    )
+    render_sport_header(sport)
 
     render_sport_stats(
         history_rows,
         sport,
     )
 
-    error = result.get(
-        "error"
-    )
+    error = result.get("error")
 
     if error:
 
@@ -920,38 +751,26 @@ def render_sport(
             "NO APOSTAR — DATOS INCOMPLETOS"
         )
 
-        st.write(
-            error
-        )
+        st.write(error)
 
     else:
 
         recommendations = (
-            result.get(
-                "recommendations"
-            )
+            result.get("recommendations")
             or []
         )
 
         if (
             not recommendations
-            and result.get(
-                "recommendation"
-            )
+            and result.get("recommendation")
         ):
-
             recommendations = [
-                result[
-                    "recommendation"
-                ]
+                result["recommendation"]
             ]
 
         if recommendations:
 
-            for (
-                index,
-                candidate,
-            ) in enumerate(
+            for index, candidate in enumerate(
                 recommendations[:2],
                 start=1,
             ):
@@ -961,17 +780,12 @@ def render_sport(
                     index,
                 )
 
-                if (
-                    index
-                    < len(
-                        recommendations[:2]
-                    )
+                if index < len(
+                    recommendations[:2]
                 ):
                     st.divider()
 
-            if len(
-                recommendations
-            ) == 1:
+            if len(recommendations) == 1:
 
                 st.info(
                     "Solo 1 partido distinto pasó todos los filtros. "
@@ -980,9 +794,7 @@ def render_sport(
 
         else:
 
-            render_no_bet(
-                result
-            )
+            render_no_bet(result)
 
     st.caption(
         f"Partidos revisados: {result.get('games', 0)} · "
@@ -998,102 +810,82 @@ def probability_analysis(
     rows: list[dict[str, Any]],
 ) -> list[dict[str, Any]]:
 
-    bands = [
-        ("<60%", 0, 60),
-        ("60–64%", 60, 65),
-        ("65–69%", 65, 70),
-        ("70–74%", 70, 75),
-        ("75–79%", 75, 80),
-        ("80–84%", 80, 85),
-        ("85–89%", 85, 90),
-        ("90%+", 90, 101),
+    ranges = [
+        (0, 59.999, "<60%"),
+        (60, 64.999, "60–64%"),
+        (65, 69.999, "65–69%"),
+        (70, 74.999, "70–74%"),
+        (75, 79.999, "75–79%"),
+        (80, 84.999, "80–84%"),
+        (85, 89.999, "85–89%"),
+        (90, 1000, "90%+"),
     ]
 
-    output: list[
-        dict[str, Any]
-    ] = []
+    output = []
 
-    for (
-        label,
-        low,
-        high,
-    ) in bands:
+    for low, high, label in ranges:
 
         selected = []
 
         for row in rows:
 
-            result = str(
-                row.get(
-                    "result",
-                    ""
-                )
-            ).upper()
-
-            if result not in {
+            if row.get("result") not in {
                 "GANADA",
                 "PERDIDA",
                 "EMPATE",
             }:
                 continue
 
-            probability = (
-                probability_number(
-                    row.get(
-                        "probability"
-                    )
-                )
+            probability = probability_percent(
+                row.get("probability")
             )
 
             if probability is None:
                 continue
 
-            if low <= probability < high:
+            if low <= probability <= high:
                 selected.append(row)
 
         if not selected:
             continue
 
         won = sum(
-            row.get("result")
-            == "GANADA"
+            row.get("result") == "GANADA"
             for row in selected
         )
 
         lost = sum(
-            row.get("result")
-            == "PERDIDA"
+            row.get("result") == "PERDIDA"
             for row in selected
         )
 
         tied = sum(
-            row.get("result")
-            == "EMPATE"
+            row.get("result") == "EMPATE"
             for row in selected
         )
 
         decisions = won + lost
 
-        total_staked = sum(
-            row_stake(row)
+        financial = [
+            row
             for row in selected
+            if row_has_financial_data(row)
+        ]
+
+        staked = sum(
+            row_stake(row) or 0
+            for row in financial
         )
 
-        profit_loss = sum(
-            value
-            for row in selected
-            if (
-                value
-                := row_profit_loss(row)
-            )
-            is not None
+        net = sum(
+            row_profit_loss(row) or 0
+            for row in financial
         )
 
         roi = (
-            profit_loss
-            / total_staked
-            if total_staked
-            else 0.0
+            net / staked
+            if staked
+            else None
         )
 
         output.append(
@@ -1103,18 +895,30 @@ def probability_analysis(
                 "Ganadas": won,
                 "Perdidas": lost,
                 "Empates": tied,
+
                 "Efectividad": (
                     f"{won / decisions * 100:.1f}%"
                     if decisions
                     else "—"
                 ),
-                "Apostado": money(
-                    total_staked
+
+                "Con cuota": len(financial),
+
+                "Apostado": (
+                    f"${staked:,.2f}"
+                    if financial
+                    else "—"
                 ),
-                "Neto": f"${profit_loss:+,.2f}",
+
+                "Neto": (
+                    f"${net:+,.2f}"
+                    if financial
+                    else "—"
+                ),
+
                 "ROI": (
-                    f"{roi * 100:+.1f}%"
-                    if total_staked
+                    f"{roi * 100:+.2f}%"
+                    if roi is not None
                     else "—"
                 ),
             }
@@ -1128,17 +932,12 @@ def probability_analysis(
 # ============================================================
 
 title, action = st.columns(
-    [
-        5,
-        1,
-    ]
+    [5, 1]
 )
 
 with title:
 
-    st.title(
-        "🏆 Sports Edge"
-    )
+    st.title("🏆 Sports Edge")
 
     st.caption(
         "Hasta 2 selecciones por deporte, "
@@ -1171,10 +970,6 @@ if not DATA_FILE.exists():
 
     st.stop()
 
-
-# ============================================================
-# SNAPSHOT
-# ============================================================
 
 snapshot = load_snapshot(
     str(DATA_FILE),
@@ -1226,75 +1021,68 @@ st.markdown(
 # ============================================================
 
 st.subheader(
-    "💰 Rendimiento del sistema"
+    "📊 Resultados generales"
 )
 
 general = history_stats(
     history_rows
 )
 
-g1, g2, g3, g4, g5 = st.columns(
-    5
-)
+g1, g2, g3, g4, g5 = st.columns(5)
 
 g1.metric(
-    "💵 Total apostado",
-    money(
-        general[
-            "total_staked"
-        ]
+    "💵 Apostado",
+    (
+        money(general["total_staked"])
+        if general["financial_bets"]
+        else "—"
     ),
 )
 
 g2.metric(
     "💰 Ganancia/Pérdida",
-    f"${float(general['profit_loss']):+,.2f}",
+    (
+        money(
+            general["profit_loss"],
+            signed=True,
+        )
+        if general["financial_bets"]
+        else "—"
+    ),
 )
 
 g3.metric(
     "📈 ROI",
     (
-        f"{float(general['roi']) * 100:+.1f}%"
-        if general[
-            "total_staked"
-        ]
+        f"{general['roi'] * 100:+.2f}%"
+        if general["financial_bets"]
         else "—"
     ),
 )
 
 g4.metric(
     "✅ Ganadas",
-    int(
-        general["won"]
-    ),
+    int(general["won"]),
 )
 
 g5.metric(
     "❌ Perdidas",
-    int(
-        general["lost"]
-    ),
+    int(general["lost"]),
 )
 
+
 st.caption(
-    f"Stake fijo: ${DEFAULT_STAKE:.2f} por apuesta · "
     f"Empates: {int(general['tied'])} · "
     f"Pendientes: {int(general['pending'])} · "
     f"Efectividad: "
-    f"{float(general['win_rate']) * 100:.1f}%"
-    if (
-        int(general["won"])
-        + int(general["lost"])
-    )
-    else (
-        f"Stake fijo: ${DEFAULT_STAKE:.2f} por apuesta · "
-        f"Empates: {int(general['tied'])} · "
-        f"Pendientes: {int(general['pending'])} · "
-        "Efectividad: —"
-    )
+    f"{general['win_rate'] * 100:.1f}% · "
+    f"Apuestas con cuota calculable: "
+    f"{general['financial_bets']} · "
+    f"Cuotas reales/históricas F5: "
+    f"{general['real_odds']} · "
+    f"Estimadas con Full Game: "
+    f"{general['estimated_odds']}"
 )
-
-st.write("")
 
 
 # ============================================================
@@ -1311,11 +1099,7 @@ tabs = st.tabs(
 
 for tab, sport in zip(
     tabs,
-    (
-        "MLB",
-        "NFL",
-        "NBA",
-    ),
+    ("MLB", "NFL", "NBA"),
 ):
 
     with tab:
@@ -1343,10 +1127,13 @@ st.subheader(
     "📊 Rendimiento por porcentaje"
 )
 
-probability_table = (
-    probability_analysis(
-        history_rows
-    )
+st.caption(
+    "La efectividad usa todas las apuestas resueltas. "
+    "P/L y ROI solo usan operaciones que tienen una cuota registrada."
+)
+
+probability_table = probability_analysis(
+    history_rows
 )
 
 if probability_table:
@@ -1360,9 +1147,7 @@ if probability_table:
 else:
 
     st.caption(
-        "Cuando haya apuestas terminadas aparecerá aquí "
-        "cuánto dinero producen los diferentes rangos "
-        "de probabilidad."
+        "Todavía no hay suficientes apuestas resueltas."
     )
 
 
@@ -1384,94 +1169,114 @@ if history_rows:
         history_rows[-100:]
     ):
 
+        odds_value = valid_odds(
+            row.get("odds")
+        )
+
+        source = str(
+            row.get("odds_source")
+            or ""
+        ).upper()
+
+        if source in {
+            "REAL",
+            "LIVE_AT_RECOMMENDATION",
+        }:
+            source_text = "REAL"
+
+        elif source == "HISTORICAL_F5":
+            source_text = "HISTÓRICA F5"
+
+        elif source == "ESTIMADA_FULL_GAME":
+            source_text = "ESTIMADA FULL GAME"
+
+        elif odds_value is not None:
+            source_text = "CUOTA REGISTRADA"
+
+        else:
+            source_text = "SIN CUOTA"
+
         stake = row_stake(row)
-        odds = row_odds(row)
 
-        potential_return = (
-            stake * odds
-            if odds > 1.0
-            else None
+        result = (
+            row.get("result")
+            or "PENDIENTE"
         )
 
-        potential_profit = (
-            potential_return - stake
-            if potential_return
-            is not None
-            else None
-        )
-
-        actual_pl = (
-            row_profit_loss(row)
+        net_value = row_profit_loss(
+            row
         )
 
         table.append(
             {
                 "Fecha": display_time(
-                    str(
-                        row.get(
-                            "created_at",
-                            ""
-                        )
+                    row.get(
+                        "created_at",
+                        "",
                     )
                 ),
-                "Deporte": row.get(
-                    "sport"
-                ),
-                "Partido": row.get(
-                    "matchup"
-                ),
-                "Mercado": row.get(
-                    "market"
-                ),
+
+                "Deporte": row.get("sport"),
+
+                "Partido": row.get("matchup"),
+
+                "Mercado": row.get("market"),
+
                 "Selección": row.get(
                     "selection"
                 ),
-                "% a favor": pct(
-                    row.get(
-                        "probability"
-                    )
+
+                "% modelo": pct(
+                    row.get("probability")
                 ),
-                "Casa": row.get(
-                    "bookmaker",
-                    "—",
+
+                "Casa/Fuente": (
+                    row.get("bookmaker")
+                    or "—"
                 ),
+
+                "Tipo cuota": source_text,
+
                 "Cuota": (
-                    f"{odds:.2f}"
-                    if odds > 1.0
-                    else "SIN CUOTA"
-                ),
-                "Apuesta": money(
-                    stake
-                ),
-                "Cobro si gana": (
-                    money(
-                        potential_return
-                    )
-                    if potential_return
-                    is not None
+                    f"{odds_value:.3f}"
+                    if odds_value is not None
                     else "—"
                 ),
+
+                "Apuesta": (
+                    money(stake)
+                    if stake is not None
+                    else "—"
+                ),
+
+                "Cobro si gana": money(
+                    potential_return(row)
+                ),
+
                 "Ganancia si gana": (
-                    f"${potential_profit:+,.2f}"
-                    if potential_profit
-                    is not None
-                    else "—"
-                ),
-                "Resultado": (
-                    row.get(
-                        "result"
+                    money(
+                        potential_profit(row),
+                        signed=True,
                     )
-                    or "PENDIENTE"
-                ),
-                "Ganancia/Pérdida": (
-                    f"${actual_pl:+,.2f}"
-                    if actual_pl
+                    if potential_profit(row)
                     is not None
                     else "—"
                 ),
-                "Marcador": row.get(
-                    "final_score",
-                    "—",
+
+                "Resultado": result,
+
+                "P/L": (
+                    money(
+                        net_value,
+                        signed=True,
+                    )
+                    if net_value is not None
+                    else "—"
+                ),
+
+                "Marcador": (
+                    row.get("final_score")
+                    or "—"
                 ),
             }
         )
@@ -1491,19 +1296,20 @@ else:
 
 
 # ============================================================
-# NOTA
+# NOTA FINAL
 # ============================================================
 
 st.markdown(
     (
         '<div class="footer-note">'
-        f'Cada recomendación usa una apuesta fija de '
-        f'${DEFAULT_STAKE:.2f}. '
-        'Cuando existe una cuota válida, el panel calcula '
-        'automáticamente cuánto cobrarías y la ganancia neta. '
-        'Una GANADA suma la ganancia correspondiente a la cuota; '
-        'una PERDIDA resta $100; un EMPATE tiene resultado neto $0. '
-        'Las probabilidades son estimaciones, no garantías.'
+        'Apuesta fija: $100. '
+        'Las operaciones sin cuota válida no se incluyen '
+        'en Apostado, P/L ni ROI. '
+        'REAL indica una cuota registrada por el motor; '
+        'HISTÓRICA F5 indica una cuota histórica del mercado F5; '
+        'ESTIMADA FULL GAME identifica claramente los casos '
+        'donde una apuesta F5 antigua utiliza la cuota histórica '
+        'del partido completo como aproximación.'
         '</div>'
     ),
     unsafe_allow_html=True,
