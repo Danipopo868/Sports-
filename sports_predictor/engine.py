@@ -159,14 +159,8 @@ def normalize_games(
             Game(
                 sport=sport,
                 id=game_id,
-                home=Team(
-                    home_id,
-                    home_name,
-                ),
-                away=Team(
-                    away_id,
-                    away_name,
-                ),
+                home=Team(home_id, home_name),
+                away=Team(away_id, away_name),
                 start=_start_time(raw),
                 status=_status_text(raw),
                 season=season,
@@ -200,17 +194,13 @@ def calculate_team_form(
     ] = []
 
     for game in normalized:
-
         if (
             exclude_game_id is not None
-            and str(game.id)
-            == str(exclude_game_id)
+            and str(game.id) == str(exclude_game_id)
         ):
             continue
 
-        if not is_finished(
-            game.status
-        ):
+        if not is_finished(game.status):
             continue
 
         home_score = score_for_side(
@@ -230,12 +220,10 @@ def calculate_team_form(
             continue
 
         if str(game.home.id) == str(team_id):
-
             scored = home_score
             allowed = away_score
 
         elif str(game.away.id) == str(team_id):
-
             scored = away_score
             allowed = home_score
 
@@ -244,9 +232,7 @@ def calculate_team_form(
 
         eligible.append(
             (
-                _sort_timestamp(
-                    game.raw
-                ),
+                _sort_timestamp(game.raw),
                 game,
                 scored,
                 allowed,
@@ -341,26 +327,18 @@ def calculate_team_form(
 
 
 def parse_quotes(
-    raw_odds: Iterable[
-        dict[str, Any]
-    ],
+    raw_odds: Iterable[dict[str, Any]],
     games: Iterable[Game],
 ) -> list[Quote]:
-
     game_map = {
         str(game.id): game
         for game in games
     }
 
-    quotes: list[
-        Quote
-    ] = []
+    quotes: list[Quote] = []
 
     for item in raw_odds:
-
-        game_id = _odds_game_id(
-            item
-        )
+        game_id = _odds_game_id(item)
 
         game = game_map.get(
             str(game_id)
@@ -375,16 +353,10 @@ def parse_quotes(
             or []
         )
 
-        if isinstance(
-            bookmakers,
-            dict,
-        ):
-            bookmakers = [
-                bookmakers
-            ]
+        if isinstance(bookmakers, dict):
+            bookmakers = [bookmakers]
 
         for bookmaker in bookmakers:
-
             bookmaker_name = str(
                 bookmaker.get("name")
                 or "Casa desconocida"
@@ -397,7 +369,6 @@ def parse_quotes(
             )
 
             for bet in bets:
-
                 market_name = str(
                     bet.get("name")
                     or bet.get("key")
@@ -419,7 +390,6 @@ def parse_quotes(
                 )
 
                 for value in values:
-
                     label = str(
                         value.get("value")
                         or value.get("name")
@@ -432,34 +402,24 @@ def parse_quotes(
                         game,
                     )
 
-                    decimal_odds = (
-                        to_decimal_odds(
-                            value.get("odd")
-                            or value.get("odds")
-                            or value.get("price")
-                        )
+                    decimal_odds = to_decimal_odds(
+                        value.get("odd")
+                        or value.get("odds")
+                        or value.get("price")
                     )
 
                     if (
                         side
                         and decimal_odds
-                        and 1.01
-                        <= decimal_odds
-                        <= 50
+                        and 1.01 <= decimal_odds <= 50
                     ):
                         quotes.append(
                             Quote(
-                                game_id=str(
-                                    game.id
-                                ),
+                                game_id=str(game.id),
                                 market=market,
-                                bookmaker=(
-                                    bookmaker_name
-                                ),
+                                bookmaker=bookmaker_name,
                                 side=side,
-                                decimal_odds=(
-                                    decimal_odds
-                                ),
+                                decimal_odds=decimal_odds,
                             )
                         )
 
@@ -482,25 +442,13 @@ def analyze_sport(
     Candidate | None,
     list[str],
 ]:
+    filters = config["filters"]
+    model = config["model"]
 
-    filters = config[
-        "filters"
-    ]
-
-    model = config[
-        "model"
-    ]
-
-    all_candidates: list[
-        Candidate
-    ] = []
-
-    notes: list[
-        str
-    ] = []
+    all_candidates: list[Candidate] = []
+    notes: list[str] = []
 
     for game in games:
-
         home_form = forms.get(
             str(game.home.id),
             _empty_form(),
@@ -514,17 +462,12 @@ def analyze_sport(
         game_quotes = [
             quote
             for quote in quotes
-            if quote.game_id
-            == str(game.id)
+            if quote.game_id == str(game.id)
         ]
 
         if sport == "MLB":
-
             matchup = (
-                (
-                    mlb_matchups
-                    or {}
-                ).get(
+                (mlb_matchups or {}).get(
                     str(game.id),
                     {},
                 )
@@ -535,9 +478,7 @@ def analyze_sport(
                 {},
             )
 
-            market_names: list[
-                str
-            ] = []
+            market_names: list[str] = []
 
             if bool(
                 mlb_cfg.get(
@@ -560,12 +501,10 @@ def analyze_sport(
                 )
 
             for market_name in market_names:
-
                 if (
                     market_name
                     == "Primeras 5 entradas"
                 ):
-
                     home_probability = (
                         first_five_home_probability(
                             matchup
@@ -583,7 +522,6 @@ def analyze_sport(
                         continue
 
                 else:
-
                     home_probability = (
                         full_game_home_probability(
                             matchup
@@ -620,9 +558,7 @@ def analyze_sport(
 
                 completeness = int(
                     (
-                        matchup.get(
-                            "completeness"
-                        )
+                        matchup.get("completeness")
                         or {}
                     ).get(
                         "score",
@@ -683,11 +619,13 @@ def analyze_sport(
                 )
 
                 if best is not None:
-
                     decimal_odds = best.decimal_odds
                     bookmaker = best.bookmaker
                     break_even = 1.0 / decimal_odds
-                    edge = probability - break_even
+                    edge = (
+                        probability
+                        - break_even
+                    )
                     expected_value = (
                         probability
                         * decimal_odds
@@ -695,7 +633,6 @@ def analyze_sport(
                     )
 
                 else:
-
                     decimal_odds = 0.0
                     bookmaker = (
                         "SIN CUOTAS — "
@@ -750,7 +687,6 @@ def analyze_sport(
             sport == "NFL"
             and not game_quotes
         ):
-
             home_probability = (
                 form_home_probability_for_game(
                     sport,
@@ -778,9 +714,7 @@ def analyze_sport(
             )
 
             history_games = int(
-                config[
-                    "history_games"
-                ]
+                config["history_games"]
             )
 
             history_count = min(
@@ -886,7 +820,6 @@ def analyze_sport(
                 for quote in game_quotes
             }
         ):
-
             market_quotes = [
                 quote
                 for quote in game_quotes
@@ -963,9 +896,7 @@ def analyze_sport(
                 away_form,
                 len(book_pairs),
                 int(
-                    config[
-                        "history_games"
-                    ]
+                    config["history_games"]
                 ),
                 False,
             )
@@ -989,7 +920,6 @@ def analyze_sport(
                 "home",
                 "away",
             ):
-
                 best = max(
                     (
                         quote
@@ -1105,7 +1035,6 @@ def analyze_sport(
                 )
 
     if sport == "MLB":
-
         best_observed = max(
             all_candidates,
             key=lambda candidate: (
@@ -1132,7 +1061,6 @@ def analyze_sport(
         sport == "NFL"
         and not quotes
     ):
-
         best_observed = max(
             all_candidates,
             key=lambda candidate: (
@@ -1156,7 +1084,6 @@ def analyze_sport(
         )
 
     else:
-
         best_observed = max(
             all_candidates,
             key=lambda candidate: (
@@ -1185,16 +1112,13 @@ def analyze_sport(
     # NO REPETIR PARTIDO, EQUIPO NI MATCHUP
     # ================================================================
 
-    recommendations: list[
-        Candidate
-    ] = []
+    recommendations: list[Candidate] = []
 
     used_game_ids: set[str] = set()
     used_selections: set[str] = set()
     used_matchups: set[str] = set()
 
     for candidate in eligible:
-
         game_key = str(
             candidate.game_id
         ).strip()
@@ -1234,8 +1158,12 @@ def analyze_sport(
 
         if len(recommendations) == 2:
             break
-                if not games:
 
+    # ================================================================
+    # NOTAS
+    # ================================================================
+
+    if not games:
         notes.append(
             "No hay partidos disponibles "
             "para la fecha analizada."
@@ -1245,7 +1173,6 @@ def analyze_sport(
         sport == "MLB"
         and not quotes
     ):
-
         notes.append(
             "MLB analizado SIN cuotas: "
             "el ganador se calculó "
@@ -1257,7 +1184,6 @@ def analyze_sport(
         sport == "NFL"
         and not quotes
     ):
-
         notes.append(
             "NFL analizado SIN cuotas: "
             "la selección se calculó "
@@ -1270,7 +1196,6 @@ def analyze_sport(
         sport != "MLB"
         and not quotes
     ):
-
         notes.append(
             "No llegaron cuotas comparables; "
             "sin precio no se puede calcular "
@@ -1281,9 +1206,7 @@ def analyze_sport(
         not recommendations
         and games
     ):
-
         if sport == "MLB":
-
             notes.append(
                 "Ningún juego MLB superó "
                 "simultáneamente la "
@@ -1296,7 +1219,6 @@ def analyze_sport(
             sport == "NFL"
             and not quotes
         ):
-
             notes.append(
                 "Ningún juego NFL superó "
                 "simultáneamente la "
@@ -1306,7 +1228,6 @@ def analyze_sport(
             )
 
         elif quotes:
-
             notes.append(
                 "Ninguna opción superó "
                 "simultáneamente todos "
@@ -1314,13 +1235,7 @@ def analyze_sport(
                 "y calidad."
             )
 
-    elif (
-        len(
-            recommendations
-        )
-        == 1
-    ):
-
+    elif len(recommendations) == 1:
         notes.append(
             "Solo un equipo distinto "
             "superó todos los filtros; "
@@ -1332,15 +1247,12 @@ def analyze_sport(
         recommendations,
         best_observed,
         notes,
-    )
-
-
-def form_home_probability_for_game(
+)
+    def form_home_probability_for_game(
     sport: str,
     home: TeamForm,
     away: TeamForm,
 ) -> float:
-
     scale = (
         SPORT_MARGIN_SCALE.get(
             sport,
@@ -1369,10 +1281,8 @@ def form_home_probability_for_game(
             sport,
             0.12,
         )
-        + 0.58
-        * win_edge
-        + 0.42
-        * margin_edge
+        + 0.58 * win_edge
+        + 0.42 * margin_edge
     )
 
     return min(
@@ -1394,7 +1304,6 @@ def combine_probabilities(
     sample_factor: float,
     maximum_probability: float,
 ) -> float:
-
     total_weight = max(
         0.0001,
         market_weight
@@ -1450,7 +1359,6 @@ def data_quality(
     desired_history: int,
     pitcher_complete: bool,
 ) -> int:
-
     history_score = (
         min(
             home.games,
@@ -1493,7 +1401,6 @@ def classify_market(
     sport: str,
     market_name: str,
 ) -> str | None:
-
     name = _normalized_text(
         market_name
     )
@@ -1512,7 +1419,6 @@ def classify_market(
             )
         )
     ):
-
         if not any(
             token in name
             for token in (
@@ -1552,13 +1458,11 @@ def classify_market(
     if (
         any(
             token in name
-            for token
-            in moneyline_tokens
+            for token in moneyline_tokens
         )
         and not any(
             token in name
-            for token
-            in excluded
+            for token in excluded
         )
     ):
         return (
@@ -1572,23 +1476,16 @@ def selection_side(
     label: str,
     game: Game,
 ) -> str | None:
-
-    normalized = (
-        _normalized_text(
-            label
-        )
+    normalized = _normalized_text(
+        label
     )
 
-    home_name = (
-        _normalized_text(
-            game.home.name
-        )
+    home_name = _normalized_text(
+        game.home.name
     )
 
-    away_name = (
-        _normalized_text(
-            game.away.name
-        )
+    away_name = _normalized_text(
+        game.away.name
     )
 
     if (
@@ -1602,10 +1499,8 @@ def selection_side(
         or (
             home_name
             and (
-                home_name
-                in normalized
-                or normalized
-                in home_name
+                home_name in normalized
+                or normalized in home_name
             )
         )
     ):
@@ -1624,10 +1519,8 @@ def selection_side(
         or (
             away_name
             and (
-                away_name
-                in normalized
-                or normalized
-                in away_name
+                away_name in normalized
+                or normalized in away_name
             )
         )
     ):
@@ -1643,7 +1536,6 @@ def devig_two_way(
     float,
     float,
 ]:
-
     home_implied = (
         1.0
         / home_odds
@@ -1660,17 +1552,14 @@ def devig_two_way(
     )
 
     return (
-        home_implied
-        / total,
-        away_implied
-        / total,
+        home_implied / total,
+        away_implied / total,
     )
 
 
 def to_decimal_odds(
     value: Any,
 ) -> float | None:
-
     try:
         number = float(
             value
@@ -1683,7 +1572,6 @@ def to_decimal_odds(
         return None
 
     if number <= -100:
-
         return (
             1.0
             + 100.0
@@ -1693,7 +1581,6 @@ def to_decimal_odds(
         )
 
     if number >= 100:
-
         return (
             1.0
             + number
@@ -1711,7 +1598,6 @@ def score_for_side(
     raw: dict[str, Any],
     side: str,
 ) -> float | None:
-
     scores = (
         raw.get("scores")
         or {}
@@ -1721,8 +1607,7 @@ def score_for_side(
 
     if (
         side == "away"
-        and "away"
-        not in scores
+        and "away" not in scores
     ):
         key = "visitors"
 
@@ -1741,37 +1626,26 @@ def score_for_side(
             str,
         ),
     ):
-        return (
-            _optional_float(
-                block
-            )
+        return _optional_float(
+            block
         )
 
     if isinstance(
         block,
         dict,
     ):
-
         for field in (
             "total",
             "points",
             "score",
             "runs",
         ):
-
             if (
                 field in block
-                and block[
-                    field
-                ]
-                is not None
+                and block[field] is not None
             ):
-                return (
-                    _optional_float(
-                        block[
-                            field
-                        ]
-                    )
+                return _optional_float(
+                    block[field]
                 )
 
     return None
@@ -1780,19 +1654,15 @@ def score_for_side(
 def is_finished(
     status: str,
 ) -> bool:
-
-    normalized = (
-        _normalized_text(
-            status
-        )
+    normalized = _normalized_text(
+        status
     )
 
     return (
         normalized
         in FINISHED_STATUS_WORDS
         or any(
-            token
-            in normalized
+            token in normalized
             for token in (
                 "finished",
                 "final",
@@ -1805,7 +1675,6 @@ def is_finished(
 def sigmoid(
     value: float,
 ) -> float:
-
     return (
         1.0
         / (
@@ -1820,7 +1689,6 @@ def sigmoid(
 def logit(
     probability: float,
 ) -> float:
-
     clipped = min(
         0.999,
         max(
@@ -1847,7 +1715,6 @@ def _bookmaker_pairs(
         Quote,
     ],
 ]:
-
     grouped: dict[
         str,
         dict[
@@ -1857,7 +1724,6 @@ def _bookmaker_pairs(
     ] = {}
 
     for quote in quotes:
-
         current = (
             grouped.setdefault(
                 quote.bookmaker,
@@ -1865,10 +1731,8 @@ def _bookmaker_pairs(
             )
         )
 
-        existing = (
-            current.get(
-                quote.side
-            )
+        existing = current.get(
+            quote.side
         )
 
         if (
@@ -1887,10 +1751,8 @@ def _bookmaker_pairs(
             sides,
         ) in grouped.items()
         if (
-            "home"
-            in sides
-            and "away"
-            in sides
+            "home" in sides
+            and "away" in sides
         )
     }
 
@@ -1898,7 +1760,6 @@ def _bookmaker_pairs(
 def _odds_game_id(
     item: dict[str, Any],
 ) -> Any:
-
     game = item.get(
         "game"
     )
@@ -1927,33 +1788,22 @@ def _odds_game_id(
         )
 
     return (
-        item.get(
-            "game_id"
-        )
-        or item.get(
-            "fixture_id"
-        )
-        or item.get(
-            "id"
-        )
+        item.get("game_id")
+        or item.get("fixture_id")
+        or item.get("id")
     )
 
 
 def _team_name(
     team: dict[str, Any],
 ) -> str:
-
     name = str(
-        team.get(
-            "name"
-        )
+        team.get("name")
         or ""
     ).strip()
 
     nickname = str(
-        team.get(
-            "nickname"
-        )
+        team.get("nickname")
         or ""
     ).strip()
 
@@ -1968,12 +1818,9 @@ def _team_name(
         ).strip()
 
     return name
-
-
-def _season_number(
+    def _season_number(
     value: Any,
 ) -> int:
-
     match = re.search(
         r"(20\d{2})",
         str(
@@ -1984,9 +1831,7 @@ def _season_number(
 
     return (
         int(
-            match.group(
-                1
-            )
+            match.group(1)
         )
         if match
         else datetime.utcnow().year
@@ -1996,7 +1841,6 @@ def _season_number(
 def _start_time(
     raw: dict[str, Any],
 ) -> str:
-
     game_block = raw.get(
         "game"
     )
@@ -2005,7 +1849,6 @@ def _start_time(
         game_block,
         dict,
     ):
-
         game_date = (
             game_block.get(
                 "date"
@@ -2016,18 +1859,13 @@ def _start_time(
             game_date,
             dict,
         ):
-
             date_text = str(
-                game_date.get(
-                    "date"
-                )
+                game_date.get("date")
                 or ""
             ).strip()
 
             time_text = str(
-                game_date.get(
-                    "time"
-                )
+                game_date.get("time")
                 or ""
             ).strip()
 
@@ -2043,10 +1881,8 @@ def _start_time(
             if date_text:
                 return date_text
 
-            timestamp = (
-                game_date.get(
-                    "timestamp"
-                )
+            timestamp = game_date.get(
+                "timestamp"
             )
 
             if timestamp not in (
@@ -2061,7 +1897,6 @@ def _start_time(
             None,
             "",
         ):
-
             return str(
                 game_date
             )
@@ -2074,25 +1909,16 @@ def _start_time(
         date,
         dict,
     ):
-
         return str(
-            date.get(
-                "start"
-            )
-            or date.get(
-                "date"
-            )
+            date.get("start")
+            or date.get("date")
             or ""
         )
 
     return str(
         date
-        or raw.get(
-            "time"
-        )
-        or raw.get(
-            "timestamp"
-        )
+        or raw.get("time")
+        or raw.get("timestamp")
         or ""
     )
 
@@ -2100,7 +1926,6 @@ def _start_time(
 def _status_text(
     raw: dict[str, Any],
 ) -> str:
-
     game_block = raw.get(
         "game"
     )
@@ -2109,7 +1934,6 @@ def _status_text(
         game_block,
         dict,
     ):
-
         game_status = (
             game_block.get(
                 "status"
@@ -2120,7 +1944,6 @@ def _status_text(
             game_status,
             dict,
         ):
-
             values = [
                 game_status.get(
                     "short"
@@ -2131,13 +1954,9 @@ def _status_text(
             ]
 
             text = " ".join(
-                str(
-                    value
-                )
-                for value
-                in values
-                if value
-                not in (
+                str(value)
+                for value in values
+                if value not in (
                     None,
                     "",
                 )
@@ -2146,14 +1965,10 @@ def _status_text(
             if text:
                 return text
 
-        elif (
-            game_status
-            not in (
-                None,
-                "",
-            )
+        elif game_status not in (
+            None,
+            "",
         ):
-
             return str(
                 game_status
             )
@@ -2166,7 +1981,6 @@ def _status_text(
         status,
         dict,
     ):
-
         values = [
             status.get(
                 "short"
@@ -2177,13 +1991,9 @@ def _status_text(
         ]
 
         return " ".join(
-            str(
-                value
-            )
-            for value
-            in values
-            if value
-            not in (
+            str(value)
+            for value in values
+            if value not in (
                 None,
                 "",
             )
@@ -2198,7 +2008,6 @@ def _status_text(
 def _sort_timestamp(
     raw: dict[str, Any],
 ) -> float:
-
     game_block = raw.get(
         "game"
     )
@@ -2207,7 +2016,6 @@ def _sort_timestamp(
         game_block,
         dict,
     ):
-
         game_date = (
             game_block.get(
                 "date"
@@ -2218,7 +2026,6 @@ def _sort_timestamp(
             game_date,
             dict,
         ):
-
             timestamp = (
                 game_date.get(
                     "timestamp"
@@ -2232,15 +2039,12 @@ def _sort_timestamp(
                     float,
                 ),
             ):
-
                 return float(
                     timestamp
                 )
 
-    timestamp = (
-        raw.get(
-            "timestamp"
-        )
+    timestamp = raw.get(
+        "timestamp"
     )
 
     if isinstance(
@@ -2250,15 +2054,12 @@ def _sort_timestamp(
             float,
         ),
     ):
-
         return float(
             timestamp
         )
 
-    text = (
-        _start_time(
-            raw
-        )
+    text = _start_time(
+        raw
     )
 
     try:
@@ -2279,7 +2080,6 @@ def _sort_timestamp(
 def _normalized_text(
     value: str,
 ) -> str:
-
     plain = (
         unicodedata.normalize(
             "NFKD",
@@ -2302,7 +2102,6 @@ def _normalized_text(
 def _optional_float(
     value: Any,
 ) -> float | None:
-
     try:
         return float(
             value
@@ -2316,7 +2115,6 @@ def _optional_float(
 
 
 def _empty_form() -> TeamForm:
-
     return TeamForm(
         0,
         0,
@@ -2326,4 +2124,4 @@ def _empty_form() -> TeamForm:
         0.0,
         0.0,
         0.0,
-    )
+)
