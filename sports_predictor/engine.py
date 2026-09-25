@@ -1253,11 +1253,10 @@ def analyze_sport(
     home: TeamForm,
     away: TeamForm,
 ) -> float:
-    scale = (
-        SPORT_MARGIN_SCALE.get(
-            sport,
-            12.0,
-        )
+
+    scale = SPORT_MARGIN_SCALE.get(
+        sport,
+        12.0,
     )
 
     win_edge = (
