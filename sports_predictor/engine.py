@@ -1816,8 +1816,8 @@ def _team_name(
             f"{nickname}"
         ).strip()
 
-    return name
-    def _season_number(
+    return name 
+def _season_number(
     value: Any,
 ) -> int:
     match = re.search(
