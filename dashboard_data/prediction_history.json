@@ -812,12 +812,13 @@
     "edge": 0.0,
     "expected_value": 0.0,
     "data_quality": 73,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Atlanta Braves",
+    "final_score": "Cincinnati Reds 5 - Atlanta Braves 6 (F5)",
     "return_amount": null,
-    "profit_loss": null
+    "profit_loss": null,
+    "resolved_at": "2026-09-24T20:26:47.272499-05:00"
   },
   {
     "key": "MLB|187521|Ganador del partido|Arizona Diamondbacks",
@@ -840,11 +841,12 @@
     "edge": 0.0,
     "expected_value": 0.0,
     "data_quality": 82,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Arizona Diamondbacks",
+    "final_score": "Arizona Diamondbacks 12 - Colorado Rockies 8",
     "return_amount": null,
-    "profit_loss": null
+    "profit_loss": null,
+    "resolved_at": "2026-09-24T20:26:47.272499-05:00"
   }
 ]
