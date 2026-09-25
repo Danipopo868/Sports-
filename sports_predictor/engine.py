@@ -518,13 +518,6 @@ def analyze_sport(
             == str(game.id)
         ]
 
-        # ================================================================
-        # MLB
-        #
-        # Modelo deportivo puro.
-        # Las cuotas son solo referencia.
-        # ================================================================
-
         if sport == "MLB":
 
             matchup = (
@@ -579,10 +572,7 @@ def analyze_sport(
                         )
                     )
 
-                    if (
-                        home_probability
-                        is None
-                    ):
+                    if home_probability is None:
                         notes.append(
                             f"{game.away.name} @ "
                             f"{game.home.name}: "
@@ -590,7 +580,6 @@ def analyze_sport(
                             "faltan abridores u "
                             "ofensiva verificable."
                         )
-
                         continue
 
                 else:
@@ -601,10 +590,7 @@ def analyze_sport(
                         )
                     )
 
-                    if (
-                        home_probability
-                        is None
-                    ):
+                    if home_probability is None:
                         notes.append(
                             f"{game.away.name} @ "
                             f"{game.home.name}: "
@@ -612,21 +598,18 @@ def analyze_sport(
                             "porque faltan datos "
                             "MLB esenciales."
                         )
-
                         continue
 
                 side = (
                     "home"
-                    if home_probability
-                    >= 0.5
+                    if home_probability >= 0.5
                     else "away"
                 )
 
                 probability = (
                     home_probability
                     if side == "home"
-                    else 1.0
-                    - home_probability
+                    else 1.0 - home_probability
                 )
 
                 selection = (
@@ -681,52 +664,30 @@ def analyze_sport(
 
                 market_quotes = [
                     quote
-                    for quote
-                    in game_quotes
-                    if quote.market
-                    == market_name
+                    for quote in game_quotes
+                    if quote.market == market_name
                 ]
 
                 best = max(
                     (
                         quote
-                        for quote
-                        in market_quotes
-                        if quote.side
-                        == side
+                        for quote in market_quotes
+                        if quote.side == side
                     ),
-                    key=lambda quote: (
-                        quote.decimal_odds
-                    ),
+                    key=lambda quote: quote.decimal_odds,
                     default=None,
                 )
 
-                book_pairs = (
-                    _bookmaker_pairs(
-                        market_quotes
-                    )
+                book_pairs = _bookmaker_pairs(
+                    market_quotes
                 )
 
                 if best is not None:
 
-                    decimal_odds = (
-                        best.decimal_odds
-                    )
-
-                    bookmaker = (
-                        best.bookmaker
-                    )
-
-                    break_even = (
-                        1.0
-                        / decimal_odds
-                    )
-
-                    edge = (
-                        probability
-                        - break_even
-                    )
-
+                    decimal_odds = best.decimal_odds
+                    bookmaker = best.bookmaker
+                    break_even = 1.0 / decimal_odds
+                    edge = probability - break_even
                     expected_value = (
                         probability
                         * decimal_odds
@@ -736,12 +697,10 @@ def analyze_sport(
                 else:
 
                     decimal_odds = 0.0
-
                     bookmaker = (
                         "SIN CUOTAS — "
                         "MODELO MLB"
                     )
-
                     break_even = 0.0
                     edge = 0.0
                     expected_value = 0.0
@@ -764,9 +723,7 @@ def analyze_sport(
                 all_candidates.append(
                     Candidate(
                         sport=sport,
-                        game_id=str(
-                            game.id
-                        ),
+                        game_id=str(game.id),
                         matchup=(
                             f"{game.away.name} "
                             f"@ {game.home.name}"
@@ -775,40 +732,19 @@ def analyze_sport(
                         market=market_name,
                         selection=selection,
                         bookmaker=bookmaker,
-                        decimal_odds=(
-                            decimal_odds
-                        ),
-                        model_probability=(
-                            probability
-                        ),
-                        break_even_probability=(
-                            break_even
-                        ),
+                        decimal_odds=decimal_odds,
+                        model_probability=probability,
+                        break_even_probability=break_even,
                         edge=edge,
-                        expected_value=(
-                            expected_value
-                        ),
-                        bookmakers=len(
-                            book_pairs
-                        ),
+                        expected_value=expected_value,
+                        bookmakers=len(book_pairs),
                         data_quality=quality,
-                        passes_filters=(
-                            passes
-                        ),
-                        reasons=(
-                            reason_lines
-                        ),
+                        passes_filters=passes,
+                        reasons=reason_lines,
                     )
                 )
 
             continue
-
-        # ================================================================
-        # NFL SIN CUOTAS
-        #
-        # Si ESPN trae partidos pero no existen cuotas compatibles,
-        # analiza por forma reciente + margen de puntos.
-        # ================================================================
 
         if (
             sport == "NFL"
@@ -825,16 +761,14 @@ def analyze_sport(
 
             side = (
                 "home"
-                if home_probability
-                >= 0.5
+                if home_probability >= 0.5
                 else "away"
             )
 
             probability = (
                 home_probability
                 if side == "home"
-                else 1.0
-                - home_probability
+                else 1.0 - home_probability
             )
 
             selection = (
@@ -917,47 +851,31 @@ def analyze_sport(
             all_candidates.append(
                 Candidate(
                     sport=sport,
-                    game_id=str(
-                        game.id
-                    ),
+                    game_id=str(game.id),
                     matchup=(
                         f"{game.away.name} "
                         f"@ {game.home.name}"
                     ),
                     start=game.start,
-                    market=(
-                        "Ganador del partido"
-                    ),
+                    market="Ganador del partido",
                     selection=selection,
                     bookmaker=(
                         "SIN CUOTAS — "
                         "MODELO NFL"
                     ),
                     decimal_odds=0.0,
-                    model_probability=(
-                        probability
-                    ),
-                    break_even_probability=(
-                        0.0
-                    ),
+                    model_probability=probability,
+                    break_even_probability=0.0,
                     edge=0.0,
                     expected_value=0.0,
                     bookmakers=0,
                     data_quality=quality,
-                    passes_filters=(
-                        passes
-                    ),
-                    reasons=(
-                        reason_lines
-                    ),
+                    passes_filters=passes,
+                    reasons=reason_lines,
                 )
             )
 
             continue
-
-        # ================================================================
-        # NBA y NFL cuando sí existen cuotas
-        # ================================================================
 
         if not game_quotes:
             continue
@@ -965,23 +883,18 @@ def analyze_sport(
         for market_name in sorted(
             {
                 quote.market
-                for quote
-                in game_quotes
+                for quote in game_quotes
             }
         ):
 
             market_quotes = [
                 quote
-                for quote
-                in game_quotes
-                if quote.market
-                == market_name
+                for quote in game_quotes
+                if quote.market == market_name
             ]
 
-            book_pairs = (
-                _bookmaker_pairs(
-                    market_quotes
-                )
+            book_pairs = _bookmaker_pairs(
+                market_quotes
             )
 
             if not book_pairs:
@@ -990,19 +903,13 @@ def analyze_sport(
             market_home_probability = (
                 sum(
                     devig_two_way(
-                        pair[
-                            "home"
-                        ].decimal_odds,
-                        pair[
-                            "away"
-                        ].decimal_odds,
+                        pair["home"].decimal_odds,
+                        pair["away"].decimal_odds,
                     )[0]
                     for pair
                     in book_pairs.values()
                 )
-                / len(
-                    book_pairs
-                )
+                / len(book_pairs)
             )
 
             form_home_probability = (
@@ -1054,9 +961,7 @@ def analyze_sport(
             quality = data_quality(
                 home_form,
                 away_form,
-                len(
-                    book_pairs
-                ),
+                len(book_pairs),
                 int(
                     config[
                         "history_games"
@@ -1067,8 +972,7 @@ def analyze_sport(
 
             reason_lines = (
                 (
-                    f"Forma "
-                    f"{game.home.name}: "
+                    f"Forma {game.home.name}: "
                     f"{home_form.wins}-"
                     f"{home_form.losses}; "
                     f"{game.away.name}: "
@@ -1077,8 +981,7 @@ def analyze_sport(
                 ),
                 (
                     "Consenso sin margen de "
-                    f"{len(book_pairs)} "
-                    "casa(s)"
+                    f"{len(book_pairs)} casa(s)"
                 ),
             )
 
@@ -1090,14 +993,10 @@ def analyze_sport(
                 best = max(
                     (
                         quote
-                        for quote
-                        in market_quotes
-                        if quote.side
-                        == side
+                        for quote in market_quotes
+                        if quote.side == side
                     ),
-                    key=lambda quote: (
-                        quote.decimal_odds
-                    ),
+                    key=lambda quote: quote.decimal_odds,
                     default=None,
                 )
 
@@ -1159,9 +1058,7 @@ def analyze_sport(
                                 "minimum_expected_value"
                             ]
                         ),
-                        len(
-                            book_pairs
-                        )
+                        len(book_pairs)
                         >= int(
                             filters[
                                 "minimum_bookmakers"
@@ -1186,54 +1083,26 @@ def analyze_sport(
                 all_candidates.append(
                     Candidate(
                         sport=sport,
-                        game_id=str(
-                            game.id
-                        ),
+                        game_id=str(game.id),
                         matchup=(
                             f"{game.away.name} "
                             f"@ {game.home.name}"
                         ),
                         start=game.start,
-                        market=(
-                            market_name
-                        ),
-                        selection=(
-                            selection
-                        ),
-                        bookmaker=(
-                            best.bookmaker
-                        ),
-                        decimal_odds=(
-                            best.decimal_odds
-                        ),
-                        model_probability=(
-                            probability
-                        ),
-                        break_even_probability=(
-                            break_even
-                        ),
+                        market=market_name,
+                        selection=selection,
+                        bookmaker=best.bookmaker,
+                        decimal_odds=best.decimal_odds,
+                        model_probability=probability,
+                        break_even_probability=break_even,
                         edge=edge,
-                        expected_value=(
-                            expected_value
-                        ),
-                        bookmakers=len(
-                            book_pairs
-                        ),
-                        data_quality=(
-                            quality
-                        ),
-                        passes_filters=(
-                            passes
-                        ),
-                        reasons=(
-                            reason_lines
-                        ),
+                        expected_value=expected_value,
+                        bookmakers=len(book_pairs),
+                        data_quality=quality,
+                        passes_filters=passes,
+                        reasons=reason_lines,
                     )
                 )
-
-    # ================================================================
-    # RANKING
-    # ================================================================
 
     if sport == "MLB":
 
@@ -1249,8 +1118,7 @@ def analyze_sport(
         eligible = sorted(
             (
                 candidate
-                for candidate
-                in all_candidates
+                for candidate in all_candidates
                 if candidate.passes_filters
             ),
             key=lambda candidate: (
@@ -1277,8 +1145,7 @@ def analyze_sport(
         eligible = sorted(
             (
                 candidate
-                for candidate
-                in all_candidates
+                for candidate in all_candidates
                 if candidate.passes_filters
             ),
             key=lambda candidate: (
@@ -1302,8 +1169,7 @@ def analyze_sport(
         eligible = sorted(
             (
                 candidate
-                for candidate
-                in all_candidates
+                for candidate in all_candidates
                 if candidate.passes_filters
             ),
             key=lambda candidate: (
@@ -1315,23 +1181,39 @@ def analyze_sport(
         )
 
     # ================================================================
-    # HASTA 2 PARTIDOS DISTINTOS
+    # HASTA 2 APUESTAS DIFERENTES
+    # NO REPETIR PARTIDO, EQUIPO NI MATCHUP
     # ================================================================
 
     recommendations: list[
         Candidate
     ] = []
 
-    used_game_ids: set[
-        str
-    ] = set()
+    used_game_ids: set[str] = set()
+    used_selections: set[str] = set()
+    used_matchups: set[str] = set()
 
     for candidate in eligible:
 
-        if (
+        game_key = str(
             candidate.game_id
-            in used_game_ids
-        ):
+        ).strip()
+
+        selection_key = _normalized_text(
+            candidate.selection
+        )
+
+        matchup_key = _normalized_text(
+            candidate.matchup
+        )
+
+        if game_key in used_game_ids:
+            continue
+
+        if selection_key in used_selections:
+            continue
+
+        if matchup_key in used_matchups:
             continue
 
         recommendations.append(
@@ -1339,22 +1221,20 @@ def analyze_sport(
         )
 
         used_game_ids.add(
-            candidate.game_id
+            game_key
         )
 
-        if (
-            len(
-                recommendations
-            )
-            == 2
-        ):
+        used_selections.add(
+            selection_key
+        )
+
+        used_matchups.add(
+            matchup_key
+        )
+
+        if len(recommendations) == 2:
             break
-
-    # ================================================================
-    # NOTAS
-    # ================================================================
-
-    if not games:
+                if not games:
 
         notes.append(
             "No hay partidos disponibles "
@@ -1442,10 +1322,10 @@ def analyze_sport(
     ):
 
         notes.append(
-            "Solo un partido distinto "
+            "Solo un equipo distinto "
             "superó todos los filtros; "
-            "no se fuerza una segunda "
-            "apuesta."
+            "no se repite el mismo equipo "
+            "para completar una segunda apuesta."
         )
 
     return (
@@ -2446,4 +2326,4 @@ def _empty_form() -> TeamForm:
         0.0,
         0.0,
         0.0,
-        )
+    )
