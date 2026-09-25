@@ -870,12 +870,13 @@
     "edge": 0.0,
     "expected_value": 0.0,
     "data_quality": 82,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Baltimore Orioles",
+    "final_score": "Baltimore Orioles 7 - New York Yankees 1 (F5)",
     "return_amount": null,
-    "profit_loss": null
+    "profit_loss": null,
+    "resolved_at": "2026-09-25T17:15:56.665749-05:00"
   },
   {
     "key": "MLB|187569|Primeras 5 entradas|Baltimore Orioles",
