@@ -1248,7 +1248,7 @@ def analyze_sport(
         best_observed,
         notes,
 )
-    def form_home_probability_for_game(
+def form_home_probability_for_game(
     sport: str,
     home: TeamForm,
     away: TeamForm,
