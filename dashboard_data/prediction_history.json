@@ -899,12 +899,13 @@
     "edge": 0.0,
     "expected_value": 0.0,
     "data_quality": 82,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
+    "status": "RESUELTA",
+    "result": "PERDIDA",
+    "winner": "New York Yankees",
+    "final_score": "Baltimore Orioles 0 - New York Yankees 1 (F5)",
     "return_amount": null,
-    "profit_loss": null
+    "profit_loss": null,
+    "resolved_at": "2026-09-25T20:30:05.308500-05:00"
   },
   {
     "key": "MLB|187552|Ganador del partido|Chicago White Sox",
