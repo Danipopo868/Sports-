@@ -957,12 +957,13 @@
     "edge": 0.0,
     "expected_value": 0.0,
     "data_quality": 100,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Pittsburgh Pirates",
+    "final_score": "Pittsburgh Pirates 2 - Detroit Tigers 0 (F5)",
     "return_amount": null,
-    "profit_loss": null
+    "profit_loss": null,
+    "resolved_at": "2026-09-26T14:48:15.328127-05:00"
   },
   {
     "key": "MLB|187567|Primeras 5 entradas|Chicago White Sox",
