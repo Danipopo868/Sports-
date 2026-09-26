@@ -928,11 +928,12 @@
     "edge": 0.0,
     "expected_value": 0.0,
     "data_quality": 73,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Chicago White Sox",
+    "final_score": "Colorado Rockies 1 - Chicago White Sox 6",
     "return_amount": null,
-    "profit_loss": null
+    "profit_loss": null,
+    "resolved_at": "2026-09-26T00:28:24.128731-05:00"
   }
 ]
