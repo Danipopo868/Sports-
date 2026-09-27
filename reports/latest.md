@@ -1,6 +1,6 @@
 # Reporte del analizador deportivo
 
-Actualizado: **2026-09-27T01:45:45.253987-05:00**
+Actualizado: **2026-09-27T01:57:57.378237-05:00**
 Fecha deportiva analizada: **2026-09-27**
 Escaneo de la sesión: **#1**
 
@@ -86,9 +86,9 @@ Partidos revisados: 14 · Cuotas válidas: 0
 - Ninguna opción superó simultáneamente todos los filtros de valor y calidad.
 
 La opción más cercana fue descartada:
-- PAOK — Ganador del partido
-- Probabilidad estimada: 45.4%
-- Ventaja: 27.5%; valor esperado: 154.1%
-- Calidad de datos: 38/100
+- Bears Academy — Ganador del partido
+- Probabilidad estimada: 44.2%
+- Ventaja: 36.5%; valor esperado: 474.1%
+- Calidad de datos: 31/100
 
-Partidos revisados: 130 · Cuotas válidas: 308
+Partidos revisados: 129 · Cuotas válidas: 264
