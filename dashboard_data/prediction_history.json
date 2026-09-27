@@ -986,11 +986,12 @@
     "edge": 0.0,
     "expected_value": 0.0,
     "data_quality": 73,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
+    "status": "RESUELTA",
+    "result": "PERDIDA",
+    "winner": "Colorado Rockies",
+    "final_score": "Colorado Rockies 5 - Chicago White Sox 2 (F5)",
     "return_amount": null,
-    "profit_loss": null
+    "profit_loss": null,
+    "resolved_at": "2026-09-26T20:22:42.301671-05:00"
   }
 ]
