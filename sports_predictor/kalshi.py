@@ -30,6 +30,7 @@ MLB_TEAM_ALIASES = {
     ),
     "Chicago Cubs": (
         "Chicago Cubs",
+        "Chicago C",
     ),
     "Chicago White Sox": (
         "Chicago White Sox",
@@ -339,6 +340,43 @@ def _selection_side(
     market: dict[str, Any],
 ) -> str | None:
 
+    # Primero usamos el sufijo del ticker del mercado.
+    # Ejemplo: ...CHCBOS-CHC significa YES = Chicago Cubs.
+    ticker = str(
+        market.get(
+            "ticker"
+        )
+        or ""
+    ).upper()
+
+    ticker_side = (
+        ticker.rsplit(
+            "-",
+            1,
+        )[-1]
+        if "-" in ticker
+        else ""
+    )
+
+    selection_codes = {
+        re.sub(
+            r"[^A-Z0-9]+",
+            "",
+            code.upper(),
+        )
+        for code in MLB_TEAM_CODES.get(
+            selection,
+            (),
+        )
+    }
+
+    if (
+        ticker_side
+        and ticker_side
+        in selection_codes
+    ):
+        return "YES"
+
     aliases = tuple(
         _compact(alias)
         for alias in _team_aliases(
@@ -427,7 +465,6 @@ def _selection_side(
             return "NO"
 
     return None
-
 
 def _matchup_matches(
     *,
