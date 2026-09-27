@@ -1,33 +1,83 @@
 # Reporte del analizador deportivo
 
-Actualizado: **2026-09-26T22:53:05.986939-05:00**
-Fecha deportiva analizada: **2026-09-26**
+Actualizado: **2026-09-27T00:19:59.646686-05:00**
+Fecha deportiva analizada: **2026-09-27**
 Escaneo de la sesión: **#1**
 
 > Las probabilidades son estimaciones. El sistema puede indicar NO APOSTAR y nunca garantiza ganancias.
 
 ## MLB — Béisbol
 
-**NO APOSTAR**
+### APUESTA #1
 
-- MLB analizado SIN cuotas: el ganador se calculó únicamente con el modelo deportivo de MLB Stats API.
-- Ningún juego MLB superó simultáneamente la probabilidad mínima y la cobertura mínima de factores.
+**APUESTA CON VALOR DETECTADA**
 
-La opción más cercana fue descartada:
-- Texas Rangers — Primeras 5 entradas
-- Probabilidad estimada: 54.7%
-- Ventaja: 0.0%; valor esperado: 0.0%
-- Calidad de datos: 100/100
+- Partido: St.Louis Cardinals @ Milwaukee Brewers
+- Mercado: Primeras 5 entradas
+- Selección: **Milwaukee Brewers**
+- Mejor cuota decimal: **0.00** (SIN CUOTAS — MODELO MLB)
+- Probabilidad estimada: **80.1%**
+- Punto de equilibrio: 0.0%
+- Ventaja calculada: **0.0%**
+- Valor esperado por unidad: **0.0%**
+- Casas comparadas: 0
+- Calidad de datos: 73/100
+- Modelo MLB puro: 80.1% para Milwaukee Brewers
+- Cuotas del mercado NO usadas para decidir el ganador
+- Abridores: Andre Pallante vs Jacob Misiorowski
+- OPS temporada: visitante 0.692 | local 0.744
+- OPS split L/R: visitante 0.692 | local 0.744
+- Bullpen/Staff ERA: visitante 4.25 | local 3.51
+- Descanso: visitante 0 día(s) | local 0 día(s)
+- Carga bullpen 3d: visitante 12.3 IP | local 15.3 IP
+- Alineaciones confirmadas: visitante No | local No
+- BvP suficiente: visitante No | local No
+- Estadio/clima: American Family Field | N/D 
+- Cobertura de factores MLB: 73/100
 
-Partidos revisados: 1 · Cuotas válidas: 0
+### APUESTA #2
+
+**APUESTA CON VALOR DETECTADA**
+
+- Partido: New York Mets @ Washington Nationals
+- Mercado: Primeras 5 entradas
+- Selección: **New York Mets**
+- Mejor cuota decimal: **0.00** (SIN CUOTAS — MODELO MLB)
+- Probabilidad estimada: **70.8%**
+- Punto de equilibrio: 0.0%
+- Ventaja calculada: **0.0%**
+- Valor esperado por unidad: **0.0%**
+- Casas comparadas: 0
+- Calidad de datos: 73/100
+- Modelo MLB puro: 70.8% para New York Mets
+- Cuotas del mercado NO usadas para decidir el ganador
+- Abridores: Sean Manaea vs DJ Herz
+- OPS temporada: visitante 0.704 | local 0.743
+- OPS split L/R: visitante 0.704 | local 0.743
+- Bullpen/Staff ERA: visitante 4.14 | local 4.67
+- Descanso: visitante 0 día(s) | local 0 día(s)
+- Carga bullpen 3d: visitante 13.3 IP | local 10.3 IP
+- Alineaciones confirmadas: visitante No | local No
+- BvP suficiente: visitante No | local No
+- Estadio/clima: Nationals Park | N/D 
+- Cobertura de factores MLB: 73/100
+
+Partidos revisados: 28 · Cuotas válidas: 0
 
 ## NFL — Fútbol americano
 
 **NO APOSTAR**
 
-- No hay partidos disponibles para la fecha analizada.
+- NFL analizado SIN cuotas: la selección se calculó con forma reciente y margen de puntos; las cuotas no participaron en la decisión.
+- Ningún juego NFL superó simultáneamente la probabilidad mínima, la calidad mínima y el historial mínimo exigido.
 
-Partidos revisados: 0 · Cuotas válidas: 0
+La opción más cercana fue descartada:
+- Buffalo Bills — Ganador del partido
+- Probabilidad estimada: 53.5%
+- Ventaja: 0.0%; valor esperado: 0.0%
+- Calidad de datos: 0/100
+
+Partidos revisados: 14 · Cuotas válidas: 0
 
 ## NBA — Baloncesto
 
@@ -36,9 +86,9 @@ Partidos revisados: 0 · Cuotas válidas: 0
 - Ninguna opción superó simultáneamente todos los filtros de valor y calidad.
 
 La opción más cercana fue descartada:
-- KK Krka Novo mesto — Ganador del partido
-- Probabilidad estimada: 44.6%
-- Ventaja: 27.5%; valor esperado: 161.1%
-- Calidad de datos: 31/100
+- Akita — Ganador del partido
+- Probabilidad estimada: 43.0%
+- Ventaja: 33.4%; valor esperado: 350.0%
+- Calidad de datos: 45/100
 
-Partidos revisados: 5 · Cuotas válidas: 12
+Partidos revisados: 134 · Cuotas válidas: 130
