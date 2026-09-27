@@ -11,12 +11,120 @@ import requests
 KALSHI_BASE_URL = "https://external-api.kalshi.com/trade-api/v2"
 
 
+MLB_TEAM_ALIASES = {
+    "Arizona Diamondbacks": (
+        "Arizona",
+    ),
+    "Athletics": (
+        "Athletics",
+        "Oakland",
+    ),
+    "Atlanta Braves": (
+        "Atlanta",
+    ),
+    "Baltimore Orioles": (
+        "Baltimore",
+    ),
+    "Boston Red Sox": (
+        "Boston",
+    ),
+    "Chicago Cubs": (
+        "Chicago Cubs",
+    ),
+    "Chicago White Sox": (
+        "Chicago White Sox",
+        "Chicago WS",
+    ),
+    "Cincinnati Reds": (
+        "Cincinnati",
+    ),
+    "Cleveland Guardians": (
+        "Cleveland",
+    ),
+    "Colorado Rockies": (
+        "Colorado",
+    ),
+    "Detroit Tigers": (
+        "Detroit",
+    ),
+    "Houston Astros": (
+        "Houston",
+    ),
+    "Kansas City Royals": (
+        "Kansas City",
+    ),
+    "Los Angeles Angels": (
+        "Los Angeles Angels",
+        "Los Angeles A",
+    ),
+    "Los Angeles Dodgers": (
+        "Los Angeles Dodgers",
+        "Los Angeles D",
+    ),
+    "Miami Marlins": (
+        "Miami",
+    ),
+    "Milwaukee Brewers": (
+        "Milwaukee",
+    ),
+    "Minnesota Twins": (
+        "Minnesota",
+    ),
+    "New York Mets": (
+        "New York Mets",
+        "New York M",
+    ),
+    "New York Yankees": (
+        "New York Yankees",
+        "New York Y",
+    ),
+    "Philadelphia Phillies": (
+        "Philadelphia",
+    ),
+    "Pittsburgh Pirates": (
+        "Pittsburgh",
+    ),
+    "San Diego Padres": (
+        "San Diego",
+    ),
+    "San Francisco Giants": (
+        "San Francisco",
+    ),
+    "Seattle Mariners": (
+        "Seattle",
+    ),
+    "St. Louis Cardinals": (
+        "St. Louis",
+    ),
+    "Tampa Bay Rays": (
+        "Tampa Bay",
+    ),
+    "Texas Rangers": (
+        "Texas",
+    ),
+    "Toronto Blue Jays": (
+        "Toronto",
+    ),
+    "Washington Nationals": (
+        "Washington",
+    ),
+}
+
+
 def _plain(value: Any) -> str:
-    text = str(value or "").lower()
+    text = str(
+        value or ""
+    ).lower()
 
     text = (
-        unicodedata.normalize("NFKD", text)
-        .encode("ascii", "ignore")
+        unicodedata.normalize(
+            "NFKD",
+            text,
+        )
+        .encode(
+            "ascii",
+            "ignore",
+        )
         .decode()
     )
 
@@ -41,12 +149,33 @@ def _compact(value: Any) -> str:
     )
 
 
+def _team_aliases(
+    team: str,
+) -> tuple[str, ...]:
+
+    aliases = (
+        MLB_TEAM_ALIASES.get(
+            team,
+            (),
+        )
+    )
+
+    return (
+        team,
+        *aliases,
+    )
+
+
 def _market_text(
     market: dict[str, Any],
 ) -> str:
+
     return _plain(
         " ".join(
-            str(market.get(field) or "")
+            str(
+                market.get(field)
+                or ""
+            )
             for field in (
                 "title",
                 "subtitle",
@@ -109,48 +238,16 @@ def _selection_side(
     market: dict[str, Any],
 ) -> str | None:
 
-    selection_key = _compact(
-        selection
+    aliases = tuple(
+        _compact(alias)
+        for alias in _team_aliases(
+            selection
+        )
+        if _compact(alias)
     )
 
-    if not selection_key:
+    if not aliases:
         return None
-
-    yes_text = _compact(
-        " ".join(
-            str(market.get(field) or "")
-            for field in (
-                "yes_sub_title",
-                "title",
-                "subtitle",
-            )
-        )
-    )
-
-    no_text = _compact(
-        " ".join(
-            str(market.get(field) or "")
-            for field in (
-                "no_sub_title",
-                "title",
-                "subtitle",
-            )
-        )
-    )
-
-    yes_match = (
-        selection_key in yes_text
-    )
-
-    no_match = (
-        selection_key in no_text
-    )
-
-    if yes_match and not no_match:
-        return "YES"
-
-    if no_match and not yes_match:
-        return "NO"
 
     yes_sub = _compact(
         market.get(
@@ -164,17 +261,69 @@ def _selection_side(
         )
     )
 
-    if (
-        yes_sub
-        and selection_key in yes_sub
-    ):
-        return "YES"
+    for alias in aliases:
 
-    if (
-        no_sub
-        and selection_key in no_sub
-    ):
-        return "NO"
+        if (
+            yes_sub
+            and alias in yes_sub
+        ):
+            return "YES"
+
+        if (
+            no_sub
+            and alias in no_sub
+        ):
+            return "NO"
+
+    yes_text = _compact(
+        " ".join(
+            str(
+                market.get(field)
+                or ""
+            )
+            for field in (
+                "yes_sub_title",
+                "title",
+                "subtitle",
+            )
+        )
+    )
+
+    no_text = _compact(
+        " ".join(
+            str(
+                market.get(field)
+                or ""
+            )
+            for field in (
+                "no_sub_title",
+                "title",
+                "subtitle",
+            )
+        )
+    )
+
+    for alias in aliases:
+
+        yes_match = (
+            alias in yes_text
+        )
+
+        no_match = (
+            alias in no_text
+        )
+
+        if (
+            yes_match
+            and not no_match
+        ):
+            return "YES"
+
+        if (
+            no_match
+            and not yes_match
+        ):
+            return "NO"
 
     return None
 
@@ -188,17 +337,28 @@ def _matchup_matches(
     if "@" not in matchup:
         return True
 
-    away, home = matchup.split(
-        "@",
-        1,
+    away, home = (
+        part.strip()
+        for part in matchup.split(
+            "@",
+            1,
+        )
     )
 
-    away_key = _compact(
-        away
+    away_aliases = tuple(
+        _compact(alias)
+        for alias in _team_aliases(
+            away
+        )
+        if _compact(alias)
     )
 
-    home_key = _compact(
-        home
+    home_aliases = tuple(
+        _compact(alias)
+        for alias in _team_aliases(
+            home
+        )
+        if _compact(alias)
     )
 
     combined = _compact(
@@ -207,24 +367,19 @@ def _matchup_matches(
         )
     )
 
-    if (
-        away_key
-        and home_key
-        and away_key in combined
-        and home_key in combined
-    ):
-        return True
+    away_match = any(
+        alias in combined
+        for alias in away_aliases
+    )
 
-    return bool(
-        (
-            away_key
-            and away_key in combined
-        )
-        or
-        (
-            home_key
-            and home_key in combined
-        )
+    home_match = any(
+        alias in combined
+        for alias in home_aliases
+    )
+
+    return (
+        away_match
+        and home_match
     )
 
 
@@ -239,17 +394,29 @@ def _price_to_dollars(
         number = float(
             value
         )
+
     except (
         TypeError,
         ValueError,
     ):
         return None
 
-    if 0 < number <= 1:
+    if (
+        0
+        < number
+        <= 1
+    ):
         return number
 
-    if 1 < number < 100:
-        return number / 100.0
+    if (
+        1
+        < number
+        < 100
+    ):
+        return (
+            number
+            / 100.0
+        )
 
     return None
 
@@ -292,16 +459,27 @@ def _current_side_price(
             ),
         )
 
-        for value, source in candidates:
+        for (
+            value,
+            source,
+        ) in candidates:
 
-            price = _price_to_dollars(
-                value
+            price = (
+                _price_to_dollars(
+                    value
+                )
             )
 
             if price is not None:
-                return price, source
+                return (
+                    price,
+                    source,
+                )
 
-        return None, None
+        return (
+            None,
+            None,
+        )
 
     if side == "NO":
 
@@ -320,26 +498,38 @@ def _current_side_price(
             ),
         )
 
-        for value, source in candidates:
+        for (
+            value,
+            source,
+        ) in candidates:
 
-            price = _price_to_dollars(
-                value
+            price = (
+                _price_to_dollars(
+                    value
+                )
             )
 
             if price is not None:
-                return price, source
+                return (
+                    price,
+                    source,
+                )
 
-        yes_last = _price_to_dollars(
-            market.get(
-                "last_price_dollars"
+        yes_last = (
+            _price_to_dollars(
+                market.get(
+                    "last_price_dollars"
+                )
             )
         )
 
         if yes_last is None:
 
-            yes_last = _price_to_dollars(
-                market.get(
-                    "last_price"
+            yes_last = (
+                _price_to_dollars(
+                    market.get(
+                        "last_price"
+                    )
                 )
             )
 
@@ -360,7 +550,10 @@ def _current_side_price(
                     "LAST_PRICE_COMPLEMENT",
                 )
 
-    return None, None
+    return (
+        None,
+        None,
+    )
 
 
 def _parse_time(
@@ -371,6 +564,7 @@ def _parse_time(
         value,
         datetime,
     ):
+
         dt = value
 
     else:
@@ -384,10 +578,12 @@ def _parse_time(
 
         try:
 
-            dt = datetime.fromisoformat(
-                text.replace(
-                    "Z",
-                    "+00:00",
+            dt = (
+                datetime.fromisoformat(
+                    text.replace(
+                        "Z",
+                        "+00:00",
+                    )
                 )
             )
 
@@ -430,9 +626,11 @@ def _trade_time(
 
             try:
 
-                return datetime.fromtimestamp(
-                    float(value),
-                    tz=timezone.utc,
+                return (
+                    datetime.fromtimestamp(
+                        float(value),
+                        tz=timezone.utc,
+                    )
                 )
 
             except (
@@ -465,9 +663,11 @@ def _trade_side_price(
             "yes_price",
         ):
 
-            price = _price_to_dollars(
-                trade.get(
-                    field
+            price = (
+                _price_to_dollars(
+                    trade.get(
+                        field
+                    )
                 )
             )
 
@@ -483,9 +683,11 @@ def _trade_side_price(
             "no_price",
         ):
 
-            price = _price_to_dollars(
-                trade.get(
-                    field
+            price = (
+                _price_to_dollars(
+                    trade.get(
+                        field
+                    )
                 )
             )
 
@@ -499,9 +701,11 @@ def _trade_side_price(
             "yes_price",
         ):
 
-            yes_price = _price_to_dollars(
-                trade.get(
-                    field
+            yes_price = (
+                _price_to_dollars(
+                    trade.get(
+                        field
+                    )
                 )
             )
 
@@ -592,7 +796,9 @@ def _historical_trade_price(
                 ):
                     continue
 
-                payload = response.json()
+                payload = (
+                    response.json()
+                )
 
             except (
                 requests.RequestException,
@@ -602,7 +808,7 @@ def _historical_trade_price(
 
             trades = payload.get(
                 "trades",
-                []
+                [],
             )
 
             if not isinstance(
@@ -627,16 +833,20 @@ def _historical_trade_price(
                 ):
                     continue
 
-                moment = _trade_time(
-                    trade
+                moment = (
+                    _trade_time(
+                        trade
+                    )
                 )
 
                 if moment is None:
                     continue
 
-                price = _trade_side_price(
-                    trade=trade,
-                    side=side,
+                price = (
+                    _trade_side_price(
+                        trade=trade,
+                        side=side,
+                    )
                 )
 
                 if price is None:
@@ -699,7 +909,9 @@ def _fetch_markets(
 
     cursor: str | None = None
 
-    for _page in range(20):
+    for _page in range(
+        20
+    ):
 
         params: dict[
             str,
@@ -709,15 +921,22 @@ def _fetch_markets(
         }
 
         if status:
-            params["status"] = status
+
+            params[
+                "status"
+            ] = status
 
         if series_ticker:
+
             params[
                 "series_ticker"
             ] = series_ticker
 
         if cursor:
-            params["cursor"] = cursor
+
+            params[
+                "cursor"
+            ] = cursor
 
         try:
 
@@ -736,7 +955,9 @@ def _fetch_markets(
             ):
                 return found
 
-            payload = response.json()
+            payload = (
+                response.json()
+            )
 
         except (
             requests.RequestException,
@@ -746,7 +967,7 @@ def _fetch_markets(
 
         markets = payload.get(
             "markets",
-            []
+            [],
         )
 
         if not isinstance(
@@ -766,8 +987,10 @@ def _fetch_markets(
                     market
                 )
 
-        cursor_value = payload.get(
-            "cursor"
+        cursor_value = (
+            payload.get(
+                "cursor"
+            )
         )
 
         if not cursor_value:
@@ -793,24 +1016,34 @@ def find_kalshi_quote(
     if not selection:
         return None
 
-    requested_time = _parse_time(
-        at_time
+    requested_time = (
+        _parse_time(
+            at_time
+        )
     )
 
-    requested_market = _plain(
-        market
+    requested_market = (
+        _plain(
+            market
+        )
     )
 
-    if requested_market == _plain(
-        "Primeras 5 entradas"
+    if (
+        requested_market
+        == _plain(
+            "Primeras 5 entradas"
+        )
     ):
 
         series_ticker = (
             "KXMLBF5"
         )
 
-    elif requested_market == _plain(
-        "Ganador del partido"
+    elif (
+        requested_market
+        == _plain(
+            "Ganador del partido"
+        )
     ):
 
         series_ticker = (
@@ -837,15 +1070,21 @@ def find_kalshi_quote(
 
     for status in statuses:
 
-        markets = _fetch_markets(
-            status=status,
-            series_ticker=series_ticker,
+        markets = (
+            _fetch_markets(
+                status=status,
+                series_ticker=(
+                    series_ticker
+                ),
+            )
         )
 
         for kalshi_market in markets:
 
-            text = _market_text(
-                kalshi_market
+            text = (
+                _market_text(
+                    kalshi_market
+                )
             )
 
             if not _correct_market_type(
@@ -860,9 +1099,11 @@ def find_kalshi_quote(
             ):
                 continue
 
-            side = _selection_side(
-                selection=selection,
-                market=kalshi_market,
+            side = (
+                _selection_side(
+                    selection=selection,
+                    market=kalshi_market,
+                )
             )
 
             if side is None:
@@ -888,16 +1129,23 @@ def find_kalshi_quote(
                 ticker
             )
 
-            if requested_time is not None:
+            if (
+                requested_time
+                is not None
+            ):
 
                 (
                     historical_price,
                     historical_time,
                     historical_source,
-                ) = _historical_trade_price(
-                    ticker=ticker,
-                    side=side,
-                    at_time=requested_time,
+                ) = (
+                    _historical_trade_price(
+                        ticker=ticker,
+                        side=side,
+                        at_time=(
+                            requested_time
+                        ),
+                    )
                 )
 
                 if (
@@ -963,9 +1211,11 @@ def find_kalshi_quote(
             (
                 current_price,
                 source,
-            ) = _current_side_price(
-                market=kalshi_market,
-                side=side,
+            ) = (
+                _current_side_price(
+                    market=kalshi_market,
+                    side=side,
+                )
             )
 
             if (
@@ -1056,7 +1306,9 @@ def find_kalshi_percent(
     try:
 
         return float(
-            quote["percent"]
+            quote[
+                "percent"
+            ]
         )
 
     except (
