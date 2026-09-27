@@ -23,7 +23,7 @@ from .engine import (
     parse_quotes,
 )
 from .history import history_summary, update_history
-from .kalshi import find_kalshi_percent
+from .kalshi import find_kalshi_quote
 from .mlb import MlbStatsClient
 from .report import build_snapshot, save_reports
 
@@ -41,6 +41,7 @@ class SportsAnalyzer:
         self.config = config
         self.client = ApiSportsClient(api_key)
         self.mlb = MlbStatsClient()
+
         self.history_cache: dict[
             tuple[str, str, str],
             list[dict[str, Any]],
@@ -50,13 +51,21 @@ class SportsAnalyzer:
         self,
         date_iso: str,
     ) -> dict[str, dict[str, Any]]:
-        results: dict[str, dict[str, Any]] = {}
+
+        results: dict[
+            str,
+            dict[str, Any],
+        ] = {}
 
         for sport in SPORTS:
+
             try:
-                game_result = self.client.games_for_date(
-                    sport,
-                    date_iso,
+
+                game_result = (
+                    self.client.games_for_date(
+                        sport,
+                        date_iso,
+                    )
                 )
 
                 normalized = normalize_games(
@@ -67,7 +76,9 @@ class SportsAnalyzer:
                 games = [
                     game
                     for game in normalized
-                    if not is_finished(game.status)
+                    if not is_finished(
+                        game.status
+                    )
                 ]
 
                 game_ids = [
@@ -75,10 +86,12 @@ class SportsAnalyzer:
                     for game in games
                 ]
 
-                odds_result = self.client.odds_for_date(
-                    sport,
-                    date_iso,
-                    game_ids,
+                odds_result = (
+                    self.client.odds_for_date(
+                        sport,
+                        date_iso,
+                        game_ids,
+                    )
                 )
 
                 quotes = parse_quotes(
@@ -86,9 +99,11 @@ class SportsAnalyzer:
                     games,
                 )
 
-                forms = self._forms_for_games(
-                    sport,
-                    games,
+                forms = (
+                    self._forms_for_games(
+                        sport,
+                        games,
+                    )
                 )
 
                 matchups = (
@@ -113,33 +128,133 @@ class SportsAnalyzer:
                     matchups,
                 )
 
-                # ====================================================
-                # AGREGAR PORCENTAJE DE KALSHI A CADA RECOMENDACIÓN
-                # ====================================================
+                # ==========================================
+                # PONER PRECIO REAL DE KALSHI
+                # ==========================================
 
                 recommendations_with_kalshi = []
 
                 for recommendation in recommendations:
-                    kalshi_percent = find_kalshi_percent(
-                        selection=recommendation.selection,
-                        matchup=recommendation.matchup,
-                        market=recommendation.market,
+
+                    try:
+
+                        kalshi_quote = find_kalshi_quote(
+                            selection=(
+                                recommendation.selection
+                            ),
+                            matchup=(
+                                recommendation.matchup
+                            ),
+                            market=(
+                                recommendation.market
+                            ),
+                        )
+
+                    except Exception as exc:
+
+                        print(
+                            (
+                                "KALSHI ERROR | "
+                                f"{recommendation.selection} | "
+                                f"{exc}"
+                            ),
+                            flush=True,
+                        )
+
+                        kalshi_quote = None
+
+                    if not kalshi_quote:
+
+                        recommendations_with_kalshi.append(
+                            recommendation
+                        )
+
+                        continue
+
+                    try:
+
+                        kalshi_price = float(
+                            kalshi_quote.get(
+                                "price"
+                            )
+                        )
+
+                    except (
+                        TypeError,
+                        ValueError,
+                    ):
+
+                        kalshi_price = 0.0
+
+                    if not (
+                        0.0
+                        < kalshi_price
+                        < 1.0
+                    ):
+
+                        recommendations_with_kalshi.append(
+                            recommendation
+                        )
+
+                        continue
+
+                    decimal_odds = (
+                        1.0
+                        / kalshi_price
                     )
 
-                    recommendation_with_kalshi = replace(
+                    break_even_probability = (
+                        kalshi_price
+                    )
+
+                    edge = (
+                        recommendation.model_probability
+                        - kalshi_price
+                    )
+
+                    expected_value = (
+                        recommendation.model_probability
+                        * decimal_odds
+                        - 1.0
+                    )
+
+                    recommendation = replace(
                         recommendation,
-                        kalshi_percent=kalshi_percent,
+                        bookmaker="Kalshi",
+                        decimal_odds=(
+                            decimal_odds
+                        ),
+                        break_even_probability=(
+                            break_even_probability
+                        ),
+                        edge=edge,
+                        expected_value=(
+                            expected_value
+                        ),
+                    )
+
+                    print(
+                        (
+                            "KALSHI APLICADO | "
+                            f"{recommendation.selection} | "
+                            f"{kalshi_quote.get('side')} | "
+                            f"{kalshi_price * 100:.2f}c | "
+                            f"{kalshi_quote.get('ticker')}"
+                        ),
+                        flush=True,
                     )
 
                     recommendations_with_kalshi.append(
-                        recommendation_with_kalshi
+                        recommendation
                     )
 
-                recommendations = recommendations_with_kalshi
+                recommendations = (
+                    recommendations_with_kalshi
+                )
 
-                # ====================================================
+                # ==========================================
                 # HISTORIAL
-                # ====================================================
+                # ==========================================
 
                 history_file = (
                     PROJECT_ROOT
@@ -158,22 +273,34 @@ class SportsAnalyzer:
                 results[sport] = {
                     "games": len(games),
                     "quotes": len(quotes),
-                    "remaining_requests": odds_result.remaining_requests,
-                    "recommendations": recommendations,
+                    "remaining_requests": (
+                        odds_result.remaining_requests
+                    ),
+                    "recommendations": (
+                        recommendations
+                    ),
                     "recommendation": (
                         recommendations[0]
                         if recommendations
                         else None
                     ),
-                    "best_observed": best_observed,
+                    "best_observed": (
+                        best_observed
+                    ),
                     "notes": notes,
-                    "history_summary": history_summary(
-                        history_rows
+                    "history_summary": (
+                        history_summary(
+                            history_rows
+                        )
                     ),
                     "error": None,
                 }
 
-            except (ApiSportsError, ValueError) as exc:
+            except (
+                ApiSportsError,
+                ValueError,
+            ) as exc:
+
                 results[sport] = {
                     "games": 0,
                     "quotes": 0,
@@ -182,16 +309,18 @@ class SportsAnalyzer:
                     "recommendation": None,
                     "best_observed": None,
                     "notes": [],
-                    "error": _safe_error(str(exc)),
+                    "error": _safe_error(
+                        str(exc)
+                    ),
                 }
 
         return results
-
-    def _forms_for_games(
+            def _forms_for_games(
         self,
         sport: str,
         games: list[Any],
     ) -> dict[str, TeamForm]:
+
         forms: dict[str, TeamForm] = {}
 
         history_limit = int(
@@ -199,10 +328,12 @@ class SportsAnalyzer:
         )
 
         for game in games:
+
             for team in (
                 game.home,
                 game.away,
             ):
+
                 key = (
                     sport,
                     str(team.id),
@@ -210,37 +341,48 @@ class SportsAnalyzer:
                 )
 
                 if key not in self.history_cache:
+
                     try:
-                        history = self.client.team_history(
-                            sport,
-                            team.id,
-                            game.season,
+
+                        history = (
+                            self.client.team_history(
+                                sport,
+                                team.id,
+                                game.season,
+                            )
                         )
 
-                        self.history_cache[
-                            key
-                        ] = history.response
+                        self.history_cache[key] = (
+                            history.response
+                        )
 
                     except ApiSportsError:
-                        self.history_cache[
-                            key
-                        ] = []
+
+                        self.history_cache[key] = []
 
                 history_rows = list(
                     self.history_cache[key]
                 )
 
-                current_form = calculate_team_form(
-                    sport,
-                    team.id,
-                    history_rows,
-                    history_limit,
-                    game.id,
+                current_form = (
+                    calculate_team_form(
+                        sport,
+                        team.id,
+                        history_rows,
+                        history_limit,
+                        game.id,
+                    )
                 )
 
-                if current_form.games < history_limit:
-                    previous_season = _previous_season(
-                        game.season
+                if (
+                    current_form.games
+                    < history_limit
+                ):
+
+                    previous_season = (
+                        _previous_season(
+                            game.season
+                        )
                     )
 
                     previous_key = (
@@ -249,12 +391,19 @@ class SportsAnalyzer:
                         previous_season,
                     )
 
-                    if previous_key not in self.history_cache:
+                    if (
+                        previous_key
+                        not in self.history_cache
+                    ):
+
                         try:
-                            previous = self.client.team_history(
-                                sport,
-                                team.id,
-                                previous_season,
+
+                            previous = (
+                                self.client.team_history(
+                                    sport,
+                                    team.id,
+                                    previous_season,
+                                )
                             )
 
                             self.history_cache[
@@ -262,6 +411,7 @@ class SportsAnalyzer:
                             ] = previous.response
 
                         except ApiSportsError:
+
                             self.history_cache[
                                 previous_key
                             ] = []
@@ -289,12 +439,14 @@ class SportsAnalyzer:
         games: list[Any],
         date_iso: str,
     ) -> dict[str, dict[str, Any]]:
+
         matchups: dict[
             str,
             dict[str, Any],
         ] = {}
 
         for game in games:
+
             matchups[
                 str(game.id)
             ] = self.mlb.matchup(
@@ -307,13 +459,10 @@ class SportsAnalyzer:
         return matchups
 
 
-# ============================================================
-# EJECUCIÓN
-# ============================================================
-
 def run(
     args: argparse.Namespace,
 ) -> int:
+
     config_path = Path(
         args.config
     ).resolve()
@@ -330,6 +479,7 @@ def run(
     ).strip()
 
     if not api_key:
+
         print(
             (
                 "ERROR: crea el secreto "
@@ -365,6 +515,7 @@ def run(
         _signum: int,
         _frame: Any,
     ) -> None:
+
         stop_event.set()
 
     signal.signal(
@@ -383,8 +534,7 @@ def run(
         else max(
             1,
             args.duration_minutes,
-        )
-        * 60
+        ) * 60
     )
 
     interval_seconds = (
@@ -396,13 +546,23 @@ def run(
     )
 
     started = time.monotonic()
-    deadline = started + duration_seconds
+
+    deadline = (
+        started
+        + duration_seconds
+    )
+
     next_scan = started
+
     scan_number = 0
 
-    last_snapshot: dict[str, Any] | None = None
+    last_snapshot: (
+        dict[str, Any]
+        | None
+    ) = None
 
     while not stop_event.is_set():
+
         scan_number += 1
 
         now = datetime.now(
@@ -427,11 +587,13 @@ def run(
             date_iso
         )
 
-        last_snapshot = build_snapshot(
-            now,
-            date_iso,
-            scan_number,
-            results,
+        last_snapshot = (
+            build_snapshot(
+                now,
+                date_iso,
+                scan_number,
+                results,
+            )
         )
 
         latest_md, _ = save_reports(
@@ -440,9 +602,9 @@ def run(
         )
 
         for sport in SPORTS:
+
             recommendation = (
-                results[sport]
-                .get(
+                results[sport].get(
                     "recommendation"
                 )
             )
@@ -475,7 +637,9 @@ def run(
         ):
             break
 
-        next_scan += interval_seconds
+        next_scan += (
+            interval_seconds
+        )
 
         remaining_session = (
             deadline
@@ -501,7 +665,10 @@ def run(
             wait_seconds
         )
 
-        if time.monotonic() >= deadline:
+        if (
+            time.monotonic()
+            >= deadline
+        ):
             break
 
     if last_snapshot is None:
@@ -510,12 +677,10 @@ def run(
     all_errors = all(
         last_snapshot[
             "sports"
-        ]
-        .get(
+        ].get(
             sport,
             {},
-        )
-        .get(
+        ).get(
             "error"
         )
         for sport in SPORTS
@@ -528,17 +693,14 @@ def run(
     )
 
 
-# ============================================================
-# ARGUMENTOS
-# ============================================================
+def build_parser(
+) -> argparse.ArgumentParser:
 
-def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description=(
             "Analiza MLB, NFL y NBA "
-            "y registra el porcentaje "
-            "de Kalshi cuando está "
-            "disponible."
+            "sin conectar con ninguna "
+            "plataforma de apuestas."
         )
     )
 
@@ -586,59 +748,56 @@ def build_parser() -> argparse.ArgumentParser:
     return parser
 
 
-# ============================================================
-# UTILIDADES
-# ============================================================
-
 def _safe_error(
     message: str,
 ) -> str:
-    api_sports_key = os.environ.get(
-        "API_SPORTS_KEY",
-        "",
-    )
 
-    if api_sports_key:
-        message = message.replace(
-            api_sports_key,
-            "[OCULTA]",
-        )
-
-    return message[:700]
+    return message.replace(
+        os.environ.get(
+            "API_SPORTS_KEY",
+            "",
+        ),
+        "[OCULTA]",
+    )[:700]
 
 
 def _previous_season(
     season: str,
 ) -> str:
+
     if "-" in season:
+
         parts = season.split(
             "-",
             1,
         )
 
         try:
+
             return (
                 f"{int(parts[0]) - 1}-"
                 f"{int(parts[1]) - 1}"
             )
 
         except ValueError:
+
             return season
 
     try:
+
         return str(
-            int(season)
-            - 1
+            int(season) - 1
         )
 
     except ValueError:
+
         return season
 
 
 if __name__ == "__main__":
+
     raise SystemExit(
         run(
-            build_parser()
-            .parse_args()
+            build_parser().parse_args()
         )
-                            )
+    )
