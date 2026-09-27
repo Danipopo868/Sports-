@@ -1,30 +1,25 @@
 from __future__ import annotations
 
 import json
+import os
 import re
 import unicodedata
 from datetime import datetime
 from pathlib import Path
 from typing import Any
 
-from .engine import (
-    Candidate,
-    Game,
-    is_finished,
-    score_for_side,
-)
+from .engine import Candidate, Game, is_finished, score_for_side
 
-
-# ============================================================
-# CONFIGURACIÓN
-# ============================================================
 
 DEFAULT_STAKE = 100.0
 
 
-# ============================================================
-# CARGAR / GUARDAR
-# ============================================================
+def _starting_balance() -> float:
+    try:
+        return float(os.environ.get("SPORTS_STARTING_BALANCE", "0"))
+    except (TypeError, ValueError):
+        return 0.0
+
 
 def load_history(path: Path) -> list[dict[str, Any]]:
     if not path.exists():
@@ -58,15 +53,12 @@ def save_history(
     )
 
 
-# ============================================================
-# UTILIDADES
-# ============================================================
-
 def _normalize_name(value: Any) -> str:
-    text = str(value or "")
-
     plain = (
-        unicodedata.normalize("NFKD", text)
+        unicodedata.normalize(
+            "NFKD",
+            str(value or ""),
+        )
         .encode("ascii", "ignore")
         .decode()
         .lower()
@@ -89,13 +81,18 @@ def _matchup_teams(
     if "@" not in matchup:
         return None
 
-    parts = matchup.split("@", 1)
+    away_raw, home_raw = matchup.split(
+        "@",
+        1,
+    )
 
-    if len(parts) != 2:
-        return None
+    away = _normalize_name(
+        away_raw
+    )
 
-    away = _normalize_name(parts[0])
-    home = _normalize_name(parts[1])
+    home = _normalize_name(
+        home_raw
+    )
 
     if not away or not home:
         return None
@@ -103,31 +100,54 @@ def _matchup_teams(
     return away, home
 
 
-def _timestamp(value: Any) -> float | None:
-    text = str(value or "").strip()
+def _timestamp(
+    value: Any,
+) -> float | None:
+    text = str(
+        value or ""
+    ).strip()
 
     if not text:
         return None
 
     try:
         return datetime.fromisoformat(
-            text.replace("Z", "+00:00")
+            text.replace(
+                "Z",
+                "+00:00",
+            )
         ).timestamp()
-    except (TypeError, ValueError):
+
+    except (
+        TypeError,
+        ValueError,
+    ):
         return None
 
 
-def _number(value: Any) -> float | None:
+def _number(
+    value: Any,
+) -> float | None:
+
     if value is None:
         return None
 
-    if isinstance(value, bool):
+    if isinstance(
+        value,
+        bool,
+    ):
         return float(value)
 
-    if isinstance(value, (int, float)):
+    if isinstance(
+        value,
+        (int, float),
+    ):
         return float(value)
 
-    if isinstance(value, dict):
+    if isinstance(
+        value,
+        dict,
+    ):
         for key in (
             "runs",
             "total",
@@ -138,19 +158,24 @@ def _number(value: Any) -> float | None:
             if key not in value:
                 continue
 
-            found = _number(value.get(key))
+            found = _number(
+                value.get(key)
+            )
 
             if found is not None:
                 return found
 
         return None
 
-    if isinstance(value, (list, tuple)):
-        if len(value) == 1:
-            return _number(value[0])
-
+    if isinstance(
+        value,
+        (list, tuple),
+    ):
         for item in value:
-            found = _number(item)
+
+            found = _number(
+                item
+            )
 
             if found is not None:
                 return found
@@ -158,65 +183,94 @@ def _number(value: Any) -> float | None:
         return None
 
     try:
-        return float(str(value).strip())
-    except (TypeError, ValueError):
+        return float(
+            str(value).strip()
+        )
+
+    except (
+        TypeError,
+        ValueError,
+    ):
         return None
 
 
-def _valid_odds(value: Any) -> float | None:
+def _valid_kalshi_percent(
+    value: Any,
+) -> float | None:
+
+    if value is None:
+        return None
+
+    text = (
+        str(value)
+        .strip()
+        .replace("%", "")
+    )
+
     try:
-        odds = float(value)
-    except (TypeError, ValueError):
+        percent = float(text)
+
+    except (
+        TypeError,
+        ValueError,
+    ):
         return None
 
-    # Cuota decimal válida.
-    if odds <= 1.0:
+    # Permite que el workflow entregue:
+    # 61
+    # o
+    # 0.61
+    if 0 < percent < 1:
+        percent *= 100.0
+
+    if not (
+        0 < percent < 100
+    ):
         return None
 
-    return odds
+    return percent
 
-
-# ============================================================
-# BUSCAR PARTIDO
-# ============================================================
 
 def _find_game(
     row: dict[str, Any],
     games: list[Game],
     game_map: dict[str, Game],
 ) -> Game | None:
+
     game_id = str(
         row.get("game_id") or ""
     )
 
-    if game_id:
-        exact = game_map.get(game_id)
+    if (
+        game_id
+        and game_id in game_map
+    ):
+        return game_map[game_id]
 
-        if exact is not None:
-            return exact
+    matchup = _matchup_teams(
+        row
+    )
 
-    matchup_teams = _matchup_teams(row)
-
-    if matchup_teams is None:
+    if matchup is None:
         return None
 
-    expected_away, expected_home = matchup_teams
+    expected_away, expected_home = matchup
 
-    candidates: list[Game] = []
-
-    for game in games:
-        actual_away = _normalize_name(
-            game.away.name
-        )
-        actual_home = _normalize_name(
-            game.home.name
-        )
-
+    candidates = [
+        game
+        for game in games
         if (
-            actual_away == expected_away
-            and actual_home == expected_home
-        ):
-            candidates.append(game)
+            _normalize_name(
+                game.away.name
+            )
+            == expected_away
+            and
+            _normalize_name(
+                game.home.name
+            )
+            == expected_home
+        )
+    ]
 
     if not candidates:
         return None
@@ -231,17 +285,25 @@ def _find_game(
     if row_start is None:
         return None
 
-    timed: list[tuple[float, Game]] = []
+    timed: list[
+        tuple[float, Game]
+    ] = []
 
     for game in candidates:
-        game_start = _timestamp(game.start)
+
+        game_start = _timestamp(
+            game.start
+        )
 
         if game_start is None:
             continue
 
         timed.append(
             (
-                abs(game_start - row_start),
+                abs(
+                    game_start
+                    - row_start
+                ),
                 game,
             )
         )
@@ -256,39 +318,61 @@ def _find_game(
     return timed[0][1]
 
 
-# ============================================================
-# PRIMERAS 5 ENTRADAS
-# ============================================================
-
 def _first_five_score(
     raw: dict[str, Any],
 ) -> tuple[float, float] | None:
-    inning_sources: list[list[Any]] = []
 
-    primary_innings = raw.get("innings")
+    inning_sources: list[
+        list[Any]
+    ] = []
 
-    if isinstance(primary_innings, list):
+    primary = raw.get(
+        "innings"
+    )
+
+    if isinstance(
+        primary,
+        list,
+    ):
         inning_sources.append(
-            primary_innings
+            primary
         )
 
-    mlb_raw = raw.get("_mlb_raw") or {}
+    mlb_raw = (
+        raw.get("_mlb_raw")
+        or {}
+    )
 
-    if isinstance(mlb_raw, dict):
+    if isinstance(
+        mlb_raw,
+        dict,
+    ):
+
         linescore = (
-            mlb_raw.get("linescore")
+            mlb_raw.get(
+                "linescore"
+            )
             or {}
         )
 
-        if isinstance(linescore, dict):
-            mlb_innings = (
-                linescore.get("innings")
+        if isinstance(
+            linescore,
+            dict,
+        ):
+
+            innings = (
+                linescore.get(
+                    "innings"
+                )
                 or []
             )
 
-            if isinstance(mlb_innings, list):
+            if isinstance(
+                innings,
+                list,
+            ):
                 inning_sources.append(
-                    mlb_innings
+                    innings
                 )
 
     if not inning_sources:
@@ -300,33 +384,49 @@ def _first_five_score(
     ] = {}
 
     for innings in inning_sources:
+
         for inning in innings:
+
             if not isinstance(
                 inning,
                 dict,
             ):
                 continue
 
-            num_raw = inning.get("num")
-
-            if num_raw is None:
-                num_raw = inning.get(
+            num_raw = inning.get(
+                "num",
+                inning.get(
                     "inning"
-                )
+                ),
+            )
 
             try:
-                inning_num = int(num_raw)
-            except (TypeError, ValueError):
+                number = int(
+                    num_raw
+                )
+
+            except (
+                TypeError,
+                ValueError,
+            ):
                 continue
 
-            if inning_num < 1 or inning_num > 5:
+            if (
+                number < 1
+                or number > 5
+            ):
                 continue
 
             away_runs = _number(
-                inning.get("away")
+                inning.get(
+                    "away"
+                )
             )
+
             home_runs = _number(
-                inning.get("home")
+                inning.get(
+                    "home"
+                )
             )
 
             if (
@@ -335,70 +435,118 @@ def _first_five_score(
             ):
                 continue
 
-            inning_map[inning_num] = (
+            inning_map[number] = (
                 float(away_runs),
                 float(home_runs),
             )
 
     if any(
         number not in inning_map
-        for number in range(1, 6)
+        for number in range(
+            1,
+            6,
+        )
     ):
         return None
 
     away_total = sum(
-        inning_map[number][0]
-        for number in range(1, 6)
+        inning_map[n][0]
+        for n in range(
+            1,
+            6,
+        )
     )
 
     home_total = sum(
-        inning_map[number][1]
-        for number in range(1, 6)
+        inning_map[n][1]
+        for n in range(
+            1,
+            6,
+        )
     )
 
-    return home_total, away_total
+    return (
+        home_total,
+        away_total,
+    )
 
 
 def _selection_matches(
     selection: Any,
     winner: str,
 ) -> bool:
+
     return (
-        _normalize_name(selection)
-        == _normalize_name(winner)
+        _normalize_name(
+            selection
+        )
+        ==
+        _normalize_name(
+            winner
+        )
     )
-
-
-# ============================================================
-# FINANZAS
+    # ============================================================
+# FINANZAS KALSHI
 # ============================================================
 
 def _set_potential_money(
     row: dict[str, Any],
 ) -> None:
-    odds = _valid_odds(
-        row.get("odds")
+
+    percent = _valid_kalshi_percent(
+        row.get(
+            "kalshi_percent"
+        )
     )
 
     try:
         stake = float(
-            row.get("stake")
+            row.get(
+                "stake"
+            )
         )
-    except (TypeError, ValueError):
+
+    except (
+        TypeError,
+        ValueError,
+    ):
         stake = 0.0
 
-    if odds is None or stake <= 0:
-        row["potential_return"] = None
-        row["potential_profit"] = None
+    if (
+        percent is None
+        or stake <= 0
+    ):
+        row[
+            "potential_return"
+        ] = None
+
+        row[
+            "potential_profit"
+        ] = None
+
         return
 
-    row["potential_return"] = round(
-        stake * odds,
+    price_decimal = (
+        percent / 100.0
+    )
+
+    total_return = (
+        stake
+        / price_decimal
+    )
+
+    row[
+        "potential_return"
+    ] = round(
+        total_return,
         2,
     )
 
-    row["potential_profit"] = round(
-        stake * odds - stake,
+    row[
+        "potential_profit"
+    ] = round(
+        total_return
+        - stake,
         2,
     )
 
@@ -407,61 +555,101 @@ def _calculate_money(
     row: dict[str, Any],
     result: str,
 ) -> None:
-    """
-    Solo calcula dinero cuando existe una apuesta
-    registrada con stake y una cuota decimal válida.
 
-    Esto evita que el historial viejo genere
-    pérdidas falsas de -$100 sin conocer la cuota.
-    """
-
-    odds = _valid_odds(
-        row.get("odds")
+    percent = _valid_kalshi_percent(
+        row.get(
+            "kalshi_percent"
+        )
     )
 
     try:
-        stake_raw = row.get("stake")
+        stake = float(
+            row.get(
+                "stake"
+            )
+        )
 
-        if stake_raw is None:
-            raise ValueError
+    except (
+        TypeError,
+        ValueError,
+    ):
+        stake = 0.0
 
-        stake = float(stake_raw)
+    if (
+        percent is None
+        or stake <= 0
+    ):
 
-    except (TypeError, ValueError):
-        row["return_amount"] = None
-        row["profit_loss"] = None
+        row[
+            "return_amount"
+        ] = None
+
+        row[
+            "profit_loss"
+        ] = None
+
         return
 
-    if stake <= 0 or odds is None:
-        row["return_amount"] = None
-        row["profit_loss"] = None
-        return
+    row["stake"] = round(
+        stake,
+        2,
+    )
 
-    row["stake"] = round(stake, 2)
+    row[
+        "kalshi_percent"
+    ] = round(
+        percent,
+        6,
+    )
 
-    _set_potential_money(row)
+    _set_potential_money(
+        row
+    )
 
     if result == "GANADA":
-        return_amount = stake * odds
-        profit_loss = return_amount - stake
+
+        price_decimal = (
+            percent
+            / 100.0
+        )
+
+        return_amount = (
+            stake
+            / price_decimal
+        )
+
+        profit_loss = (
+            return_amount
+            - stake
+        )
 
     elif result == "PERDIDA":
+
         return_amount = 0.0
-        profit_loss = -stake
+
+        profit_loss = (
+            -stake
+        )
 
     elif result == "EMPATE":
+
         return_amount = stake
+
         profit_loss = 0.0
 
     else:
         return
 
-    row["return_amount"] = round(
+    row[
+        "return_amount"
+    ] = round(
         return_amount,
         2,
     )
 
-    row["profit_loss"] = round(
+    row[
+        "profit_loss"
+    ] = round(
         profit_loss,
         2,
     )
@@ -475,20 +663,34 @@ def _resolve_row(
     final_score: str,
     generated_at: datetime,
 ) -> None:
-    row["winner"] = winner
-    row["final_score"] = final_score
-    row["result"] = result
-    row["status"] = "RESUELTA"
 
-    row["resolved_at"] = (
-        generated_at.isoformat()
-    )
+    row[
+        "winner"
+    ] = winner
+
+    row[
+        "final_score"
+    ] = final_score
+
+    row[
+        "result"
+    ] = result
+
+    row[
+        "status"
+    ] = "RESUELTA"
+
+    row[
+        "resolved_at"
+    ] = generated_at.isoformat()
 
     _calculate_money(
         row,
         result,
     )
-    # ============================================================
+
+
+# ============================================================
 # ACTUALIZAR HISTORIAL
 # ============================================================
 
@@ -500,7 +702,9 @@ def update_history(
     generated_at: datetime,
 ) -> list[dict[str, Any]]:
 
-    rows = load_history(path)
+    rows = load_history(
+        path
+    )
 
     game_map = {
         str(game.id): game
@@ -515,22 +719,32 @@ def update_history(
 
         if (
             str(
-                row.get("sport") or ""
+                row.get(
+                    "sport"
+                )
+                or ""
             ).upper()
-            != sport.upper()
+            !=
+            sport.upper()
         ):
             continue
 
         if (
             str(
-                row.get("status") or ""
+                row.get(
+                    "status"
+                )
+                or ""
             ).upper()
             != "PENDIENTE"
         ):
             continue
 
         market = str(
-            row.get("market") or ""
+            row.get(
+                "market"
+            )
+            or ""
         ).strip()
 
         if market not in {
@@ -552,7 +766,10 @@ def update_history(
         # GANADOR DEL PARTIDO
         # ====================================================
 
-        if market == "Ganador del partido":
+        if (
+            market
+            == "Ganador del partido"
+        ):
 
             if not is_finished(
                 game.status
@@ -586,7 +803,10 @@ def update_history(
                 f"{home_score:g}"
             )
 
-            if home_score == away_score:
+            if (
+                home_score
+                == away_score
+            ):
 
                 _resolve_row(
                     row,
@@ -600,17 +820,24 @@ def update_history(
 
             winner = (
                 game.home.name
-                if home_score > away_score
-                else game.away.name
+                if (
+                    home_score
+                    > away_score
+                )
+                else
+                game.away.name
             )
 
             result = (
                 "GANADA"
                 if _selection_matches(
-                    row.get("selection"),
+                    row.get(
+                        "selection"
+                    ),
                     winner,
                 )
-                else "PERDIDA"
+                else
+                "PERDIDA"
             )
 
             _resolve_row(
@@ -627,14 +854,18 @@ def update_history(
         # PRIMERAS 5 ENTRADAS
         # ====================================================
 
-        first_five = _first_five_score(
-            game.raw
+        first_five = (
+            _first_five_score(
+                game.raw
+            )
         )
 
         if first_five is None:
             continue
 
-        home_f5, away_f5 = first_five
+        home_f5, away_f5 = (
+            first_five
+        )
 
         score_text = (
             f"{game.away.name} "
@@ -644,7 +875,10 @@ def update_history(
             "(F5)"
         )
 
-        if home_f5 == away_f5:
+        if (
+            home_f5
+            == away_f5
+        ):
 
             _resolve_row(
                 row,
@@ -658,17 +892,24 @@ def update_history(
 
         winner = (
             game.home.name
-            if home_f5 > away_f5
-            else game.away.name
+            if (
+                home_f5
+                > away_f5
+            )
+            else
+            game.away.name
         )
 
         result = (
             "GANADA"
             if _selection_matches(
-                row.get("selection"),
+                row.get(
+                    "selection"
+                ),
                 winner,
             )
-            else "PERDIDA"
+            else
+            "PERDIDA"
         )
 
         _resolve_row(
@@ -699,19 +940,25 @@ def update_history(
         )
 
         if any(
-            row.get("key") == key
+            row.get("key")
+            == key
             for row in rows
         ):
             continue
 
-        odds = _valid_odds(
-            recommendation.decimal_odds
+        kalshi_percent = (
+            _valid_kalshi_percent(
+                getattr(
+                    recommendation,
+                    "kalshi_percent",
+                    None,
+                )
+            )
         )
 
-        # Solamente existe seguimiento financiero
-        # exacto cuando el motor tiene una cuota real.
         financial_tracking = (
-            odds is not None
+            kalshi_percent
+            is not None
         )
 
         stake = (
@@ -720,30 +967,37 @@ def update_history(
             else None
         )
 
-        potential_return = (
-            round(
-                DEFAULT_STAKE * odds,
+        if financial_tracking:
+
+            price_decimal = (
+                kalshi_percent
+                / 100.0
+            )
+
+            potential_return = round(
+                DEFAULT_STAKE
+                / price_decimal,
                 2,
             )
-            if odds is not None
-            else None
-        )
 
-        potential_profit = (
-            round(
-                DEFAULT_STAKE * odds
+            potential_profit = round(
+                potential_return
                 - DEFAULT_STAKE,
                 2,
             )
-            if odds is not None
-            else None
-        )
+
+        else:
+
+            potential_return = None
+            potential_profit = None
 
         rows.append(
             {
                 "key": key,
 
-                "pick_number": pick_number,
+                "pick_number": (
+                    pick_number
+                ),
 
                 "created_at": (
                     generated_at.isoformat()
@@ -771,53 +1025,10 @@ def update_history(
                     recommendation.selection
                 ),
 
-                # --------------------------------------------
-                # PROBABILIDAD CONGELADA
-                # --------------------------------------------
-
+                # MODELO
                 "probability": (
                     recommendation.model_probability
                 ),
-
-                # --------------------------------------------
-                # CUOTA CONGELADA
-                # --------------------------------------------
-
-                "odds": odds,
-
-                "bookmaker": (
-                    recommendation.bookmaker
-                ),
-
-                # REAL = obtenida por el motor
-                # exactamente al crear la recomendación.
-                "odds_source": (
-                    "REAL"
-                    if financial_tracking
-                    else "SIN_CUOTA"
-                ),
-
-                "financial_tracking": (
-                    financial_tracking
-                ),
-
-                # --------------------------------------------
-                # APUESTA
-                # --------------------------------------------
-
-                "stake": stake,
-
-                "potential_return": (
-                    potential_return
-                ),
-
-                "potential_profit": (
-                    potential_profit
-                ),
-
-                # --------------------------------------------
-                # DATOS DEL MODELO
-                # --------------------------------------------
 
                 "edge": (
                     recommendation.edge
@@ -831,10 +1042,48 @@ def update_history(
                     recommendation.data_quality
                 ),
 
-                # --------------------------------------------
-                # RESULTADO
-                # --------------------------------------------
+                # COMPATIBILIDAD CON TU APP ACTUAL
+                "odds": getattr(
+                    recommendation,
+                    "decimal_odds",
+                    None,
+                ),
 
+                "bookmaker": getattr(
+                    recommendation,
+                    "bookmaker",
+                    None,
+                ),
+
+                # KALSHI
+                "kalshi_percent": (
+                    kalshi_percent
+                ),
+
+                "kalshi_source": (
+                    "REAL"
+                    if financial_tracking
+                    else "SIN_KALSHI"
+                ),
+
+                "financial_tracking": (
+                    financial_tracking
+                ),
+
+                # STAKE FIJO
+                "stake": (
+                    stake
+                ),
+
+                "potential_return": (
+                    potential_return
+                ),
+
+                "potential_profit": (
+                    potential_profit
+                ),
+
+                # RESULTADO
                 "status": "PENDIENTE",
 
                 "result": None,
@@ -855,9 +1104,7 @@ def update_history(
     )
 
     return rows
-
-
-# ============================================================
+    # ============================================================
 # COMPROBAR SI UNA FILA TIENE DINERO CALCULABLE
 # ============================================================
 
@@ -865,19 +1112,27 @@ def has_financial_data(
     row: dict[str, Any],
 ) -> bool:
 
-    odds = _valid_odds(
-        row.get("odds")
+    percent = _valid_kalshi_percent(
+        row.get(
+            "kalshi_percent"
+        )
     )
 
     try:
         stake = float(
-            row.get("stake")
+            row.get(
+                "stake"
+            )
         )
-    except (TypeError, ValueError):
+
+    except (
+        TypeError,
+        ValueError,
+    ):
         return False
 
     return (
-        odds is not None
+        percent is not None
         and stake > 0
     )
 
@@ -891,31 +1146,44 @@ def history_summary(
 ) -> dict[str, int | float]:
 
     won = sum(
-        row.get("result") == "GANADA"
+        row.get("result")
+        == "GANADA"
         for row in rows
     )
 
     lost = sum(
-        row.get("result") == "PERDIDA"
+        row.get("result")
+        == "PERDIDA"
         for row in rows
     )
 
     tied = sum(
-        row.get("result") == "EMPATE"
+        row.get("result")
+        == "EMPATE"
         for row in rows
     )
 
-    resolved = won + lost + tied
+    resolved = (
+        won
+        + lost
+        + tied
+    )
 
     pending = sum(
         str(
-            row.get("status") or ""
+            row.get(
+                "status"
+            )
+            or ""
         ).upper()
         == "PENDIENTE"
         for row in rows
     )
 
-    decisions = won + lost
+    decisions = (
+        won
+        + lost
+    )
 
     win_rate = (
         won / decisions
@@ -923,10 +1191,8 @@ def history_summary(
         else 0.0
     )
 
-    # --------------------------------------------------------
-    # SOLO DINERO CON CUOTA REAL O HISTÓRICA REGISTRADA
-    # --------------------------------------------------------
-
+    # SOLO filas que tienen:
+    # resultado + porcentaje Kalshi + stake
     financial_rows = [
         row
         for row in rows
@@ -937,20 +1203,29 @@ def history_summary(
                 "PERDIDA",
                 "EMPATE",
             }
-            and has_financial_data(row)
+            and has_financial_data(
+                row
+            )
         )
     ]
 
     total_staked = 0.0
+
     total_profit_loss = 0.0
 
     for row in financial_rows:
 
         try:
             stake = float(
-                row.get("stake")
+                row.get(
+                    "stake"
+                )
             )
-        except (TypeError, ValueError):
+
+        except (
+            TypeError,
+            ValueError,
+        ):
             continue
 
         total_staked += stake
@@ -961,75 +1236,101 @@ def history_summary(
 
         if profit_loss is None:
 
-            temporary = dict(row)
+            temporary = dict(
+                row
+            )
 
             _calculate_money(
                 temporary,
                 str(
-                    row.get("result")
+                    row.get(
+                        "result"
+                    )
                 ),
             )
 
-            profit_loss = temporary.get(
-                "profit_loss"
+            profit_loss = (
+                temporary.get(
+                    "profit_loss"
+                )
             )
-
-        if profit_loss is None:
-            continue
 
         try:
-            total_profit_loss += float(
-                profit_loss
-            )
-        except (TypeError, ValueError):
-            continue
+            if profit_loss is not None:
+
+                total_profit_loss += float(
+                    profit_loss
+                )
+
+        except (
+            TypeError,
+            ValueError,
+        ):
+            pass
 
     roi = (
-        total_profit_loss / total_staked
+        total_profit_loss
+        / total_staked
         if total_staked
         else 0.0
     )
 
-    exact_odds = sum(
+    starting_balance = (
+        _starting_balance()
+    )
+
+    current_balance = (
+        starting_balance
+        + total_profit_loss
+    )
+
+    exact_kalshi = sum(
         str(
-            row.get("odds_source")
+            row.get(
+                "kalshi_source"
+            )
             or ""
         ).upper()
         == "REAL"
         for row in financial_rows
     )
 
-    estimated_odds = sum(
-        str(
-            row.get("odds_source")
-            or ""
-        ).upper()
-        == "ESTIMADA_FULL_GAME"
-        for row in financial_rows
-    )
-
     return {
-        "total": len(rows),
+        "total": len(
+            rows
+        ),
 
-        "resolved": resolved,
+        "resolved": (
+            resolved
+        ),
 
-        "won": won,
+        "won": (
+            won
+        ),
 
-        "lost": lost,
+        "lost": (
+            lost
+        ),
 
-        "tied": tied,
+        "tied": (
+            tied
+        ),
 
-        "pending": pending,
+        "pending": (
+            pending
+        ),
 
-        "win_rate": win_rate,
+        "win_rate": (
+            win_rate
+        ),
 
         "financial_bets": len(
             financial_rows
         ),
 
-        "exact_odds": exact_odds,
-
-        "estimated_odds": estimated_odds,
+        "exact_kalshi": (
+            exact_kalshi
+        ),
 
         "total_staked": round(
             total_staked,
@@ -1041,5 +1342,17 @@ def history_summary(
             2,
         ),
 
-        "roi": roi,
-        }
+        "roi": (
+            roi
+        ),
+
+        "starting_balance": round(
+            starting_balance,
+            2,
+        ),
+
+        "current_balance": round(
+            current_balance,
+            2,
+        ),
+    }
