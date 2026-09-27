@@ -8,7 +8,7 @@ from typing import Any
 import requests
 
 
-KALSHI_BASE_URL = "https://api.elections.kalshi.com/trade-api/v2"
+KALSHI_BASE_URL = "https://external-api.kalshi.com/trade-api/v2"
 
 
 def _plain(value: Any) -> str:
