@@ -315,7 +315,7 @@ class SportsAnalyzer:
                 }
 
         return results
-            def _forms_for_games(
+    def _forms_for_games(
         self,
         sport: str,
         games: list[Any],
