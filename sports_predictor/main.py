@@ -7,6 +7,7 @@ import signal
 import sys
 import threading
 import time
+from dataclasses import replace
 from datetime import datetime
 from pathlib import Path
 from typing import Any
@@ -21,8 +22,9 @@ from .engine import (
     normalize_games,
     parse_quotes,
 )
+from .history import history_summary, update_history
+from .kalshi import find_kalshi_percent
 from .mlb import MlbStatsClient
-from .history import update_history, history_summary
 from .report import build_snapshot, save_reports
 
 
@@ -31,24 +33,57 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 
 class SportsAnalyzer:
-    def __init__(self, api_key: str, config: dict[str, Any]) -> None:
-        self.config = config
-        self.client = ApiSportsClient(api_key)
-        self.mlb = MlbStatsClient()
-        self.history_cache: dict[tuple[str, str, str], list[dict[str, Any]]] = {}
+    def __init__(
+        self,
+        api_key: str,
+        config: dict[str, Any],
+    ) -> None:
 
-    def scan(self, date_iso: str) -> dict[str, dict[str, Any]]:
-        results: dict[str, dict[str, Any]] = {}
+        self.config = config
+        self.client = ApiSportsClient(
+            api_key
+        )
+        self.mlb = MlbStatsClient()
+
+        self.history_cache: dict[
+            tuple[str, str, str],
+            list[dict[str, Any]],
+        ] = {}
+
+    def scan(
+        self,
+        date_iso: str,
+    ) -> dict[str, dict[str, Any]]:
+
+        results: dict[
+            str,
+            dict[str, Any],
+        ] = {}
 
         for sport in SPORTS:
+
             try:
-                game_result = self.client.games_for_date(sport, date_iso)
-                normalized = normalize_games(sport, game_result.response)
+
+                game_result = (
+                    self.client.games_for_date(
+                        sport,
+                        date_iso,
+                    )
+                )
+
+                normalized = (
+                    normalize_games(
+                        sport,
+                        game_result.response,
+                    )
+                )
 
                 games = [
                     game
                     for game in normalized
-                    if not is_finished(game.status)
+                    if not is_finished(
+                        game.status
+                    )
                 ]
 
                 game_ids = [
@@ -56,10 +91,12 @@ class SportsAnalyzer:
                     for game in games
                 ]
 
-                odds_result = self.client.odds_for_date(
-                    sport,
-                    date_iso,
-                    game_ids,
+                odds_result = (
+                    self.client.odds_for_date(
+                        sport,
+                        date_iso,
+                        game_ids,
+                    )
                 )
 
                 quotes = parse_quotes(
@@ -67,9 +104,11 @@ class SportsAnalyzer:
                     games,
                 )
 
-                forms = self._forms_for_games(
-                    sport,
-                    games,
+                forms = (
+                    self._forms_for_games(
+                        sport,
+                        games,
+                    )
                 )
 
                 matchups = (
@@ -81,7 +120,11 @@ class SportsAnalyzer:
                     else None
                 )
 
-                recommendations, best_observed, notes = analyze_sport(
+                (
+                    recommendations,
+                    best_observed,
+                    notes,
+                ) = analyze_sport(
                     sport,
                     games,
                     quotes,
@@ -90,56 +133,132 @@ class SportsAnalyzer:
                     matchups,
                 )
 
+                # ====================================================
+                # AGREGAR PORCENTAJE DE KALSHI A CADA RECOMENDACIÓN
+                # ====================================================
+
+                recommendations_with_kalshi = []
+
+                for recommendation in recommendations:
+
+                    kalshi_percent = (
+                        find_kalshi_percent(
+                            selection=(
+                                recommendation.selection
+                            ),
+                            matchup=(
+                                recommendation.matchup
+                            ),
+                        )
+                    )
+
+                    recommendation_with_kalshi = (
+                        replace(
+                            recommendation,
+                            kalshi_percent=(
+                                kalshi_percent
+                            ),
+                        )
+                    )
+
+                    recommendations_with_kalshi.append(
+                        recommendation_with_kalshi
+                    )
+
+                recommendations = (
+                    recommendations_with_kalshi
+                )
+
+                # ====================================================
+                # HISTORIAL
+                # ====================================================
+
                 history_file = (
                     PROJECT_ROOT
                     / "dashboard_data"
                     / "prediction_history.json"
                 )
 
-                history_rows = update_history(
-                    history_file,
-                    sport,
-                    normalized,
-                    recommendations,
-                    datetime.now(),
+                history_rows = (
+                    update_history(
+                        history_file,
+                        sport,
+                        normalized,
+                        recommendations,
+                        datetime.now(),
+                    )
                 )
 
-                results[sport] = {
-                    "games": len(games),
-                    "quotes": len(quotes),
-                    "remaining_requests": odds_result.remaining_requests,
+                results[
+                    sport
+                ] = {
 
-                    # NUEVO:
-                    # lista con hasta 2 juegos distintos
-                    "recommendations": recommendations,
+                    "games": len(
+                        games
+                    ),
 
-                    # Compatibilidad con el resto del proyecto:
-                    # mantiene recommendation como la #1.
+                    "quotes": len(
+                        quotes
+                    ),
+
+                    "remaining_requests": (
+                        odds_result.remaining_requests
+                    ),
+
+                    "recommendations": (
+                        recommendations
+                    ),
+
                     "recommendation": (
                         recommendations[0]
                         if recommendations
                         else None
                     ),
 
-                    "best_observed": best_observed,
-                    "notes": notes,
-                    "history_summary": history_summary(
-                        history_rows
+                    "best_observed": (
+                        best_observed
                     ),
+
+                    "notes": (
+                        notes
+                    ),
+
+                    "history_summary": (
+                        history_summary(
+                            history_rows
+                        )
+                    ),
+
                     "error": None,
                 }
 
-            except (ApiSportsError, ValueError) as exc:
-                results[sport] = {
+            except (
+                ApiSportsError,
+                ValueError,
+            ) as exc:
+
+                results[
+                    sport
+                ] = {
+
                     "games": 0,
+
                     "quotes": 0,
+
                     "remaining_requests": None,
+
                     "recommendations": [],
+
                     "recommendation": None,
+
                     "best_observed": None,
+
                     "notes": [],
-                    "error": _safe_error(
-                        str(exc)
+
+                    "error": (
+                        _safe_error(
+                            str(exc)
+                        )
                     ),
                 }
 
@@ -151,29 +270,45 @@ class SportsAnalyzer:
         games: list[Any],
     ) -> dict[str, TeamForm]:
 
-        forms: dict[str, TeamForm] = {}
+        forms: dict[
+            str,
+            TeamForm,
+        ] = {}
 
         history_limit = int(
-            self.config["history_games"]
+            self.config[
+                "history_games"
+            ]
         )
 
         for game in games:
+
             for team in (
                 game.home,
                 game.away,
             ):
+
                 key = (
                     sport,
-                    str(team.id),
+                    str(
+                        team.id
+                    ),
                     game.season,
                 )
 
-                if key not in self.history_cache:
+                if (
+                    key
+                    not in self.history_cache
+                ):
+
                     try:
-                        history = self.client.team_history(
-                            sport,
-                            team.id,
-                            game.season,
+
+                        history = (
+                            self.client.team_history(
+                                sport,
+                                team.id,
+                                game.season,
+                            )
                         )
 
                         self.history_cache[
@@ -181,30 +316,43 @@ class SportsAnalyzer:
                         ] = history.response
 
                     except ApiSportsError:
+
                         self.history_cache[
                             key
                         ] = []
 
                 history_rows = list(
-                    self.history_cache[key]
+                    self.history_cache[
+                        key
+                    ]
                 )
 
-                current_form = calculate_team_form(
-                    sport,
-                    team.id,
-                    history_rows,
-                    history_limit,
-                    game.id,
+                current_form = (
+                    calculate_team_form(
+                        sport,
+                        team.id,
+                        history_rows,
+                        history_limit,
+                        game.id,
+                    )
                 )
 
-                if current_form.games < history_limit:
-                    previous_season = _previous_season(
-                        game.season
+                if (
+                    current_form.games
+                    < history_limit
+                ):
+
+                    previous_season = (
+                        _previous_season(
+                            game.season
+                        )
                     )
 
                     previous_key = (
                         sport,
-                        str(team.id),
+                        str(
+                            team.id
+                        ),
                         previous_season,
                     )
 
@@ -212,7 +360,9 @@ class SportsAnalyzer:
                         previous_key
                         not in self.history_cache
                     ):
+
                         try:
+
                             previous = (
                                 self.client.team_history(
                                     sport,
@@ -226,6 +376,7 @@ class SportsAnalyzer:
                             ] = previous.response
 
                         except ApiSportsError:
+
                             self.history_cache[
                                 previous_key
                             ] = []
@@ -237,7 +388,9 @@ class SportsAnalyzer:
                     )
 
                 forms[
-                    str(team.id)
+                    str(
+                        team.id
+                    )
                 ] = calculate_team_form(
                     sport,
                     team.id,
@@ -260,8 +413,11 @@ class SportsAnalyzer:
         ] = {}
 
         for game in games:
+
             matchups[
-                str(game.id)
+                str(
+                    game.id
+                )
             ] = self.mlb.matchup(
                 game.home.name,
                 game.away.name,
@@ -272,13 +428,19 @@ class SportsAnalyzer:
         return matchups
 
 
+# ============================================================
+# EJECUCIÓN
+# ============================================================
+
 def run(
     args: argparse.Namespace,
 ) -> int:
 
-    config_path = Path(
-        args.config
-    ).resolve()
+    config_path = (
+        Path(
+            args.config
+        ).resolve()
+    )
 
     config = json.loads(
         config_path.read_text(
@@ -286,15 +448,22 @@ def run(
         )
     )
 
-    api_key = os.environ.get(
-        "API_SPORTS_KEY",
-        "",
-    ).strip()
+    api_key = (
+        os.environ.get(
+            "API_SPORTS_KEY",
+            "",
+        )
+        .strip()
+    )
 
     if not api_key:
+
         print(
-            "ERROR: crea el secreto API_SPORTS_KEY "
-            "en GitHub antes de ejecutar.",
+            (
+                "ERROR: crea el secreto "
+                "API_SPORTS_KEY en GitHub "
+                "antes de ejecutar."
+            ),
             file=sys.stderr,
         )
 
@@ -314,16 +483,21 @@ def run(
         config,
     )
 
-    output_dir = Path(
-        args.output
-    ).resolve()
+    output_dir = (
+        Path(
+            args.output
+        ).resolve()
+    )
 
-    stop_event = threading.Event()
+    stop_event = (
+        threading.Event()
+    )
 
     def request_stop(
         _signum: int,
         _frame: Any,
     ) -> None:
+
         stop_event.set()
 
     signal.signal(
@@ -339,11 +513,13 @@ def run(
     duration_seconds = (
         0
         if args.once
-        else max(
-            1,
-            args.duration_minutes,
+        else (
+            max(
+                1,
+                args.duration_minutes,
+            )
+            * 60
         )
-        * 60
     )
 
     interval_seconds = (
@@ -354,7 +530,9 @@ def run(
         * 60
     )
 
-    started = time.monotonic()
+    started = (
+        time.monotonic()
+    )
 
     deadline = (
         started
@@ -362,6 +540,7 @@ def run(
     )
 
     next_scan = started
+
     scan_number = 0
 
     last_snapshot: (
@@ -369,7 +548,9 @@ def run(
         | None
     ) = None
 
-    while not stop_event.is_set():
+    while (
+        not stop_event.is_set()
+    ):
 
         scan_number += 1
 
@@ -383,14 +564,18 @@ def run(
         )
 
         print(
-            f"[{now.isoformat()}] "
-            f"Escaneo #{scan_number} "
-            f"de {date_iso}",
+            (
+                f"[{now.isoformat()}] "
+                f"Escaneo #{scan_number} "
+                f"de {date_iso}"
+            ),
             flush=True,
         )
 
-        results = analyzer.scan(
-            date_iso
+        results = (
+            analyzer.scan(
+                date_iso
+            )
         )
 
         last_snapshot = (
@@ -402,23 +587,28 @@ def run(
             )
         )
 
-        latest_md, _ = save_reports(
-            last_snapshot,
-            output_dir,
+        latest_md, _ = (
+            save_reports(
+                last_snapshot,
+                output_dir,
+            )
         )
 
         for sport in SPORTS:
 
             recommendation = (
-                results[sport]
-                .get(
+                results[
+                    sport
+                ].get(
                     "recommendation"
                 )
             )
 
             state = (
-                f"APOSTAR "
-                f"{recommendation.selection}"
+                (
+                    "APOSTAR "
+                    f"{recommendation.selection}"
+                )
                 if recommendation
                 else "NO APOSTAR"
             )
@@ -429,8 +619,10 @@ def run(
             )
 
         print(
-            f"Reporte actualizado: "
-            f"{latest_md}",
+            (
+                "Reporte actualizado: "
+                f"{latest_md}"
+            ),
             flush=True,
         )
 
@@ -449,7 +641,10 @@ def run(
             - time.monotonic()
         )
 
-        if remaining_session <= 0:
+        if (
+            remaining_session
+            <= 0
+        ):
             break
 
         wait_seconds = min(
@@ -461,7 +656,10 @@ def run(
             remaining_session,
         )
 
-        if wait_seconds <= 0:
+        if (
+            wait_seconds
+            <= 0
+        ):
             continue
 
         stop_event.wait(
@@ -474,7 +672,10 @@ def run(
         ):
             break
 
-    if last_snapshot is None:
+    if (
+        last_snapshot
+        is None
+    ):
         return 1
 
     all_errors = all(
@@ -498,13 +699,20 @@ def run(
     )
 
 
+# ============================================================
+# ARGUMENTOS
+# ============================================================
+
 def build_parser() -> argparse.ArgumentParser:
 
-    parser = argparse.ArgumentParser(
-        description=(
-            "Analiza MLB, NFL y NBA "
-            "sin conectar con ninguna "
-            "plataforma de apuestas."
+    parser = (
+        argparse.ArgumentParser(
+            description=(
+                "Analiza MLB, NFL y NBA "
+                "y registra el porcentaje "
+                "de Kalshi cuando está "
+                "disponible."
+            )
         )
     )
 
@@ -552,21 +760,31 @@ def build_parser() -> argparse.ArgumentParser:
     return parser
 
 
+# ============================================================
+# UTILIDADES
+# ============================================================
+
 def _safe_error(
     message: str,
 ) -> str:
 
-    # Evita que una API incluya
-    # accidentalmente la clave
-    # dentro de un error visible.
-
-    return message.replace(
+    api_sports_key = (
         os.environ.get(
             "API_SPORTS_KEY",
             "",
-        ),
-        "[OCULTA]",
-    )[:700]
+        )
+    )
+
+    if api_sports_key:
+
+        message = (
+            message.replace(
+                api_sports_key,
+                "[OCULTA]",
+            )
+        )
+
+    return message[:700]
 
 
 def _previous_season(
@@ -575,34 +793,43 @@ def _previous_season(
 
     if "-" in season:
 
-        parts = season.split(
-            "-",
-            1,
+        parts = (
+            season.split(
+                "-",
+                1,
+            )
         )
 
         try:
+
             return (
                 f"{int(parts[0]) - 1}-"
                 f"{int(parts[1]) - 1}"
             )
 
         except ValueError:
+
             return season
 
     try:
+
         return str(
-            int(season)
+            int(
+                season
+            )
             - 1
         )
 
     except ValueError:
+
         return season
 
 
 if __name__ == "__main__":
+
     raise SystemExit(
         run(
             build_parser()
             .parse_args()
         )
-            )
+    )
