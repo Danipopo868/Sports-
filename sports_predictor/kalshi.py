@@ -111,6 +111,107 @@ MLB_TEAM_ALIASES = {
 }
 
 
+MLB_TEAM_CODES = {
+    "Arizona Diamondbacks": (
+        "ARI",
+    ),
+    "Athletics": (
+        "ATH",
+        "OAK",
+    ),
+    "Atlanta Braves": (
+        "ATL",
+    ),
+    "Baltimore Orioles": (
+        "BAL",
+    ),
+    "Boston Red Sox": (
+        "BOS",
+    ),
+    "Chicago Cubs": (
+        "CHC",
+    ),
+    "Chicago White Sox": (
+        "CHW",
+        "CWS",
+    ),
+    "Cincinnati Reds": (
+        "CIN",
+    ),
+    "Cleveland Guardians": (
+        "CLE",
+    ),
+    "Colorado Rockies": (
+        "COL",
+    ),
+    "Detroit Tigers": (
+        "DET",
+    ),
+    "Houston Astros": (
+        "HOU",
+    ),
+    "Kansas City Royals": (
+        "KC",
+        "KCR",
+    ),
+    "Los Angeles Angels": (
+        "LAA",
+    ),
+    "Los Angeles Dodgers": (
+        "LAD",
+    ),
+    "Miami Marlins": (
+        "MIA",
+    ),
+    "Milwaukee Brewers": (
+        "MIL",
+    ),
+    "Minnesota Twins": (
+        "MIN",
+    ),
+    "New York Mets": (
+        "NYM",
+    ),
+    "New York Yankees": (
+        "NYY",
+    ),
+    "Philadelphia Phillies": (
+        "PHI",
+    ),
+    "Pittsburgh Pirates": (
+        "PIT",
+    ),
+    "San Diego Padres": (
+        "SD",
+        "SDP",
+    ),
+    "San Francisco Giants": (
+        "SF",
+        "SFG",
+    ),
+    "Seattle Mariners": (
+        "SEA",
+    ),
+    "St. Louis Cardinals": (
+        "STL",
+    ),
+    "Tampa Bay Rays": (
+        "TB",
+        "TBR",
+    ),
+    "Texas Rangers": (
+        "TEX",
+    ),
+    "Toronto Blue Jays": (
+        "TOR",
+    ),
+    "Washington Nationals": (
+        "WSH",
+        "WAS",
+    ),
+}
+
+
 def _plain(value: Any) -> str:
     text = str(
         value or ""
@@ -344,6 +445,58 @@ def _matchup_matches(
             1,
         )
     )
+
+    event_text = _compact(
+        " ".join(
+            (
+                str(
+                    market.get(
+                        "event_ticker"
+                    )
+                    or ""
+                ),
+                str(
+                    market.get(
+                        "ticker"
+                    )
+                    or ""
+                ),
+            )
+        )
+    )
+
+    away_codes = (
+        MLB_TEAM_CODES.get(
+            away,
+            (),
+        )
+    )
+
+    home_codes = (
+        MLB_TEAM_CODES.get(
+            home,
+            (),
+        )
+    )
+
+    for away_code in away_codes:
+        for home_code in home_codes:
+
+            pair = _compact(
+                away_code
+                + home_code
+            )
+
+            reverse_pair = _compact(
+                home_code
+                + away_code
+            )
+
+            if (
+                pair in event_text
+                or reverse_pair in event_text
+            ):
+                return True
 
     away_aliases = tuple(
         _compact(alias)
