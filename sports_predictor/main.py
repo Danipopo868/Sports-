@@ -8,7 +8,7 @@ import sys
 import threading
 import time
 from dataclasses import replace
-from datetime import datetime
+from datetime import datetime, timezone as dt_timezone
 from pathlib import Path
 from typing import Any
 from zoneinfo import ZoneInfo
@@ -136,8 +136,13 @@ class SportsAnalyzer:
 
                 for recommendation in recommendations:
 
+                    quote_time = datetime.now(
+                        dt_timezone.utc
+                    )
+
                     try:
 
+                        # Primero: precio ACTUAL del mercado abierto.
                         kalshi_quote = find_kalshi_quote(
                             selection=(
                                 recommendation.selection
@@ -149,6 +154,24 @@ class SportsAnalyzer:
                                 recommendation.market
                             ),
                         )
+
+                        # Si el mercado ya cerró/se liquidó, intenta
+                        # recuperar el trade más cercano al momento
+                        # exacto de esta predicción.
+                        if not kalshi_quote:
+
+                            kalshi_quote = find_kalshi_quote(
+                                selection=(
+                                    recommendation.selection
+                                ),
+                                matchup=(
+                                    recommendation.matchup
+                                ),
+                                market=(
+                                    recommendation.market
+                                ),
+                                at_time=quote_time,
+                            )
 
                     except Exception as exc:
 
@@ -239,6 +262,7 @@ class SportsAnalyzer:
                             f"{recommendation.selection} | "
                             f"{kalshi_quote.get('side')} | "
                             f"{kalshi_price * 100:.2f}c | "
+                            f"{kalshi_quote.get('price_source')} | "
                             f"{kalshi_quote.get('ticker')}"
                         ),
                         flush=True,
@@ -315,6 +339,7 @@ class SportsAnalyzer:
                 }
 
         return results
+
     def _forms_for_games(
         self,
         sport: str,
