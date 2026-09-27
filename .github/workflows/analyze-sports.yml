@@ -16,7 +16,6 @@ jobs:
     timeout-minutes: 30
 
     steps:
-
       - name: Descargar repositorio
         uses: actions/checkout@v4
         with:
@@ -39,9 +38,11 @@ jobs:
             sports_predictor/api.py \
             sports_predictor/engine.py \
             sports_predictor/history.py \
+            sports_predictor/kalshi.py \
             sports_predictor/main.py \
             sports_predictor/mlb.py \
             sports_predictor/report.py \
+            sports_predictor/results.py \
             streamlit_app.py
 
       - name: Crear carpetas
@@ -49,7 +50,7 @@ jobs:
           mkdir -p reports
           mkdir -p dashboard_data
 
-       - name: Analizar todos los partidos del día
+      - name: Analizar todos los partidos del día
         env:
           API_SPORTS_KEY: ${{ secrets.API_SPORTS_KEY }}
           KALSHI_API_KEY_ID: ${{ secrets.KALSHI_API_KEY_ID }}
@@ -74,5 +75,4 @@ jobs:
           git commit -m "Actualizar predicciones deportivas"
 
           git pull --rebase origin main || true
-
           git push origin main
