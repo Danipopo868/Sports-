@@ -1,6 +1,6 @@
 # Reporte del analizador deportivo
 
-Actualizado: **2026-09-27T01:57:57.378237-05:00**
+Actualizado: **2026-09-27T16:03:17.964002-05:00**
 Fecha deportiva analizada: **2026-09-27**
 Escaneo de la sesión: **#1**
 
@@ -12,57 +12,57 @@ Escaneo de la sesión: **#1**
 
 **APUESTA CON VALOR DETECTADA**
 
-- Partido: St.Louis Cardinals @ Milwaukee Brewers
+- Partido: Chicago Cubs @ Boston Red Sox
 - Mercado: Primeras 5 entradas
-- Selección: **Milwaukee Brewers**
+- Selección: **Chicago Cubs**
 - Mejor cuota decimal: **0.00** (SIN CUOTAS — MODELO MLB)
-- Probabilidad estimada: **80.1%**
+- Probabilidad estimada: **82.0%**
 - Punto de equilibrio: 0.0%
 - Ventaja calculada: **0.0%**
 - Valor esperado por unidad: **0.0%**
 - Casas comparadas: 0
-- Calidad de datos: 73/100
-- Modelo MLB puro: 80.1% para Milwaukee Brewers
+- Calidad de datos: 100/100
+- Modelo MLB puro: 82.0% para Chicago Cubs
 - Cuotas del mercado NO usadas para decidir el ganador
-- Abridores: Andre Pallante vs Jacob Misiorowski
-- OPS temporada: visitante 0.692 | local 0.744
-- OPS split L/R: visitante 0.692 | local 0.744
-- Bullpen/Staff ERA: visitante 4.25 | local 3.51
-- Descanso: visitante 0 día(s) | local 0 día(s)
-- Carga bullpen 3d: visitante 12.3 IP | local 15.3 IP
-- Alineaciones confirmadas: visitante No | local No
-- BvP suficiente: visitante No | local No
-- Estadio/clima: American Family Field | N/D 
-- Cobertura de factores MLB: 73/100
+- Abridores: Shota Imanaga vs Tanner Houck
+- OPS temporada: visitante 0.766 | local 0.717
+- OPS split L/R: visitante 0.766 | local 0.717
+- Bullpen/Staff ERA: visitante 4.12 | local 3.52
+- Descanso: visitante 1 día(s) | local 1 día(s)
+- Carga bullpen 3d: visitante 8.7 IP | local 16.0 IP
+- Alineaciones confirmadas: visitante Sí | local Sí
+- BvP suficiente: visitante Sí | local Sí
+- Estadio/clima: Tropicana Field | Dome 72.0
+- Cobertura de factores MLB: 100/100
 
 ### APUESTA #2
 
 **APUESTA CON VALOR DETECTADA**
 
-- Partido: New York Mets @ Washington Nationals
+- Partido: St.Louis Cardinals @ Milwaukee Brewers
 - Mercado: Primeras 5 entradas
-- Selección: **New York Mets**
+- Selección: **Milwaukee Brewers**
 - Mejor cuota decimal: **0.00** (SIN CUOTAS — MODELO MLB)
-- Probabilidad estimada: **70.8%**
+- Probabilidad estimada: **82.0%**
 - Punto de equilibrio: 0.0%
 - Ventaja calculada: **0.0%**
 - Valor esperado por unidad: **0.0%**
 - Casas comparadas: 0
-- Calidad de datos: 73/100
-- Modelo MLB puro: 70.8% para New York Mets
+- Calidad de datos: 100/100
+- Modelo MLB puro: 82.0% para Milwaukee Brewers
 - Cuotas del mercado NO usadas para decidir el ganador
-- Abridores: Sean Manaea vs DJ Herz
-- OPS temporada: visitante 0.704 | local 0.743
-- OPS split L/R: visitante 0.704 | local 0.743
-- Bullpen/Staff ERA: visitante 4.14 | local 4.67
+- Abridores: Andre Pallante vs Jacob Misiorowski
+- OPS temporada: visitante 0.690 | local 0.744
+- OPS split L/R: visitante 0.690 | local 0.744
+- Bullpen/Staff ERA: visitante 4.27 | local 3.49
 - Descanso: visitante 0 día(s) | local 0 día(s)
-- Carga bullpen 3d: visitante 13.3 IP | local 10.3 IP
-- Alineaciones confirmadas: visitante No | local No
-- BvP suficiente: visitante No | local No
-- Estadio/clima: Nationals Park | N/D 
-- Cobertura de factores MLB: 73/100
+- Carga bullpen 3d: visitante 12.3 IP | local 15.3 IP
+- Alineaciones confirmadas: visitante Sí | local Sí
+- BvP suficiente: visitante Sí | local Sí
+- Estadio/clima: American Family Field | Partly Cloudy 70.0
+- Cobertura de factores MLB: 100/100
 
-Partidos revisados: 28 · Cuotas válidas: 0
+Partidos revisados: 15 · Cuotas válidas: 0
 
 ## NFL — Fútbol americano
 
@@ -72,23 +72,15 @@ Partidos revisados: 28 · Cuotas válidas: 0
 - Ningún juego NFL superó simultáneamente la probabilidad mínima, la calidad mínima y el historial mínimo exigido.
 
 La opción más cercana fue descartada:
-- Buffalo Bills — Ganador del partido
+- San Francisco 49ers — Ganador del partido
 - Probabilidad estimada: 53.5%
 - Ventaja: 0.0%; valor esperado: 0.0%
 - Calidad de datos: 0/100
 
-Partidos revisados: 14 · Cuotas válidas: 0
+Partidos revisados: 5 · Cuotas válidas: 0
 
 ## NBA — Baloncesto
 
-**NO APOSTAR**
+**NO APOSTAR — datos incompletos**
 
-- Ninguna opción superó simultáneamente todos los filtros de valor y calidad.
-
-La opción más cercana fue descartada:
-- Bears Academy — Ganador del partido
-- Probabilidad estimada: 44.2%
-- Ventaja: 36.5%; valor esperado: 474.1%
-- Calidad de datos: 31/100
-
-Partidos revisados: 129 · Cuotas válidas: 264
+Motivo: NBA games: {'requests': 'You have reached the request limit for the day, Go to https://dashboard.api-football.com to upgrade your plan.'}
