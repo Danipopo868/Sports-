@@ -1,6 +1,6 @@
 # Reporte del analizador deportivo
 
-Actualizado: **2026-09-27T16:20:07.810367-05:00**
+Actualizado: **2026-09-27T16:36:17.323772-05:00**
 Fecha deportiva analizada: **2026-09-27**
 Escaneo de la sesión: **#1**
 
@@ -25,9 +25,9 @@ Escaneo de la sesión: **#1**
 - Modelo MLB puro: 82.0% para Chicago Cubs
 - Cuotas del mercado NO usadas para decidir el ganador
 - Abridores: Shota Imanaga vs Tanner Houck
-- OPS temporada: visitante 0.766 | local 0.717
-- OPS split L/R: visitante 0.766 | local 0.717
-- Bullpen/Staff ERA: visitante 4.12 | local 3.52
+- OPS temporada: visitante 0.767 | local 0.717
+- OPS split L/R: visitante 0.767 | local 0.717
+- Bullpen/Staff ERA: visitante 4.12 | local 3.53
 - Descanso: visitante 1 día(s) | local 1 día(s)
 - Carga bullpen 3d: visitante 8.7 IP | local 16.0 IP
 - Alineaciones confirmadas: visitante Sí | local Sí
@@ -52,9 +52,9 @@ Escaneo de la sesión: **#1**
 - Modelo MLB puro: 82.0% para Milwaukee Brewers
 - Cuotas del mercado NO usadas para decidir el ganador
 - Abridores: Andre Pallante vs Jacob Misiorowski
-- OPS temporada: visitante 0.692 | local 0.744
-- OPS split L/R: visitante 0.692 | local 0.744
-- Bullpen/Staff ERA: visitante 4.27 | local 3.52
+- OPS temporada: visitante 0.691 | local 0.744
+- OPS split L/R: visitante 0.691 | local 0.744
+- Bullpen/Staff ERA: visitante 4.27 | local 3.51
 - Descanso: visitante 0 día(s) | local 0 día(s)
 - Carga bullpen 3d: visitante 12.3 IP | local 15.3 IP
 - Alineaciones confirmadas: visitante Sí | local Sí
@@ -62,7 +62,7 @@ Escaneo de la sesión: **#1**
 - Estadio/clima: American Family Field | Partly Cloudy 70.0
 - Cobertura de factores MLB: 100/100
 
-Partidos revisados: 15 · Cuotas válidas: 0
+Partidos revisados: 13 · Cuotas válidas: 0
 
 ## NFL — Fútbol americano
 
