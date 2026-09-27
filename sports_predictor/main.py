@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import signal
 import sys
 import threading
@@ -129,20 +130,58 @@ class SportsAnalyzer:
                 )
 
                 # ==========================================
-                # PONER PRECIO REAL DE KALSHI
+                # NO CREAR F5 SI EL PARTIDO YA EMPEZO
+                # ==========================================
+
+                if sport == "MLB":
+
+                    now_utc = datetime.now(
+                        dt_timezone.utc
+                    )
+
+                    valid_recommendations = []
+
+                    for recommendation in recommendations:
+
+                        if (
+                            recommendation.market
+                            == "Primeras 5 entradas"
+                            and _game_has_started(
+                                recommendation.start,
+                                now_utc,
+                            )
+                        ):
+
+                            print(
+                                (
+                                    "F5 OMITIDA | "
+                                    "PARTIDO YA EMPEZO | "
+                                    f"{recommendation.matchup} | "
+                                    f"inicio={recommendation.start}"
+                                ),
+                                flush=True,
+                            )
+
+                            continue
+
+                        valid_recommendations.append(
+                            recommendation
+                        )
+
+                    recommendations = (
+                        valid_recommendations
+                    )
+
+                # ==========================================
+                # PONER PRECIO REAL ACTUAL DE KALSHI
                 # ==========================================
 
                 recommendations_with_kalshi = []
 
                 for recommendation in recommendations:
 
-                    quote_time = datetime.now(
-                        dt_timezone.utc
-                    )
-
                     try:
 
-                        # Primero: precio ACTUAL del mercado abierto.
                         kalshi_quote = find_kalshi_quote(
                             selection=(
                                 recommendation.selection
@@ -154,24 +193,6 @@ class SportsAnalyzer:
                                 recommendation.market
                             ),
                         )
-
-                        # Si el mercado ya cerró/se liquidó, intenta
-                        # recuperar el trade más cercano al momento
-                        # exacto de esta predicción.
-                        if not kalshi_quote:
-
-                            kalshi_quote = find_kalshi_quote(
-                                selection=(
-                                    recommendation.selection
-                                ),
-                                matchup=(
-                                    recommendation.matchup
-                                ),
-                                market=(
-                                    recommendation.market
-                                ),
-                                at_time=quote_time,
-                            )
 
                     except Exception as exc:
 
@@ -262,7 +283,6 @@ class SportsAnalyzer:
                             f"{recommendation.selection} | "
                             f"{kalshi_quote.get('side')} | "
                             f"{kalshi_price * 100:.2f}c | "
-                            f"{kalshi_quote.get('price_source')} | "
                             f"{kalshi_quote.get('ticker')}"
                         ),
                         flush=True,
@@ -482,6 +502,116 @@ class SportsAnalyzer:
             )
 
         return matchups
+        def _parse_game_start(
+    value: Any,
+) -> datetime | None:
+
+    if isinstance(
+        value,
+        datetime,
+    ):
+        dt = value
+
+    elif isinstance(
+        value,
+        (int, float),
+    ):
+
+        timestamp = float(
+            value
+        )
+
+        if timestamp > 10_000_000_000:
+            timestamp /= 1000.0
+
+        try:
+
+            return datetime.fromtimestamp(
+                timestamp,
+                tz=dt_timezone.utc,
+            )
+
+        except (
+            OSError,
+            OverflowError,
+            ValueError,
+        ):
+            return None
+
+    else:
+
+        text = str(
+            value or ""
+        ).strip()
+
+        if not text:
+            return None
+
+        if re.fullmatch(
+            r"\d+(?:\.\d+)?",
+            text,
+        ):
+
+            timestamp = float(
+                text
+            )
+
+            if timestamp > 10_000_000_000:
+                timestamp /= 1000.0
+
+            try:
+
+                return datetime.fromtimestamp(
+                    timestamp,
+                    tz=dt_timezone.utc,
+                )
+
+            except (
+                OSError,
+                OverflowError,
+                ValueError,
+            ):
+                return None
+
+        try:
+
+            dt = datetime.fromisoformat(
+                text.replace(
+                    "Z",
+                    "+00:00",
+                )
+            )
+
+        except ValueError:
+            return None
+
+    if dt.tzinfo is None:
+
+        dt = dt.replace(
+            tzinfo=dt_timezone.utc
+        )
+
+    return dt.astimezone(
+        dt_timezone.utc
+    )
+
+
+def _game_has_started(
+    start: Any,
+    now_utc: datetime,
+) -> bool:
+
+    start_time = _parse_game_start(
+        start
+    )
+
+    if start_time is None:
+        return False
+
+    return (
+        start_time
+        <= now_utc
+    )
 
 
 def run(
@@ -825,4 +955,4 @@ if __name__ == "__main__":
         run(
             build_parser().parse_args()
         )
-    )
+)
