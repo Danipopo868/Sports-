@@ -49,9 +49,11 @@ jobs:
           mkdir -p reports
           mkdir -p dashboard_data
 
-      - name: Analizar todos los partidos del día
+       - name: Analizar todos los partidos del día
         env:
           API_SPORTS_KEY: ${{ secrets.API_SPORTS_KEY }}
+          KALSHI_API_KEY_ID: ${{ secrets.KALSHI_API_KEY_ID }}
+          KALSHI_PRIVATE_KEY: ${{ secrets.KALSHI_PRIVATE_KEY }}
           PYTHONUNBUFFERED: "1"
         run: |
           python -m sports_predictor.main --once
