@@ -72,6 +72,7 @@ class Candidate:
     data_quality: int
     passes_filters: bool
     reasons: tuple[str, ...]
+    kalshi_percent: float | None = None
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
