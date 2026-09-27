@@ -1,6 +1,6 @@
 # Reporte del analizador deportivo
 
-Actualizado: **2026-09-27T00:53:37.485488-05:00**
+Actualizado: **2026-09-27T01:21:02.110380-05:00**
 Fecha deportiva analizada: **2026-09-27**
 Escaneo de la sesión: **#1**
 
@@ -86,9 +86,9 @@ Partidos revisados: 14 · Cuotas válidas: 0
 - Ninguna opción superó simultáneamente todos los filtros de valor y calidad.
 
 La opción más cercana fue descartada:
-- Siauliai — Ganador del partido
-- Probabilidad estimada: 42.7%
-- Ventaja: 34.4%; valor esperado: 412.5%
+- Yokohama — Ganador del partido
+- Probabilidad estimada: 46.0%
+- Ventaja: 27.3%; valor esperado: 145.8%
 - Calidad de datos: 45/100
 
-Partidos revisados: 134 · Cuotas válidas: 314
+Partidos revisados: 131 · Cuotas válidas: 186
