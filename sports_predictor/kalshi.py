@@ -1079,6 +1079,32 @@ def find_kalshi_quote(
             )
         )
 
+        print(
+            (
+                "KALSHI DEBUG | "
+                f"seleccion={selection} | "
+                f"mercado={market} | "
+                f"status={status} | "
+                f"serie={series_ticker} | "
+                f"cantidad={len(markets)}"
+            ),
+            flush=True,
+        )
+
+        for debug_market in markets[:10]:
+
+            print(
+                (
+                    "KALSHI MARKET | "
+                    f"{debug_market.get('ticker')} | "
+                    f"title={debug_market.get('title')} | "
+                    f"subtitle={debug_market.get('subtitle')} | "
+                    f"YES={debug_market.get('yes_sub_title')} | "
+                    f"NO={debug_market.get('no_sub_title')}"
+                ),
+                flush=True,
+            )
+
         for kalshi_market in markets:
 
             text = (
