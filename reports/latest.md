@@ -1,6 +1,6 @@
 # Reporte del analizador deportivo
 
-Actualizado: **2026-09-27T16:03:17.964002-05:00**
+Actualizado: **2026-09-27T16:20:07.810367-05:00**
 Fecha deportiva analizada: **2026-09-27**
 Escaneo de la sesión: **#1**
 
@@ -52,9 +52,9 @@ Escaneo de la sesión: **#1**
 - Modelo MLB puro: 82.0% para Milwaukee Brewers
 - Cuotas del mercado NO usadas para decidir el ganador
 - Abridores: Andre Pallante vs Jacob Misiorowski
-- OPS temporada: visitante 0.690 | local 0.744
-- OPS split L/R: visitante 0.690 | local 0.744
-- Bullpen/Staff ERA: visitante 4.27 | local 3.49
+- OPS temporada: visitante 0.692 | local 0.744
+- OPS split L/R: visitante 0.692 | local 0.744
+- Bullpen/Staff ERA: visitante 4.27 | local 3.52
 - Descanso: visitante 0 día(s) | local 0 día(s)
 - Carga bullpen 3d: visitante 12.3 IP | local 15.3 IP
 - Alineaciones confirmadas: visitante Sí | local Sí
