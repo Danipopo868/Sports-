@@ -502,7 +502,7 @@ class SportsAnalyzer:
             )
 
         return matchups
-        def _parse_game_start(
+def _parse_game_start(
     value: Any,
 ) -> datetime | None:
 
