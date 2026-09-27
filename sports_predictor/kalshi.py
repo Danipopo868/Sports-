@@ -20,7 +20,11 @@ def _plain(value: Any) -> str:
         .decode()
     )
 
-    text = re.sub(r"\bst[.]?\b", "state", text)
+    text = re.sub(
+        r"\bst[.]?\b",
+        "state",
+        text,
+    )
 
     return re.sub(
         r"[^a-z0-9]+",
@@ -149,11 +153,15 @@ def _selection_side(
         return "NO"
 
     yes_sub = _compact(
-        market.get("yes_sub_title")
+        market.get(
+            "yes_sub_title"
+        )
     )
 
     no_sub = _compact(
-        market.get("no_sub_title")
+        market.get(
+            "no_sub_title"
+        )
     )
 
     if (
@@ -250,7 +258,10 @@ def _current_side_price(
     *,
     market: dict[str, Any],
     side: str,
-) -> tuple[float | None, str | None]:
+) -> tuple[
+    float | None,
+    str | None,
+]:
 
     if side == "YES":
 
@@ -282,6 +293,7 @@ def _current_side_price(
         )
 
         for value, source in candidates:
+
             price = _price_to_dollars(
                 value
             )
@@ -309,6 +321,7 @@ def _current_side_price(
         )
 
         for value, source in candidates:
+
             price = _price_to_dollars(
                 value
             )
@@ -323,6 +336,7 @@ def _current_side_price(
         )
 
         if yes_last is None:
+
             yes_last = _price_to_dollars(
                 market.get(
                     "last_price"
@@ -330,9 +344,17 @@ def _current_side_price(
             )
 
         if yes_last is not None:
-            no_price = 1.0 - yes_last
 
-            if 0 < no_price < 1:
+            no_price = (
+                1.0
+                - yes_last
+            )
+
+            if (
+                0
+                < no_price
+                < 1
+            ):
                 return (
                     no_price,
                     "LAST_PRICE_COMPLEMENT",
@@ -352,6 +374,7 @@ def _parse_time(
         dt = value
 
     else:
+
         text = str(
             value or ""
         ).strip()
@@ -360,16 +383,19 @@ def _parse_time(
             return None
 
         try:
+
             dt = datetime.fromisoformat(
                 text.replace(
                     "Z",
                     "+00:00",
                 )
             )
+
         except ValueError:
             return None
 
     if dt.tzinfo is None:
+
         dt = dt.replace(
             tzinfo=timezone.utc
         )
@@ -401,11 +427,14 @@ def _trade_time(
             value,
             (int, float),
         ):
+
             try:
+
                 return datetime.fromtimestamp(
                     float(value),
                     tz=timezone.utc,
                 )
+
             except (
                 OSError,
                 OverflowError,
@@ -435,8 +464,11 @@ def _trade_side_price(
             "yes_price_dollars",
             "yes_price",
         ):
+
             price = _price_to_dollars(
-                trade.get(field)
+                trade.get(
+                    field
+                )
             )
 
             if price is not None:
@@ -450,8 +482,11 @@ def _trade_side_price(
             "no_price_dollars",
             "no_price",
         ):
+
             price = _price_to_dollars(
-                trade.get(field)
+                trade.get(
+                    field
+                )
             )
 
             if price is not None:
@@ -463,17 +498,28 @@ def _trade_side_price(
             "yes_price_dollars",
             "yes_price",
         ):
+
             yes_price = _price_to_dollars(
-                trade.get(field)
+                trade.get(
+                    field
+                )
             )
 
             if yes_price is not None:
                 break
 
         if yes_price is not None:
-            no_price = 1.0 - yes_price
 
-            if 0 < no_price < 1:
+            no_price = (
+                1.0
+                - yes_price
+            )
+
+            if (
+                0
+                < no_price
+                < 1
+            ):
                 return no_price
 
     return None
@@ -497,13 +543,19 @@ def _historical_trade_price(
 
     for seconds in windows:
 
-        min_ts = int(
-            at_time.timestamp()
-        ) - seconds
+        min_ts = (
+            int(
+                at_time.timestamp()
+            )
+            - seconds
+        )
 
-        max_ts = int(
-            at_time.timestamp()
-        ) + seconds
+        max_ts = (
+            int(
+                at_time.timestamp()
+            )
+            + seconds
+        )
 
         params = {
             "ticker": ticker,
@@ -514,8 +566,14 @@ def _historical_trade_price(
         }
 
         urls = (
-            f"{KALSHI_BASE_URL}/markets/trades",
-            f"{KALSHI_BASE_URL}/historical/trades",
+            (
+                f"{KALSHI_BASE_URL}"
+                "/markets/trades"
+            ),
+            (
+                f"{KALSHI_BASE_URL}"
+                "/historical/trades"
+            ),
         )
 
         for url in urls:
@@ -528,7 +586,10 @@ def _historical_trade_price(
                     timeout=15,
                 )
 
-                if response.status_code >= 400:
+                if (
+                    response.status_code
+                    >= 400
+                ):
                     continue
 
                 payload = response.json()
@@ -605,7 +666,11 @@ def _historical_trade_price(
                     )
                 )
 
-                _distance, moment, price = valid[0]
+                (
+                    _distance,
+                    moment,
+                    price,
+                ) = valid[0]
 
                 return (
                     price,
@@ -623,6 +688,7 @@ def _historical_trade_price(
 def _fetch_markets(
     *,
     status: str | None,
+    series_ticker: str | None = None,
 ) -> list[
     dict[str, Any]
 ]:
@@ -635,12 +701,20 @@ def _fetch_markets(
 
     for _page in range(20):
 
-        params: dict[str, Any] = {
+        params: dict[
+            str,
+            Any,
+        ] = {
             "limit": 200,
         }
 
         if status:
             params["status"] = status
+
+        if series_ticker:
+            params[
+                "series_ticker"
+            ] = series_ticker
 
         if cursor:
             params["cursor"] = cursor
@@ -648,12 +722,18 @@ def _fetch_markets(
         try:
 
             response = requests.get(
-                f"{KALSHI_BASE_URL}/markets",
+                (
+                    f"{KALSHI_BASE_URL}"
+                    "/markets"
+                ),
                 params=params,
                 timeout=15,
             )
 
-            if response.status_code >= 400:
+            if (
+                response.status_code
+                >= 400
+            ):
                 return found
 
             payload = response.json()
@@ -681,6 +761,7 @@ def _fetch_markets(
                 market,
                 dict,
             ):
+
                 found.append(
                     market
                 )
@@ -716,6 +797,30 @@ def find_kalshi_quote(
         at_time
     )
 
+    requested_market = _plain(
+        market
+    )
+
+    if requested_market == _plain(
+        "Primeras 5 entradas"
+    ):
+
+        series_ticker = (
+            "KXMLBF5"
+        )
+
+    elif requested_market == _plain(
+        "Ganador del partido"
+    ):
+
+        series_ticker = (
+            "KXMLBGAME"
+        )
+
+    else:
+
+        series_ticker = None
+
     statuses: tuple[
         str | None,
         ...
@@ -733,7 +838,8 @@ def find_kalshi_quote(
     for status in statuses:
 
         markets = _fetch_markets(
-            status=status
+            status=status,
+            series_ticker=series_ticker,
         )
 
         for kalshi_market in markets:
@@ -772,7 +878,10 @@ def find_kalshi_quote(
             if not ticker:
                 continue
 
-            if ticker in checked_tickers:
+            if (
+                ticker
+                in checked_tickers
+            ):
                 continue
 
             checked_tickers.add(
@@ -791,7 +900,10 @@ def find_kalshi_quote(
                     at_time=requested_time,
                 )
 
-                if historical_price is not None:
+                if (
+                    historical_price
+                    is not None
+                ):
 
                     percent = (
                         historical_price
@@ -848,14 +960,18 @@ def find_kalshi_quote(
 
                     return result
 
-            current_price, source = (
-                _current_side_price(
-                    market=kalshi_market,
-                    side=side,
-                )
+            (
+                current_price,
+                source,
+            ) = _current_side_price(
+                market=kalshi_market,
+                side=side,
             )
 
-            if current_price is not None:
+            if (
+                current_price
+                is not None
+            ):
 
                 percent = (
                     current_price
@@ -878,7 +994,9 @@ def find_kalshi_quote(
                         percent,
                         6,
                     ),
-                    "price_source": source,
+                    "price_source": (
+                        source
+                    ),
                     "price_time": None,
                     "market_status": (
                         kalshi_market.get(
@@ -936,9 +1054,11 @@ def find_kalshi_percent(
         return None
 
     try:
+
         return float(
             quote["percent"]
         )
+
     except (
         KeyError,
         TypeError,
