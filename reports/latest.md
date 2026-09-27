@@ -1,6 +1,6 @@
 # Reporte del analizador deportivo
 
-Actualizado: **2026-09-27T01:31:45.641252-05:00**
+Actualizado: **2026-09-27T01:45:45.253987-05:00**
 Fecha deportiva analizada: **2026-09-27**
 Escaneo de la sesión: **#1**
 
@@ -86,9 +86,9 @@ Partidos revisados: 14 · Cuotas válidas: 0
 - Ninguna opción superó simultáneamente todos los filtros de valor y calidad.
 
 La opción más cercana fue descartada:
-- Yokohama — Ganador del partido
-- Probabilidad estimada: 46.0%
-- Ventaja: 27.3%; valor esperado: 145.8%
-- Calidad de datos: 45/100
+- PAOK — Ganador del partido
+- Probabilidad estimada: 45.4%
+- Ventaja: 27.5%; valor esperado: 154.1%
+- Calidad de datos: 38/100
 
-Partidos revisados: 130 · Cuotas válidas: 188
+Partidos revisados: 130 · Cuotas válidas: 308
