@@ -23,6 +23,11 @@ ESPN_NFL_BASE = (
     "sports/football/nfl"
 )
 
+ESPN_NCAAF_BASE = (
+    "https://site.api.espn.com/apis/site/v2/"
+    "sports/football/college-football"
+)
+
 
 class ApiSportsError(RuntimeError):
     """Error de proveedor. Nunca se sustituyen datos con datos inventados."""
@@ -791,6 +796,68 @@ class ApiSportsClient:
             remaining_requests=None,
         )
 
+
+    # ========================================================
+    # ESPN NCAAF (College Football)
+    # ========================================================
+
+    def _espn_ncaaf_get(
+        self,
+        endpoint: str,
+        params: dict[str, Any] | None = None,
+    ) -> dict[str, Any]:
+        return self._public_get(
+            f"{ESPN_NCAAF_BASE}/{endpoint.lstrip('/')}",
+            params,
+        )
+
+    def _convert_espn_ncaaf_game(
+        self,
+        event: dict[str, Any],
+    ) -> dict[str, Any]:
+        converted = self._convert_espn_nfl_game(event)
+        converted["league"] = {
+            "id": "NCAAF",
+            "name": "NCAAF",
+            "season": (converted.get("league") or {}).get("season"),
+        }
+        converted["_source"] = "ESPN_NCAAF"
+        return converted
+
+    def _espn_ncaaf_games_for_date(
+        self,
+        date_iso: str,
+    ) -> ApiResult:
+        payload = self._espn_ncaaf_get(
+            "scoreboard",
+            {"dates": date_iso.replace("-", ""), "limit": 1000},
+        )
+        converted = [
+            self._convert_espn_ncaaf_game(event)
+            for event in (payload.get("events") or [])
+            if isinstance(event, dict)
+        ]
+        print(
+            f"NCAAF ESPN: {len(converted)} partidos encontrados para {date_iso}."
+        )
+        return ApiResult(response=converted, remaining_requests=None)
+
+    def _espn_ncaaf_team_history(
+        self,
+        team_id: int | str,
+        season: int | str,
+    ) -> ApiResult:
+        payload = self._espn_ncaaf_get(
+            f"teams/{team_id}/schedule",
+            {"season": season},
+        )
+        converted = [
+            self._convert_espn_ncaaf_game(event)
+            for event in (payload.get("events") or [])
+            if isinstance(event, dict)
+        ]
+        return ApiResult(response=converted, remaining_requests=None)
+
     # ========================================================
     # MLB STATS API
     # ========================================================
@@ -1347,6 +1414,13 @@ class ApiSportsClient:
             )
 
         # ====================================================
+        # NCAAF / College Football (ESPN)
+        # ====================================================
+
+        if sport == "NCAAF":
+            return self._espn_ncaaf_games_for_date(date_iso)
+
+        # ====================================================
         # NBA
         # ====================================================
 
@@ -1456,6 +1530,12 @@ class ApiSportsClient:
                     remaining_requests=None,
                 )
 
+        if sport == "NCAAF":
+            return self._espn_ncaaf_team_history(
+                team_id=team_id,
+                season=season,
+            )
+
         if sport == "NBA":
 
             return self._get(
@@ -1517,6 +1597,13 @@ class ApiSportsClient:
         date_iso: str,
         game_ids: list[int | str],
     ) -> ApiResult:
+
+        if sport == "NCAAF":
+            print(
+                "NCAAF: juegos obtenidos desde ESPN. "
+                "Las cuotas deportivas no participan en la predicción."
+            )
+            return ApiResult(response=[], remaining_requests=None)
 
         if (
             sport == "NFL"
