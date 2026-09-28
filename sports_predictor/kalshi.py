@@ -606,32 +606,21 @@ def _correct_market_type(
         kalshi_text
     )
 
-    f5_tokens = (
-        "first 5",
-        "first five",
-        "1st 5",
-        "first 5 innings",
-        "first five innings",
-        "5 innings",
-        "through 5 innings",
-        "through five innings",
-        "f5",
-    )
-
-    is_f5_market = any(
-        token in text
-        for token in f5_tokens
-    )
-
+    # La serie ya limita la busqueda al producto correcto:
+    # KXMLBF5 = primeras 5 entradas.
+    # No exigir que el titulo de cada contrato repita "first 5"/"f5",
+    # porque Kalshi puede omitir ese texto en title/subtitle.
     if requested == _plain(
         "Primeras 5 entradas"
     ):
-        return is_f5_market
+        return True
 
+    # KXMLBGAME/KXNFLGAME/KXNBAGAME ya son mercados
+    # de ganador del partido. Tampoco hace falta inferirlo del titulo.
     if requested == _plain(
         "Ganador del partido"
     ):
-        return not is_f5_market
+        return True
 
     return False
 
