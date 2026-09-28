@@ -360,10 +360,89 @@ class SportsAnalyzer:
                     / "prediction_history.json"
                 )
 
+                # ==========================================
+                # RECUPERAR PARTIDOS HISTORICOS PENDIENTES
+                # SOLO PARA RESOLVER HISTORIAL.
+                # NO ENTRAN EN EL MODELO NI EN LA PREDICCION.
+                # ==========================================
+
+                history_games = list(normalized)
+                known_history_ids = {
+                    str(game.id)
+                    for game in history_games
+                }
+
+                try:
+                    existing_history = json.loads(
+                        history_file.read_text(encoding="utf-8")
+                    ) if history_file.exists() else []
+                except (OSError, json.JSONDecodeError):
+                    existing_history = []
+
+                pending_dates: set[str] = set()
+
+                for old_row in existing_history:
+                    if (
+                        not isinstance(old_row, dict)
+                        or str(old_row.get("sport") or "").upper() != sport
+                        or old_row.get("status") != "PENDIENTE"
+                    ):
+                        continue
+
+                    old_start = _parse_game_start(
+                        old_row.get("start")
+                    )
+
+                    if old_start is None:
+                        continue
+
+                    old_date = old_start.date().isoformat()
+
+                    if old_date != date_iso:
+                        pending_dates.add(old_date)
+
+                for pending_date in sorted(pending_dates):
+                    try:
+                        old_game_result = self.client.games_for_date(
+                            sport,
+                            pending_date,
+                        )
+                        old_normalized = normalize_games(
+                            sport,
+                            old_game_result.response,
+                        )
+                    except (ApiSportsError, ValueError) as exc:
+                        print(
+                            (
+                                "HISTORIAL JUEGOS ERROR | "
+                                f"{sport} | {pending_date} | {exc}"
+                            ),
+                            flush=True,
+                        )
+                        continue
+
+                    for old_game in old_normalized:
+                        old_game_id = str(old_game.id)
+
+                        if old_game_id in known_history_ids:
+                            continue
+
+                        history_games.append(old_game)
+                        known_history_ids.add(old_game_id)
+
+                    print(
+                        (
+                            "HISTORIAL JUEGOS | "
+                            f"{sport} | {pending_date} | "
+                            f"recuperados={len(old_normalized)}"
+                        ),
+                        flush=True,
+                    )
+
                 history_rows = update_history(
                     history_file,
                     sport,
-                    normalized,
+                    history_games,
                     recommendations,
                     datetime.now(),
                 )
