@@ -173,10 +173,16 @@ class SportsAnalyzer:
                     )
 
                 # ==========================================
-                # PONER PRECIO REAL ACTUAL DE KALSHI
+                # CUOTA KALSHI SOLO PARA CALCULAR PAGO
+                # NO CAMBIA LA PREDICCION DEL MOTOR
                 # ==========================================
 
                 recommendations_with_kalshi = []
+                kalshi_quotes_found = 0
+                kalshi_financial: dict[
+                    str,
+                    dict[str, Any],
+                ] = {}
 
                 for recommendation in recommendations:
 
@@ -191,6 +197,10 @@ class SportsAnalyzer:
                             ),
                             market=(
                                 recommendation.market
+                            ),
+                            sport=sport,
+                            game_start=(
+                                recommendation.start
                             ),
                         )
 
@@ -208,6 +218,14 @@ class SportsAnalyzer:
                         kalshi_quote = None
 
                     if not kalshi_quote:
+
+                        # La prediccion queda intacta. Solo marcamos
+                        # que no hubo precio Kalshi para calcular pago.
+                        recommendation = replace(
+                            recommendation,
+                            bookmaker="Kalshi",
+                            decimal_odds=0.0,
+                        )
 
                         recommendations_with_kalshi.append(
                             recommendation
@@ -236,30 +254,24 @@ class SportsAnalyzer:
                         < 1.0
                     ):
 
+                        recommendation = replace(
+                            recommendation,
+                            bookmaker="Kalshi",
+                            decimal_odds=0.0,
+                        )
+
                         recommendations_with_kalshi.append(
                             recommendation
                         )
 
                         continue
 
+                    # Esta cuota decimal se usa UNICAMENTE
+                    # para calcular cobro/ganancia con $100.
+                    # No se recalculan probabilidad, edge ni EV.
                     decimal_odds = (
                         1.0
                         / kalshi_price
-                    )
-
-                    break_even_probability = (
-                        kalshi_price
-                    )
-
-                    edge = (
-                        recommendation.model_probability
-                        - kalshi_price
-                    )
-
-                    expected_value = (
-                        recommendation.model_probability
-                        * decimal_odds
-                        - 1.0
                     )
 
                     recommendation = replace(
@@ -268,21 +280,63 @@ class SportsAnalyzer:
                         decimal_odds=(
                             decimal_odds
                         ),
-                        break_even_probability=(
-                            break_even_probability
-                        ),
-                        edge=edge,
-                        expected_value=(
-                            expected_value
-                        ),
                     )
+
+                    kalshi_quotes_found += 1
+
+                    financial_key = (
+                        f"{sport}|"
+                        f"{recommendation.game_id}|"
+                        f"{recommendation.market}|"
+                        f"{recommendation.selection}"
+                    )
+
+                    kalshi_financial[
+                        financial_key
+                    ] = {
+                        "bookmaker": "Kalshi",
+                        "odds": decimal_odds,
+                        "odds_source": (
+                            "LIVE_AT_RECOMMENDATION"
+                        ),
+                        "stake": 100.0,
+                        "potential_return": (
+                            100.0
+                            * decimal_odds
+                        ),
+                        "potential_profit": (
+                            100.0
+                            * decimal_odds
+                            - 100.0
+                        ),
+                        "kalshi_price": (
+                            kalshi_price
+                        ),
+                        "kalshi_cents": (
+                            kalshi_price
+                            * 100.0
+                        ),
+                        "kalshi_ticker": (
+                            kalshi_quote.get(
+                                "ticker"
+                            )
+                        ),
+                        "kalshi_side": (
+                            kalshi_quote.get(
+                                "side"
+                            )
+                        ),
+                    }
 
                     print(
                         (
-                            "KALSHI APLICADO | "
+                            "KALSHI PAGO | "
                             f"{recommendation.selection} | "
                             f"{kalshi_quote.get('side')} | "
                             f"{kalshi_price * 100:.2f}c | "
+                            f"cuota={decimal_odds:.4f} | "
+                            f"cobro100=${100.0 * decimal_odds:.2f} | "
+                            f"ganancia=${100.0 * decimal_odds - 100.0:.2f} | "
                             f"{kalshi_quote.get('ticker')}"
                         ),
                         flush=True,
@@ -314,9 +368,55 @@ class SportsAnalyzer:
                     datetime.now(),
                 )
 
+                # Si la seleccion ya existia en el historial SIN CUOTA,
+                # completar ahora sus datos financieros de Kalshi.
+                history_changed = False
+
+                for row in history_rows:
+
+                    row_key = str(
+                        row.get("key")
+                        or (
+                            f"{row.get('sport')}|"
+                            f"{row.get('game_id')}|"
+                            f"{row.get('market')}|"
+                            f"{row.get('selection')}"
+                        )
+                    )
+
+                    financial = (
+                        kalshi_financial.get(
+                            row_key
+                        )
+                    )
+
+                    if not financial:
+                        continue
+
+                    row.update(
+                        financial
+                    )
+
+                    history_changed = True
+
+                if history_changed:
+
+                    history_file.write_text(
+                        json.dumps(
+                            history_rows,
+                            ensure_ascii=False,
+                            indent=2,
+                        )
+                        + "\n",
+                        encoding="utf-8",
+                    )
+
                 results[sport] = {
                     "games": len(games),
                     "quotes": len(quotes),
+                    "kalshi_quotes": (
+                        kalshi_quotes_found
+                    ),
                     "remaining_requests": (
                         odds_result.remaining_requests
                     ),
@@ -348,6 +448,7 @@ class SportsAnalyzer:
                 results[sport] = {
                     "games": 0,
                     "quotes": 0,
+                    "kalshi_quotes": 0,
                     "remaining_requests": None,
                     "recommendations": [],
                     "recommendation": None,
