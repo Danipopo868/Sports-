@@ -255,6 +255,21 @@ def valid_odds(
     return odds if odds > 1.0 else None
 
 
+def kalshi_quote_text(
+    odds: float | None,
+) -> str:
+
+    if odds is None:
+        return "—"
+
+    cents = 100.0 / odds
+
+    return (
+        f"{cents:.0f}¢ "
+        f"({odds:.3f}x)"
+    )
+
+
 # ============================================================
 # SEGUIMIENTO FINANCIERO
 # ============================================================
@@ -634,24 +649,30 @@ def render_candidate(
     )
 
     c2.metric(
-        "Mejor cuota",
-        f"{odds:.2f}"
-        if odds is not None
-        else "—",
+        "Cuota Kalshi",
+        kalshi_quote_text(
+            odds
+        ),
     )
 
     c3.metric(
-        "Ventaja",
+        "Ventaja del modelo",
         pct(candidate.get("edge")),
     )
 
     c4.metric(
-        "Valor esperado",
+        "Valor esperado del modelo",
         pct(
             candidate.get(
                 "expected_value"
             )
         ),
+    )
+
+    st.caption(
+        "La cuota de Kalshi se usa solo para calcular "
+        "Apuesta, Cobro y Ganancia. No modifica la "
+        "probabilidad ni la selección del motor."
     )
 
     if odds is not None:
@@ -679,12 +700,13 @@ def render_candidate(
     else:
 
         st.warning(
-            "No hay cuota válida disponible. "
-            "Esta recomendación no se contará en P/L ni ROI."
+            "Kalshi no devolvió una cuota válida para este "
+            "partido. La predicción se mantiene, pero todavía "
+            "no se puede calcular cobro ni ganancia."
         )
 
     st.write(
-        f"**Casa:** "
+        f"**Fuente de pago:** "
         f"{candidate.get('bookmaker', 'No disponible')}"
     )
 
@@ -705,7 +727,9 @@ def render_candidate(
 
         for reason in reasons:
             st.write(f"• {reason}")
-    # ============================================================
+
+
+# ============================================================
 # NO APOSTAR
 # ============================================================
 
@@ -798,7 +822,8 @@ def render_sport(
 
     st.caption(
         f"Partidos revisados: {result.get('games', 0)} · "
-        f"Cuotas válidas: {result.get('quotes', 0)}"
+        f"Cuotas Kalshi encontradas: "
+        f"{result.get('kalshi_quotes', 0)}"
     )
 
 
@@ -1178,7 +1203,23 @@ if history_rows:
             or ""
         ).upper()
 
-        if source in {
+        bookmaker = str(
+            row.get("bookmaker")
+            or ""
+        ).strip()
+
+        is_kalshi = (
+            bookmaker.lower()
+            == "kalshi"
+        )
+
+        if (
+            is_kalshi
+            and odds_value is not None
+        ):
+            source_text = "KALSHI REAL"
+
+        elif source in {
             "REAL",
             "LIVE_AT_RECOMMENDATION",
         }:
@@ -1238,9 +1279,15 @@ if history_rows:
                 "Tipo cuota": source_text,
 
                 "Cuota": (
-                    f"{odds_value:.3f}"
-                    if odds_value is not None
-                    else "—"
+                    kalshi_quote_text(
+                        odds_value
+                    )
+                    if is_kalshi
+                    else (
+                        f"{odds_value:.3f}"
+                        if odds_value is not None
+                        else "—"
+                    )
                 ),
 
                 "Apuesta": (
@@ -1303,13 +1350,11 @@ st.markdown(
     (
         '<div class="footer-note">'
         'Apuesta fija: $100. '
-        'Las operaciones sin cuota válida no se incluyen '
-        'en Apostado, P/L ni ROI. '
-        'REAL indica una cuota registrada por el motor; '
-        'HISTÓRICA F5 indica una cuota histórica del mercado F5; '
-        'ESTIMADA FULL GAME identifica claramente los casos '
-        'donde una apuesta F5 antigua utiliza la cuota histórica '
-        'del partido completo como aproximación.'
+        'La cuota de Kalshi se usa únicamente para calcular '
+        'Cobro, Ganancia, P/L y ROI; no modifica la predicción '
+        'ni la probabilidad del motor. '
+        'Las operaciones sin cuota Kalshi válida no se incluyen '
+        'en los cálculos financieros.'
         '</div>'
     ),
     unsafe_allow_html=True,
