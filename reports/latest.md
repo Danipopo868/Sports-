@@ -1,6 +1,6 @@
 # Reporte del analizador deportivo
 
-Actualizado: **2026-09-27T19:08:13.684952-05:00**
+Actualizado: **2026-09-27T23:22:55.958116-05:00**
 Fecha deportiva analizada: **2026-09-27**
 Escaneo de la sesión: **#1**
 
@@ -27,16 +27,9 @@ Partidos revisados: 2 · Cuotas válidas: 0
 
 **NO APOSTAR**
 
-- NFL analizado SIN cuotas: la selección se calculó con forma reciente y margen de puntos; las cuotas no participaron en la decisión.
-- Ningún juego NFL superó simultáneamente la probabilidad mínima, la calidad mínima y el historial mínimo exigido.
+- No hay partidos disponibles para la fecha analizada.
 
-La opción más cercana fue descartada:
-- Denver Broncos — Ganador del partido
-- Probabilidad estimada: 53.5%
-- Ventaja: 0.0%; valor esperado: 0.0%
-- Calidad de datos: 0/100
-
-Partidos revisados: 1 · Cuotas válidas: 0
+Partidos revisados: 0 · Cuotas válidas: 0
 
 ## NBA — Baloncesto
 
@@ -50,4 +43,4 @@ La opción más cercana fue descartada:
 - Ventaja: 33.8%; valor esperado: 407.1%
 - Calidad de datos: 17/100
 
-Partidos revisados: 15 · Cuotas válidas: 50
+Partidos revisados: 11 · Cuotas válidas: 74
