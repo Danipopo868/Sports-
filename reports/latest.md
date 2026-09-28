@@ -1,6 +1,6 @@
 # Reporte del analizador deportivo
 
-Actualizado: **2026-09-27T18:42:55.662713-05:00**
+Actualizado: **2026-09-27T19:08:13.684952-05:00**
 Fecha deportiva analizada: **2026-09-27**
 Escaneo de la sesión: **#1**
 
@@ -31,15 +31,23 @@ Partidos revisados: 2 · Cuotas válidas: 0
 - Ningún juego NFL superó simultáneamente la probabilidad mínima, la calidad mínima y el historial mínimo exigido.
 
 La opción más cercana fue descartada:
-- Dallas Cowboys — Ganador del partido
+- Denver Broncos — Ganador del partido
 - Probabilidad estimada: 53.5%
 - Ventaja: 0.0%; valor esperado: 0.0%
 - Calidad de datos: 0/100
 
-Partidos revisados: 2 · Cuotas válidas: 0
+Partidos revisados: 1 · Cuotas válidas: 0
 
 ## NBA — Baloncesto
 
-**NO APOSTAR — datos incompletos**
+**NO APOSTAR**
 
-Motivo: NBA games: {'requests': 'You have reached the request limit for the day, Go to https://dashboard.api-football.com to upgrade your plan.'}
+- Ninguna opción superó simultáneamente todos los filtros de valor y calidad.
+
+La opción más cercana fue descartada:
+- Vienna Basket — Ganador del partido
+- Probabilidad estimada: 42.1%
+- Ventaja: 33.8%; valor esperado: 407.1%
+- Calidad de datos: 17/100
+
+Partidos revisados: 15 · Cuotas válidas: 50
