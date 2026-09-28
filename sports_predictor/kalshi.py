@@ -499,8 +499,9 @@ def _series_ticker_for(
     return {
         "MLB": "KXMLBGAME",
         "NFL": "KXNFLGAME",
-        "NCAAF": "KXNCAAFGAME",
         "NBA": "KXNBAGAME",
+        "NCAAF": "KXCFBGAME",
+        "CFB": "KXCFBGAME",
     }.get(
         sport_code
     )
@@ -616,7 +617,7 @@ def _correct_market_type(
     ):
         return True
 
-    # KXMLBGAME/KXNFLGAME/KXNCAAFGAME/KXNBAGAME ya son mercados
+    # KXMLBGAME/KXNFLGAME/KXNBAGAME ya son mercados
     # de ganador del partido. Tampoco hace falta inferirlo del titulo.
     if requested == _plain(
         "Ganador del partido"
