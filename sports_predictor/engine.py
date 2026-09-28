@@ -91,12 +91,14 @@ FINISHED_STATUS_WORDS = {
 SPORT_MARGIN_SCALE = {
     "MLB": 3.0,
     "NFL": 13.0,
+    "NCAAF": 16.0,
     "NBA": 17.0,
 }
 
 HOME_ADVANTAGE_LOGIT = {
     "MLB": 0.10,
     "NFL": 0.14,
+    "NCAAF": 0.12,
     "NBA": 0.16,
 }
 
@@ -684,7 +686,7 @@ def analyze_sport(
 
             continue
 
-        if sport == "NFL":
+        if sport in ("NFL", "NCAAF"):
             home_probability = (
                 form_home_probability_for_game(
                     sport,
@@ -761,7 +763,7 @@ def analyze_sport(
 
             reason_lines = (
                 (
-                    "Modelo NFL sin cuotas: "
+                    f"Modelo {sport} sin cuotas: "
                     f"{probability * 100:.1f}% "
                     f"para {selection}"
                 ),
@@ -793,7 +795,7 @@ def analyze_sport(
                     selection=selection,
                     bookmaker=(
                         "SIN CUOTAS — "
-                        "MODELO NFL"
+                        f"MODELO {sport}"
                     ),
                     decimal_odds=0.0,
                     model_probability=probability,
@@ -1055,7 +1057,7 @@ def analyze_sport(
             reverse=True,
         )
 
-    elif sport == "NFL":
+    elif sport in ("NFL", "NCAAF"):
         best_observed = max(
             all_candidates,
             key=lambda candidate: (
@@ -1175,12 +1177,9 @@ def analyze_sport(
             "deportivo de MLB Stats API."
         )
 
-    elif (
-        sport == "NFL"
-        and not quotes
-    ):
+    elif sport in ("NFL", "NCAAF"):
         notes.append(
-            "NFL analizado SIN cuotas: "
+            f"{sport} analizado SIN cuotas: "
             "la selección se calculó "
             "con forma reciente y margen "
             "de puntos; las cuotas no "
@@ -1210,12 +1209,9 @@ def analyze_sport(
                 "de factores."
             )
 
-        elif (
-            sport == "NFL"
-            and not quotes
-        ):
+        elif sport in ("NFL", "NCAAF"):
             notes.append(
-                "Ningún juego NFL superó "
+                f"Ningún juego {sport} superó "
                 "simultáneamente la "
                 "probabilidad mínima, "
                 "la calidad mínima y "
