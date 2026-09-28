@@ -7,9 +7,12 @@ from typing import Any
 
 from .engine import Candidate, Game, is_finished, score_for_side
 from .kalshi import find_kalshi_quote
+from .mlb import MlbStatsClient
 
 
 DEFAULT_STAKE = 100.0
+
+_MLB = MlbStatsClient()
 
 
 def load_history(
@@ -76,14 +79,53 @@ def _float(
         return None
 
 
+def _game_date(
+    game: Game,
+) -> str | None:
+
+    text = str(
+        game.start
+        or ""
+    ).strip()
+
+    if not text:
+        return None
+
+    try:
+        normalized = text.replace(
+            "Z",
+            "+00:00",
+        )
+
+        dt = datetime.fromisoformat(
+            normalized
+        )
+
+        return dt.date().isoformat()
+
+    except ValueError:
+        pass
+
+    if len(text) >= 10:
+        candidate = text[:10]
+
+        try:
+            datetime.strptime(
+                candidate,
+                "%Y-%m-%d",
+            )
+
+            return candidate
+
+        except ValueError:
+            return None
+
+    return None
+
+
 def _apply_financials(
     row: dict[str, Any],
 ) -> None:
-    """
-    Calcula todo usando SIEMPRE $100.
-    El precio de Kalshi debe venir en dólares:
-    0.61 = 61 centavos.
-    """
 
     price = _float(
         row.get("kalshi_price")
@@ -177,8 +219,6 @@ def _apply_kalshi_quote(
     historical: bool,
 ) -> bool:
 
-    # Si ya tenemos precio Kalshi válido,
-    # no gastamos otra consulta.
     existing = _float(
         row.get("kalshi_price")
     )
@@ -200,10 +240,6 @@ def _apply_kalshi_quote(
         else None
     )
 
-    # IMPORTANTE:
-    # Para filas antiguas usamos:
-    # deporte + partido + fecha + hora original.
-    # Así Kalshi puede recuperar la cuota histórica.
     quote = find_kalshi_quote(
         selection=str(
             row.get("selection")
@@ -228,6 +264,7 @@ def _apply_kalshi_quote(
     )
 
     if not quote:
+
         _apply_financials(
             row
         )
@@ -340,6 +377,138 @@ def _resolve_full_game(
         return
 
     row["final_score"] = (
+        f"{game.away.name} "
+        f"{away_score:g} - "
+        f"{game.home.name} "
+        f"{home_score:g}"
+    )
+
+    if home_score == away_score:
+
+        row["winner"] = None
+        row["result"] = "EMPATE"
+
+    else:
+
+        winner = (
+            game.home.name
+            if home_score > away_score
+            else game.away.name
+        )
+
+        row["winner"] = winner
+
+        row["result"] = (
+            "GANADA"
+            if winner
+            == row.get("selection")
+            else "PERDIDA"
+        )
+
+    row["status"] = "RESUELTA"
+
+    if not row.get(
+        "resolved_at"
+    ):
+        row["resolved_at"] = (
+            generated_at.isoformat()
+        )
+
+    _apply_financials(
+        row
+    )
+
+
+def _resolve_first_five(
+    row: dict[str, Any],
+    game: Game,
+    generated_at: datetime,
+) -> None:
+
+    if not is_finished(
+        game.status
+    ):
+        return
+
+    date_iso = _game_date(
+        game
+    )
+
+    if not date_iso:
+        return
+
+    mlb_game = _MLB._find_game(
+        game.home.name,
+        game.away.name,
+        date_iso,
+    )
+
+    if not mlb_game:
+        return
+
+    game_pk = mlb_game.get(
+        "gamePk"
+    )
+
+    if not game_pk:
+        return
+
+    feed = _MLB._get(
+        f"game/{game_pk}/feed/live",
+        live=True,
+    )
+
+    innings = (
+        feed.get(
+            "liveData",
+            {},
+        )
+        .get(
+            "linescore",
+            {},
+        )
+        .get(
+            "innings",
+            [],
+        )
+    )
+
+    if len(innings) < 5:
+        return
+
+    home_score = 0.0
+    away_score = 0.0
+
+    for inning in innings[:5]:
+
+        home_runs = _float(
+            (
+                inning.get("home")
+                or {}
+            ).get("runs")
+        )
+
+        away_runs = _float(
+            (
+                inning.get("away")
+                or {}
+            ).get("runs")
+        )
+
+        home_score += (
+            home_runs
+            if home_runs is not None
+            else 0.0
+        )
+
+        away_score += (
+            away_runs
+            if away_runs is not None
+            else 0.0
+        )
+
+    row["final_score"] = (
+        f"F5: "
         f"{game.away.name} "
         f"{away_score:g} - "
         f"{game.home.name} "
@@ -554,6 +723,7 @@ def update_history(
     # ====================================
 
     for row in rows:
+
         _normalise_old_row(
             row
         )
@@ -587,7 +757,7 @@ def update_history(
         )
 
     # ====================================
-    # 3. RESOLVER PARTIDOS DISPONIBLES
+    # 3. RESOLVER PARTIDOS
     # ====================================
 
     game_map = {
@@ -631,26 +801,11 @@ def update_history(
             "Primeras 5 entradas"
         ):
 
-            # No usamos el marcador FINAL para
-            # resolver una apuesta F5.
-            #
-            # Si el sistema ya tiene el resultado
-            # F5 correcto, lo conservamos.
-            if row.get(
-                "result"
-            ) in {
-                "GANADA",
-                "PERDIDA",
-                "EMPATE",
-            }:
-
-                row["status"] = (
-                    "RESUELTA"
-                )
-
-                _apply_financials(
-                    row
-                )
+            _resolve_first_five(
+                row,
+                game,
+                generated_at,
+            )
 
     # ====================================
     # 4. CONVERTIR RECOMENDACIONES A LISTA
@@ -756,6 +911,7 @@ def update_history(
     # ====================================
 
     for row in rows:
+
         _apply_financials(
             row
         )
@@ -882,4 +1038,4 @@ def history_summary(
             roi,
             6,
         ),
-    }
+        }
