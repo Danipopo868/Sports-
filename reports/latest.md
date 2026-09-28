@@ -1,6 +1,6 @@
 # Reporte del analizador deportivo
 
-Actualizado: **2026-09-28T11:21:00.423764-05:00**
+Actualizado: **2026-09-28T12:44:38.153583-05:00**
 Fecha deportiva analizada: **2026-09-28**
 Escaneo de la sesión: **#1**
 
@@ -37,8 +37,8 @@ Partidos revisados: 1 · Cuotas válidas: 0
 
 La opción más cercana fue descartada:
 - Bnei Yehuda W — Ganador del partido
-- Probabilidad estimada: 43.6%
-- Ventaja: 31.5%; valor esperado: 259.9%
+- Probabilidad estimada: 43.3%
+- Ventaja: 32.8%; valor esperado: 311.5%
 - Calidad de datos: 45/100
 
-Partidos revisados: 14 · Cuotas válidas: 122
+Partidos revisados: 11 · Cuotas válidas: 146
