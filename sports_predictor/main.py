@@ -29,7 +29,7 @@ from .mlb import MlbStatsClient
 from .report import build_snapshot, save_reports
 
 
-SPORTS = ("MLB", "NFL", "NBA")
+SPORTS = ("MLB", "NFL", "NCAAF", "NBA")
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -1033,7 +1033,7 @@ def build_parser(
 
     parser = argparse.ArgumentParser(
         description=(
-            "Analiza MLB, NFL y NBA "
+            "Analiza MLB, NFL, NCAAF y NBA "
             "sin conectar con ninguna "
             "plataforma de apuestas."
         )
