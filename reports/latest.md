@@ -1,7 +1,7 @@
 # Reporte del analizador deportivo
 
-Actualizado: **2026-09-27T23:22:55.958116-05:00**
-Fecha deportiva analizada: **2026-09-27**
+Actualizado: **2026-09-28T11:21:00.423764-05:00**
+Fecha deportiva analizada: **2026-09-28**
 Escaneo de la sesión: **#1**
 
 > Las probabilidades son estimaciones. El sistema puede indicar NO APOSTAR y nunca garantiza ganancias.
@@ -10,26 +10,24 @@ Escaneo de la sesión: **#1**
 
 **NO APOSTAR**
 
-- LG Twins @ KIA Tigers: F5 omitido porque faltan abridores u ofensiva verificable.
-- LG Twins @ KIA Tigers: ganador final omitido porque faltan datos MLB esenciales.
-- MLB analizado SIN cuotas: el ganador se calculó únicamente con el modelo deportivo de MLB Stats API.
-- Solo un equipo distinto superó todos los filtros; no se repite el mismo equipo para completar una segunda apuesta.
+- No hay partidos disponibles para la fecha analizada.
 
-La opción más cercana fue descartada:
-- Baltimore Orioles — Primeras 5 entradas
-- Probabilidad estimada: 59.1%
-- Ventaja: 0.0%; valor esperado: 0.0%
-- Calidad de datos: 73/100
-
-Partidos revisados: 2 · Cuotas válidas: 0
+Partidos revisados: 0 · Cuotas válidas: 0
 
 ## NFL — Fútbol americano
 
 **NO APOSTAR**
 
-- No hay partidos disponibles para la fecha analizada.
+- NFL analizado SIN cuotas: la selección se calculó con forma reciente y margen de puntos; las cuotas no participaron en la decisión.
+- Ningún juego NFL superó simultáneamente la probabilidad mínima, la calidad mínima y el historial mínimo exigido.
 
-Partidos revisados: 0 · Cuotas válidas: 0
+La opción más cercana fue descartada:
+- Chicago Bears — Ganador del partido
+- Probabilidad estimada: 53.5%
+- Ventaja: 0.0%; valor esperado: 0.0%
+- Calidad de datos: 0/100
+
+Partidos revisados: 1 · Cuotas válidas: 0
 
 ## NBA — Baloncesto
 
@@ -38,9 +36,9 @@ Partidos revisados: 0 · Cuotas válidas: 0
 - Ninguna opción superó simultáneamente todos los filtros de valor y calidad.
 
 La opción más cercana fue descartada:
-- Vienna Basket — Ganador del partido
-- Probabilidad estimada: 42.1%
-- Ventaja: 33.8%; valor esperado: 407.1%
-- Calidad de datos: 17/100
+- Bnei Yehuda W — Ganador del partido
+- Probabilidad estimada: 43.6%
+- Ventaja: 31.5%; valor esperado: 259.9%
+- Calidad de datos: 45/100
 
-Partidos revisados: 11 · Cuotas válidas: 74
+Partidos revisados: 14 · Cuotas válidas: 122

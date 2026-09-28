@@ -1358,12 +1358,13 @@
     "contracts": null,
     "potential_return": null,
     "potential_profit": null,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Milwaukee Brewers",
+    "final_score": "F5: St.Louis Cardinals 0 - Milwaukee Brewers 6",
     "return_amount": null,
-    "profit_loss": null
+    "profit_loss": null,
+    "resolved_at": "2026-09-28T16:21:01.657382"
   },
   {
     "key": "MLB|187576|Primeras 5 entradas|New York Mets",
@@ -1396,12 +1397,13 @@
     "contracts": null,
     "potential_return": null,
     "potential_profit": null,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
+    "status": "RESUELTA",
+    "result": "PERDIDA",
+    "winner": "Washington Nationals",
+    "final_score": "F5: New York Mets 4 - Washington Nationals 5",
     "return_amount": null,
-    "profit_loss": null
+    "profit_loss": null,
+    "resolved_at": "2026-09-28T16:21:01.657382"
   },
   {
     "key": "MLB|187571|Primeras 5 entradas|Chicago Cubs",
@@ -1434,11 +1436,12 @@
     "contracts": null,
     "potential_return": null,
     "potential_profit": null,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Chicago Cubs",
+    "final_score": "F5: Chicago Cubs 3 - Boston Red Sox 2",
     "return_amount": null,
-    "profit_loss": null
+    "profit_loss": null,
+    "resolved_at": "2026-09-28T16:21:01.657382"
   }
 ]
