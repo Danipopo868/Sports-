@@ -213,6 +213,148 @@ MLB_TEAM_CODES = {
 }
 
 
+NFL_TEAM_ALIASES = {
+    "Arizona Cardinals": ("Arizona", "ARI Cardinals", "Cardinals"),
+    "Atlanta Falcons": ("Atlanta", "ATL Falcons", "Falcons"),
+    "Baltimore Ravens": ("Baltimore", "BAL Ravens", "Ravens"),
+    "Buffalo Bills": ("Buffalo", "BUF Bills", "Bills"),
+    "Carolina Panthers": ("Carolina", "CAR Panthers", "Panthers"),
+    "Chicago Bears": ("Chicago", "CHI Bears", "Bears"),
+    "Cincinnati Bengals": ("Cincinnati", "CIN Bengals", "Bengals"),
+    "Cleveland Browns": ("Cleveland", "CLE Browns", "Browns"),
+    "Dallas Cowboys": ("Dallas", "DAL Cowboys", "Cowboys"),
+    "Denver Broncos": ("Denver", "DEN Broncos", "Broncos"),
+    "Detroit Lions": ("Detroit", "DET Lions", "Lions"),
+    "Green Bay Packers": ("Green Bay", "GB Packers", "Packers"),
+    "Houston Texans": ("Houston", "HOU Texans", "Texans"),
+    "Indianapolis Colts": ("Indianapolis", "IND Colts", "Colts"),
+    "Jacksonville Jaguars": ("Jacksonville", "JAX Jaguars", "Jaguars"),
+    "Kansas City Chiefs": ("Kansas City", "KC Chiefs", "Chiefs"),
+    "Las Vegas Raiders": ("Las Vegas", "LV Raiders", "Raiders"),
+    "Los Angeles Chargers": ("Los Angeles C", "LA Chargers", "LAC Chargers", "Chargers"),
+    "Los Angeles Rams": ("Los Angeles R", "LA Rams", "LAR Rams", "Rams"),
+    "Miami Dolphins": ("Miami", "MIA Dolphins", "Dolphins"),
+    "Minnesota Vikings": ("Minnesota", "MIN Vikings", "Vikings"),
+    "New England Patriots": ("New England", "NE Patriots", "Patriots"),
+    "New Orleans Saints": ("New Orleans", "NO Saints", "Saints"),
+    "New York Giants": ("New York G", "NY Giants", "NYG Giants", "Giants"),
+    "New York Jets": ("New York J", "NY Jets", "NYJ Jets", "Jets"),
+    "Philadelphia Eagles": ("Philadelphia", "PHI Eagles", "Eagles"),
+    "Pittsburgh Steelers": ("Pittsburgh", "PIT Steelers", "Steelers"),
+    "San Francisco 49ers": ("San Francisco", "SF 49ers", "49ers"),
+    "Seattle Seahawks": ("Seattle", "SEA Seahawks", "Seahawks"),
+    "Tampa Bay Buccaneers": ("Tampa Bay", "TB Buccaneers", "Buccaneers", "Bucs"),
+    "Tennessee Titans": ("Tennessee", "TEN Titans", "Titans"),
+    "Washington Commanders": ("Washington", "WAS Commanders", "WSH Commanders", "Commanders"),
+}
+
+
+NFL_TEAM_CODES = {
+    "Arizona Cardinals": ("ARI",),
+    "Atlanta Falcons": ("ATL",),
+    "Baltimore Ravens": ("BAL",),
+    "Buffalo Bills": ("BUF",),
+    "Carolina Panthers": ("CAR",),
+    "Chicago Bears": ("CHI",),
+    "Cincinnati Bengals": ("CIN",),
+    "Cleveland Browns": ("CLE",),
+    "Dallas Cowboys": ("DAL",),
+    "Denver Broncos": ("DEN",),
+    "Detroit Lions": ("DET",),
+    "Green Bay Packers": ("GB",),
+    "Houston Texans": ("HOU",),
+    "Indianapolis Colts": ("IND",),
+    "Jacksonville Jaguars": ("JAX",),
+    "Kansas City Chiefs": ("KC",),
+    "Las Vegas Raiders": ("LV",),
+    "Los Angeles Chargers": ("LAC",),
+    "Los Angeles Rams": ("LAR",),
+    "Miami Dolphins": ("MIA",),
+    "Minnesota Vikings": ("MIN",),
+    "New England Patriots": ("NE",),
+    "New Orleans Saints": ("NO",),
+    "New York Giants": ("NYG",),
+    "New York Jets": ("NYJ",),
+    "Philadelphia Eagles": ("PHI",),
+    "Pittsburgh Steelers": ("PIT",),
+    "San Francisco 49ers": ("SF",),
+    "Seattle Seahawks": ("SEA",),
+    "Tampa Bay Buccaneers": ("TB",),
+    "Tennessee Titans": ("TEN",),
+    "Washington Commanders": ("WAS", "WSH"),
+}
+
+
+NBA_TEAM_ALIASES = {
+    "Atlanta Hawks": ("Atlanta", "ATL Hawks", "Hawks"),
+    "Boston Celtics": ("Boston", "BOS Celtics", "Celtics"),
+    "Brooklyn Nets": ("Brooklyn", "BKN Nets", "Nets"),
+    "Charlotte Hornets": ("Charlotte", "CHA Hornets", "Hornets"),
+    "Chicago Bulls": ("Chicago", "CHI Bulls", "Bulls"),
+    "Cleveland Cavaliers": ("Cleveland", "CLE Cavaliers", "Cavaliers", "Cavs"),
+    "Dallas Mavericks": ("Dallas", "DAL Mavericks", "Mavericks", "Mavs"),
+    "Denver Nuggets": ("Denver", "DEN Nuggets", "Nuggets"),
+    "Detroit Pistons": ("Detroit", "DET Pistons", "Pistons"),
+    "Golden State Warriors": ("Golden State", "GSW Warriors", "Warriors"),
+    "Houston Rockets": ("Houston", "HOU Rockets", "Rockets"),
+    "Indiana Pacers": ("Indiana", "IND Pacers", "Pacers"),
+    "Los Angeles Clippers": ("Los Angeles C", "LA Clippers", "LAC Clippers", "Clippers"),
+    "LA Clippers": ("Los Angeles C", "LA Clippers", "LAC Clippers", "Clippers"),
+    "Los Angeles Lakers": ("Los Angeles L", "LA Lakers", "LAL Lakers", "Lakers"),
+    "Memphis Grizzlies": ("Memphis", "MEM Grizzlies", "Grizzlies"),
+    "Miami Heat": ("Miami", "MIA Heat", "Heat"),
+    "Milwaukee Bucks": ("Milwaukee", "MIL Bucks", "Bucks"),
+    "Minnesota Timberwolves": ("Minnesota", "MIN Timberwolves", "Timberwolves", "Wolves"),
+    "New Orleans Pelicans": ("New Orleans", "NOP Pelicans", "Pelicans"),
+    "New York Knicks": ("New York", "New York K", "NY Knicks", "NYK Knicks", "Knicks"),
+    "Oklahoma City Thunder": ("Oklahoma City", "OKC Thunder", "Thunder"),
+    "Orlando Magic": ("Orlando", "ORL Magic", "Magic"),
+    "Philadelphia 76ers": ("Philadelphia", "PHI 76ers", "76ers", "Sixers"),
+    "Phoenix Suns": ("Phoenix", "PHX Suns", "Suns"),
+    "Portland Trail Blazers": ("Portland", "POR Trail Blazers", "Trail Blazers", "Blazers"),
+    "Sacramento Kings": ("Sacramento", "SAC Kings", "Kings"),
+    "San Antonio Spurs": ("San Antonio", "SAS Spurs", "Spurs"),
+    "Toronto Raptors": ("Toronto", "TOR Raptors", "Raptors"),
+    "Utah Jazz": ("Utah", "UTA Jazz", "Jazz"),
+    "Washington Wizards": ("Washington", "WAS Wizards", "WSH Wizards", "Wizards"),
+}
+
+
+NBA_TEAM_CODES = {
+    "Atlanta Hawks": ("ATL",),
+    "Boston Celtics": ("BOS",),
+    "Brooklyn Nets": ("BKN",),
+    "Charlotte Hornets": ("CHA",),
+    "Chicago Bulls": ("CHI",),
+    "Cleveland Cavaliers": ("CLE",),
+    "Dallas Mavericks": ("DAL",),
+    "Denver Nuggets": ("DEN",),
+    "Detroit Pistons": ("DET",),
+    "Golden State Warriors": ("GSW",),
+    "Houston Rockets": ("HOU",),
+    "Indiana Pacers": ("IND",),
+    "Los Angeles Clippers": ("LAC",),
+    "LA Clippers": ("LAC",),
+    "Los Angeles Lakers": ("LAL",),
+    "Memphis Grizzlies": ("MEM",),
+    "Miami Heat": ("MIA",),
+    "Milwaukee Bucks": ("MIL",),
+    "Minnesota Timberwolves": ("MIN",),
+    "New Orleans Pelicans": ("NOP",),
+    "New York Knicks": ("NYK",),
+    "Oklahoma City Thunder": ("OKC",),
+    "Orlando Magic": ("ORL",),
+    "Philadelphia 76ers": ("PHI",),
+    "Phoenix Suns": ("PHX",),
+    "Portland Trail Blazers": ("POR",),
+    "Sacramento Kings": ("SAC",),
+    "San Antonio Spurs": ("SAS",),
+    "Toronto Raptors": ("TOR",),
+    "Utah Jazz": ("UTA",),
+    "Washington Wizards": ("WAS", "WSH"),
+}
+
+
 def _plain(value: Any) -> str:
     text = str(
         value or ""
@@ -256,16 +398,176 @@ def _team_aliases(
 ) -> tuple[str, ...]:
 
     aliases = (
-        MLB_TEAM_ALIASES.get(
-            team,
-            (),
-        )
+        MLB_TEAM_ALIASES.get(team)
+        or NFL_TEAM_ALIASES.get(team)
+        or NBA_TEAM_ALIASES.get(team)
+        or ()
     )
 
     return (
         team,
         *aliases,
     )
+
+
+def _team_codes(
+    team: str,
+) -> tuple[str, ...]:
+
+    return (
+        MLB_TEAM_CODES.get(team)
+        or NFL_TEAM_CODES.get(team)
+        or NBA_TEAM_CODES.get(team)
+        or ()
+    )
+
+
+def _infer_sport(
+    selection: str,
+    matchup: str,
+) -> str | None:
+
+    names = {
+        selection,
+    }
+
+    if "@" in matchup:
+        away, home = (
+            part.strip()
+            for part in matchup.split(
+                "@",
+                1,
+            )
+        )
+        names.update((away, home))
+
+    if any(
+        name in MLB_TEAM_CODES
+        for name in names
+    ):
+        return "MLB"
+
+    if any(
+        name in NFL_TEAM_CODES
+        for name in names
+    ):
+        return "NFL"
+
+    if any(
+        name in NBA_TEAM_CODES
+        for name in names
+    ):
+        return "NBA"
+
+    return None
+
+
+def _series_ticker_for(
+    *,
+    sport: str | None,
+    market: str,
+) -> str | None:
+
+    sport_code = str(
+        sport or ""
+    ).upper().strip()
+
+    requested_market = _plain(
+        market
+    )
+
+    if (
+        requested_market
+        == _plain(
+            "Primeras 5 entradas"
+        )
+    ):
+        return (
+            "KXMLBF5"
+            if sport_code == "MLB"
+            else None
+        )
+
+    if (
+        requested_market
+        != _plain(
+            "Ganador del partido"
+        )
+    ):
+        return None
+
+    return {
+        "MLB": "KXMLBGAME",
+        "NFL": "KXNFLGAME",
+        "NBA": "KXNBAGAME",
+    }.get(
+        sport_code
+    )
+
+
+def _market_game_date(
+    market: dict[str, Any],
+) -> datetime | None:
+
+    for field in (
+        "event_ticker",
+        "ticker",
+    ):
+
+        text = str(
+            market.get(field)
+            or ""
+        ).upper()
+
+        match = re.search(
+            r"-(\d{2}[A-Z]{3}\d{2})",
+            text,
+        )
+
+        if not match:
+            continue
+
+        try:
+            parsed = datetime.strptime(
+                match.group(1),
+                "%y%b%d",
+            )
+        except ValueError:
+            continue
+
+        return parsed.replace(
+            tzinfo=timezone.utc
+        )
+
+    return None
+
+
+def _game_date_matches(
+    *,
+    game_start: str | datetime | None,
+    market: dict[str, Any],
+) -> bool:
+
+    requested = _parse_time(
+        game_start
+    )
+
+    market_date = _market_game_date(
+        market
+    )
+
+    if (
+        requested is None
+        or market_date is None
+    ):
+        return True
+
+    return abs(
+        (
+            market_date.date()
+            - requested.date()
+        ).days
+    ) <= 1
 
 
 def _market_text(
@@ -364,9 +666,8 @@ def _selection_side(
             "",
             code.upper(),
         )
-        for code in MLB_TEAM_CODES.get(
-            selection,
-            (),
+        for code in _team_codes(
+            selection
         )
     }
 
@@ -502,18 +803,12 @@ def _matchup_matches(
         )
     )
 
-    away_codes = (
-        MLB_TEAM_CODES.get(
-            away,
-            (),
-        )
+    away_codes = _team_codes(
+        away
     )
 
-    home_codes = (
-        MLB_TEAM_CODES.get(
-            home,
-            (),
-        )
+    home_codes = _team_codes(
+        home
     )
 
     for away_code in away_codes:
@@ -1198,6 +1493,10 @@ def find_kalshi_quote(
     selection: str,
     matchup: str,
     market: str,
+    sport: str | None = None,
+    game_start: str
+    | datetime
+    | None = None,
     at_time: str
     | datetime
     | None = None,
@@ -1212,37 +1511,22 @@ def find_kalshi_quote(
         )
     )
 
-    requested_market = (
-        _plain(
-            market
+    effective_sport = (
+        str(
+            sport or ""
+        ).upper().strip()
+        or _infer_sport(
+            selection,
+            matchup,
         )
     )
 
-    if (
-        requested_market
-        == _plain(
-            "Primeras 5 entradas"
+    series_ticker = (
+        _series_ticker_for(
+            sport=effective_sport,
+            market=market,
         )
-    ):
-
-        series_ticker = (
-            "KXMLBF5"
-        )
-
-    elif (
-        requested_market
-        == _plain(
-            "Ganador del partido"
-        )
-    ):
-
-        series_ticker = (
-            "KXMLBGAME"
-        )
-
-    else:
-
-        series_ticker = None
+    )
 
     statuses: tuple[
         str | None,
@@ -1273,6 +1557,7 @@ def find_kalshi_quote(
             (
                 "KALSHI DEBUG | "
                 f"seleccion={selection} | "
+                f"deporte={effective_sport} | "
                 f"mercado={market} | "
                 f"status={status} | "
                 f"serie={series_ticker} | "
@@ -1306,6 +1591,12 @@ def find_kalshi_quote(
             if not _correct_market_type(
                 market_name=market,
                 kalshi_text=text,
+            ):
+                continue
+
+            if not _game_date_matches(
+                game_start=game_start,
+                market=kalshi_market,
             ):
                 continue
 
@@ -1508,12 +1799,18 @@ def find_kalshi_percent(
     selection: str,
     matchup: str,
     market: str,
+    sport: str | None = None,
+    game_start: str
+    | datetime
+    | None = None,
 ) -> float | None:
 
     quote = find_kalshi_quote(
         selection=selection,
         matchup=matchup,
         market=market,
+        sport=sport,
+        game_start=game_start,
     )
 
     if quote is None:
