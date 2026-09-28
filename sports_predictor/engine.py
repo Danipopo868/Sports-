@@ -684,10 +684,7 @@ def analyze_sport(
 
             continue
 
-        if (
-            sport == "NFL"
-            and not game_quotes
-        ):
+        if sport == "NFL":
             home_probability = (
                 form_home_probability_for_game(
                     sport,
@@ -1058,10 +1055,7 @@ def analyze_sport(
             reverse=True,
         )
 
-    elif (
-        sport == "NFL"
-        and not quotes
-    ):
+    elif sport == "NFL":
         best_observed = max(
             all_candidates,
             key=lambda candidate: (
