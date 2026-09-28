@@ -1,6 +1,6 @@
 # Reporte del analizador deportivo
 
-Actualizado: **2026-09-28T12:44:38.153583-05:00**
+Actualizado: **2026-09-28T13:33:10.852845-05:00**
 Fecha deportiva analizada: **2026-09-28**
 Escaneo de la sesión: **#1**
 
@@ -36,9 +36,9 @@ Partidos revisados: 1 · Cuotas válidas: 0
 - Ninguna opción superó simultáneamente todos los filtros de valor y calidad.
 
 La opción más cercana fue descartada:
-- Bnei Yehuda W — Ganador del partido
-- Probabilidad estimada: 43.3%
-- Ventaja: 32.8%; valor esperado: 311.5%
+- Latvijas Universitate — Ganador del partido
+- Probabilidad estimada: 44.3%
+- Ventaja: 30.9%; valor esperado: 232.0%
 - Calidad de datos: 45/100
 
-Partidos revisados: 11 · Cuotas válidas: 146
+Partidos revisados: 7 · Cuotas válidas: 98
