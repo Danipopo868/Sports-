@@ -1704,6 +1704,12 @@ def find_kalshi_quote(
 
                     return result
 
+                # Si se pidio una cuota historica, NO usar como sustituto
+                # el precio actual/cerrado/liquidado. Probar el siguiente
+                # mercado coincidente; si ninguno tiene trade historico,
+                # la funcion terminara devolviendo None.
+                continue
+
             (
                 current_price,
                 source,
