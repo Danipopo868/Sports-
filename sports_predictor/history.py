@@ -163,13 +163,11 @@ def _apply_financials(
     elif result == "PERDIDA":
 
         row["return_amount"] = 0.0
-
         row["profit_loss"] = -100.0
 
     elif result == "EMPATE":
 
         row["return_amount"] = 100.0
-
         row["profit_loss"] = 0.0
 
 
@@ -202,6 +200,10 @@ def _apply_kalshi_quote(
         else None
     )
 
+    # IMPORTANTE:
+    # Para filas antiguas usamos:
+    # deporte + partido + fecha + hora original.
+    # Así Kalshi puede recuperar la cuota histórica.
     quote = find_kalshi_quote(
         selection=str(
             row.get("selection")
@@ -214,6 +216,13 @@ def _apply_kalshi_quote(
         market=str(
             row.get("market")
             or ""
+        ),
+        sport=str(
+            row.get("sport")
+            or ""
+        ),
+        game_start=row.get(
+            "start"
         ),
         at_time=created_at,
     )
@@ -286,8 +295,6 @@ def _apply_kalshi_quote(
         else "KALSHI_LIVE"
     )
 
-    # Dejamos odds en formato decimal equivalente
-    # para compatibilidad con el dashboard.
     row["odds"] = round(
         1.0 / price,
         4,
@@ -484,8 +491,6 @@ def _normalise_old_row(
     row: dict[str, Any],
 ) -> None:
 
-    # Si una fila ya era de Kalshi,
-    # recalculamos directamente.
     if row.get(
         "kalshi_price"
     ) is not None:
@@ -496,10 +501,6 @@ def _normalise_old_row(
 
         return
 
-    # Las filas antiguas con FanDuel,
-    # BetMGM, etc. NO se usan como precio.
-    #
-    # Ahora queremos únicamente precio Kalshi.
     if row.get(
         "bookmaker"
     ) != "Kalshi":
@@ -568,9 +569,16 @@ def update_history(
         ) != sport:
             continue
 
-        if row.get(
-            "kalshi_price"
-        ) is not None:
+        existing_price = _float(
+            row.get(
+                "kalshi_price"
+            )
+        )
+
+        if (
+            existing_price is not None
+            and 0 < existing_price < 1
+        ):
             continue
 
         _apply_kalshi_quote(
@@ -623,8 +631,11 @@ def update_history(
             "Primeras 5 entradas"
         ):
 
-            # Los F5 ya resueltos por el sistema
-            # se conservan.
+            # No usamos el marcador FINAL para
+            # resolver una apuesta F5.
+            #
+            # Si el sistema ya tiene el resultado
+            # F5 correcto, lo conservamos.
             if row.get(
                 "result"
             ) in {
@@ -724,9 +735,16 @@ def update_history(
                 or pick_number
             )
 
-            if existing.get(
-                "kalshi_price"
-            ) is None:
+            existing_price = _float(
+                existing.get(
+                    "kalshi_price"
+                )
+            )
+
+            if not (
+                existing_price is not None
+                and 0 < existing_price < 1
+            ):
 
                 _apply_kalshi_quote(
                     existing,
