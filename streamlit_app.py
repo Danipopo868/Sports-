@@ -54,7 +54,7 @@ st.markdown(
            ================================================ */
 
         --sport-width: 10%;
-        --sport-height: 100px;
+        --sport-height: 10px;
         --sport-font: 60px;
         --sport-gap: 30px;
         --sport-radius: 40px;
