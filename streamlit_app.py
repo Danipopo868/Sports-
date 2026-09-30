@@ -18,6 +18,7 @@ DATA_FILE = ROOT / "reports" / "latest.json"
 HISTORY_FILE = ROOT / "dashboard_data" / "prediction_history.json"
 
 DEFAULT_STAKE = 100.0
+INITIAL_CAPITAL = 1000.0
 
 
 # ============================================================
@@ -1537,41 +1538,32 @@ general = history_stats(
 )
 
 
+current_capital = (
+    INITIAL_CAPITAL
+    + general["profit_loss"]
+)
+
+
 g1, g2, g3, g4 = (
     st.columns(4)
 )
 
 
 g1.metric(
-    "💵 Apostado",
-    (
-        money(
-            general[
-                "total_staked"
-            ]
-        )
-        if general[
-            "financial_bets"
-        ]
-        else "—"
+    "💰 Fondo actual",
+    money(
+        current_capital
+    ),
+    delta=money(
+        general["profit_loss"],
+        signed=True,
     ),
 )
 
 
 g2.metric(
-    "💰 Ganancia/Pérdida",
-    (
-        money(
-            general[
-                "profit_loss"
-            ],
-            signed=True,
-        )
-        if general[
-            "financial_bets"
-        ]
-        else "—"
-    ),
+    "📈 % Ganadas",
+    f"{general['win_rate'] * 100:.1f}%",
 )
 
 
@@ -1596,6 +1588,10 @@ g4.metric(
 
 
 st.caption(
+    f"Fondo inicial: "
+    f"{money(INITIAL_CAPITAL)} · "
+    f"Ganancia/Pérdida acumulada: "
+    f"{money(general['profit_loss'], signed=True)} · "
     f"Empates: "
     f"{int(general['tied'])} · "
     f"Pendientes: "
@@ -2009,4 +2005,4 @@ st.markdown(
         '</div>'
     ),
     unsafe_allow_html=True,
-        )
+)
