@@ -53,8 +53,8 @@ st.markdown(
            CAMBIA SOLO ESTOS NÚMEROS
            ================================================ */
 
-        --sport-width: 100%;
-        --sport-height: 100px;
+        --sport-width: 200%;
+        --sport-height: 200px;
         --sport-font: 40px;
         --sport-gap: 12px;
         --sport-radius: 20px;
