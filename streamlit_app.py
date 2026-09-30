@@ -138,7 +138,54 @@ st.markdown(
         background: rgba(5, 12, 20, .88);
         border-radius: 14px;
     }
+[data-baseweb="tab-list"] {
+    gap: 18px;
+    margin-top: 10px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+}
 
+[data-baseweb="tab"] {
+    background: rgba(8, 16, 26, 0.88) !important;
+    border: 1px solid rgba(80, 110, 145, 0.55) !important;
+    border-radius: 16px !important;
+    padding: 18px 32px !important;
+    min-height: 72px !important;
+}
+
+[data-baseweb="tab"] p {
+    font-size: 1.80rem !important;
+    font-weight: 800 !important;
+    color: white !important;
+    margin: 0 !important;
+}
+
+button[aria-selected="true"][role="tab"] {
+    background: rgba(25, 45, 70, 0.96) !important;
+    border: 2px solid #8fb8ff !important;
+}
+
+button[aria-selected="true"][role="tab"] p {
+    font-size: 1.95rem !important;
+    color: white !important;
+}
+[data-testid="stMetric"] {
+    background: rgba(10, 18, 28, 0.90);
+    border: 1px solid rgba(90, 120, 150, 0.55);
+    border-radius: 18px;
+    padding: 22px 20px !important;
+    min-height: 118px;
+}
+
+[data-testid="stMetricLabel"] p {
+    font-size: 1.05rem !important;
+    font-weight: 700 !important;
+}
+
+[data-testid="stMetricValue"] {
+    font-size: 2.25rem !important;
+    font-weight: 800 !important;
+}
     </style>
     """,
     unsafe_allow_html=True,
