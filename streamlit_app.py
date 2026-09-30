@@ -53,9 +53,9 @@ st.markdown(
            CAMBIA SOLO ESTOS NÚMEROS
            ================================================ */
 
-        --sport-width: 50%;
-        --sport-height: 50px;
-        --sport-font: 24px;
+        --sport-width: 100%;
+        --sport-height: 100px;
+        --sport-font: 40px;
         --sport-gap: 12px;
         --sport-radius: 20px;
     }
