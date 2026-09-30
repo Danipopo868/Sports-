@@ -54,10 +54,10 @@ st.markdown(
            ================================================ */
 
         --sport-width: 10%;
-        --sport-height: 10px;
+        --sport-height: 20px;
         --sport-font: 30px;
-        --sport-gap: 20px;
-        --sport-radius: 20px;
+        --sport-gap: 10px;
+        --sport-radius: 10px;
     }
 
 
