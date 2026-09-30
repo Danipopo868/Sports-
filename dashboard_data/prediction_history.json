@@ -1475,13 +1475,14 @@
     "contracts": 243.9024,
     "potential_return": 243.9,
     "potential_profit": 143.9,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 41.0
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Chicago White Sox",
+    "final_score": "F5: Chicago White Sox 5 - Houston Astros 2",
+    "return_amount": 243.9,
+    "profit_loss": 143.9,
+    "kalshi_cents": 41.0,
+    "resolved_at": "2026-09-30T17:59:57.048327-05:00"
   },
   {
     "key": "MLB|187807|Ganador del partido|Atlanta Braves",
@@ -1514,12 +1515,13 @@
     "contracts": 196.0784,
     "potential_return": 196.08,
     "potential_profit": 96.08,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 51.0
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Atlanta Braves",
+    "final_score": "Philadelphia Phillies 3 - Atlanta Braves 5",
+    "return_amount": 196.08,
+    "profit_loss": 96.08,
+    "kalshi_cents": 51.0,
+    "resolved_at": "2026-09-30T17:59:57.048327-05:00"
   }
 ]
