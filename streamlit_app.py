@@ -47,14 +47,19 @@ st.set_page_config(
 st.markdown(
     """
     <style>
+
     .stApp {
         background:
-          radial-gradient(
-            circle at 50% -20%,
-            #18304b 0%,
-            #090f18 42%,
-            #060910 72%
-          );
+          linear-gradient(
+            rgba(3, 8, 15, 0.80),
+            rgba(3, 8, 15, 0.90)
+          ),
+          url("https://img.mlbstatic.com/mlb-photos/image/upload/ar_16:9,g_auto,q_auto:good,w_2048,c_fill,f_jpg/v1/people/670541/action/vertical/current");
+
+        background-size: cover;
+        background-position: center top;
+        background-attachment: fixed;
+        background-repeat: no-repeat;
     }
 
     .block-container {
@@ -64,10 +69,11 @@ st.markdown(
     }
 
     [data-testid="stMetric"] {
-        background: rgba(15, 24, 36, 0.92);
-        border: 1px solid #273547;
+        background: rgba(10, 18, 28, 0.88);
+        border: 1px solid rgba(90, 120, 150, 0.45);
         border-radius: 16px;
         padding: 14px 16px;
+        backdrop-filter: blur(6px);
     }
 
     .edge-badge {
@@ -84,7 +90,7 @@ st.markdown(
     }
 
     .muted {
-        color: #95a4b7;
+        color: #b3bdca;
         font-size: .9rem;
     }
 
@@ -94,9 +100,10 @@ st.markdown(
         gap: 18px;
         padding: 18px 20px;
         margin-bottom: 18px;
-        background: rgba(14,22,34,.94);
-        border: 1px solid #29384b;
+        background: rgba(8, 16, 26, .88);
+        border: 1px solid rgba(80, 110, 145, .50);
         border-radius: 18px;
+        backdrop-filter: blur(8px);
     }
 
     .sport-logo {
@@ -112,17 +119,26 @@ st.markdown(
     }
 
     .sport-name {
-        color: #9aa8bb;
+        color: #b0bac8;
         font-size: .95rem;
     }
 
     .footer-note {
         margin-top: 2rem;
-        color: #93a0b2;
-        border-top: 1px solid #263242;
+        color: #b1bcc9;
+        border-top: 1px solid #334253;
         padding-top: 1rem;
         font-size: .88rem;
+        background: rgba(4, 10, 18, .55);
+        padding: 15px;
+        border-radius: 12px;
     }
+
+    [data-testid="stDataFrame"] {
+        background: rgba(5, 12, 20, .88);
+        border-radius: 14px;
+    }
+
     </style>
     """,
     unsafe_allow_html=True,
@@ -554,7 +570,7 @@ def render_sport_stats(
         sport,
     )
 
-    c1, c2, c3, c4, c5 = st.columns(5)
+    c1, c2, c3, c4 = st.columns(4)
 
     c1.metric(
         "✅ Ganadas",
@@ -581,15 +597,6 @@ def render_sport_stats(
         money(stats["total_staked"])
         if stats["financial_bets"]
         else "—",
-    )
-
-    c5.metric(
-        "📈 ROI",
-        (
-            f"{stats['roi'] * 100:+.2f}%"
-            if stats["financial_bets"]
-            else "—"
-        ),
     )
 
     st.caption(
@@ -1053,7 +1060,7 @@ general = history_stats(
     history_rows
 )
 
-g1, g2, g3, g4, g5 = st.columns(5)
+g1, g2, g3, g4 = st.columns(4)
 
 g1.metric(
     "💵 Apostado",
@@ -1077,20 +1084,11 @@ g2.metric(
 )
 
 g3.metric(
-    "📈 ROI",
-    (
-        f"{general['roi'] * 100:+.2f}%"
-        if general["financial_bets"]
-        else "—"
-    ),
-)
-
-g4.metric(
     "✅ Ganadas",
     int(general["won"]),
 )
 
-g5.metric(
+g4.metric(
     "❌ Perdidas",
     int(general["lost"]),
 )
@@ -1351,11 +1349,11 @@ st.markdown(
         '<div class="footer-note">'
         'Apuesta fija: $100. '
         'La cuota de Kalshi se usa únicamente para calcular '
-        'Cobro, Ganancia, P/L y ROI; no modifica la predicción '
+        'Cobro, Ganancia y P/L; no modifica la predicción '
         'ni la probabilidad del motor. '
         'Las operaciones sin cuota Kalshi válida no se incluyen '
         'en los cálculos financieros.'
         '</div>'
     ),
     unsafe_allow_html=True,
-)
+    )
