@@ -301,8 +301,8 @@ st.markdown(
 
         :root {
             --sport-width: 98%;
-            --sport-height: 102px;
-            --sport-font: 108px;
+            --sport-height: 202px;
+            --sport-font: 150px;
             --sport-gap: 6px;
             --sport-radius: 16px;
         }
