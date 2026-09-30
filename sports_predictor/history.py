@@ -660,30 +660,119 @@ def _normalise_old_row(
     )
 
 
+# ============================================================
+# MATCH ROBUSTO DE EQUIPOS
+# ============================================================
+
+def _team_key(
+    value: Any,
+) -> str:
+
+    text = str(
+        value
+        or ""
+    ).lower().strip()
+
+    replacements = {
+        ".": "",
+        ",": "",
+        "-": " ",
+        "_": " ",
+    }
+
+    for old, new in replacements.items():
+        text = text.replace(
+            old,
+            new,
+        )
+
+    return " ".join(
+        text.split()
+    )
+
+
+def _team_matches(
+    team_name: str,
+    matchup: str,
+) -> bool:
+
+    team = _team_key(
+        team_name
+    )
+
+    match = _team_key(
+        matchup
+    )
+
+    if not team or not match:
+        return False
+
+    # Coincidencia completa.
+    if team in match:
+        return True
+
+    # Fallback por palabras significativas.
+    words = [
+        word
+        for word in team.split()
+        if len(word) >= 3
+    ]
+
+    if not words:
+        return False
+
+    hits = sum(
+        word in match
+        for word in words
+    )
+
+    required = max(
+        1,
+        (len(words) + 1) // 2,
+    )
+
+    return hits >= required
+
+
 def _find_game_for_row(
     row: dict[str, Any],
     games: list[Game],
     game_map: dict[str, Game],
 ) -> Game | None:
-    """
-    Primero intenta por game_id.
-    Si el ID no coincide, intenta recuperar
-    el partido usando ambos equipos del matchup.
-    """
 
-    game = game_map.get(
-        str(
-            row.get("game_id")
+    # ====================================
+    # 1. INTENTAR POR GAME_ID
+    # ====================================
+
+    row_game_id = str(
+        row.get("game_id")
+        or ""
+    ).strip()
+
+    if row_game_id:
+
+        game = game_map.get(
+            row_game_id
         )
-    )
 
-    if game is not None:
-        return game
+        if game is not None:
+
+            print(
+                "MATCH ID | "
+                f"{row.get('matchup')} | "
+                f"game_id={row_game_id}"
+            )
+
+            return game
+
+    # ====================================
+    # 2. FALLBACK POR AMBOS EQUIPOS
+    # ====================================
 
     matchup = str(
         row.get("matchup")
         or ""
-    ).lower().strip()
+    ).strip()
 
     if not matchup:
         return None
@@ -693,28 +782,56 @@ def _find_game_for_row(
         home = str(
             candidate_game.home.name
             or ""
-        ).lower().strip()
+        ).strip()
 
         away = str(
             candidate_game.away.name
             or ""
-        ).lower().strip()
+        ).strip()
 
-        if (
-            home
-            and away
-            and home in matchup
-            and away in matchup
-        ):
+        home_ok = _team_matches(
+            home,
+            matchup,
+        )
+
+        away_ok = _team_matches(
+            away,
+            matchup,
+        )
+
+        if home_ok and away_ok:
 
             print(
                 "MATCH FALLBACK | "
                 f"{row.get('matchup')} | "
-                f"game_id historial={row.get('game_id')} | "
-                f"game_id API={candidate_game.id}"
+                f"API={away} @ {home} | "
+                f"game_id historial="
+                f"{row.get('game_id')} | "
+                f"game_id API="
+                f"{candidate_game.id}"
             )
 
             return candidate_game
+
+    # ====================================
+    # 3. MOSTRAR EXACTAMENTE QUÉ RECIBIÓ
+    # ====================================
+
+    print(
+        "SIN MATCH | "
+        f"{row.get('sport')} | "
+        f"{row.get('matchup')} | "
+        f"game_id={row.get('game_id')} | "
+        "JUEGOS API="
+        + " ; ".join(
+            (
+                f"{game.away.name} @ "
+                f"{game.home.name} "
+                f"[{game.id}]"
+            )
+            for game in games
+        )
+    )
 
     return None
 
@@ -785,8 +902,7 @@ def update_history(
         ) != sport:
             continue
 
-        # No volver a resolver operaciones
-        # que ya tienen resultado.
+        # No modificar resultados existentes.
         if row.get("result") in {
             "GANADA",
             "PERDIDA",
@@ -801,14 +917,6 @@ def update_history(
         )
 
         if game is None:
-
-            print(
-                "SIN MATCH | "
-                f"{row.get('sport')} | "
-                f"{row.get('matchup')} | "
-                f"game_id={row.get('game_id')}"
-            )
-
             continue
 
         market = row.get(
@@ -1078,4 +1186,4 @@ def history_summary(
             roi,
             6,
         ),
-          }
+                }
