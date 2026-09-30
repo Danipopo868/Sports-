@@ -53,11 +53,11 @@ st.markdown(
            CAMBIA SOLO ESTOS NÚMEROS
            ================================================ */
 
-        --sport-width: 200%;
-        --sport-height: 200px;
-        --sport-font: 40px;
-        --sport-gap: 12px;
-        --sport-radius: 20px;
+        --sport-width: 72%;
+        --sport-height: 250px;
+        --sport-font: 44px;
+        --sport-gap: 10px;
+        --sport-radius: 22px;
     }
 
 
