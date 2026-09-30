@@ -138,54 +138,168 @@ st.markdown(
         border-radius: 14px;
     }
 
+
     /* ======================================================
-       MLB / NFL / BASKETBALL GRANDES
-       SOLO ESTAS TRES PESTAÑAS
+       MLB / NFL / BASKETBALL
+       GRANDES + CENTRADOS + COLORES BRILLANTES
        ====================================================== */
 
-    [data-baseweb="tab-list"] {
-        gap: 20px;
-        margin-top: 14px;
-        margin-bottom: 24px;
-        flex-wrap: wrap;
+    div[data-baseweb="tab-list"] {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        width: 100% !important;
+
+        gap: 18px !important;
+
+        margin-top: 22px !important;
+        margin-bottom: 32px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
     }
 
-    [data-baseweb="tab"] {
-        background: rgba(8, 16, 26, 0.92) !important;
-        border: 2px solid rgba(80, 110, 145, 0.65) !important;
-        border-radius: 20px !important;
-
-        padding: 28px 45px !important;
+    div[data-baseweb="tab-list"] button[role="tab"] {
+        min-width: 190px !important;
         min-height: 105px !important;
 
-        min-width: 190px !important;
+        padding: 24px 28px !important;
 
+        border-radius: 22px !important;
+
+        display: flex !important;
         justify-content: center !important;
+        align-items: center !important;
+
+        border: 3px solid rgba(255,255,255,.50) !important;
 
         box-shadow:
-            0 8px 24px rgba(0, 0, 0, 0.35) !important;
+            0 0 16px rgba(255,255,255,.25),
+            0 8px 25px rgba(0,0,0,.45) !important;
+
+        transition:
+            transform .15s ease,
+            box-shadow .15s ease !important;
     }
 
-    [data-baseweb="tab"] p {
-        font-size: 2.20rem !important;
+
+    /* MLB AZUL */
+
+    div[data-baseweb="tab-list"]
+    button[role="tab"]:nth-child(1) {
+
+        background:
+            linear-gradient(
+                135deg,
+                #004cff,
+                #00d4ff
+            ) !important;
+
+        box-shadow:
+            0 0 18px #009dff,
+            0 0 38px rgba(0,157,255,.60),
+            0 8px 25px rgba(0,0,0,.45) !important;
+    }
+
+
+    /* NFL ROJO */
+
+    div[data-baseweb="tab-list"]
+    button[role="tab"]:nth-child(2) {
+
+        background:
+            linear-gradient(
+                135deg,
+                #ff1010,
+                #ff6a00
+            ) !important;
+
+        box-shadow:
+            0 0 18px #ff361f,
+            0 0 38px rgba(255,54,31,.60),
+            0 8px 25px rgba(0,0,0,.45) !important;
+    }
+
+
+    /* BASKETBALL NARANJA */
+
+    div[data-baseweb="tab-list"]
+    button[role="tab"]:nth-child(3) {
+
+        background:
+            linear-gradient(
+                135deg,
+                #ff7b00,
+                #ffd000
+            ) !important;
+
+        box-shadow:
+            0 0 18px #ffae00,
+            0 0 38px rgba(255,174,0,.60),
+            0 8px 25px rgba(0,0,0,.45) !important;
+    }
+
+
+    /* LETRAS DE LOS 3 */
+
+    div[data-baseweb="tab-list"]
+    button[role="tab"] p {
+
+        font-size: 30px !important;
         font-weight: 900 !important;
+
         color: white !important;
-        margin: 0 !important;
+
+        text-align: center !important;
+
+        margin: 0 auto !important;
+
         line-height: 1.1 !important;
+
+        text-shadow:
+            0 2px 6px rgba(0,0,0,.80) !important;
     }
 
-    button[aria-selected="true"][role="tab"] {
-        background: rgba(25, 45, 70, 0.97) !important;
-        border: 3px solid #8fb8ff !important;
+
+    /* SELECCIONADO */
+
+    div[data-baseweb="tab-list"]
+    button[role="tab"][aria-selected="true"] {
+
+        transform: scale(1.08) !important;
+
+        border: 4px solid white !important;
 
         box-shadow:
-            0 0 0 2px rgba(143, 184, 255, 0.18),
-            0 10px 28px rgba(0, 0, 0, 0.40) !important;
+            0 0 18px white,
+            0 0 42px rgba(255,255,255,.70),
+            0 10px 28px rgba(0,0,0,.50) !important;
     }
 
-    button[aria-selected="true"][role="tab"] p {
-        font-size: 2.35rem !important;
-        color: white !important;
+
+    /* MÓVIL */
+
+    @media (max-width: 800px) {
+
+        div[data-baseweb="tab-list"] {
+            gap: 8px !important;
+        }
+
+        div[data-baseweb="tab-list"]
+        button[role="tab"] {
+
+            min-width: 0 !important;
+            flex: 1 1 0 !important;
+
+            min-height: 90px !important;
+
+            padding: 18px 8px !important;
+        }
+
+        div[data-baseweb="tab-list"]
+        button[role="tab"] p {
+
+            font-size: 20px !important;
+        }
     }
 
     </style>
@@ -777,6 +891,7 @@ def render_candidate(
     )
 
     if reasons:
+
         st.markdown(
             "**Por qué pasó los filtros**"
         )
@@ -976,27 +1091,22 @@ def probability_analysis(
                 "Ganadas": won,
                 "Perdidas": lost,
                 "Empates": tied,
-
                 "Efectividad": (
                     f"{won / decisions * 100:.1f}%"
                     if decisions
                     else "—"
                 ),
-
                 "Con cuota": len(financial),
-
                 "Apostado": (
                     f"${staked:,.2f}"
                     if financial
                     else "—"
                 ),
-
                 "Neto": (
                     f"${net:+,.2f}"
                     if financial
                     else "—"
                 ),
-
                 "ROI": (
                     f"{roi * 100:+.2f}%"
                     if roi is not None
@@ -1158,7 +1268,7 @@ st.caption(
 
 
 # ============================================================
-# TABS GRANDES
+# TABS
 # ============================================================
 
 tabs = st.tabs(
