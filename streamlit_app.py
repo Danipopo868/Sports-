@@ -9,7 +9,7 @@ import streamlit as st
 
 
 # ============================================================
-# CONFIGURACIÓN
+# CONFIGURATION
 # ============================================================
 
 ROOT = Path(__file__).resolve().parent
@@ -22,8 +22,8 @@ INITIAL_CAPITAL = 1000.0
 
 
 # ============================================================
-# TAMAÑO DE LOS BOTONES
-# CAMBIA SOLO ESTOS NÚMEROS
+# SPORT BUTTON SIZE
+# CHANGE ONLY THESE NUMBERS
 # ============================================================
 
 SPORT_BUTTON_HEIGHT = 150
@@ -199,7 +199,7 @@ st.markdown(
 
 
 /* ==========================================================
-   BOTONES MLB / NFL / BASKETBALL
+   MLB / NFL / BASKETBALL BUTTONS
    ========================================================== */
 
 [class*="st-key-sport_mlb"] button,
@@ -316,7 +316,7 @@ st.markdown(
 }}
 
 
-/* AL TOCAR */
+/* HOVER */
 
 [class*="st-key-sport_mlb"] button:hover,
 [class*="st-key-sport_nfl"] button:hover,
@@ -371,7 +371,7 @@ st.markdown(
 
 
 # ============================================================
-# CARGA
+# LOAD DATA
 # ============================================================
 
 @st.cache_data(ttl=30)
@@ -417,7 +417,7 @@ def load_history(
 
 
 # ============================================================
-# FORMATOS
+# FORMATTING
 # ============================================================
 
 def pct(
@@ -494,14 +494,14 @@ def display_time(
         )
 
         return parsed.strftime(
-            "%d/%m/%Y · %I:%M %p"
+            "%m/%d/%Y · %I:%M %p"
         )
 
     except (
         TypeError,
         ValueError,
     ):
-        return value or "Sin fecha"
+        return value or "No date"
 
 
 def valid_odds(
@@ -539,7 +539,7 @@ def kalshi_quote_text(
 
 
 # ============================================================
-# DATOS FINANCIEROS
+# FINANCIAL DATA
 # ============================================================
 
 def row_has_financial_data(
@@ -710,7 +710,7 @@ def potential_profit(
 
 
 # ============================================================
-# ESTADÍSTICAS
+# STATISTICS
 # ============================================================
 
 def history_stats(
@@ -840,8 +840,7 @@ def history_stats(
 
 
 # ============================================================
-# CABECERA DEL DEPORTE
-# CORREGIDA PARA NO MOSTRAR HTML COMO TEXTO
+# SPORT HEADER
 # ============================================================
 
 def render_sport_header(
@@ -889,21 +888,21 @@ def render_sport_stats(
     )
 
     c1.metric(
-        "✅ Ganadas",
+        "✅ Wins",
         int(
             stats["won"]
         ),
     )
 
     c2.metric(
-        "❌ Perdidas",
+        "❌ Losses",
         int(
             stats["lost"]
         ),
     )
 
     c3.metric(
-        "💰 Neto",
+        "💰 Net",
         (
             money(
                 stats["profit_loss"],
@@ -915,7 +914,7 @@ def render_sport_stats(
     )
 
     c4.metric(
-        "💵 Apostado",
+        "💵 Total Staked",
         (
             money(
                 stats["total_staked"]
@@ -926,17 +925,17 @@ def render_sport_stats(
     )
 
     st.caption(
-        f"Empates: {stats['tied']} · "
-        f"Pendientes: {stats['pending']} · "
-        f"Efectividad: "
+        f"Ties: {stats['tied']} · "
+        f"Pending: {stats['pending']} · "
+        f"Win Rate: "
         f"{stats['win_rate'] * 100:.1f}% · "
-        f"Con cuota calculable: "
+        f"With Valid Odds: "
         f"{stats['financial_bets']}"
     )
 
 
 # ============================================================
-# APUESTAS
+# BETS
 # ============================================================
 
 def render_candidate(
@@ -945,26 +944,26 @@ def render_candidate(
 ) -> None:
 
     label = (
-        f"APUESTA #{pick_number}"
+        f"BET #{pick_number}"
         if pick_number is not None
-        else "APUESTA"
+        else "BET"
     )
 
     st.success(
         f"{label} · "
-        f"CON VALOR DETECTADA"
+        f"VALUE DETECTED"
     )
 
     st.subheader(
         candidate.get(
             "selection",
-            "Selección no disponible",
+            "Selection unavailable",
         )
     )
 
     st.caption(
-        f"{candidate.get('matchup', 'Partido sin identificar')} · "
-        f"{candidate.get('market', 'Mercado sin identificar')}"
+        f"{candidate.get('matchup', 'Matchup unavailable')} · "
+        f"{candidate.get('market', 'Market unavailable')}"
     )
 
     c1, c2, c3, c4 = (
@@ -972,7 +971,7 @@ def render_candidate(
     )
 
     c1.metric(
-        "Probabilidad estimada",
+        "Estimated Probability",
         pct(
             candidate.get(
                 "model_probability"
@@ -987,14 +986,14 @@ def render_candidate(
     )
 
     c2.metric(
-        "Cuota Kalshi",
+        "Kalshi Price",
         kalshi_quote_text(
             odds
         ),
     )
 
     c3.metric(
-        "Ventaja del modelo",
+        "Model Edge",
         pct(
             candidate.get(
                 "edge"
@@ -1003,7 +1002,7 @@ def render_candidate(
     )
 
     c4.metric(
-        "Valor esperado del modelo",
+        "Expected Value",
         pct(
             candidate.get(
                 "expected_value"
@@ -1012,11 +1011,10 @@ def render_candidate(
     )
 
     st.caption(
-        "La cuota de Kalshi se usa solo "
-        "para calcular Apuesta, Cobro y "
-        "Ganancia. No modifica la "
-        "probabilidad ni la selección "
-        "del motor."
+        "Kalshi odds are used only "
+        "to calculate Stake, Payout and "
+        "Profit. They do not change the "
+        "model probability or selection."
     )
 
     if odds is not None:
@@ -1036,17 +1034,17 @@ def render_candidate(
         )
 
         f1.metric(
-            "💵 Apuesta",
+            "💵 Stake",
             "$100.00",
         )
 
         f2.metric(
-            "💳 Cobro si gana",
+            "💳 Payout if Win",
             money(payout),
         )
 
         f3.metric(
-            "💰 Ganancia neta",
+            "💰 Net Profit",
             money(
                 profit,
                 signed=True,
@@ -1056,20 +1054,19 @@ def render_candidate(
     else:
 
         st.warning(
-            "Kalshi no devolvió una cuota "
-            "válida para este partido. "
-            "La predicción se mantiene, "
-            "pero todavía no se puede "
-            "calcular cobro ni ganancia."
+            "Kalshi did not return valid odds "
+            "for this game. The prediction "
+            "remains active, but payout and "
+            "profit cannot be calculated yet."
         )
 
     st.write(
-        f"**Fuente de pago:** "
-        f"{candidate.get('bookmaker', 'No disponible')}"
+        f"**Payout Source:** "
+        f"{candidate.get('bookmaker', 'Unavailable')}"
     )
 
     st.write(
-        "**Calidad de datos:** "
+        "**Data Quality:** "
         f"{candidate.get('data_quality', 0)}/100"
     )
 
@@ -1081,7 +1078,7 @@ def render_candidate(
     if reasons:
 
         st.markdown(
-            "**Por qué pasó los filtros**"
+            "**Why it passed the filters**"
         )
 
         for reason in reasons:
@@ -1091,7 +1088,7 @@ def render_candidate(
 
 
 # ============================================================
-# NO APOSTAR
+# NO BET
 # ============================================================
 
 def render_no_bet(
@@ -1099,15 +1096,15 @@ def render_no_bet(
 ) -> None:
 
     st.warning(
-        "NO APOSTAR"
+        "NO BET"
     )
 
     notes = (
         result.get("notes")
         or [
-            "Ninguna opción superó todos "
-            "los filtros matemáticos y "
-            "de calidad."
+            "No selection passed all "
+            "mathematical and data quality "
+            "filters."
         ]
     )
 
@@ -1118,7 +1115,7 @@ def render_no_bet(
 
 
 # ============================================================
-# RENDER DEL DEPORTE
+# SPORT RENDER
 # ============================================================
 
 def render_sport(
@@ -1143,8 +1140,8 @@ def render_sport(
     if error:
 
         st.error(
-            "NO APOSTAR — "
-            "DATOS INCOMPLETOS"
+            "NO BET — "
+            "INCOMPLETE DATA"
         )
 
         st.write(
@@ -1202,10 +1199,9 @@ def render_sport(
             ) == 1:
 
                 st.info(
-                    "Solo 1 partido distinto "
-                    "pasó todos los filtros. "
-                    "El motor no fuerza una "
-                    "segunda apuesta."
+                    "Only 1 different game passed "
+                    "all filters. The model does not "
+                    "force a second bet."
                 )
 
         else:
@@ -1215,15 +1211,15 @@ def render_sport(
             )
 
     st.caption(
-        f"Partidos revisados: "
+        f"Games Reviewed: "
         f"{result.get('games', 0)} · "
-        f"Cuotas Kalshi encontradas: "
+        f"Kalshi Odds Found: "
         f"{result.get('kalshi_quotes', 0)}"
     )
 
 
 # ============================================================
-# ANÁLISIS POR PROBABILIDAD
+# PROBABILITY ANALYSIS
 # ============================================================
 
 def probability_analysis(
@@ -1371,39 +1367,39 @@ def probability_analysis(
 
         output.append(
             {
-                "Probabilidad":
+                "Probability":
                     label,
 
-                "Apuestas":
+                "Bets":
                     len(selected),
 
-                "Ganadas":
+                "Wins":
                     won,
 
-                "Perdidas":
+                "Losses":
                     lost,
 
-                "Empates":
+                "Ties":
                     tied,
 
-                "Efectividad":
+                "Win Rate":
                     (
                         f"{won / decisions * 100:.1f}%"
                         if decisions
                         else "—"
                     ),
 
-                "Con cuota":
+                "With Odds":
                     len(financial),
 
-                "Apostado":
+                "Total Staked":
                     (
                         f"${staked:,.2f}"
                         if financial
                         else "—"
                     ),
 
-                "Neto":
+                "Net":
                     (
                         f"${net:+,.2f}"
                         if financial
@@ -1423,7 +1419,7 @@ def probability_analysis(
 
 
 # ============================================================
-# ENCABEZADO
+# HEADER
 # ============================================================
 
 title, action = (
@@ -1443,16 +1439,16 @@ with title:
     )
 
     st.caption(
-        "Hasta 2 selecciones por deporte, "
-        "de partidos distintos, respaldadas "
-        "por probabilidades y valor esperado."
+        "Up to 2 selections per sport, "
+        "from different games, backed by "
+        "probabilities and expected value."
     )
 
 
 with action:
 
     if st.button(
-        "🔄 Actualizar",
+        "🔄 Refresh",
         use_container_width=True,
     ):
 
@@ -1462,16 +1458,15 @@ with action:
 
 
 # ============================================================
-# COMPROBAR REPORTE
+# CHECK REPORT
 # ============================================================
 
 if not DATA_FILE.exists():
 
     st.info(
-        "El panel está listo. "
-        "Ejecuta primero el workflow "
-        "de GitHub; cuando termine "
-        "aparecerá el reporte."
+        "The dashboard is ready. "
+        "Run the GitHub workflow first; "
+        "the report will appear when it finishes."
     )
 
     st.stop()
@@ -1484,7 +1479,7 @@ snapshot = load_snapshot(
 
 
 # ============================================================
-# HISTORIAL
+# HISTORY
 # ============================================================
 
 if HISTORY_FILE.exists():
@@ -1500,12 +1495,12 @@ else:
 
 
 # ============================================================
-# ESTADO
+# STATUS
 # ============================================================
 
 st.markdown(
     '<span class="edge-badge">'
-    '● Datos reales · último reporte'
+    '● Real Data · Latest Report'
     '</span>',
     unsafe_allow_html=True,
 )
@@ -1514,9 +1509,9 @@ st.markdown(
 st.markdown(
     (
         '<p class="muted">'
-        f'Actualizado '
+        f'Updated '
         f'{display_time(snapshot.get("generated_at", ""))}'
-        f' · escaneo #'
+        f' · Scan #'
         f'{snapshot.get("scan_number", "—")}'
         '</p>'
     ),
@@ -1525,11 +1520,11 @@ st.markdown(
 
 
 # ============================================================
-# RESULTADOS GENERALES
+# OVERALL RESULTS
 # ============================================================
 
 st.subheader(
-    "📊 Resultados generales"
+    "📊 Overall Results"
 )
 
 
@@ -1550,7 +1545,7 @@ g1, g2, g3, g4 = (
 
 
 g1.metric(
-    "💰 Fondo actual",
+    "💰 Current Balance",
     money(
         current_capital
     ),
@@ -1562,13 +1557,13 @@ g1.metric(
 
 
 g2.metric(
-    "📈 % Ganadas",
+    "📈 Win Rate",
     f"{general['win_rate'] * 100:.1f}%",
 )
 
 
 g3.metric(
-    "✅ Ganadas",
+    "✅ Wins",
     int(
         general[
             "won"
@@ -1578,7 +1573,7 @@ g3.metric(
 
 
 g4.metric(
-    "❌ Perdidas",
+    "❌ Losses",
     int(
         general[
             "lost"
@@ -1588,29 +1583,29 @@ g4.metric(
 
 
 st.caption(
-    f"Fondo inicial: "
+    f"Starting Balance: "
     f"{money(INITIAL_CAPITAL)} · "
-    f"Ganancia/Pérdida acumulada: "
+    f"Total Profit/Loss: "
     f"{money(general['profit_loss'], signed=True)} · "
-    f"Empates: "
+    f"Ties: "
     f"{int(general['tied'])} · "
-    f"Pendientes: "
+    f"Pending: "
     f"{int(general['pending'])} · "
-    f"Efectividad: "
+    f"Win Rate: "
     f"{general['win_rate'] * 100:.1f}% · "
-    f"Apuestas con cuota calculable: "
+    f"Bets with Valid Odds: "
     f"{general['financial_bets']} · "
-    f"Cuotas reales/históricas F5: "
+    f"Real/Historical F5 Odds: "
     f"{general['real_odds']} · "
-    f"Estimadas con Full Game: "
+    f"Estimated Full Game Odds: "
     f"{general['estimated_odds']}"
 )
 
 
 # ============================================================
 # MLB / NFL / BASKETBALL
-# BOTONES GRANDES
-# MISMA PÁGINA
+# LARGE BUTTONS
+# SAME PAGE
 # ============================================================
 
 if (
@@ -1695,23 +1690,21 @@ render_sport(
 
 
 # ============================================================
-# RENDIMIENTO POR PROBABILIDAD
+# PERFORMANCE BY PROBABILITY
 # ============================================================
 
 st.divider()
 
 
 st.subheader(
-    "📊 Rendimiento por porcentaje"
+    "📊 Performance by Probability"
 )
 
 
 st.caption(
-    "La efectividad usa todas "
-    "las apuestas resueltas. "
-    "P/L y ROI solo usan "
-    "operaciones que tienen "
-    "una cuota registrada."
+    "Win rate uses all resolved bets. "
+    "P/L and ROI only use operations "
+    "that have recorded odds."
 )
 
 
@@ -1733,20 +1726,20 @@ if probability_table:
 else:
 
     st.caption(
-        "Todavía no hay suficientes "
-        "apuestas resueltas."
+        "There are not enough resolved "
+        "bets yet."
     )
 
 
 # ============================================================
-# HISTORIAL
+# BET HISTORY
 # ============================================================
 
 st.divider()
 
 
 st.subheader(
-    "📋 Historial de apuestas"
+    "📋 Bet History"
 )
 
 
@@ -1810,7 +1803,7 @@ if history_rows:
         ):
 
             source_text = (
-                "HISTÓRICA F5"
+                "HISTORICAL F5"
             )
 
         elif (
@@ -1819,7 +1812,7 @@ if history_rows:
         ):
 
             source_text = (
-                "ESTIMADA FULL GAME"
+                "ESTIMATED FULL GAME"
             )
 
         elif (
@@ -1828,13 +1821,13 @@ if history_rows:
         ):
 
             source_text = (
-                "CUOTA REGISTRADA"
+                "RECORDED ODDS"
             )
 
         else:
 
             source_text = (
-                "SIN CUOTA"
+                "NO ODDS"
             )
 
         stake = row_stake(
@@ -1843,7 +1836,7 @@ if history_rows:
 
         result = (
             row.get("result")
-            or "PENDIENTE"
+            or "PENDING"
         )
 
         net_value = (
@@ -1855,7 +1848,7 @@ if history_rows:
         table.append(
             {
 
-                "Fecha":
+                "Date":
                     display_time(
                         row.get(
                             "created_at",
@@ -1863,34 +1856,34 @@ if history_rows:
                         )
                     ),
 
-                "Deporte":
+                "Sport":
                     row.get(
                         "sport"
                     ),
 
-                "Partido":
+                "Matchup":
                     row.get(
                         "matchup"
                     ),
 
-                "Mercado":
+                "Market":
                     row.get(
                         "market"
                     ),
 
-                "Selección":
+                "Selection":
                     row.get(
                         "selection"
                     ),
 
-                "% modelo":
+                "Model %":
                     pct(
                         row.get(
                             "probability"
                         )
                     ),
 
-                "Casa/Fuente":
+                "Book/Source":
                     (
                         row.get(
                             "bookmaker"
@@ -1898,10 +1891,10 @@ if history_rows:
                         or "—"
                     ),
 
-                "Tipo cuota":
+                "Odds Type":
                     source_text,
 
-                "Cuota":
+                "Odds":
                     (
                         kalshi_quote_text(
                             odds_value
@@ -1916,7 +1909,7 @@ if history_rows:
                         )
                     ),
 
-                "Apuesta":
+                "Stake":
                     (
                         money(
                             stake
@@ -1925,14 +1918,14 @@ if history_rows:
                         else "—"
                     ),
 
-                "Cobro si gana":
+                "Payout if Win":
                     money(
                         potential_return(
                             row
                         )
                     ),
 
-                "Ganancia si gana":
+                "Profit if Win":
                     (
                         money(
                             potential_profit(
@@ -1946,7 +1939,7 @@ if history_rows:
                         else "—"
                     ),
 
-                "Resultado":
+                "Result":
                     result,
 
                 "P/L":
@@ -1959,7 +1952,7 @@ if history_rows:
                         else "—"
                     ),
 
-                "Marcador":
+                "Final Score":
                     (
                         row.get(
                             "final_score"
@@ -1980,28 +1973,25 @@ if history_rows:
 else:
 
     st.caption(
-        "El historial comenzará "
-        "a llenarse cuando el motor "
-        "haga su primera selección."
+        "Bet history will begin to fill "
+        "when the model makes its first selection."
     )
 
 
 # ============================================================
-# NOTA FINAL
+# FINAL NOTE
 # ============================================================
 
 st.markdown(
     (
         '<div class="footer-note">'
-        'Apuesta fija: $100. '
-        'La cuota de Kalshi se usa '
-        'únicamente para calcular '
-        'Cobro, Ganancia y P/L; '
-        'no modifica la predicción '
-        'ni la probabilidad del motor. '
-        'Las operaciones sin cuota '
-        'Kalshi válida no se incluyen '
-        'en los cálculos financieros.'
+        'Fixed stake: $100. '
+        'Kalshi odds are used only '
+        'to calculate Payout, Profit and P/L; '
+        'they do not change the model prediction '
+        'or probability. Operations without '
+        'valid Kalshi odds are not included '
+        'in financial calculations.'
         '</div>'
     ),
     unsafe_allow_html=True,
