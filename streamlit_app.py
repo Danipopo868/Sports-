@@ -140,180 +140,145 @@ st.markdown(
 
 
     /* ======================================================
-       MLB / NFL / BASKETBALL
-       MUCHO MÁS GRANDES Y CENTRADOS
+       BOTONES GRANDES DE DEPORTES
        ====================================================== */
 
-    div[data-baseweb="tab-list"] {
-        display: flex !important;
-        justify-content: center !important;
-        align-items: center !important;
+    .sports-nav {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 18px;
 
-        width: 100% !important;
-
-        gap: 18px !important;
-
-        margin-top: 28px !important;
-        margin-bottom: 35px !important;
-
-        padding-left: 3% !important;
-        padding-right: 3% !important;
+        width: 100%;
+        margin: 28px auto 34px auto;
     }
 
-    div[data-baseweb="tab-list"] button[role="tab"] {
-        flex: 1 1 0 !important;
+    .sport-pill {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
 
-        max-width: 300px !important;
-        min-width: 190px !important;
+        min-width: 210px;
+        min-height: 110px;
 
-        min-height: 120px !important;
+        padding: 22px 28px;
 
-        padding: 25px 18px !important;
+        border-radius: 24px;
 
-        display: flex !important;
-        justify-content: center !important;
-        align-items: center !important;
-
-        border-radius: 24px !important;
-
-        border: 3px solid rgba(255,255,255,.65) !important;
-
-        transition:
-            transform .15s ease,
-            box-shadow .15s ease !important;
-    }
-
-
-    /* MLB AZUL BRILLANTE */
-
-    div[data-baseweb="tab-list"]
-    button[role="tab"]:nth-child(1) {
-
-        background:
-            linear-gradient(
-                135deg,
-                #003cff 0%,
-                #006cff 45%,
-                #00e5ff 100%
-            ) !important;
-
-        box-shadow:
-            0 0 20px #008cff,
-            0 0 45px rgba(0,140,255,.70),
-            inset 0 0 18px rgba(255,255,255,.18) !important;
-    }
-
-
-    /* NFL ROJO BRILLANTE */
-
-    div[data-baseweb="tab-list"]
-    button[role="tab"]:nth-child(2) {
-
-        background:
-            linear-gradient(
-                135deg,
-                #ff0000 0%,
-                #ff331f 45%,
-                #ff8a00 100%
-            ) !important;
-
-        box-shadow:
-            0 0 20px #ff321f,
-            0 0 45px rgba(255,50,31,.70),
-            inset 0 0 18px rgba(255,255,255,.18) !important;
-    }
-
-
-    /* BASKETBALL NARANJA BRILLANTE */
-
-    div[data-baseweb="tab-list"]
-    button[role="tab"]:nth-child(3) {
-
-        background:
-            linear-gradient(
-                135deg,
-                #ff6a00 0%,
-                #ff9900 45%,
-                #ffd900 100%
-            ) !important;
-
-        box-shadow:
-            0 0 20px #ffae00,
-            0 0 45px rgba(255,174,0,.70),
-            inset 0 0 18px rgba(255,255,255,.18) !important;
-    }
-
-
-    /* TEXTO GRANDE */
-
-    div[data-baseweb="tab-list"]
-    button[role="tab"] p {
-
-        font-size: 34px !important;
-        font-weight: 900 !important;
+        text-decoration: none !important;
 
         color: white !important;
 
-        text-align: center !important;
+        font-size: 2rem;
+        font-weight: 900;
 
-        margin: 0 auto !important;
+        line-height: 1.1;
+        text-align: center;
 
-        line-height: 1.05 !important;
+        border: 3px solid rgba(255,255,255,.60);
+
+        transition:
+            transform .15s ease,
+            box-shadow .15s ease;
 
         text-shadow:
-            0 3px 8px rgba(0,0,0,.85) !important;
+            0 3px 7px rgba(0,0,0,.80);
+    }
+
+    .sport-pill:hover {
+        transform: scale(1.05);
     }
 
 
-    /* TAB SELECCIONADO */
+    /* MLB */
 
-    div[data-baseweb="tab-list"]
-    button[role="tab"][aria-selected="true"] {
+    .sport-mlb {
+        background:
+            linear-gradient(
+                135deg,
+                #003cff,
+                #008cff,
+                #00ddff
+            );
 
-        transform: scale(1.09) !important;
+        box-shadow:
+            0 0 22px #008cff,
+            0 0 46px rgba(0,140,255,.65),
+            inset 0 0 18px rgba(255,255,255,.20);
+    }
 
-        border: 4px solid white !important;
+
+    /* NFL */
+
+    .sport-nfl {
+        background:
+            linear-gradient(
+                135deg,
+                #ff0000,
+                #ff361f,
+                #ff8a00
+            );
+
+        box-shadow:
+            0 0 22px #ff381f,
+            0 0 46px rgba(255,56,31,.65),
+            inset 0 0 18px rgba(255,255,255,.20);
+    }
+
+
+    /* BASKETBALL */
+
+    .sport-nba {
+        background:
+            linear-gradient(
+                135deg,
+                #ff6500,
+                #ff9900,
+                #ffd800
+            );
+
+        box-shadow:
+            0 0 22px #ffae00,
+            0 0 46px rgba(255,174,0,.65),
+            inset 0 0 18px rgba(255,255,255,.20);
+    }
+
+
+    /* ACTIVO */
+
+    .sport-pill.active {
+        transform: scale(1.09);
+
+        border: 4px solid white;
 
         box-shadow:
             0 0 18px white,
-            0 0 40px rgba(255,255,255,.80),
-            0 0 65px rgba(255,255,255,.30) !important;
+            0 0 42px rgba(255,255,255,.75),
+            0 10px 28px rgba(0,0,0,.45);
     }
 
 
-    /* MÓVIL / SAMSUNG */
+    /* SAMSUNG / MÓVIL */
 
     @media (max-width: 800px) {
 
-        div[data-baseweb="tab-list"] {
-            gap: 10px !important;
-
-            padding-left: 1% !important;
-            padding-right: 1% !important;
-
-            margin-top: 24px !important;
-            margin-bottom: 30px !important;
+        .sports-nav {
+            gap: 8px;
+            margin-top: 22px;
+            margin-bottom: 28px;
         }
 
-        div[data-baseweb="tab-list"]
-        button[role="tab"] {
+        .sport-pill {
+            min-width: 0;
+            width: 31%;
 
-            min-width: 0 !important;
-            max-width: none !important;
+            min-height: 88px;
 
-            flex: 1 1 0 !important;
+            padding: 14px 6px;
 
-            min-height: 100px !important;
+            border-radius: 18px;
 
-            padding: 18px 5px !important;
-
-            border-radius: 18px !important;
-        }
-
-        div[data-baseweb="tab-list"]
-        button[role="tab"] p {
-
-            font-size: 24px !important;
+            font-size: 1.35rem;
         }
     }
 
@@ -1288,35 +1253,93 @@ st.caption(
 
 
 # ============================================================
-# MLB / NFL / BASKETBALL
+# DEPORTE SELECCIONADO
 # ============================================================
 
-tabs = st.tabs(
-    [
-        "⚾ MLB",
-        "🏈 NFL",
-        "🏀 Basketball",
-    ]
+selected_sport = st.query_params.get(
+    "sport",
+    "MLB",
 )
 
-for tab, sport in zip(
-    tabs,
-    ("MLB", "NFL", "NBA"),
+if isinstance(
+    selected_sport,
+    list,
 ):
+    selected_sport = selected_sport[0]
 
-    with tab:
+selected_sport = str(
+    selected_sport
+).upper()
 
-        render_sport(
-            sport,
-            snapshot.get(
-                "sports",
-                {},
-            ).get(
-                sport,
-                {},
-            ),
-            history_rows,
-        )
+if selected_sport not in {
+    "MLB",
+    "NFL",
+    "NBA",
+}:
+    selected_sport = "MLB"
+
+
+mlb_active = (
+    "active"
+    if selected_sport == "MLB"
+    else ""
+)
+
+nfl_active = (
+    "active"
+    if selected_sport == "NFL"
+    else ""
+)
+
+nba_active = (
+    "active"
+    if selected_sport == "NBA"
+    else ""
+)
+
+
+st.markdown(
+    f"""
+    <div class="sports-nav">
+
+        <a
+            href="?sport=MLB"
+            class="sport-pill sport-mlb {mlb_active}"
+        >
+            ⚾ MLB
+        </a>
+
+        <a
+            href="?sport=NFL"
+            class="sport-pill sport-nfl {nfl_active}"
+        >
+            🏈 NFL
+        </a>
+
+        <a
+            href="?sport=NBA"
+            class="sport-pill sport-nba {nba_active}"
+        >
+            🏀 Basketball
+        </a>
+
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
+
+render_sport(
+    selected_sport,
+    snapshot.get(
+        "sports",
+        {},
+    ).get(
+        selected_sport,
+        {},
+    ),
+    history_rows,
+)
 
 
 # ============================================================
@@ -1535,4 +1558,4 @@ st.markdown(
         '</div>'
     ),
     unsafe_allow_html=True,
-)
+    )
