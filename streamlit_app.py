@@ -69,11 +69,10 @@ st.markdown(
     }
 
     [data-testid="stMetric"] {
-        background: rgba(10, 18, 28, 0.88);
-        border: 1px solid rgba(90, 120, 150, 0.45);
+        background: rgba(15, 24, 36, 0.92);
+        border: 1px solid #273547;
         border-radius: 16px;
         padding: 14px 16px;
-        backdrop-filter: blur(6px);
     }
 
     .edge-badge {
@@ -138,54 +137,57 @@ st.markdown(
         background: rgba(5, 12, 20, .88);
         border-radius: 14px;
     }
-[data-baseweb="tab-list"] {
-    gap: 18px;
-    margin-top: 10px;
-    margin-bottom: 18px;
-    flex-wrap: wrap;
-}
 
-[data-baseweb="tab"] {
-    background: rgba(8, 16, 26, 0.88) !important;
-    border: 1px solid rgba(80, 110, 145, 0.55) !important;
-    border-radius: 16px !important;
-    padding: 18px 32px !important;
-    min-height: 72px !important;
-}
+    /* ======================================================
+       MLB / NFL / BASKETBALL GRANDES
+       SOLO ESTAS TRES PESTAÑAS
+       ====================================================== */
 
-[data-baseweb="tab"] p {
-    font-size: 1.80rem !important;
-    font-weight: 800 !important;
-    color: white !important;
-    margin: 0 !important;
-}
+    [data-baseweb="tab-list"] {
+        gap: 20px;
+        margin-top: 14px;
+        margin-bottom: 24px;
+        flex-wrap: wrap;
+    }
 
-button[aria-selected="true"][role="tab"] {
-    background: rgba(25, 45, 70, 0.96) !important;
-    border: 2px solid #8fb8ff !important;
-}
+    [data-baseweb="tab"] {
+        background: rgba(8, 16, 26, 0.92) !important;
+        border: 2px solid rgba(80, 110, 145, 0.65) !important;
+        border-radius: 20px !important;
 
-button[aria-selected="true"][role="tab"] p {
-    font-size: 1.95rem !important;
-    color: white !important;
-}
-[data-testid="stMetric"] {
-    background: rgba(10, 18, 28, 0.90);
-    border: 1px solid rgba(90, 120, 150, 0.55);
-    border-radius: 18px;
-    padding: 22px 20px !important;
-    min-height: 118px;
-}
+        padding: 28px 45px !important;
+        min-height: 105px !important;
 
-[data-testid="stMetricLabel"] p {
-    font-size: 1.05rem !important;
-    font-weight: 700 !important;
-}
+        min-width: 190px !important;
 
-[data-testid="stMetricValue"] {
-    font-size: 2.25rem !important;
-    font-weight: 800 !important;
-}
+        justify-content: center !important;
+
+        box-shadow:
+            0 8px 24px rgba(0, 0, 0, 0.35) !important;
+    }
+
+    [data-baseweb="tab"] p {
+        font-size: 2.20rem !important;
+        font-weight: 900 !important;
+        color: white !important;
+        margin: 0 !important;
+        line-height: 1.1 !important;
+    }
+
+    button[aria-selected="true"][role="tab"] {
+        background: rgba(25, 45, 70, 0.97) !important;
+        border: 3px solid #8fb8ff !important;
+
+        box-shadow:
+            0 0 0 2px rgba(143, 184, 255, 0.18),
+            0 10px 28px rgba(0, 0, 0, 0.40) !important;
+    }
+
+    button[aria-selected="true"][role="tab"] p {
+        font-size: 2.35rem !important;
+        color: white !important;
+    }
+
     </style>
     """,
     unsafe_allow_html=True,
@@ -1156,14 +1158,14 @@ st.caption(
 
 
 # ============================================================
-# TABS
+# TABS GRANDES
 # ============================================================
 
 tabs = st.tabs(
     [
         "⚾ MLB",
         "🏈 NFL",
-        "🏀 NBA",
+        "🏀 Basketball",
     ]
 )
 
