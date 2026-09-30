@@ -1,6 +1,6 @@
 # Reporte del analizador deportivo
 
-Actualizado: **2026-09-30T12:19:33.286507-05:00**
+Actualizado: **2026-09-30T16:14:11.755267-05:00**
 Fecha deportiva analizada: **2026-09-30**
 Escaneo de la sesión: **#1**
 
@@ -15,11 +15,11 @@ Escaneo de la sesión: **#1**
 
 La opción más cercana fue descartada:
 - Chicago White Sox — Ganador del partido
-- Probabilidad estimada: 54.4%
+- Probabilidad estimada: 52.8%
 - Ventaja: 0.0%; valor esperado: 0.0%
-- Calidad de datos: 73/100
+- Calidad de datos: 100/100
 
-Partidos revisados: 2 · Cuotas válidas: 0
+Partidos revisados: 1 · Cuotas válidas: 0
 
 ## NFL — Fútbol americano
 
@@ -36,9 +36,9 @@ Partidos revisados: 0 · Cuotas válidas: 0
 - Ninguna opción superó simultáneamente todos los filtros de valor y calidad.
 
 La opción más cercana fue descartada:
-- Plzen — Ganador del partido
-- Probabilidad estimada: 43.3%
-- Ventaja: 34.2%; valor esperado: 376.6%
-- Calidad de datos: 45/100
+- Podgorica — Ganador del partido
+- Probabilidad estimada: 44.7%
+- Ventaja: 26.0%; valor esperado: 138.8%
+- Calidad de datos: 31/100
 
-Partidos revisados: 68 · Cuotas válidas: 148
+Partidos revisados: 10 · Cuotas válidas: 94
