@@ -141,40 +141,42 @@ st.markdown(
 
     /* ======================================================
        MLB / NFL / BASKETBALL
-       GRANDES + CENTRADOS + COLORES BRILLANTES
+       MUCHO MÁS GRANDES Y CENTRADOS
        ====================================================== */
 
     div[data-baseweb="tab-list"] {
         display: flex !important;
         justify-content: center !important;
         align-items: center !important;
+
         width: 100% !important;
 
         gap: 18px !important;
 
-        margin-top: 22px !important;
-        margin-bottom: 32px !important;
-        margin-left: auto !important;
-        margin-right: auto !important;
+        margin-top: 28px !important;
+        margin-bottom: 35px !important;
+
+        padding-left: 3% !important;
+        padding-right: 3% !important;
     }
 
     div[data-baseweb="tab-list"] button[role="tab"] {
+        flex: 1 1 0 !important;
+
+        max-width: 300px !important;
         min-width: 190px !important;
-        min-height: 105px !important;
 
-        padding: 24px 28px !important;
+        min-height: 120px !important;
 
-        border-radius: 22px !important;
+        padding: 25px 18px !important;
 
         display: flex !important;
         justify-content: center !important;
         align-items: center !important;
 
-        border: 3px solid rgba(255,255,255,.50) !important;
+        border-radius: 24px !important;
 
-        box-shadow:
-            0 0 16px rgba(255,255,255,.25),
-            0 8px 25px rgba(0,0,0,.45) !important;
+        border: 3px solid rgba(255,255,255,.65) !important;
 
         transition:
             transform .15s ease,
@@ -182,7 +184,7 @@ st.markdown(
     }
 
 
-    /* MLB AZUL */
+    /* MLB AZUL BRILLANTE */
 
     div[data-baseweb="tab-list"]
     button[role="tab"]:nth-child(1) {
@@ -190,18 +192,19 @@ st.markdown(
         background:
             linear-gradient(
                 135deg,
-                #004cff,
-                #00d4ff
+                #003cff 0%,
+                #006cff 45%,
+                #00e5ff 100%
             ) !important;
 
         box-shadow:
-            0 0 18px #009dff,
-            0 0 38px rgba(0,157,255,.60),
-            0 8px 25px rgba(0,0,0,.45) !important;
+            0 0 20px #008cff,
+            0 0 45px rgba(0,140,255,.70),
+            inset 0 0 18px rgba(255,255,255,.18) !important;
     }
 
 
-    /* NFL ROJO */
+    /* NFL ROJO BRILLANTE */
 
     div[data-baseweb="tab-list"]
     button[role="tab"]:nth-child(2) {
@@ -209,18 +212,19 @@ st.markdown(
         background:
             linear-gradient(
                 135deg,
-                #ff1010,
-                #ff6a00
+                #ff0000 0%,
+                #ff331f 45%,
+                #ff8a00 100%
             ) !important;
 
         box-shadow:
-            0 0 18px #ff361f,
-            0 0 38px rgba(255,54,31,.60),
-            0 8px 25px rgba(0,0,0,.45) !important;
+            0 0 20px #ff321f,
+            0 0 45px rgba(255,50,31,.70),
+            inset 0 0 18px rgba(255,255,255,.18) !important;
     }
 
 
-    /* BASKETBALL NARANJA */
+    /* BASKETBALL NARANJA BRILLANTE */
 
     div[data-baseweb="tab-list"]
     button[role="tab"]:nth-child(3) {
@@ -228,23 +232,24 @@ st.markdown(
         background:
             linear-gradient(
                 135deg,
-                #ff7b00,
-                #ffd000
+                #ff6a00 0%,
+                #ff9900 45%,
+                #ffd900 100%
             ) !important;
 
         box-shadow:
-            0 0 18px #ffae00,
-            0 0 38px rgba(255,174,0,.60),
-            0 8px 25px rgba(0,0,0,.45) !important;
+            0 0 20px #ffae00,
+            0 0 45px rgba(255,174,0,.70),
+            inset 0 0 18px rgba(255,255,255,.18) !important;
     }
 
 
-    /* LETRAS DE LOS 3 */
+    /* TEXTO GRANDE */
 
     div[data-baseweb="tab-list"]
     button[role="tab"] p {
 
-        font-size: 30px !important;
+        font-size: 34px !important;
         font-weight: 900 !important;
 
         color: white !important;
@@ -253,52 +258,62 @@ st.markdown(
 
         margin: 0 auto !important;
 
-        line-height: 1.1 !important;
+        line-height: 1.05 !important;
 
         text-shadow:
-            0 2px 6px rgba(0,0,0,.80) !important;
+            0 3px 8px rgba(0,0,0,.85) !important;
     }
 
 
-    /* SELECCIONADO */
+    /* TAB SELECCIONADO */
 
     div[data-baseweb="tab-list"]
     button[role="tab"][aria-selected="true"] {
 
-        transform: scale(1.08) !important;
+        transform: scale(1.09) !important;
 
         border: 4px solid white !important;
 
         box-shadow:
             0 0 18px white,
-            0 0 42px rgba(255,255,255,.70),
-            0 10px 28px rgba(0,0,0,.50) !important;
+            0 0 40px rgba(255,255,255,.80),
+            0 0 65px rgba(255,255,255,.30) !important;
     }
 
 
-    /* MÓVIL */
+    /* MÓVIL / SAMSUNG */
 
     @media (max-width: 800px) {
 
         div[data-baseweb="tab-list"] {
-            gap: 8px !important;
+            gap: 10px !important;
+
+            padding-left: 1% !important;
+            padding-right: 1% !important;
+
+            margin-top: 24px !important;
+            margin-bottom: 30px !important;
         }
 
         div[data-baseweb="tab-list"]
         button[role="tab"] {
 
             min-width: 0 !important;
+            max-width: none !important;
+
             flex: 1 1 0 !important;
 
-            min-height: 90px !important;
+            min-height: 100px !important;
 
-            padding: 18px 8px !important;
+            padding: 18px 5px !important;
+
+            border-radius: 18px !important;
         }
 
         div[data-baseweb="tab-list"]
         button[role="tab"] p {
 
-            font-size: 20px !important;
+            font-size: 24px !important;
         }
     }
 
@@ -1091,22 +1106,27 @@ def probability_analysis(
                 "Ganadas": won,
                 "Perdidas": lost,
                 "Empates": tied,
+
                 "Efectividad": (
                     f"{won / decisions * 100:.1f}%"
                     if decisions
                     else "—"
                 ),
+
                 "Con cuota": len(financial),
+
                 "Apostado": (
                     f"${staked:,.2f}"
                     if financial
                     else "—"
                 ),
+
                 "Neto": (
                     f"${net:+,.2f}"
                     if financial
                     else "—"
                 ),
+
                 "ROI": (
                     f"{roi * 100:+.2f}%"
                     if roi is not None
@@ -1268,7 +1288,7 @@ st.caption(
 
 
 # ============================================================
-# TABS
+# MLB / NFL / BASKETBALL
 # ============================================================
 
 tabs = st.tabs(
@@ -1515,4 +1535,4 @@ st.markdown(
         '</div>'
     ),
     unsafe_allow_html=True,
-    )
+)
