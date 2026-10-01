@@ -22,6 +22,7 @@ from .engine import (
     is_finished,
     normalize_games,
     parse_quotes,
+    score_for_side,
 )
 from .history import history_summary, update_history
 from .kalshi import find_kalshi_quote
@@ -116,6 +117,15 @@ class SportsAnalyzer:
                     else None
                 )
 
+                football_h2h = (
+                    self._football_h2h_for_games(
+                        sport,
+                        games,
+                    )
+                    if sport in {"NFL", "NCAAF"}
+                    else None
+                )
+
                 (
                     recommendations,
                     best_observed,
@@ -127,6 +137,7 @@ class SportsAnalyzer:
                     forms,
                     self.config,
                     matchups,
+                    football_h2h,
                 )
 
                 # ==========================================
@@ -585,7 +596,7 @@ class SportsAnalyzer:
 
                         self.history_cache[key] = []
 
-                current_rows = list(
+                history_rows = list(
                     self.history_cache[key]
                 )
 
@@ -593,34 +604,16 @@ class SportsAnalyzer:
                     calculate_team_form(
                         sport,
                         team.id,
-                        current_rows,
+                        history_rows,
                         history_limit,
                         game.id,
                     )
                 )
 
-                # ==========================================
-                # NFL / NCAAF
-                # Al inicio de temporada, completar la
-                # muestra hasta history_limit usando los
-                # últimos partidos de la temporada anterior.
-                #
-                # Temporada actual: peso 100%
-                # Temporada anterior: peso 65%
-                #
-                # Cuando ya hay history_limit partidos de
-                # la temporada actual, no se usa la anterior.
-                # ==========================================
-
                 if (
-                    sport in ("NFL", "NCAAF")
-                    and current_form.games < history_limit
+                    current_form.games
+                    < history_limit
                 ):
-
-                    missing = (
-                        history_limit
-                        - current_form.games
-                    )
 
                     previous_season = (
                         _previous_season(
@@ -659,119 +652,136 @@ class SportsAnalyzer:
                                 previous_key
                             ] = []
 
-                    previous_form = (
-                        calculate_team_form(
-                            sport,
-                            team.id,
-                            self.history_cache[
-                                previous_key
-                            ],
-                            missing,
-                            None,
-                        )
+                    history_rows.extend(
+                        self.history_cache[
+                            previous_key
+                        ]
                     )
 
-                    current_n = (
-                        current_form.games
-                    )
-
-                    previous_n = (
-                        previous_form.games
-                    )
-
-                    previous_weight = 0.65
-
-                    total_weight = (
-                        current_n
-                        + previous_n
-                        * previous_weight
-                    )
-
-                    if total_weight > 0:
-
-                        weighted_win_rate = (
-                            (
-                                current_form.win_rate
-                                * current_n
-                            )
-                            + (
-                                previous_form.win_rate
-                                * previous_n
-                                * previous_weight
-                            )
-                        ) / total_weight
-
-                        weighted_for = (
-                            (
-                                current_form.average_for
-                                * current_n
-                            )
-                            + (
-                                previous_form.average_for
-                                * previous_n
-                                * previous_weight
-                            )
-                        ) / total_weight
-
-                        weighted_against = (
-                            (
-                                current_form.average_against
-                                * current_n
-                            )
-                            + (
-                                previous_form.average_against
-                                * previous_n
-                                * previous_weight
-                            )
-                        ) / total_weight
-
-                        forms[
-                            str(team.id)
-                        ] = TeamForm(
-                            games=(
-                                current_n
-                                + previous_n
-                            ),
-                            wins=(
-                                current_form.wins
-                                + previous_form.wins
-                            ),
-                            losses=(
-                                current_form.losses
-                                + previous_form.losses
-                            ),
-                            ties=(
-                                current_form.ties
-                                + previous_form.ties
-                            ),
-                            win_rate=(
-                                weighted_win_rate
-                            ),
-                            average_for=(
-                                weighted_for
-                            ),
-                            average_against=(
-                                weighted_against
-                            ),
-                            average_margin=(
-                                weighted_for
-                                - weighted_against
-                            ),
-                        )
-
-                    else:
-
-                        forms[
-                            str(team.id)
-                        ] = current_form
-
-                else:
-
-                    forms[
-                        str(team.id)
-                    ] = current_form
+                forms[
+                    str(team.id)
+                ] = calculate_team_form(
+                    sport,
+                    team.id,
+                    history_rows,
+                    history_limit,
+                    game.id,
+                )
 
         return forms
+
+    def _football_h2h_for_games(
+        self,
+        sport: str,
+        games: list[Any],
+    ) -> dict[str, dict[str, Any]]:
+
+        output: dict[str, dict[str, Any]] = {}
+        recency_weights = [1.00, 0.85, 0.70, 0.55, 0.40]
+
+        for current in games:
+            home_id = str(current.home.id)
+            away_id = str(current.away.id)
+
+            raw_rows: list[dict[str, Any]] = []
+
+            for (
+                cache_sport,
+                cache_team,
+                _cache_season,
+            ), cached_rows in self.history_cache.items():
+
+                if (
+                    cache_sport == sport
+                    and cache_team in {home_id, away_id}
+                ):
+                    raw_rows.extend(cached_rows)
+
+            dedup: dict[str, Any] = {}
+
+            for old_game in normalize_games(
+                sport,
+                raw_rows,
+            ):
+                old_id = str(old_game.id)
+
+                if old_id == str(current.id):
+                    continue
+
+                teams = {
+                    str(old_game.home.id),
+                    str(old_game.away.id),
+                }
+
+                if teams != {home_id, away_id}:
+                    continue
+
+                if not is_finished(old_game.status):
+                    continue
+
+                dedup[old_id] = old_game
+
+            meetings = sorted(
+                dedup.values(),
+                key=lambda item: str(item.start),
+                reverse=True,
+            )[:5]
+
+            weighted_points = 0.0
+            weighted_margin = 0.0
+            total_weight = 0.0
+            valid_count = 0
+
+            for index, old_game in enumerate(meetings):
+                home_score = score_for_side(
+                    old_game.raw,
+                    "home",
+                )
+                away_score = score_for_side(
+                    old_game.raw,
+                    "away",
+                )
+
+                if home_score is None or away_score is None:
+                    continue
+
+                if str(old_game.home.id) == home_id:
+                    scored = home_score
+                    allowed = away_score
+                else:
+                    scored = away_score
+                    allowed = home_score
+
+                weight = recency_weights[
+                    min(index, len(recency_weights) - 1)
+                ]
+
+                if scored > allowed:
+                    result_points = 1.0
+                elif scored < allowed:
+                    result_points = 0.0
+                else:
+                    result_points = 0.5
+
+                weighted_points += result_points * weight
+                weighted_margin += (scored - allowed) * weight
+                total_weight += weight
+                valid_count += 1
+
+            if total_weight > 0:
+                home_win_rate = weighted_points / total_weight
+                average_margin = weighted_margin / total_weight
+            else:
+                home_win_rate = 0.5
+                average_margin = 0.0
+
+            output[str(current.id)] = {
+                "games": valid_count,
+                "home_win_rate": home_win_rate,
+                "home_average_margin": average_margin,
+            }
+
+        return output
 
     def _mlb_matchups(
         self,
