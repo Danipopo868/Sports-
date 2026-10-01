@@ -1,6 +1,6 @@
 # Reporte del analizador deportivo
 
-Actualizado: **2026-10-01T08:37:49.732891-05:00**
+Actualizado: **2026-10-01T12:26:00.591299-05:00**
 Fecha deportiva analizada: **2026-10-01**
 Escaneo de la sesión: **#1**
 
@@ -10,12 +10,9 @@ Escaneo de la sesión: **#1**
 
 **NO APOSTAR**
 
-- Philadelphia Phillies @ Atlanta Braves: F5 omitido porque faltan abridores u ofensiva verificable.
-- Philadelphia Phillies @ Atlanta Braves: ganador final omitido porque faltan datos MLB esenciales.
-- MLB analizado SIN cuotas: el ganador se calculó únicamente con el modelo deportivo de MLB Stats API.
-- Ningún juego MLB superó simultáneamente la probabilidad mínima y la cobertura mínima de factores.
+- No hay partidos disponibles para la fecha analizada.
 
-Partidos revisados: 1 · Cuotas válidas: 0
+Partidos revisados: 0 · Cuotas válidas: 0
 
 ## NFL — Fútbol americano
 
@@ -39,9 +36,9 @@ Partidos revisados: 1 · Cuotas válidas: 0
 - Ninguna opción superó simultáneamente todos los filtros de valor y calidad.
 
 La opción más cercana fue descartada:
-- Barnaul — Ganador del partido
-- Probabilidad estimada: 44.3%
-- Ventaja: 26.7%; valor esperado: 151.9%
-- Calidad de datos: 38/100
+- Tambov — Ganador del partido
+- Probabilidad estimada: 43.6%
+- Ventaja: 29.1%; valor esperado: 200.7%
+- Calidad de datos: 31/100
 
-Partidos revisados: 36 · Cuotas válidas: 74
+Partidos revisados: 27 · Cuotas válidas: 124
