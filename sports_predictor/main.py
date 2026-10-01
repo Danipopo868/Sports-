@@ -585,7 +585,7 @@ class SportsAnalyzer:
 
                         self.history_cache[key] = []
 
-                history_rows = list(
+                current_rows = list(
                     self.history_cache[key]
                 )
 
@@ -593,16 +593,34 @@ class SportsAnalyzer:
                     calculate_team_form(
                         sport,
                         team.id,
-                        history_rows,
+                        current_rows,
                         history_limit,
                         game.id,
                     )
                 )
 
+                # ==========================================
+                # NFL / NCAAF
+                # Al inicio de temporada, completar la
+                # muestra hasta history_limit usando los
+                # últimos partidos de la temporada anterior.
+                #
+                # Temporada actual: peso 100%
+                # Temporada anterior: peso 65%
+                #
+                # Cuando ya hay history_limit partidos de
+                # la temporada actual, no se usa la anterior.
+                # ==========================================
+
                 if (
-                    current_form.games
-                    < history_limit
+                    sport in ("NFL", "NCAAF")
+                    and current_form.games < history_limit
                 ):
+
+                    missing = (
+                        history_limit
+                        - current_form.games
+                    )
 
                     previous_season = (
                         _previous_season(
@@ -641,21 +659,117 @@ class SportsAnalyzer:
                                 previous_key
                             ] = []
 
-                    history_rows.extend(
-                        self.history_cache[
-                            previous_key
-                        ]
+                    previous_form = (
+                        calculate_team_form(
+                            sport,
+                            team.id,
+                            self.history_cache[
+                                previous_key
+                            ],
+                            missing,
+                            None,
+                        )
                     )
 
-                forms[
-                    str(team.id)
-                ] = calculate_team_form(
-                    sport,
-                    team.id,
-                    history_rows,
-                    history_limit,
-                    game.id,
-                )
+                    current_n = (
+                        current_form.games
+                    )
+
+                    previous_n = (
+                        previous_form.games
+                    )
+
+                    previous_weight = 0.65
+
+                    total_weight = (
+                        current_n
+                        + previous_n
+                        * previous_weight
+                    )
+
+                    if total_weight > 0:
+
+                        weighted_win_rate = (
+                            (
+                                current_form.win_rate
+                                * current_n
+                            )
+                            + (
+                                previous_form.win_rate
+                                * previous_n
+                                * previous_weight
+                            )
+                        ) / total_weight
+
+                        weighted_for = (
+                            (
+                                current_form.average_for
+                                * current_n
+                            )
+                            + (
+                                previous_form.average_for
+                                * previous_n
+                                * previous_weight
+                            )
+                        ) / total_weight
+
+                        weighted_against = (
+                            (
+                                current_form.average_against
+                                * current_n
+                            )
+                            + (
+                                previous_form.average_against
+                                * previous_n
+                                * previous_weight
+                            )
+                        ) / total_weight
+
+                        forms[
+                            str(team.id)
+                        ] = TeamForm(
+                            games=(
+                                current_n
+                                + previous_n
+                            ),
+                            wins=(
+                                current_form.wins
+                                + previous_form.wins
+                            ),
+                            losses=(
+                                current_form.losses
+                                + previous_form.losses
+                            ),
+                            ties=(
+                                current_form.ties
+                                + previous_form.ties
+                            ),
+                            win_rate=(
+                                weighted_win_rate
+                            ),
+                            average_for=(
+                                weighted_for
+                            ),
+                            average_against=(
+                                weighted_against
+                            ),
+                            average_margin=(
+                                weighted_for
+                                - weighted_against
+                            ),
+                        )
+
+                    else:
+
+                        forms[
+                            str(team.id)
+                        ] = current_form
+
+                else:
+
+                    forms[
+                        str(team.id)
+                    ] = current_form
 
         return forms
 
