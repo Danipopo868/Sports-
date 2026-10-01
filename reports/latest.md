@@ -1,6 +1,6 @@
 # Reporte del analizador deportivo
 
-Actualizado: **2026-10-01T12:45:13.566726-05:00**
+Actualizado: **2026-10-01T16:35:55.767094-05:00**
 Fecha deportiva analizada: **2026-10-01**
 Escaneo de la sesión: **#1**
 
@@ -36,9 +36,9 @@ Partidos revisados: 1 · Cuotas válidas: 0
 - Ninguna opción superó simultáneamente todos los filtros de valor y calidad.
 
 La opción más cercana fue descartada:
-- Tambov — Ganador del partido
-- Probabilidad estimada: 43.6%
-- Ventaja: 29.1%; valor esperado: 200.7%
-- Calidad de datos: 31/100
+- Espanol Osorno — Ganador del partido
+- Probabilidad estimada: 44.7%
+- Ventaja: 27.3%; valor esperado: 156.8%
+- Calidad de datos: 45/100
 
-Partidos revisados: 26 · Cuotas válidas: 106
+Partidos revisados: 5 · Cuotas válidas: 74
