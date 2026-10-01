@@ -1,6 +1,6 @@
 # Reporte del analizador deportivo
 
-Actualizado: **2026-10-01T17:20:47.260900-05:00**
+Actualizado: **2026-10-01T17:47:00.455558-05:00**
 Fecha deportiva analizada: **2026-10-01**
 Escaneo de la sesión: **#1**
 
@@ -18,7 +18,7 @@ Partidos revisados: 0 · Cuotas válidas: 0
 
 **NO APOSTAR**
 
-- NFL analizado SIN cuotas: la selección se calculó con forma reciente y margen de puntos; las cuotas no participaron en la decisión.
+- NFL analizado SIN cuotas: la selección se calculó con forma reciente, puntos anotados/permitidos, margen de puntos y enfrentamientos directos (H2H) cuando existen; las cuotas no participaron en la decisión.
 - Ningún juego NFL superó simultáneamente la probabilidad mínima, la calidad mínima y el historial mínimo exigido.
 
 La opción más cercana fue descartada:
