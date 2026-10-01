@@ -91,7 +91,7 @@ FINISHED_STATUS_WORDS = {
 SPORT_MARGIN_SCALE = {
     "MLB": 3.0,
     "NFL": 13.0,
-    "NCAAF": 16.0,
+    "NCAAF": 14.0,
     "NBA": 17.0,
 }
 
@@ -440,6 +440,11 @@ def analyze_sport(
         dict[str, Any],
     ]
     | None = None,
+    football_h2h: dict[
+        str,
+        dict[str, Any],
+    ]
+    | None = None,
 ) -> tuple[
     list[Candidate],
     Candidate | None,
@@ -686,13 +691,93 @@ def analyze_sport(
 
             continue
 
-        if sport in ("NFL", "NCAAF"):
-            home_probability = (
+        if sport in {"NFL", "NCAAF"}:
+            base_home_probability = (
                 form_home_probability_for_game(
                     sport,
                     home_form,
                     away_form,
                 )
+            )
+
+            h2h_data = (
+                (football_h2h or {}).get(
+                    str(game.id),
+                    {},
+                )
+            )
+
+            h2h_games = int(
+                h2h_data.get(
+                    "games",
+                    0,
+                )
+                or 0
+            )
+
+            h2h_weight = min(
+                0.10,
+                0.025 * h2h_games,
+            )
+
+            home_probability = base_home_probability
+
+            if h2h_games > 0:
+                h2h_win_rate = float(
+                    h2h_data.get(
+                        "home_win_rate",
+                        0.5,
+                    )
+                )
+
+                h2h_margin = float(
+                    h2h_data.get(
+                        "home_average_margin",
+                        0.0,
+                    )
+                )
+
+                margin_scale = max(
+                    1.0,
+                    float(
+                        SPORT_MARGIN_SCALE.get(
+                            sport,
+                            13.0,
+                        )
+                    ),
+                )
+
+                h2h_margin_probability = sigmoid(
+                    h2h_margin / margin_scale
+                )
+
+                h2h_probability = (
+                    0.65 * h2h_win_rate
+                    + 0.35 * h2h_margin_probability
+                )
+
+                home_probability = (
+                    (1.0 - h2h_weight)
+                    * base_home_probability
+                    + h2h_weight
+                    * h2h_probability
+                )
+
+            home_probability = min(
+                float(
+                    model[
+                        "maximum_probability"
+                    ]
+                ),
+                max(
+                    1.0
+                    - float(
+                        model[
+                            "maximum_probability"
+                        ]
+                    ),
+                    home_probability,
+                ),
             )
 
             side = (
@@ -713,34 +798,39 @@ def analyze_sport(
                 else game.away.name
             )
 
-            history_games = int(
-                config["history_games"]
-            )
-
             history_count = min(
                 home_form.games,
                 away_form.games,
             )
 
-            history_ok = (
-                history_count
-                >= int(
-                    filters[
-                        "minimum_history_games"
-                    ]
-                )
+            minimum_history = int(
+                filters[
+                    "minimum_history_games"
+                ]
             )
 
-            quality = min(
-                100,
-                round(
-                    100
-                    * history_count
-                    / max(
-                        1,
-                        history_games,
-                    )
-                ),
+            history_ok = (
+                history_count
+                >= minimum_history
+            )
+
+            # En football la calidad ya no castiga dos veces
+            # el mismo historial. 3+ partidos válidos dan una
+            # base suficiente; 6+ llevan la muestra a calidad 100.
+            quality = (
+                0
+                if history_count <= 0
+                else min(
+                    100,
+                    round(
+                        35
+                        + 65
+                        * min(
+                            1.0,
+                            history_count / 6.0,
+                        )
+                    ),
+                )
             )
 
             passes = all(
@@ -761,9 +851,15 @@ def analyze_sport(
                 )
             )
 
-            reason_lines = (
+            sport_label = (
+                "NFL"
+                if sport == "NFL"
+                else "NCAAF"
+            )
+
+            reason_list = [
                 (
-                    f"Modelo {sport} sin cuotas: "
+                    f"Modelo {sport_label} sin cuotas: "
                     f"{probability * 100:.1f}% "
                     f"para {selection}"
                 ),
@@ -776,10 +872,47 @@ def analyze_sport(
                     f"{away_form.losses}"
                 ),
                 (
-                    "Predicción calculada con "
-                    "forma reciente y margen "
-                    "de puntos; cuotas no utilizadas"
+                    "Forma reciente, puntos anotados/permitidos "
+                    "y margen de puntos incluidos en el modelo"
                 ),
+            ]
+
+            if h2h_games > 0:
+                h2h_win_rate = float(
+                    h2h_data.get(
+                        "home_win_rate",
+                        0.5,
+                    )
+                )
+                h2h_margin = float(
+                    h2h_data.get(
+                        "home_average_margin",
+                        0.0,
+                    )
+                )
+
+                reason_list.append(
+                    (
+                        f"H2H últimos {h2h_games}: "
+                        f"{game.home.name} "
+                        f"{h2h_win_rate * 100:.0f}% victorias; "
+                        f"margen {h2h_margin:+.1f} pts"
+                    )
+                )
+
+                reason_list.append(
+                    (
+                        "Peso H2H aplicado: "
+                        f"{h2h_weight * 100:.1f}%"
+                    )
+                )
+            else:
+                reason_list.append(
+                    "H2H: sin enfrentamientos recientes utilizables"
+                )
+
+            reason_list.append(
+                "Las cuotas no participan en la decisión"
             )
 
             all_candidates.append(
@@ -795,7 +928,7 @@ def analyze_sport(
                     selection=selection,
                     bookmaker=(
                         "SIN CUOTAS — "
-                        f"MODELO {sport}"
+                        f"MODELO {sport_label}"
                     ),
                     decimal_odds=0.0,
                     model_probability=probability,
@@ -805,7 +938,7 @@ def analyze_sport(
                     bookmakers=0,
                     data_quality=quality,
                     passes_filters=passes,
-                    reasons=reason_lines,
+                    reasons=tuple(reason_list),
                 )
             )
 
@@ -1057,7 +1190,7 @@ def analyze_sport(
             reverse=True,
         )
 
-    elif sport in ("NFL", "NCAAF"):
+    elif sport in {"NFL", "NCAAF"}:
         best_observed = max(
             all_candidates,
             key=lambda candidate: (
@@ -1177,13 +1310,16 @@ def analyze_sport(
             "deportivo de MLB Stats API."
         )
 
-    elif sport in ("NFL", "NCAAF"):
+    elif (
+        sport in {"NFL", "NCAAF"}
+        and not quotes
+    ):
         notes.append(
             f"{sport} analizado SIN cuotas: "
-            "la selección se calculó "
-            "con forma reciente y margen "
-            "de puntos; las cuotas no "
-            "participaron en la decisión."
+            "la selección se calculó con forma reciente, "
+            "puntos anotados/permitidos, margen de puntos "
+            "y enfrentamientos directos (H2H) cuando existen; "
+            "las cuotas no participaron en la decisión."
         )
 
     elif (
@@ -1209,9 +1345,12 @@ def analyze_sport(
                 "de factores."
             )
 
-        elif sport in ("NFL", "NCAAF"):
+        elif (
+            sport == "NFL"
+            and not quotes
+        ):
             notes.append(
-                f"Ningún juego {sport} superó "
+                "Ningún juego NFL superó "
                 "simultáneamente la "
                 "probabilidad mínima, "
                 "la calidad mínima y "
