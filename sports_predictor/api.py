@@ -1460,13 +1460,6 @@ class ApiSportsClient:
         # NBA
         # ====================================================
 
-        if sport == "NCAAF":
-
-            return self._espn_ncaaf_team_history(
-                team_id=team_id,
-                season=season,
-            )
-
         if sport == "NBA":
 
             return self._get(
@@ -1572,6 +1565,13 @@ class ApiSportsClient:
                     response=[],
                     remaining_requests=None,
                 )
+
+        if sport == "NCAAF":
+
+            return self._espn_ncaaf_team_history(
+                team_id=team_id,
+                season=season,
+            )
 
         if sport == "NBA":
 
