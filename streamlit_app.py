@@ -34,12 +34,14 @@ SPORT_BUTTON_RADIUS = 24
 SPORT_NAMES = {
     "MLB": "Major League Baseball",
     "NFL": "National Football League",
+    "NCAAF": "College Football",
     "NBA": "National Basketball Association",
 }
 
 SPORT_LOGOS = {
     "MLB": "https://a.espncdn.com/i/teamlogos/leagues/500/mlb.png",
     "NFL": "https://a.espncdn.com/i/teamlogos/leagues/500/nfl.png",
+    "NCAAF": "https://a.espncdn.com/i/teamlogos/leagues/500/college-football.png",
     "NBA": "https://a.espncdn.com/i/teamlogos/leagues/500/nba.png",
 }
 
@@ -78,13 +80,11 @@ st.markdown(
     background-repeat: no-repeat;
 }}
 
-
 .block-container {{
     max-width: 1180px;
     padding-top: 1.2rem;
     padding-bottom: 3rem;
 }}
-
 
 [data-testid="stMetric"] {{
     background: rgba(15, 24, 36, 0.92);
@@ -93,176 +93,104 @@ st.markdown(
     padding: 14px 16px;
 }}
 
-
 .edge-badge {{
     display: inline-flex;
     align-items: center;
     gap: .45rem;
-
     padding: .35rem .7rem;
-
-    border:
-        1px solid
-        rgba(200,255,61,.35);
-
+    border: 1px solid rgba(200,255,61,.35);
     border-radius: 999px;
-
     color: #dfff8d;
-
-    background:
-        rgba(200,255,61,.08);
-
+    background: rgba(200,255,61,.08);
     font-size: .82rem;
     font-weight: 700;
 }}
-
 
 .muted {{
     color: #b3bdca;
     font-size: .9rem;
 }}
 
-
 .sport-header {{
     display: flex;
     align-items: center;
     gap: 18px;
-
     padding: 18px 20px;
-
     margin-top: 14px;
     margin-bottom: 18px;
-
-    background:
-        rgba(8, 16, 26, .88);
-
-    border:
-        1px solid
-        rgba(80, 110, 145, .50);
-
+    background: rgba(8, 16, 26, .88);
+    border: 1px solid rgba(80, 110, 145, .50);
     border-radius: 18px;
-
-    backdrop-filter:
-        blur(8px);
+    backdrop-filter: blur(8px);
 }}
-
 
 .sport-logo {{
     width: 78px;
     height: 78px;
-
     object-fit: contain;
 }}
 
-
 .sport-code {{
     font-size: 1.65rem;
-
     font-weight: 800;
-
     color: white;
 }}
 
-
 .sport-name {{
     color: #b0bac8;
-
     font-size: .95rem;
 }}
 
-
 .footer-note {{
     margin-top: 2rem;
-
     color: #b1bcc9;
-
-    border-top:
-        1px solid #334253;
-
+    border-top: 1px solid #334253;
     padding: 15px;
-
     font-size: .88rem;
-
-    background:
-        rgba(4, 10, 18, .55);
-
+    background: rgba(4, 10, 18, .55);
     border-radius: 12px;
 }}
 
-
 [data-testid="stDataFrame"] {{
-    background:
-        rgba(5, 12, 20, .88);
-
+    background: rgba(5, 12, 20, .88);
     border-radius: 14px;
 }}
 
 
 /* ==========================================================
-   MLB / NFL / BASKETBALL BUTTONS
+   MLB / NFL / NCAAF / BASKETBALL BUTTONS
    ========================================================== */
 
 [class*="st-key-sport_mlb"] button,
 [class*="st-key-sport_nfl"] button,
+[class*="st-key-sport_ncaaf"] button,
 [class*="st-key-sport_nba"] button {{
-
-    height:
-        {SPORT_BUTTON_HEIGHT}px !important;
-
-    min-height:
-        {SPORT_BUTTON_HEIGHT}px !important;
-
-    border-radius:
-        {SPORT_BUTTON_RADIUS}px !important;
-
-    border:
-        3px solid
-        rgba(255,255,255,.85) !important;
-
-    padding:
-        6px 8px !important;
-
+    height: {SPORT_BUTTON_HEIGHT}px !important;
+    min-height: {SPORT_BUTTON_HEIGHT}px !important;
+    border-radius: {SPORT_BUTTON_RADIUS}px !important;
+    border: 3px solid rgba(255,255,255,.85) !important;
+    padding: 6px 8px !important;
     transition:
         transform .15s ease,
         box-shadow .15s ease !important;
 }}
 
-
 [class*="st-key-sport_mlb"] button p,
 [class*="st-key-sport_nfl"] button p,
+[class*="st-key-sport_ncaaf"] button p,
 [class*="st-key-sport_nba"] button p {{
-
-    font-size:
-        {SPORT_BUTTON_FONT}px !important;
-
-    font-weight:
-        900 !important;
-
-    color:
-        white !important;
-
-    text-align:
-        center !important;
-
-    white-space:
-        nowrap !important;
-
-    line-height:
-        1 !important;
-
-    margin:
-        0 !important;
-
-    text-shadow:
-        0 3px 8px
-        rgba(0,0,0,.95) !important;
+    font-size: {SPORT_BUTTON_FONT}px !important;
+    font-weight: 900 !important;
+    color: white !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    line-height: 1 !important;
+    margin: 0 !important;
+    text-shadow: 0 3px 8px rgba(0,0,0,.95) !important;
 }}
 
-
 /* MLB */
-
 [class*="st-key-sport_mlb"] button {{
-
     background:
         linear-gradient(
             135deg,
@@ -270,18 +198,13 @@ st.markdown(
             #008cff,
             #00ddff
         ) !important;
-
     box-shadow:
         0 0 18px #008cff,
-        0 0 38px
-        rgba(0,140,255,.65) !important;
+        0 0 38px rgba(0,140,255,.65) !important;
 }}
 
-
 /* NFL */
-
 [class*="st-key-sport_nfl"] button {{
-
     background:
         linear-gradient(
             135deg,
@@ -289,18 +212,27 @@ st.markdown(
             #ff351f,
             #ff8500
         ) !important;
-
     box-shadow:
         0 0 18px #ff3b1f,
-        0 0 38px
-        rgba(255,59,31,.65) !important;
+        0 0 38px rgba(255,59,31,.65) !important;
 }}
 
+/* COLLEGE FOOTBALL / NCAAF */
+[class*="st-key-sport_ncaaf"] button {{
+    background:
+        linear-gradient(
+            135deg,
+            #5a00ff,
+            #8b00ff,
+            #d000ff
+        ) !important;
+    box-shadow:
+        0 0 18px #9200ff,
+        0 0 38px rgba(146,0,255,.65) !important;
+}}
 
 /* BASKETBALL */
-
 [class*="st-key-sport_nba"] button {{
-
     background:
         linear-gradient(
             135deg,
@@ -308,27 +240,19 @@ st.markdown(
             #ff9a00,
             #ffd800
         ) !important;
-
     box-shadow:
         0 0 18px #ffae00,
-        0 0 38px
-        rgba(255,174,0,.65) !important;
+        0 0 38px rgba(255,174,0,.65) !important;
 }}
-
 
 /* HOVER */
-
 [class*="st-key-sport_mlb"] button:hover,
 [class*="st-key-sport_nfl"] button:hover,
+[class*="st-key-sport_ncaaf"] button:hover,
 [class*="st-key-sport_nba"] button:hover {{
-
-    transform:
-        scale(1.04) !important;
-
-    border:
-        4px solid white !important;
+    transform: scale(1.04) !important;
+    border: 4px solid white !important;
 }}
-
 
 /* ==========================================================
    SAMSUNG
@@ -343,24 +267,18 @@ st.markdown(
 
     [class*="st-key-sport_mlb"] button,
     [class*="st-key-sport_nfl"] button,
+    [class*="st-key-sport_ncaaf"] button,
     [class*="st-key-sport_nba"] button {{
-
-        height:
-            {SPORT_BUTTON_HEIGHT}px !important;
-
-        min-height:
-            {SPORT_BUTTON_HEIGHT}px !important;
-
-        padding:
-            3px 3px !important;
+        height: {SPORT_BUTTON_HEIGHT}px !important;
+        min-height: {SPORT_BUTTON_HEIGHT}px !important;
+        padding: 3px 3px !important;
     }}
 
     [class*="st-key-sport_mlb"] button p,
     [class*="st-key-sport_nfl"] button p,
+    [class*="st-key-sport_ncaaf"] button p,
     [class*="st-key-sport_nba"] button p {{
-
-        font-size:
-            {SPORT_BUTTON_FONT}px !important;
+        font-size: {SPORT_BUTTON_FONT}px !important;
     }}
 }}
 
@@ -629,10 +547,7 @@ def row_profit_loss(
         return None
 
     if result == "GANADA":
-        return (
-            stake * odds
-            - stake
-        )
+        return stake * odds - stake
 
     if result == "PERDIDA":
         return -stake
@@ -733,20 +648,17 @@ def history_stats(
         ]
 
     won = sum(
-        row.get("result")
-        == "GANADA"
+        row.get("result") == "GANADA"
         for row in filtered
     )
 
     lost = sum(
-        row.get("result")
-        == "PERDIDA"
+        row.get("result") == "PERDIDA"
         for row in filtered
     )
 
     tied = sum(
-        row.get("result")
-        == "EMPATE"
+        row.get("result") == "EMPATE"
         for row in filtered
     )
 
@@ -759,10 +671,7 @@ def history_stats(
         for row in filtered
     )
 
-    decisions = (
-        won
-        + lost
-    )
+    decisions = won + lost
 
     win_rate = (
         won / decisions
@@ -785,14 +694,12 @@ def history_stats(
     ]
 
     total_staked = sum(
-        row_stake(row)
-        or 0.0
+        row_stake(row) or 0.0
         for row in financial_rows
     )
 
     profit_loss = sum(
-        row_profit_loss(row)
-        or 0.0
+        row_profit_loss(row) or 0.0
         for row in financial_rows
     )
 
@@ -883,22 +790,16 @@ def render_sport_stats(
         sport,
     )
 
-    c1, c2, c3, c4 = (
-        st.columns(4)
-    )
+    c1, c2, c3, c4 = st.columns(4)
 
     c1.metric(
         "✅ Wins",
-        int(
-            stats["won"]
-        ),
+        int(stats["won"]),
     )
 
     c2.metric(
         "❌ Losses",
-        int(
-            stats["lost"]
-        ),
+        int(stats["lost"]),
     )
 
     c3.metric(
@@ -927,10 +828,8 @@ def render_sport_stats(
     st.caption(
         f"Ties: {stats['tied']} · "
         f"Pending: {stats['pending']} · "
-        f"Win Rate: "
-        f"{stats['win_rate'] * 100:.1f}% · "
-        f"With Valid Odds: "
-        f"{stats['financial_bets']}"
+        f"Win Rate: {stats['win_rate'] * 100:.1f}% · "
+        f"With Valid Odds: {stats['financial_bets']}"
     )
 
 
@@ -950,8 +849,7 @@ def render_candidate(
     )
 
     st.success(
-        f"{label} · "
-        f"VALUE DETECTED"
+        f"{label} · VALUE DETECTED"
     )
 
     st.subheader(
@@ -966,9 +864,7 @@ def render_candidate(
         f"{candidate.get('market', 'Market unavailable')}"
     )
 
-    c1, c2, c3, c4 = (
-        st.columns(4)
-    )
+    c1, c2, c3, c4 = st.columns(4)
 
     c1.metric(
         "Estimated Probability",
@@ -1019,19 +915,10 @@ def render_candidate(
 
     if odds is not None:
 
-        payout = (
-            DEFAULT_STAKE
-            * odds
-        )
+        payout = DEFAULT_STAKE * odds
+        profit = payout - DEFAULT_STAKE
 
-        profit = (
-            payout
-            - DEFAULT_STAKE
-        )
-
-        f1, f2, f3 = (
-            st.columns(3)
-        )
+        f1, f2, f3 = st.columns(3)
 
         f1.metric(
             "💵 Stake",
@@ -1070,10 +957,7 @@ def render_candidate(
         f"{candidate.get('data_quality', 0)}/100"
     )
 
-    reasons = (
-        candidate.get("reasons")
-        or []
-    )
+    reasons = candidate.get("reasons") or []
 
     if reasons:
 
@@ -1132,6 +1016,18 @@ def render_sport(
         history_rows,
         sport,
     )
+
+    if not result:
+        st.error(
+            "NO DATA — this sport is not present "
+            "in reports/latest.json yet."
+        )
+        st.caption(
+            "Run the GitHub workflow again after "
+            "updating main.py/api.py so this sport "
+            "is included in the report."
+        )
+        return
 
     error = result.get(
         "error"
@@ -1227,46 +1123,14 @@ def probability_analysis(
 ) -> list[dict[str, Any]]:
 
     ranges = [
-        (
-            0,
-            59.999,
-            "<60%",
-        ),
-        (
-            60,
-            64.999,
-            "60–64%",
-        ),
-        (
-            65,
-            69.999,
-            "65–69%",
-        ),
-        (
-            70,
-            74.999,
-            "70–74%",
-        ),
-        (
-            75,
-            79.999,
-            "75–79%",
-        ),
-        (
-            80,
-            84.999,
-            "80–84%",
-        ),
-        (
-            85,
-            89.999,
-            "85–89%",
-        ),
-        (
-            90,
-            1000,
-            "90%+",
-        ),
+        (0, 59.999, "<60%"),
+        (60, 64.999, "60–64%"),
+        (65, 69.999, "65–69%"),
+        (70, 74.999, "70–74%"),
+        (75, 79.999, "75–79%"),
+        (80, 84.999, "80–84%"),
+        (85, 89.999, "85–89%"),
+        (90, 1000, "90%+"),
     ]
 
     output = []
@@ -1289,26 +1153,18 @@ def probability_analysis(
                     "EMPATE",
                 }
             ):
-
                 continue
 
-            probability = (
-                probability_percent(
-                    row.get(
-                        "probability"
-                    )
+            probability = probability_percent(
+                row.get(
+                    "probability"
                 )
             )
 
             if probability is None:
                 continue
 
-            if (
-                low
-                <= probability
-                <= high
-            ):
-
+            if low <= probability <= high:
                 selected.append(
                     row
                 )
@@ -1317,27 +1173,21 @@ def probability_analysis(
             continue
 
         won = sum(
-            row.get("result")
-            == "GANADA"
+            row.get("result") == "GANADA"
             for row in selected
         )
 
         lost = sum(
-            row.get("result")
-            == "PERDIDA"
+            row.get("result") == "PERDIDA"
             for row in selected
         )
 
         tied = sum(
-            row.get("result")
-            == "EMPATE"
+            row.get("result") == "EMPATE"
             for row in selected
         )
 
-        decisions = (
-            won
-            + lost
-        )
+        decisions = won + lost
 
         financial = [
             row
@@ -1348,14 +1198,12 @@ def probability_analysis(
         ]
 
         staked = sum(
-            row_stake(row)
-            or 0
+            row_stake(row) or 0
             for row in financial
         )
 
         net = sum(
-            row_profit_loss(row)
-            or 0
+            row_profit_loss(row) or 0
             for row in financial
         )
 
@@ -1367,51 +1215,32 @@ def probability_analysis(
 
         output.append(
             {
-                "Probability":
-                    label,
-
-                "Bets":
-                    len(selected),
-
-                "Wins":
-                    won,
-
-                "Losses":
-                    lost,
-
-                "Ties":
-                    tied,
-
-                "Win Rate":
-                    (
-                        f"{won / decisions * 100:.1f}%"
-                        if decisions
-                        else "—"
-                    ),
-
-                "With Odds":
-                    len(financial),
-
-                "Total Staked":
-                    (
-                        f"${staked:,.2f}"
-                        if financial
-                        else "—"
-                    ),
-
-                "Net":
-                    (
-                        f"${net:+,.2f}"
-                        if financial
-                        else "—"
-                    ),
-
-                "ROI":
-                    (
-                        f"{roi * 100:+.2f}%"
-                        if roi is not None
-                        else "—"
-                    ),
+                "Probability": label,
+                "Bets": len(selected),
+                "Wins": won,
+                "Losses": lost,
+                "Ties": tied,
+                "Win Rate": (
+                    f"{won / decisions * 100:.1f}%"
+                    if decisions
+                    else "—"
+                ),
+                "With Odds": len(financial),
+                "Total Staked": (
+                    f"${staked:,.2f}"
+                    if financial
+                    else "—"
+                ),
+                "Net": (
+                    f"${net:+,.2f}"
+                    if financial
+                    else "—"
+                ),
+                "ROI": (
+                    f"{roi * 100:+.2f}%"
+                    if roi is not None
+                    else "—"
+                ),
             }
         )
 
@@ -1422,15 +1251,12 @@ def probability_analysis(
 # HEADER
 # ============================================================
 
-title, action = (
-    st.columns(
-        [
-            5,
-            1,
-        ]
-    )
+title, action = st.columns(
+    [
+        5,
+        1,
+    ]
 )
-
 
 with title:
 
@@ -1539,9 +1365,7 @@ current_capital = (
 )
 
 
-g1, g2, g3, g4 = (
-    st.columns(4)
-)
+g1, g2, g3, g4 = st.columns(4)
 
 
 g1.metric(
@@ -1603,7 +1427,7 @@ st.caption(
 
 
 # ============================================================
-# MLB / NFL / BASKETBALL
+# MLB / NFL / COLLEGE / BASKETBALL
 # LARGE BUTTONS
 # SAME PAGE
 # ============================================================
@@ -1618,15 +1442,14 @@ if (
     ] = "MLB"
 
 
-sport_col1, sport_col2, sport_col3 = (
-    st.columns(
-        [
-            1,
-            1,
-            1,
-        ],
-        gap="small",
-    )
+sport_col1, sport_col2, sport_col3, sport_col4 = st.columns(
+    [
+        1,
+        1,
+        1,
+        1,
+    ],
+    gap="small",
 )
 
 
@@ -1659,6 +1482,19 @@ with sport_col2:
 with sport_col3:
 
     if st.button(
+        "🏈 College",
+        key="sport_ncaaf",
+        use_container_width=True,
+    ):
+
+        st.session_state[
+            "selected_sport"
+        ] = "NCAAF"
+
+
+with sport_col4:
+
+    if st.button(
         "🏀 Basketball",
         key="sport_nba",
         use_container_width=True,
@@ -1669,11 +1505,9 @@ with sport_col3:
         ] = "NBA"
 
 
-selected_sport = (
-    st.session_state[
-        "selected_sport"
-    ]
-)
+selected_sport = st.session_state[
+    "selected_sport"
+]
 
 
 render_sport(
@@ -1708,10 +1542,8 @@ st.caption(
 )
 
 
-probability_table = (
-    probability_analysis(
-        history_rows
-    )
+probability_table = probability_analysis(
+    history_rows
 )
 
 
@@ -1751,11 +1583,9 @@ if history_rows:
         history_rows[-100:]
     ):
 
-        odds_value = (
-            valid_odds(
-                row.get(
-                    "odds"
-                )
+        odds_value = valid_odds(
+            row.get(
+                "odds"
             )
         )
 
@@ -1780,55 +1610,33 @@ if history_rows:
 
         if (
             is_kalshi
-            and odds_value
-            is not None
+            and odds_value is not None
         ):
 
-            source_text = (
-                "KALSHI REAL"
-            )
+            source_text = "KALSHI REAL"
 
         elif source in {
             "REAL",
             "LIVE_AT_RECOMMENDATION",
         }:
 
-            source_text = (
-                "REAL"
-            )
+            source_text = "REAL"
 
-        elif (
-            source
-            == "HISTORICAL_F5"
-        ):
+        elif source == "HISTORICAL_F5":
 
-            source_text = (
-                "HISTORICAL F5"
-            )
+            source_text = "HISTORICAL F5"
 
-        elif (
-            source
-            == "ESTIMADA_FULL_GAME"
-        ):
+        elif source == "ESTIMADA_FULL_GAME":
 
-            source_text = (
-                "ESTIMATED FULL GAME"
-            )
+            source_text = "ESTIMATED FULL GAME"
 
-        elif (
-            odds_value
-            is not None
-        ):
+        elif odds_value is not None:
 
-            source_text = (
-                "RECORDED ODDS"
-            )
+            source_text = "RECORDED ODDS"
 
         else:
 
-            source_text = (
-                "NO ODDS"
-            )
+            source_text = "NO ODDS"
 
         stake = row_stake(
             row
@@ -1839,126 +1647,92 @@ if history_rows:
             or "PENDING"
         )
 
-        net_value = (
-            row_profit_loss(
-                row
-            )
+        net_value = row_profit_loss(
+            row
+        )
+
+        profit_if_win = potential_profit(
+            row
         )
 
         table.append(
             {
-
-                "Date":
-                    display_time(
-                        row.get(
-                            "created_at",
-                            "",
-                        )
-                    ),
-
-                "Sport":
+                "Date": display_time(
                     row.get(
-                        "sport"
-                    ),
-
-                "Matchup":
+                        "created_at",
+                        "",
+                    )
+                ),
+                "Sport": row.get(
+                    "sport"
+                ),
+                "Matchup": row.get(
+                    "matchup"
+                ),
+                "Market": row.get(
+                    "market"
+                ),
+                "Selection": row.get(
+                    "selection"
+                ),
+                "Model %": pct(
                     row.get(
-                        "matchup"
-                    ),
-
-                "Market":
+                        "probability"
+                    )
+                ),
+                "Book/Source": (
                     row.get(
-                        "market"
-                    ),
-
-                "Selection":
-                    row.get(
-                        "selection"
-                    ),
-
-                "Model %":
-                    pct(
-                        row.get(
-                            "probability"
-                        )
-                    ),
-
-                "Book/Source":
-                    (
-                        row.get(
-                            "bookmaker"
-                        )
-                        or "—"
-                    ),
-
-                "Odds Type":
-                    source_text,
-
-                "Odds":
-                    (
-                        kalshi_quote_text(
-                            odds_value
-                        )
-
-                        if is_kalshi
-
-                        else (
-                            f"{odds_value:.3f}"
-                            if odds_value is not None
-                            else "—"
-                        )
-                    ),
-
-                "Stake":
-                    (
-                        money(
-                            stake
-                        )
-                        if stake is not None
+                        "bookmaker"
+                    )
+                    or "—"
+                ),
+                "Odds Type": source_text,
+                "Odds": (
+                    kalshi_quote_text(
+                        odds_value
+                    )
+                    if is_kalshi
+                    else (
+                        f"{odds_value:.3f}"
+                        if odds_value is not None
                         else "—"
-                    ),
-
-                "Payout if Win":
+                    )
+                ),
+                "Stake": (
                     money(
-                        potential_return(
-                            row
-                        )
-                    ),
-
-                "Profit if Win":
-                    (
-                        money(
-                            potential_profit(
-                                row
-                            ),
-                            signed=True,
-                        )
-                        if potential_profit(
-                            row
-                        ) is not None
-                        else "—"
-                    ),
-
-                "Result":
-                    result,
-
-                "P/L":
-                    (
-                        money(
-                            net_value,
-                            signed=True,
-                        )
-                        if net_value is not None
-                        else "—"
-                    ),
-
-                "Final Score":
-                    (
-                        row.get(
-                            "final_score"
-                        )
-                        or "—"
-                    ),
+                        stake
+                    )
+                    if stake is not None
+                    else "—"
+                ),
+                "Payout if Win": money(
+                    potential_return(
+                        row
+                    )
+                ),
+                "Profit if Win": (
+                    money(
+                        profit_if_win,
+                        signed=True,
+                    )
+                    if profit_if_win is not None
+                    else "—"
+                ),
+                "Result": result,
+                "P/L": (
+                    money(
+                        net_value,
+                        signed=True,
+                    )
+                    if net_value is not None
+                    else "—"
+                ),
+                "Final Score": (
+                    row.get(
+                        "final_score"
+                    )
+                    or "—"
+                ),
             }
         )
 
