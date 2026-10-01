@@ -2,12 +2,12 @@
   "timezone": "America/Chicago",
   "history_games": 12,
   "filters": {
-    "minimum_probability": 0.55,
-    "minimum_edge": 0.03,
-    "minimum_expected_value": 0.03,
-    "minimum_bookmakers": 2,
-    "minimum_history_games": 5,
-    "minimum_data_quality": 60
+    "minimum_probability": 0.54,
+    "minimum_edge": 0.02,
+    "minimum_expected_value": 0.02,
+    "minimum_bookmakers": 1,
+    "minimum_history_games": 3,
+    "minimum_data_quality": 45
   },
   "model": {
     "market_weight": 0.58,
