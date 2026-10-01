@@ -1,6 +1,6 @@
 # Reporte del analizador deportivo
 
-Actualizado: **2026-10-01T12:26:00.591299-05:00**
+Actualizado: **2026-10-01T12:45:13.566726-05:00**
 Fecha deportiva analizada: **2026-10-01**
 Escaneo de la sesión: **#1**
 
@@ -41,4 +41,4 @@ La opción más cercana fue descartada:
 - Ventaja: 29.1%; valor esperado: 200.7%
 - Calidad de datos: 31/100
 
-Partidos revisados: 27 · Cuotas válidas: 124
+Partidos revisados: 26 · Cuotas válidas: 106
