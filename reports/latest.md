@@ -1,6 +1,6 @@
 # Reporte del analizador deportivo
 
-Actualizado: **2026-10-02T12:10:10.094292-05:00**
+Actualizado: **2026-10-02T12:29:27.833357-05:00**
 Fecha deportiva analizada: **2026-10-02**
 Escaneo de la sesión: **#1**
 
@@ -29,9 +29,9 @@ Partidos revisados: 0 · Cuotas válidas: 0
 - Ninguna opción superó simultáneamente todos los filtros de valor y calidad.
 
 La opción más cercana fue descartada:
-- Lahti Basketball — Ganador del partido
-- Probabilidad estimada: 46.2%
-- Ventaja: 19.9%; valor esperado: 75.7%
+- Skrljevo — Ganador del partido
+- Probabilidad estimada: 44.8%
+- Ventaja: 29.9%; valor esperado: 202.2%
 - Calidad de datos: 45/100
 
-Partidos revisados: 82 · Cuotas válidas: 126
+Partidos revisados: 80 · Cuotas válidas: 300
