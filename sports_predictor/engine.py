@@ -841,6 +841,24 @@ def analyze_sport(
                 )
             )
 
+            if not passes:
+                failures = []
+                if probability < minimum_probability:
+                    failures.append(
+                        f"probabilidad {probability:.1%} < {minimum_probability:.1%}"
+                    )
+                if not history_ok:
+                    failures.append(
+                        f"historial local={home_form.games}, visitante={away_form.games}; "
+                        f"mínimo {minimum_history} por equipo"
+                    )
+                if quality < minimum_quality:
+                    failures.append(f"calidad {quality}/100 < {minimum_quality}/100")
+                notes.append(
+                    f"{sport} | {game.away.name} @ {game.home.name} | "
+                    "NO BET: " + "; ".join(failures)
+                )
+
             sport_label = (
                 "NFL"
                 if sport == "NFL"
