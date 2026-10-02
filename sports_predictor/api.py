@@ -374,6 +374,11 @@ class ApiSportsClient:
 
         status = (
             event.get("status")
+            or next(
+                (competition.get("status") for competition in event.get("competitions", [])
+                 if isinstance(competition, dict) and competition.get("status")),
+                {},
+            )
             or {}
         )
 
@@ -503,6 +508,10 @@ class ApiSportsClient:
             raw = competitor.get(
                 "score"
             )
+
+            if isinstance(raw, dict):
+                value = raw.get("value")
+                raw = value if value is not None else raw.get("displayValue")
 
             if raw in (
                 None,
