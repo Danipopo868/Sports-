@@ -1,6 +1,6 @@
 # Reporte del analizador deportivo
 
-Actualizado: **2026-10-02T11:10:47.103780-05:00**
+Actualizado: **2026-10-02T11:52:45.747388-05:00**
 Fecha deportiva analizada: **2026-10-02**
 Escaneo de la sesión: **#1**
 
@@ -29,9 +29,9 @@ Partidos revisados: 0 · Cuotas válidas: 0
 - Ninguna opción superó simultáneamente todos los filtros de valor y calidad.
 
 La opción más cercana fue descartada:
-- Kutaisi — Ganador del partido
-- Probabilidad estimada: 46.6%
-- Ventaja: 19.5%; valor esperado: 72.3%
+- Sloga Uppsala — Ganador del partido
+- Probabilidad estimada: 43.5%
+- Ventaja: 31.7%; valor esperado: 269.6%
 - Calidad de datos: 45/100
 
-Partidos revisados: 87 · Cuotas válidas: 42
+Partidos revisados: 83 · Cuotas válidas: 262
