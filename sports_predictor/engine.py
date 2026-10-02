@@ -803,11 +803,11 @@ def analyze_sport(
                 away_form.games,
             )
 
-            minimum_history = int(
-                filters[
-                    "minimum_history_games"
-                ]
-            )
+            # Football: dos partidos reales por equipo; independiente de MLB/NBA.
+            football_filters = config.get("football_filters", {})
+            minimum_history = max(2, int(football_filters.get("minimum_history_games", 2)))
+            minimum_probability = max(0.55, float(football_filters.get("minimum_probability", 0.55)))
+            minimum_quality = max(50, int(football_filters.get("minimum_data_quality", 50)))
 
             history_ok = (
                 history_count
@@ -835,18 +835,8 @@ def analyze_sport(
 
             passes = all(
                 (
-                    probability
-                    >= float(
-                        filters[
-                            "minimum_probability"
-                        ]
-                    ),
-                    quality
-                    >= int(
-                        filters[
-                            "minimum_data_quality"
-                        ]
-                    ),
+                    probability >= minimum_probability,
+                    quality >= minimum_quality,
                     history_ok,
                 )
             )
@@ -858,6 +848,7 @@ def analyze_sport(
             )
 
             reason_list = [
+                f"Filtros football: probabilidad >= {minimum_probability:.0%}; historial >= {minimum_history} por equipo; calidad >= {minimum_quality}/100",
                 (
                     f"Modelo {sport_label} sin cuotas: "
                     f"{probability * 100:.1f}% "
@@ -1345,12 +1336,9 @@ def analyze_sport(
                 "de factores."
             )
 
-        elif (
-            sport == "NFL"
-            and not quotes
-        ):
+        elif sport in {"NFL", "NCAAF"}:
             notes.append(
-                "Ningún juego NFL superó "
+                f"Ningún juego {sport} superó "
                 "simultáneamente la "
                 "probabilidad mínima, "
                 "la calidad mínima y "
