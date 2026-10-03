@@ -1555,12 +1555,13 @@
     "contracts": null,
     "potential_return": null,
     "potential_profit": null,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Pittsburgh Panthers",
+    "final_score": "Pittsburgh Panthers 35 - Virginia Tech Hokies 33",
     "return_amount": null,
-    "profit_loss": null
+    "profit_loss": null,
+    "resolved_at": "2026-10-03T00:21:40.132940-05:00"
   },
   {
     "key": "NCAAF|401871050|Ganador del partido|Liberty Flames",
@@ -1593,11 +1594,12 @@
     "contracts": null,
     "potential_return": null,
     "potential_profit": null,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Liberty Flames",
+    "final_score": "Liberty Flames 30 - Delaware Blue Hens 14",
     "return_amount": null,
-    "profit_loss": null
+    "profit_loss": null,
+    "resolved_at": "2026-10-03T00:21:40.132940-05:00"
   }
 ]
