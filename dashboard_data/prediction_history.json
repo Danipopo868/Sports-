@@ -1672,13 +1672,14 @@
     "contracts": 277.7778,
     "potential_return": 277.78,
     "potential_profit": 177.78,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 36.0
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Chicago White Sox",
+    "final_score": "F5: Chicago White Sox 2 - Cleveland Guardians 0",
+    "return_amount": 277.78,
+    "profit_loss": 177.78,
+    "kalshi_cents": 36.0,
+    "resolved_at": "2026-10-03T17:51:33.145174-05:00"
   },
   {
     "key": "NCAAF|401864515|Ganador del partido|North Dakota State Bison",
@@ -1711,12 +1712,13 @@
     "contracts": null,
     "potential_return": null,
     "potential_profit": null,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "North Dakota State Bison",
+    "final_score": "Wyoming Cowboys 0 - North Dakota State Bison 28",
     "return_amount": null,
-    "profit_loss": null
+    "profit_loss": null,
+    "resolved_at": "2026-10-03T17:51:33.145174-05:00"
   },
   {
     "key": "NCAAF|401856711|Ganador del partido|Texas A&M Aggies",
