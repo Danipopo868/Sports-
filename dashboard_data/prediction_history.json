@@ -1830,13 +1830,14 @@
     "contracts": 156.25,
     "potential_return": 156.25,
     "potential_profit": 56.25,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 64.0
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Chicago Bears",
+    "final_score": "New York Jets 12 - Chicago Bears 23",
+    "return_amount": 156.25,
+    "profit_loss": 56.25,
+    "kalshi_cents": 64.0,
+    "resolved_at": "2026-10-04T16:05:41.191495-05:00"
   },
   {
     "key": "NFL|401872973|Ganador del partido|Baltimore Ravens",
@@ -1869,12 +1870,13 @@
     "contracts": 116.2791,
     "potential_return": 116.28,
     "potential_profit": 16.28,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 86.0
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Baltimore Ravens",
+    "final_score": "Tennessee Titans 18 - Baltimore Ravens 24",
+    "return_amount": 116.28,
+    "profit_loss": 16.28,
+    "kalshi_cents": 86.0,
+    "resolved_at": "2026-10-04T16:05:41.191495-05:00"
   }
 ]
