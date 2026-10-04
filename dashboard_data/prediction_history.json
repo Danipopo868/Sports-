@@ -1633,13 +1633,14 @@
     "contracts": 204.0816,
     "potential_return": 204.08,
     "potential_profit": 104.08,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 49.0
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Tampa Bay Rays",
+    "final_score": "F5: New York Yankees 0 - Tampa Bay Rays 1",
+    "return_amount": 204.08,
+    "profit_loss": 104.08,
+    "kalshi_cents": 49.0,
+    "resolved_at": "2026-10-03T21:33:01.148566-05:00"
   },
   {
     "key": "MLB|189824|Primeras 5 entradas|Chicago White Sox",
@@ -1751,11 +1752,12 @@
     "contracts": null,
     "potential_return": null,
     "potential_profit": null,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Texas A&M Aggies",
+    "final_score": "Arkansas Razorbacks 7 - Texas A&M Aggies 34",
     "return_amount": null,
-    "profit_loss": null
+    "profit_loss": null,
+    "resolved_at": "2026-10-03T21:33:01.148566-05:00"
   }
 ]
