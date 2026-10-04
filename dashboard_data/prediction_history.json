@@ -1949,12 +1949,13 @@
     "contracts": 126.5823,
     "potential_return": 126.58,
     "potential_profit": 26.58,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 79.0
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Minnesota Vikings",
+    "final_score": "Miami Dolphins 10 - Minnesota Vikings 15",
+    "return_amount": 126.58,
+    "profit_loss": 26.58,
+    "kalshi_cents": 79.0,
+    "resolved_at": "2026-10-04T18:03:20.907982-05:00"
   }
 ]
