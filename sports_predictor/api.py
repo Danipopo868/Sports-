@@ -65,6 +65,45 @@ class ApiSportsClient:
         self._nfl_odds_api_sports_available = True
         self._nfl_using_espn = False
 
+    def _nba_league_id(self) -> int:
+        """Resolve the NBA league once; never fall back to all basketball."""
+        cached = getattr(self, "_nba_league_id_cache", None)
+        if cached is not None:
+            return cached
+        result = self._get("NBA", "leagues", {})
+        matches = set()
+        for item in result.response:
+            league = item.get("league", item)
+            if not isinstance(league, dict):
+                continue
+            if str(league.get("name", "")).strip().upper() != "NBA":
+                continue
+            try:
+                league_id = int(league["id"])
+            except (KeyError, TypeError, ValueError):
+                continue
+            if league_id > 0:
+                matches.add(league_id)
+        if len(matches) != 1:
+            raise ApiSportsError(
+                "No se pudo identificar una única liga NBA en el proveedor."
+            )
+        self._nba_league_id_cache = matches.pop()
+        return self._nba_league_id_cache
+
+    def _nba_games(self, params: dict[str, Any]) -> ApiResult:
+        league_id = self._nba_league_id()
+        result = self._get("NBA", "games", {**params, "league": league_id})
+        # Also enforce the league in the response if the provider ignores params.
+        games = []
+        for game in result.response:
+            league = game.get("league")
+            if not isinstance(league, dict):
+                continue
+            if str(league.get("id")) == str(league_id):
+                games.append(game)
+        return ApiResult(games, result.remaining_requests)
+
     # ========================================================
     # API-SPORTS
     # ========================================================
@@ -1471,13 +1510,7 @@ class ApiSportsClient:
 
         if sport == "NBA":
 
-            return self._get(
-                "NBA",
-                "games",
-                {
-                    "date": date_iso,
-                },
-            )
+            return self._nba_games({"date": date_iso})
 
         # ====================================================
         # MLB
@@ -1584,14 +1617,7 @@ class ApiSportsClient:
 
         if sport == "NBA":
 
-            return self._get(
-                "NBA",
-                "games",
-                {
-                    "team": team_id,
-                    "season": season,
-                },
-            )
+            return self._nba_games({"team": team_id, "season": season})
 
         if sport != "MLB":
 
