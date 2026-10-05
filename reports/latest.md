@@ -1,6 +1,6 @@
 # Reporte del analizador deportivo
 
-Actualizado: **2026-10-05T12:55:40.074913-05:00**
+Actualizado: **2026-10-05T18:37:06.570106-05:00**
 Fecha deportiva analizada: **2026-10-05**
 Escaneo de la sesión: **#1**
 
@@ -8,34 +8,22 @@ Escaneo de la sesión: **#1**
 
 ## MLB — Béisbol
 
-### APUESTA #1
+**NO APOSTAR**
 
-**APUESTA CON VALOR DETECTADA**
+- Villa Clara @ Mayabeque: F5 omitido porque faltan abridores u ofensiva verificable.
+- Villa Clara @ Mayabeque: ganador final omitido porque faltan datos MLB esenciales.
+- Guantanamo @ Santiago de Cuba: F5 omitido porque faltan abridores u ofensiva verificable.
+- Guantanamo @ Santiago de Cuba: ganador final omitido porque faltan datos MLB esenciales.
+- MLB analizado SIN cuotas: el ganador se calculó únicamente con el modelo deportivo de MLB Stats API.
+- Solo un equipo distinto superó todos los filtros; no se repite el mismo equipo para completar una segunda apuesta.
 
-- Partido: Chicago White Sox @ Cleveland Guardians
-- Mercado: Primeras 5 entradas
-- Selección: **Cleveland Guardians**
-- Mejor cuota decimal: **2.00** (Kalshi)
-- Probabilidad estimada: **62.2%**
-- Punto de equilibrio: 0.0%
-- Ventaja calculada: **0.0%**
-- Valor esperado por unidad: **0.0%**
-- Casas comparadas: 0
+La opción más cercana fue descartada:
+- Cleveland Guardians — Primeras 5 entradas
+- Probabilidad estimada: 62.6%
+- Ventaja: 0.0%; valor esperado: 0.0%
 - Calidad de datos: 100/100
-- Modelo MLB puro: 62.2% para Cleveland Guardians
-- Cuotas del mercado NO usadas para decidir el ganador
-- Abridores: Anthony Kay vs Gavin Williams
-- OPS temporada: visitante 0.726 | local 0.696
-- OPS split L/R: visitante 0.726 | local 0.696
-- Bullpen/Staff ERA: visitante 4.12 | local 3.77
-- Descanso: visitante 1 día(s) | local 1 día(s)
-- Carga bullpen 3d: visitante 6.3 IP | local 4.7 IP
-- Alineaciones confirmadas: visitante Sí | local Sí
-- BvP suficiente: visitante Sí | local Sí
-- Estadio/clima: Progressive Field | Clear 60.0
-- Cobertura de factores MLB: 100/100
 
-Partidos revisados: 9 · Cuotas válidas: 0
+Partidos revisados: 3 · Cuotas válidas: 0
 
 ## NFL — Fútbol americano
 
