@@ -1,6 +1,6 @@
 # Reporte del analizador deportivo
 
-Actualizado: **2026-10-05T18:37:06.570106-05:00**
+Actualizado: **2026-10-05T18:44:47.238299-05:00**
 Fecha deportiva analizada: **2026-10-05**
 Escaneo de la sesión: **#1**
 
@@ -45,4 +45,4 @@ Partidos revisados: 1 · Cuotas válidas: 0
 
 **NO APOSTAR — datos incompletos**
 
-Motivo: NBA games: {'season': 'The Season field is required.'}
+Motivo: NBA games: {'plan': 'Free plans do not have access to this season, try from 2022 to 2024.'}
