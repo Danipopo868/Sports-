@@ -1791,13 +1791,14 @@
     "contracts": 212.766,
     "potential_return": 212.77,
     "potential_profit": 112.77,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 47.0
+    "status": "RESUELTA",
+    "result": "PERDIDA",
+    "winner": "San Diego Padres",
+    "final_score": "F5: San Diego Padres 2 - Milwaukee Brewers 1",
+    "return_amount": 0.0,
+    "profit_loss": -100.0,
+    "kalshi_cents": 47.0,
+    "resolved_at": "2026-10-04T19:02:53.143545-05:00"
   },
   {
     "key": "NFL|401872972|Ganador del partido|Chicago Bears",
@@ -1910,13 +1911,14 @@
     "contracts": 101.0101,
     "potential_return": 101.01,
     "potential_profit": 1.01,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 99.0
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Seattle Seahawks",
+    "final_score": "Los Angeles Chargers 23 - Seattle Seahawks 30",
+    "return_amount": 101.01,
+    "profit_loss": 1.01,
+    "kalshi_cents": 99.0,
+    "resolved_at": "2026-10-04T19:02:53.143545-05:00"
   },
   {
     "key": "NFL|401872974|Ganador del partido|Minnesota Vikings",
