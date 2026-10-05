@@ -30,5 +30,8 @@
   "nfl": {
     "max_recommendations": 2,
     "decision_uses_odds": false
+  },
+  "nba": {
+    "minimum_data_quality": 28
   }
 }
