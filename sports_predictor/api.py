@@ -91,9 +91,19 @@ class ApiSportsClient:
         self._nba_league_id_cache = matches.pop()
         return self._nba_league_id_cache
 
+    @staticmethod
+    def _nba_season_for_date(date_iso: str) -> str:
+        """Basketball uses the season's starting and ending years."""
+        day = datetime.strptime(date_iso, "%Y-%m-%d")
+        start_year = day.year if day.month >= 9 else day.year - 1
+        return f"{start_year}-{start_year + 1}"
+
     def _nba_games(self, params: dict[str, Any]) -> ApiResult:
         league_id = self._nba_league_id()
-        result = self._get("NBA", "games", {**params, "league": league_id})
+        query = {**params, "league": league_id}
+        if not query.get("season") and query.get("date"):
+            query["season"] = self._nba_season_for_date(str(query["date"]))
+        result = self._get("NBA", "games", query)
         # Also enforce the league in the response if the provider ignores params.
         games = []
         for game in result.response:
