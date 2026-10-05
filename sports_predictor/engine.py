@@ -450,7 +450,11 @@ def analyze_sport(
     Candidate | None,
     list[str],
 ]:
-    filters = config["filters"]
+    filters = dict(config["filters"])
+    if sport == "NBA":
+        filters["minimum_data_quality"] = int(
+            config.get("nba", {}).get("minimum_data_quality", filters["minimum_data_quality"])
+        )
     model = config["model"]
 
     all_candidates: list[Candidate] = []
@@ -954,6 +958,8 @@ def analyze_sport(
             continue
 
         if not game_quotes:
+            if sport == "NBA":
+                notes.append(f"{game.away.name} @ {game.home.name}: NO APOSTAR; no llegaron cuotas de ganador comparables.")
             continue
 
         for market_name in sorted(
@@ -973,6 +979,8 @@ def analyze_sport(
             )
 
             if not book_pairs:
+                if sport == "NBA":
+                    notes.append(f"{game.away.name} @ {game.home.name}: NO APOSTAR; ninguna casa tiene cuotas de ambos equipos en {market_name}.")
                 continue
 
             market_home_probability = (
@@ -1146,6 +1154,28 @@ def analyze_sport(
                     )
                 )
 
+                candidate_reasons = reason_lines
+                if sport == "NBA":
+                    checks = (
+                        (probability >= float(filters["minimum_probability"]),
+                         f"probabilidad {probability:.1%} < {float(filters['minimum_probability']):.1%}"),
+                        (edge >= float(filters["minimum_edge"]),
+                         f"ventaja {edge:.1%} < {float(filters['minimum_edge']):.1%}"),
+                        (expected_value >= float(filters["minimum_expected_value"]),
+                         f"valor esperado {expected_value:.1%} < {float(filters['minimum_expected_value']):.1%}"),
+                        (len(book_pairs) >= int(filters["minimum_bookmakers"]),
+                         f"casas completas {len(book_pairs)} < {int(filters['minimum_bookmakers'])}"),
+                        (quality >= int(filters["minimum_data_quality"]),
+                         f"calidad {quality}/100 < {int(filters['minimum_data_quality'])}/100"),
+                        (history_ok,
+                         f"historial local/visitante {home_form.games}/{away_form.games}; mínimo {int(filters['minimum_history_games'])} por equipo"),
+                    )
+                    failures = [message for passed, message in checks if not passed]
+                    candidate_reasons += (
+                        ("NO APOSTAR: " + "; ".join(failures),) if failures
+                        else ("Supera todos los filtros NBA.",)
+                    )
+
                 selection = (
                     game.home.name
                     if side == "home"
@@ -1172,7 +1202,7 @@ def analyze_sport(
                         bookmakers=len(book_pairs),
                         data_quality=quality,
                         passes_filters=passes,
-                        reasons=reason_lines,
+                        reasons=candidate_reasons,
                     )
                 )
 
@@ -1378,6 +1408,15 @@ def analyze_sport(
             "no se repite el mismo equipo "
             "para completar una segunda apuesta."
         )
+
+    if sport == "NBA" and not recommendations and all_candidates:
+        per_game = {}
+        for candidate in all_candidates:
+            previous = per_game.get(candidate.game_id)
+            if previous is None or candidate.expected_value > previous.expected_value:
+                per_game[candidate.game_id] = candidate
+        for candidate in per_game.values():
+            notes.append(f"{candidate.matchup} — {candidate.selection}: {candidate.reasons[-1]}")
 
     return (
         recommendations,
