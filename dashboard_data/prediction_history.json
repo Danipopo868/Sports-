@@ -1991,12 +1991,13 @@
     "contracts": 200.0,
     "potential_return": 200.0,
     "potential_profit": 100.0,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 50.0
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Cleveland Guardians",
+    "final_score": "F5: Chicago White Sox 1 - Cleveland Guardians 2",
+    "return_amount": 200.0,
+    "profit_loss": 100.0,
+    "kalshi_cents": 50.0,
+    "resolved_at": "2026-10-05T19:46:21.371985-05:00"
   }
 ]
