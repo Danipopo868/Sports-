@@ -1,6 +1,6 @@
 # Reporte del analizador deportivo
 
-Actualizado: **2026-10-06T10:27:40.976753-05:00**
+Actualizado: **2026-10-06T12:22:53.534207-05:00**
 Fecha deportiva analizada: **2026-10-06**
 Escaneo de la sesión: **#1**
 
@@ -8,34 +8,34 @@ Escaneo de la sesión: **#1**
 
 ## MLB — Béisbol
 
-**NO APOSTAR**
+### APUESTA #1
 
-- Villa Clara @ Mayabeque: F5 omitido porque faltan abridores u ofensiva verificable.
-- Villa Clara @ Mayabeque: ganador final omitido porque faltan datos MLB esenciales.
-- Guantanamo @ Santiago de Cuba: F5 omitido porque faltan abridores u ofensiva verificable.
-- Guantanamo @ Santiago de Cuba: ganador final omitido porque faltan datos MLB esenciales.
-- Camaguey @ Sancti Spiritus: F5 omitido porque faltan abridores u ofensiva verificable.
-- Camaguey @ Sancti Spiritus: ganador final omitido porque faltan datos MLB esenciales.
-- Granma @ Holguin: F5 omitido porque faltan abridores u ofensiva verificable.
-- Granma @ Holguin: ganador final omitido porque faltan datos MLB esenciales.
-- Cienfuegos @ Matanzas: F5 omitido porque faltan abridores u ofensiva verificable.
-- Cienfuegos @ Matanzas: ganador final omitido porque faltan datos MLB esenciales.
-- Ciego de Avila @ Las Tunas: F5 omitido porque faltan abridores u ofensiva verificable.
-- Ciego de Avila @ Las Tunas: ganador final omitido porque faltan datos MLB esenciales.
-- Pinar del Rio @ Industriales: F5 omitido porque faltan abridores u ofensiva verificable.
-- Pinar del Rio @ Industriales: ganador final omitido porque faltan datos MLB esenciales.
-- Isla Juventud @ Artemisa: F5 omitido porque faltan abridores u ofensiva verificable.
-- Isla Juventud @ Artemisa: ganador final omitido porque faltan datos MLB esenciales.
-- MLB analizado SIN cuotas: el ganador se calculó únicamente con el modelo deportivo de MLB Stats API.
-- Ningún juego MLB superó simultáneamente la probabilidad mínima y la cobertura mínima de factores.
+**APUESTA CON VALOR DETECTADA**
 
-La opción más cercana fue descartada:
-- Los Angeles Dodgers — Ganador del partido
-- Probabilidad estimada: 52.0%
-- Ventaja: 0.0%; valor esperado: 0.0%
+- Partido: Milwaukee Brewers @ San Diego Padres
+- Mercado: Primeras 5 entradas
+- Selección: **San Diego Padres**
+- Mejor cuota decimal: **2.13** (Kalshi)
+- Probabilidad estimada: **67.4%**
+- Punto de equilibrio: 0.0%
+- Ventaja calculada: **0.0%**
+- Valor esperado por unidad: **0.0%**
+- Casas comparadas: 0
 - Calidad de datos: 73/100
+- Modelo MLB puro: 67.4% para San Diego Padres
+- Cuotas del mercado NO usadas para decidir el ganador
+- Abridores: Dustin May vs Nick Pivetta
+- OPS temporada: visitante 0.744 | local 0.717
+- OPS split L/R: visitante 0.744 | local 0.717
+- Bullpen/Staff ERA: visitante 3.51 | local 3.99
+- Descanso: visitante 1 día(s) | local 1 día(s)
+- Carga bullpen 3d: visitante 9.0 IP | local 9.0 IP
+- Alineaciones confirmadas: visitante No | local No
+- BvP suficiente: visitante No | local No
+- Estadio/clima: Petco Park | N/D 
+- Cobertura de factores MLB: 73/100
 
-Partidos revisados: 9 · Cuotas válidas: 0
+Partidos revisados: 2 · Cuotas válidas: 0
 
 ## NFL — Fútbol americano
 
