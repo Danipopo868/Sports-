@@ -1,6 +1,6 @@
 # Reporte del analizador deportivo
 
-Actualizado: **2026-10-05T18:44:47.238299-05:00**
+Actualizado: **2026-10-05T20:02:52.982265-05:00**
 Fecha deportiva analizada: **2026-10-05**
 Escaneo de la sesión: **#1**
 
@@ -19,7 +19,7 @@ Escaneo de la sesión: **#1**
 
 La opción más cercana fue descartada:
 - Cleveland Guardians — Primeras 5 entradas
-- Probabilidad estimada: 62.6%
+- Probabilidad estimada: 62.9%
 - Ventaja: 0.0%; valor esperado: 0.0%
 - Calidad de datos: 100/100
 
@@ -43,6 +43,13 @@ Partidos revisados: 1 · Cuotas válidas: 0
 
 ## NBA — Baloncesto
 
-**NO APOSTAR — datos incompletos**
+**NO APOSTAR**
 
-Motivo: NBA games: {'plan': 'Free plans do not have access to this season, try from 2022 to 2024.'}
+- Memphis Grizzlies @ Atlanta Hawks: NO APOSTAR; no llegaron cuotas de ganador comparables.
+- Phoenix Suns @ Detroit Pistons: NO APOSTAR; no llegaron cuotas de ganador comparables.
+- New York Knicks @ Philadelphia 76ers: NO APOSTAR; no llegaron cuotas de ganador comparables.
+- Minnesota Timberwolves @ Milwaukee Bucks: NO APOSTAR; no llegaron cuotas de ganador comparables.
+- Los Angeles Lakers @ Sacramento Kings: NO APOSTAR; no llegaron cuotas de ganador comparables.
+- No llegaron cuotas comparables; sin precio no se puede calcular rentabilidad.
+
+Partidos revisados: 5 · Cuotas válidas: 0
