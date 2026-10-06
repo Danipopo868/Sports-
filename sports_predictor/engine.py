@@ -696,7 +696,7 @@ def analyze_sport(
 
             continue
 
-        if sport in {"NFL", "NCAAF"}:
+        if sport in {"NFL", "NCAAF", "NBA"}:
             base_home_probability = (
                 form_home_probability_for_game(
                     sport,
@@ -810,9 +810,15 @@ def analyze_sport(
 
             # Football: dos partidos reales por equipo; independiente de MLB/NBA.
             football_filters = config.get("football_filters", {})
-            minimum_history = max(2, int(football_filters.get("minimum_history_games", 2)))
-            minimum_probability = max(0.55, float(football_filters.get("minimum_probability", 0.55)))
-            minimum_quality = max(50, int(football_filters.get("minimum_data_quality", 50)))
+            if sport == "NBA":
+                nba_cfg = config.get("nba", {})
+                minimum_history = max(2, int(nba_cfg.get("minimum_history_games", filters["minimum_history_games"])))
+                minimum_probability = float(nba_cfg.get("minimum_probability", filters["minimum_probability"]))
+                minimum_quality = int(nba_cfg.get("minimum_data_quality", filters["minimum_data_quality"]))
+            else:
+                minimum_history = max(2, int(football_filters.get("minimum_history_games", 2)))
+                minimum_probability = max(0.55, float(football_filters.get("minimum_probability", 0.55)))
+                minimum_quality = max(50, int(football_filters.get("minimum_data_quality", 50)))
 
             history_ok = (
                 history_count
@@ -864,14 +870,10 @@ def analyze_sport(
                     "NO BET: " + "; ".join(failures)
                 )
 
-            sport_label = (
-                "NFL"
-                if sport == "NFL"
-                else "NCAAF"
-            )
+            sport_label = sport
 
             reason_list = [
-                f"Filtros football: probabilidad >= {minimum_probability:.0%}; historial >= {minimum_history} por equipo; calidad >= {minimum_quality}/100",
+                f"Filtros {sport_label}: probabilidad >= {minimum_probability:.0%}; historial >= {minimum_history} por equipo; calidad >= {minimum_quality}/100",
                 (
                     f"Modelo {sport_label} sin cuotas: "
                     f"{probability * 100:.1f}% "
@@ -1230,7 +1232,7 @@ def analyze_sport(
             reverse=True,
         )
 
-    elif sport in {"NFL", "NCAAF"}:
+    elif sport in {"NFL", "NCAAF", "NBA"}:
         best_observed = max(
             all_candidates,
             key=lambda candidate: (
@@ -1351,7 +1353,7 @@ def analyze_sport(
         )
 
     elif (
-        sport in {"NFL", "NCAAF"}
+        sport in {"NFL", "NCAAF", "NBA"}
         and not quotes
     ):
         notes.append(
@@ -1385,7 +1387,7 @@ def analyze_sport(
                 "de factores."
             )
 
-        elif sport in {"NFL", "NCAAF"}:
+        elif sport in {"NFL", "NCAAF", "NBA"}:
             notes.append(
                 f"Ningún juego {sport} superó "
                 "simultáneamente la "
