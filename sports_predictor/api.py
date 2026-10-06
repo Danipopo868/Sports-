@@ -16,6 +16,8 @@ SPORT_ENDPOINTS = {
     "NBA": "https://v1.basketball.api-sports.io",
 }
 
+ESPN_NBA_BASE = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba"
+
 MLB_STATS_BASE = "https://statsapi.mlb.com/api/v1"
 
 ESPN_NFL_BASE = (
@@ -64,6 +66,7 @@ class ApiSportsClient:
         self._nfl_api_sports_available = True
         self._nfl_odds_api_sports_available = True
         self._nfl_using_espn = False
+        self._nba_using_espn = True
 
     def _nba_league_id(self) -> int:
         """Resolve the NBA league once; never fall back to all basketball."""
@@ -98,21 +101,85 @@ class ApiSportsClient:
         start_year = day.year if day.month >= 9 else day.year - 1
         return f"{start_year}-{start_year + 1}"
 
-    def _nba_games(self, params: dict[str, Any]) -> ApiResult:
-        league_id = self._nba_league_id()
-        query = {**params, "league": league_id}
-        if not query.get("season") and query.get("date"):
-            query["season"] = self._nba_season_for_date(str(query["date"]))
-        result = self._get("NBA", "games", query)
-        # Also enforce the league in the response if the provider ignores params.
-        games = []
-        for game in result.response:
-            league = game.get("league")
-            if not isinstance(league, dict):
+    def _espn_nba_get(self, endpoint: str, params=None) -> dict[str, Any]:
+        return self._public_get(f"{ESPN_NBA_BASE}/{endpoint.lstrip('/')}", params)
+
+    def _convert_espn_nba_game(self, event: dict[str, Any]) -> dict[str, Any]:
+        # Reuse the ESPN teams, scores and status reader; expose basketball fields.
+        converted = self._convert_espn_nfl_game(event)
+        block = converted.pop("game")
+        converted.update({
+            "id": block["id"],
+            "date": event.get("date"),
+            "timestamp": block["date"]["timestamp"],
+            "timezone": "UTC",
+            "stage": block["stage"],
+            "status": block["status"],
+            "venue": block["venue"],
+            "_source": "ESPN_NBA",
+        })
+        converted["league"] = {
+            "id": 12, "name": "NBA",
+            # ESPN identifies a basketball season by its ending year.
+            "season": converted["league"]["season"],
+        }
+        competitions = event.get("competitions") or []
+        competition = competitions[0] if competitions else {}
+        status = event.get("status") or competition.get("status") or {}
+        type_name = str((status.get("type") or {}).get("name", ""))
+        special = {"STATUS_POSTPONED": "POST", "STATUS_CANCELED": "CANC",
+                   "STATUS_CANCELLED": "CANC", "STATUS_SUSPENDED": "SUSP"}
+        if type_name in special:
+            converted["status"]["short"] = special[type_name]
+        if converted["status"]["short"] == "FT" and int(status.get("period") or 0) > 4:
+            converted["status"]["short"] = "AOT"
+        for competitor in competition.get("competitors") or []:
+            side = competitor.get("homeAway")
+            if side not in ("home", "away"):
                 continue
-            if str(league.get("id")) == str(league_id):
-                games.append(game)
-        return ApiResult(games, result.remaining_requests)
+            quarters = {}
+            for line in competitor.get("linescores") or []:
+                period = line.get("period")
+                if period in (1, 2, 3, 4):
+                    quarters[f"quarter_{period}"] = line.get("value")
+            converted["scores"][side].update(quarters)
+            if converted["status"]["short"] == "NS":
+                converted["scores"][side]["total"] = None
+        return converted
+
+    def _nba_games(self, params: dict[str, Any]) -> ApiResult:
+        self._nba_using_espn = True
+        if params.get("date"):
+            payload = self._espn_nba_get("scoreboard", {
+                "dates": str(params["date"]).replace("-", ""), "limit": 100,
+            })
+            events = payload.get("events") or []
+        elif params.get("team") is not None:
+            season = str(params.get("season") or "").strip()
+            try:
+                year = int(season.split("-")[-1])
+            except ValueError as exc:
+                raise ApiSportsError(f"Temporada NBA inválida: {season}") from exc
+            events_by_id = {}
+            for season_type in (1, 2, 3):
+                payload = self._espn_nba_get(
+                    f"teams/{params['team']}/schedule",
+                    {"season": year, "seasontype": season_type},
+                )
+                for event in payload.get("events") or []:
+                    if isinstance(event, dict) and event.get("id"):
+                        events_by_id[str(event["id"])] = event
+            events = list(events_by_id.values())
+        else:
+            raise ApiSportsError("NBA requiere fecha o equipo y temporada.")
+        games = [self._convert_espn_nba_game(event)
+                 for event in events if isinstance(event, dict)]
+        if params.get("team") is not None:
+            games = [game for game in games if any(
+                str(team.get("id")) == str(params["team"])
+                for team in game["teams"].values()
+            )]
+        return ApiResult(games, None)
 
     # ========================================================
     # API-SPORTS
@@ -1679,6 +1746,10 @@ class ApiSportsClient:
         date_iso: str,
         game_ids: list[int | str],
     ) -> ApiResult:
+
+        if sport == "NBA":
+            # ESPN game/team IDs must never be sent to API-Sports odds.
+            return ApiResult(response=[], remaining_requests=None)
 
         if sport == "NCAAF":
 
