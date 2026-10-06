@@ -1599,42 +1599,9 @@ class ApiSportsClient:
                 f"Deporte desconocido: {sport}"
             )
 
-        if self._mlb_games_api_sports_available:
-
-            try:
-
-                result = self._get(
-                    "MLB",
-                    "games",
-                    {
-                        "date": date_iso,
-                    },
-                )
-
-                if result.response:
-
-                    self._mlb_using_stats_api = False
-
-                    return result
-
-            except ApiSportsError as exc:
-
-                self._mlb_games_api_sports_available = False
-
-                print(
-                    "MLB: API-Sports no disponible. "
-                    "Activando MLB Stats API."
-                )
-
-                print(
-                    f"Motivo: {exc}"
-                )
-
+        # Calendario oficial MLB: sportId=1 y IDs compatibles con el modelo.
         self._mlb_using_stats_api = True
-
-        return self._mlb_schedule(
-            date_iso=date_iso,
-        )
+        return self._mlb_schedule(date_iso=date_iso)
 
     # ========================================================
     # HISTORIAL DE EQUIPO
