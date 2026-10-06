@@ -1,7 +1,7 @@
 # Reporte del analizador deportivo
 
-Actualizado: **2026-10-05T20:02:52.982265-05:00**
-Fecha deportiva analizada: **2026-10-05**
+Actualizado: **2026-10-06T10:27:40.976753-05:00**
+Fecha deportiva analizada: **2026-10-06**
 Escaneo de la sesión: **#1**
 
 > Las probabilidades son estimaciones. El sistema puede indicar NO APOSTAR y nunca garantiza ganancias.
@@ -14,42 +14,45 @@ Escaneo de la sesión: **#1**
 - Villa Clara @ Mayabeque: ganador final omitido porque faltan datos MLB esenciales.
 - Guantanamo @ Santiago de Cuba: F5 omitido porque faltan abridores u ofensiva verificable.
 - Guantanamo @ Santiago de Cuba: ganador final omitido porque faltan datos MLB esenciales.
+- Camaguey @ Sancti Spiritus: F5 omitido porque faltan abridores u ofensiva verificable.
+- Camaguey @ Sancti Spiritus: ganador final omitido porque faltan datos MLB esenciales.
+- Granma @ Holguin: F5 omitido porque faltan abridores u ofensiva verificable.
+- Granma @ Holguin: ganador final omitido porque faltan datos MLB esenciales.
+- Cienfuegos @ Matanzas: F5 omitido porque faltan abridores u ofensiva verificable.
+- Cienfuegos @ Matanzas: ganador final omitido porque faltan datos MLB esenciales.
+- Ciego de Avila @ Las Tunas: F5 omitido porque faltan abridores u ofensiva verificable.
+- Ciego de Avila @ Las Tunas: ganador final omitido porque faltan datos MLB esenciales.
+- Pinar del Rio @ Industriales: F5 omitido porque faltan abridores u ofensiva verificable.
+- Pinar del Rio @ Industriales: ganador final omitido porque faltan datos MLB esenciales.
+- Isla Juventud @ Artemisa: F5 omitido porque faltan abridores u ofensiva verificable.
+- Isla Juventud @ Artemisa: ganador final omitido porque faltan datos MLB esenciales.
 - MLB analizado SIN cuotas: el ganador se calculó únicamente con el modelo deportivo de MLB Stats API.
-- Solo un equipo distinto superó todos los filtros; no se repite el mismo equipo para completar una segunda apuesta.
+- Ningún juego MLB superó simultáneamente la probabilidad mínima y la cobertura mínima de factores.
 
 La opción más cercana fue descartada:
-- Cleveland Guardians — Primeras 5 entradas
-- Probabilidad estimada: 62.9%
+- Los Angeles Dodgers — Ganador del partido
+- Probabilidad estimada: 52.0%
 - Ventaja: 0.0%; valor esperado: 0.0%
-- Calidad de datos: 100/100
+- Calidad de datos: 73/100
 
-Partidos revisados: 3 · Cuotas válidas: 0
+Partidos revisados: 9 · Cuotas válidas: 0
 
 ## NFL — Fútbol americano
 
 **NO APOSTAR**
 
-- NFL | Atlanta Falcons @ New Orleans Saints | NO BET: probabilidad 53.4% < 55.0%
-- NFL analizado SIN cuotas: la selección se calculó con forma reciente, puntos anotados/permitidos, margen de puntos y enfrentamientos directos (H2H) cuando existen; las cuotas no participaron en la decisión.
-- Ningún juego NFL superó simultáneamente la probabilidad mínima, la calidad mínima y el historial mínimo exigido.
+- No hay partidos disponibles para la fecha analizada.
 
-La opción más cercana fue descartada:
-- New Orleans Saints — Ganador del partido
-- Probabilidad estimada: 53.4%
-- Ventaja: 0.0%; valor esperado: 0.0%
-- Calidad de datos: 100/100
-
-Partidos revisados: 1 · Cuotas válidas: 0
+Partidos revisados: 0 · Cuotas válidas: 0
 
 ## NBA — Baloncesto
 
 **NO APOSTAR**
 
-- Memphis Grizzlies @ Atlanta Hawks: NO APOSTAR; no llegaron cuotas de ganador comparables.
-- Phoenix Suns @ Detroit Pistons: NO APOSTAR; no llegaron cuotas de ganador comparables.
-- New York Knicks @ Philadelphia 76ers: NO APOSTAR; no llegaron cuotas de ganador comparables.
-- Minnesota Timberwolves @ Milwaukee Bucks: NO APOSTAR; no llegaron cuotas de ganador comparables.
-- Los Angeles Lakers @ Sacramento Kings: NO APOSTAR; no llegaron cuotas de ganador comparables.
+- Brooklyn Nets @ Charlotte Hornets: NO APOSTAR; no llegaron cuotas de ganador comparables.
+- New Orleans Pelicans @ Oklahoma City Thunder: NO APOSTAR; no llegaron cuotas de ganador comparables.
+- Denver Nuggets @ Utah Jazz: NO APOSTAR; no llegaron cuotas de ganador comparables.
+- Los Angeles Lakers @ Golden State Warriors: NO APOSTAR; no llegaron cuotas de ganador comparables.
 - No llegaron cuotas comparables; sin precio no se puede calcular rentabilidad.
 
-Partidos revisados: 5 · Cuotas válidas: 0
+Partidos revisados: 4 · Cuotas válidas: 0
