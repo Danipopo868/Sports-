@@ -587,9 +587,9 @@ def analyze_sport(
 
                 minimum_quality = max(
                     int(
-                        filters.get(
+                        mlb_cfg.get(
                             "minimum_data_quality",
-                            0,
+                            filters.get("minimum_data_quality", 0),
                         )
                     ),
                     minimum_factor_coverage,
@@ -601,9 +601,10 @@ def analyze_sport(
                     (
                         probability
                         >= float(
-                            filters[
-                                "minimum_probability"
-                            ]
+                            mlb_cfg.get(
+                                "minimum_probability",
+                                filters["minimum_probability"],
+                            )
                         ),
                         quality
                         >= minimum_quality,
