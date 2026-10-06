@@ -20,7 +20,9 @@
     "prefer_confirmed_lineups": true,
     "evaluate_first_five": true,
     "evaluate_final_winner": true,
-    "minimum_factor_coverage": 55
+    "minimum_factor_coverage": 45,
+    "minimum_probability": 0.53,
+    "minimum_data_quality": 45
   },
   "ncaaf": {
     "source": "ESPN",
