@@ -2031,12 +2031,13 @@
     "contracts": null,
     "potential_return": null,
     "potential_profit": null,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Troy Trojans",
+    "final_score": "Southern Miss Golden Eagles 34 - Troy Trojans 55",
     "return_amount": null,
-    "profit_loss": null
+    "profit_loss": null,
+    "resolved_at": "2026-10-07T00:50:21.245220-05:00"
   },
   {
     "key": "MLB|849826|Primeras 5 entradas|San Diego Padres",
@@ -2108,13 +2109,14 @@
     "contracts": 163.9344,
     "potential_return": 163.93,
     "potential_profit": 63.93,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 61.0
+    "status": "RESUELTA",
+    "result": "PERDIDA",
+    "winner": "Brooklyn Nets",
+    "final_score": "Brooklyn Nets 124 - Charlotte Hornets 90",
+    "return_amount": 0.0,
+    "profit_loss": -100.0,
+    "kalshi_cents": 61.0,
+    "resolved_at": "2026-10-07T00:50:21.245220-05:00"
   },
   {
     "key": "NBA|401898389|Ganador del partido|Oklahoma City Thunder",
@@ -2147,12 +2149,13 @@
     "contracts": 192.3077,
     "potential_return": 192.31,
     "potential_profit": 92.31,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 52.0
+    "status": "RESUELTA",
+    "result": "PERDIDA",
+    "winner": "New Orleans Pelicans",
+    "final_score": "New Orleans Pelicans 116 - Oklahoma City Thunder 110",
+    "return_amount": 0.0,
+    "profit_loss": -100.0,
+    "kalshi_cents": 52.0,
+    "resolved_at": "2026-10-07T00:50:21.245220-05:00"
   }
 ]
