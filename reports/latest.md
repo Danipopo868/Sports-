@@ -1,7 +1,7 @@
 # Reporte del analizador deportivo
 
-Actualizado: **2026-10-07T10:38:00.695496-05:00**
-Fecha deportiva analizada: **2026-10-07**
+Actualizado: **2026-10-08T10:00:19.110675-05:00**
+Fecha deportiva analizada: **2026-10-08**
 Escaneo de la sesión: **#1**
 
 > Las probabilidades son estimaciones. El sistema puede indicar NO APOSTAR y nunca garantiza ganancias.
@@ -12,65 +12,55 @@ Escaneo de la sesión: **#1**
 
 **APUESTA CON VALOR DETECTADA**
 
-- Partido: Los Angeles Dodgers @ Atlanta Braves
+- Partido: Cleveland Guardians @ Chicago White Sox
 - Mercado: Primeras 5 entradas
-- Selección: **Los Angeles Dodgers**
-- Mejor cuota decimal: **2.00** (Kalshi)
-- Probabilidad estimada: **62.7%**
+- Selección: **Chicago White Sox**
+- Mejor cuota decimal: **2.50** (Kalshi)
+- Probabilidad estimada: **65.0%**
 - Punto de equilibrio: 0.0%
 - Ventaja calculada: **0.0%**
 - Valor esperado por unidad: **0.0%**
 - Casas comparadas: 0
 - Calidad de datos: 73/100
-- Modelo MLB puro: 62.7% para Los Angeles Dodgers
+- Modelo MLB puro: 65.0% para Chicago White Sox
 - Cuotas del mercado NO usadas para decidir el ganador
-- Abridores: Tyler Glasnow vs Tyler Mahle
-- OPS temporada: visitante 0.762 | local 0.718
-- OPS split L/R: visitante 0.762 | local 0.718
-- Bullpen/Staff ERA: visitante 3.55 | local 3.63
+- Abridores: Parker Messick vs Hagen Smith
+- OPS temporada: visitante 0.696 | local 0.726
+- OPS split L/R: visitante 0.696 | local 0.726
+- Bullpen/Staff ERA: visitante 3.77 | local 4.12
 - Descanso: visitante 0 día(s) | local 0 día(s)
-- Carga bullpen 3d: visitante 7.3 IP | local 10.3 IP
+- Carga bullpen 3d: visitante 12.3 IP | local 15.7 IP
 - Alineaciones confirmadas: visitante No | local No
 - BvP suficiente: visitante No | local No
-- Estadio/clima: Truist Park | N/D 
+- Estadio/clima: Rate Field | N/D 
 - Cobertura de factores MLB: 73/100
 
-### APUESTA #2
-
-**APUESTA CON VALOR DETECTADA**
-
-- Partido: Tampa Bay Rays @ New York Yankees
-- Mercado: Primeras 5 entradas
-- Selección: **New York Yankees**
-- Mejor cuota decimal: **1.92** (Kalshi)
-- Probabilidad estimada: **60.2%**
-- Punto de equilibrio: 0.0%
-- Ventaja calculada: **0.0%**
-- Valor esperado por unidad: **0.0%**
-- Casas comparadas: 0
-- Calidad de datos: 73/100
-- Modelo MLB puro: 60.2% para New York Yankees
-- Cuotas del mercado NO usadas para decidir el ganador
-- Abridores: Nick Martinez vs Max Fried
-- OPS temporada: visitante 0.728 | local 0.720
-- OPS split L/R: visitante 0.728 | local 0.720
-- Bullpen/Staff ERA: visitante 3.70 | local 3.23
-- Descanso: visitante 1 día(s) | local 1 día(s)
-- Carga bullpen 3d: visitante 4.3 IP | local 3.7 IP
-- Alineaciones confirmadas: visitante No | local No
-- BvP suficiente: visitante No | local No
-- Estadio/clima: Yankee Stadium | N/D 
-- Cobertura de factores MLB: 73/100
-
-Partidos revisados: 4 · Cuotas válidas: 0
+Partidos revisados: 1 · Cuotas válidas: 0
 
 ## NFL — Fútbol americano
 
-**NO APOSTAR**
+### APUESTA #1
 
-- No hay partidos disponibles para la fecha analizada.
+**APUESTA CON VALOR DETECTADA**
 
-Partidos revisados: 0 · Cuotas válidas: 0
+- Partido: Tampa Bay Buccaneers @ Dallas Cowboys
+- Mercado: Ganador del partido
+- Selección: **Dallas Cowboys**
+- Mejor cuota decimal: **1.25** (Kalshi)
+- Probabilidad estimada: **65.8%**
+- Punto de equilibrio: 0.0%
+- Ventaja calculada: **0.0%**
+- Valor esperado por unidad: **0.0%**
+- Casas comparadas: 0
+- Calidad de datos: 100/100
+- Filtros NFL: probabilidad >= 55%; historial >= 2 por equipo; calidad >= 50/100
+- Modelo NFL sin cuotas: 65.8% para Dallas Cowboys
+- Forma Dallas Cowboys: 6-6; Tampa Bay Buccaneers: 2-10
+- Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo
+- H2H: sin enfrentamientos recientes utilizables
+- Las cuotas no participan en la decisión
+
+Partidos revisados: 1 · Cuotas válidas: 0
 
 ## NBA — Baloncesto
 
@@ -78,19 +68,19 @@ Partidos revisados: 0 · Cuotas válidas: 0
 
 **APUESTA CON VALOR DETECTADA**
 
-- Partido: Milwaukee Bucks @ Oklahoma City Thunder
+- Partido: Washington Wizards @ New York Knicks
 - Mercado: Ganador del partido
-- Selección: **Oklahoma City Thunder**
-- Mejor cuota decimal: **1.16** (Kalshi)
-- Probabilidad estimada: **69.5%**
+- Selección: **New York Knicks**
+- Mejor cuota decimal: **1.43** (Kalshi)
+- Probabilidad estimada: **80.3%**
 - Punto de equilibrio: 0.0%
 - Ventaja calculada: **0.0%**
 - Valor esperado por unidad: **0.0%**
 - Casas comparadas: 0
 - Calidad de datos: 100/100
 - Filtros NBA: probabilidad >= 54%; historial >= 3 por equipo; calidad >= 28/100
-- Modelo NBA sin cuotas: 69.5% para Oklahoma City Thunder
-- Forma Oklahoma City Thunder: 7-5; Milwaukee Bucks: 3-9
+- Modelo NBA sin cuotas: 80.3% para New York Knicks
+- Forma New York Knicks: 10-2; Washington Wizards: 1-11
 - Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo
 - H2H: sin enfrentamientos recientes utilizables
 - Las cuotas no participan en la decisión
@@ -99,21 +89,21 @@ Partidos revisados: 0 · Cuotas válidas: 0
 
 **APUESTA CON VALOR DETECTADA**
 
-- Partido: Orlando Magic @ Memphis Grizzlies
+- Partido: New Orleans Pelicans @ Miami Heat
 - Mercado: Ganador del partido
-- Selección: **Orlando Magic**
-- Mejor cuota decimal: **1.82** (Kalshi)
-- Probabilidad estimada: **66.1%**
+- Selección: **Miami Heat**
+- Mejor cuota decimal: **1.37** (Kalshi)
+- Probabilidad estimada: **67.6%**
 - Punto de equilibrio: 0.0%
 - Ventaja calculada: **0.0%**
 - Valor esperado por unidad: **0.0%**
 - Casas comparadas: 0
 - Calidad de datos: 100/100
 - Filtros NBA: probabilidad >= 54%; historial >= 3 por equipo; calidad >= 28/100
-- Modelo NBA sin cuotas: 66.1% para Orlando Magic
-- Forma Memphis Grizzlies: 2-10; Orlando Magic: 7-5
+- Modelo NBA sin cuotas: 67.6% para Miami Heat
+- Forma Miami Heat: 6-6; New Orleans Pelicans: 2-10
 - Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo
 - H2H: sin enfrentamientos recientes utilizables
 - Las cuotas no participan en la decisión
 
-Partidos revisados: 5 · Cuotas válidas: 0
+Partidos revisados: 6 · Cuotas válidas: 0
