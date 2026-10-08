@@ -2070,13 +2070,14 @@
     "contracts": 212.766,
     "potential_return": 212.77,
     "potential_profit": 112.77,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 47.0
+    "status": "RESUELTA",
+    "result": "PERDIDA",
+    "winner": "Milwaukee Brewers",
+    "final_score": "F5: Milwaukee Brewers 2 - San Diego Padres 1",
+    "return_amount": 0.0,
+    "profit_loss": -100.0,
+    "kalshi_cents": 47.0,
+    "resolved_at": "2026-10-08T00:55:27.190408-05:00"
   },
   {
     "key": "NBA|401901820|Ganador del partido|Charlotte Hornets",
@@ -2268,12 +2269,13 @@
     "contracts": null,
     "potential_return": null,
     "potential_profit": null,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Florida International Panthers",
+    "final_score": "New Mexico State Aggies 3 - Florida International Panthers 22",
     "return_amount": null,
-    "profit_loss": null
+    "profit_loss": null,
+    "resolved_at": "2026-10-08T00:55:27.190408-05:00"
   },
   {
     "key": "NBA|401908620|Ganador del partido|Oklahoma City Thunder",
@@ -2306,13 +2308,14 @@
     "contracts": 116.2791,
     "potential_return": 116.28,
     "potential_profit": 16.28,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 86.0
+    "status": "RESUELTA",
+    "result": "PERDIDA",
+    "winner": "Milwaukee Bucks",
+    "final_score": "Milwaukee Bucks 128 - Oklahoma City Thunder 126",
+    "return_amount": 0.0,
+    "profit_loss": -100.0,
+    "kalshi_cents": 86.0,
+    "resolved_at": "2026-10-08T00:55:27.190408-05:00"
   },
   {
     "key": "NBA|401898391|Ganador del partido|Orlando Magic",
@@ -2345,12 +2348,13 @@
     "contracts": 181.8182,
     "potential_return": 181.82,
     "potential_profit": 81.82,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 55.00000000000001
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Orlando Magic",
+    "final_score": "Orlando Magic 122 - Memphis Grizzlies 118",
+    "return_amount": 181.82,
+    "profit_loss": 81.82,
+    "kalshi_cents": 55.00000000000001,
+    "resolved_at": "2026-10-08T00:55:27.190408-05:00"
   }
 ]
