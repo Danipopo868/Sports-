@@ -2428,13 +2428,14 @@
     "contracts": 125.0,
     "potential_return": 125.0,
     "potential_profit": 25.0,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 80.0
+    "status": "RESUELTA",
+    "result": "PERDIDA",
+    "winner": "Tampa Bay Buccaneers",
+    "final_score": "Tampa Bay Buccaneers 24 - Dallas Cowboys 16",
+    "return_amount": 0.0,
+    "profit_loss": -100.0,
+    "kalshi_cents": 80.0,
+    "resolved_at": "2026-10-09T02:20:29.405996-05:00"
   },
   {
     "key": "NCAAF|401870766|Ganador del partido|Liberty Flames",
@@ -2467,12 +2468,13 @@
     "contracts": null,
     "potential_return": null,
     "potential_profit": null,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Liberty Flames",
+    "final_score": "Sam Houston Bearkats 3 - Liberty Flames 35",
     "return_amount": null,
-    "profit_loss": null
+    "profit_loss": null,
+    "resolved_at": "2026-10-09T02:20:29.405996-05:00"
   },
   {
     "key": "NCAAF|401862794|Ganador del partido|South Florida Bulls",
@@ -2505,12 +2507,13 @@
     "contracts": null,
     "potential_return": null,
     "potential_profit": null,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
+    "status": "RESUELTA",
+    "result": "PERDIDA",
+    "winner": "UTSA Roadrunners",
+    "final_score": "South Florida Bulls 24 - UTSA Roadrunners 31",
     "return_amount": null,
-    "profit_loss": null
+    "profit_loss": null,
+    "resolved_at": "2026-10-09T02:20:29.405996-05:00"
   },
   {
     "key": "NBA|401906508|Ganador del partido|New York Knicks",
@@ -2543,13 +2546,14 @@
     "contracts": 142.8571,
     "potential_return": 142.86,
     "potential_profit": 42.86,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 70.0
+    "status": "RESUELTA",
+    "result": "PERDIDA",
+    "winner": "Washington Wizards",
+    "final_score": "Washington Wizards 111 - New York Knicks 109",
+    "return_amount": 0.0,
+    "profit_loss": -100.0,
+    "kalshi_cents": 70.0,
+    "resolved_at": "2026-10-09T02:20:29.405996-05:00"
   },
   {
     "key": "NBA|401898393|Ganador del partido|Miami Heat",
@@ -2582,12 +2586,13 @@
     "contracts": 136.9863,
     "potential_return": 136.99,
     "potential_profit": 36.99,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 73.0
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Miami Heat",
+    "final_score": "New Orleans Pelicans 118 - Miami Heat 128",
+    "return_amount": 136.99,
+    "profit_loss": 36.99,
+    "kalshi_cents": 73.0,
+    "resolved_at": "2026-10-09T02:20:29.405996-05:00"
   }
 ]
