@@ -2626,12 +2626,13 @@
     "contracts": null,
     "potential_return": null,
     "potential_profit": null,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "BYU Cougars",
+    "final_score": "Iowa State Cyclones 10 - BYU Cougars 24",
     "return_amount": null,
-    "profit_loss": null
+    "profit_loss": null,
+    "resolved_at": "2026-10-10T00:44:19.022536-05:00"
   },
   {
     "key": "NCAAF|401858254|Ganador del partido|Louisville Cardinals",
@@ -2664,12 +2665,13 @@
     "contracts": null,
     "potential_return": null,
     "potential_profit": null,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Louisville Cardinals",
+    "final_score": "Florida State Seminoles 20 - Louisville Cardinals 44",
     "return_amount": null,
-    "profit_loss": null
+    "profit_loss": null,
+    "resolved_at": "2026-10-10T00:44:19.022536-05:00"
   },
   {
     "key": "NBA|401908940|Ganador del partido|Chicago Bulls",
@@ -2702,12 +2704,13 @@
     "contracts": 175.4386,
     "potential_return": 175.44,
     "potential_profit": 75.44,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 56.99999999999999
+    "status": "RESUELTA",
+    "result": "PERDIDA",
+    "winner": "Memphis Grizzlies",
+    "final_score": "Memphis Grizzlies 104 - Chicago Bulls 100",
+    "return_amount": 0.0,
+    "profit_loss": -100.0,
+    "kalshi_cents": 56.99999999999999,
+    "resolved_at": "2026-10-10T00:44:19.022536-05:00"
   }
 ]
