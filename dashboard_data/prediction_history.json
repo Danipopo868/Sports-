@@ -2862,13 +2862,14 @@
     "contracts": 163.9344,
     "potential_return": 163.93,
     "potential_profit": 63.93,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 61.0
+    "status": "RESUELTA",
+    "result": "PERDIDA",
+    "winner": "Washington Wizards",
+    "final_score": "Detroit Pistons 108 - Washington Wizards 114",
+    "return_amount": 0.0,
+    "profit_loss": -100.0,
+    "kalshi_cents": 61.0,
+    "resolved_at": "2026-10-11T02:07:40.640041-05:00"
   },
   {
     "key": "NBA|401898398|Ganador del partido|Boston Celtics",
@@ -2901,12 +2902,13 @@
     "contracts": 156.25,
     "potential_return": 156.25,
     "potential_profit": 56.25,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 64.0
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Boston Celtics",
+    "final_score": "Philadelphia 76ers 106 - Boston Celtics 144",
+    "return_amount": 156.25,
+    "profit_loss": 56.25,
+    "kalshi_cents": 64.0,
+    "resolved_at": "2026-10-11T02:07:40.640041-05:00"
   }
 ]
