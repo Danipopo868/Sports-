@@ -2784,12 +2784,13 @@
     "contracts": null,
     "potential_return": null,
     "potential_profit": null,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "North Texas Mean Green",
+    "final_score": "Charlotte 49ers 10 - North Texas Mean Green 50",
     "return_amount": null,
-    "profit_loss": null
+    "profit_loss": null,
+    "resolved_at": "2026-10-10T19:57:17.773900-05:00"
   },
   {
     "key": "NCAAF|401858257|Ganador del partido|Notre Dame Fighting Irish",
@@ -2822,12 +2823,13 @@
     "contracts": null,
     "potential_return": null,
     "potential_profit": null,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Notre Dame Fighting Irish",
+    "final_score": "Stanford Cardinal 7 - Notre Dame Fighting Irish 58",
     "return_amount": null,
-    "profit_loss": null
+    "profit_loss": null,
+    "resolved_at": "2026-10-10T19:57:17.773900-05:00"
   },
   {
     "key": "NBA|401906510|Ganador del partido|Detroit Pistons",
