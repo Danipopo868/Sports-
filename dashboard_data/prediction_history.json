@@ -3138,13 +3138,14 @@
     "contracts": 222.2222,
     "potential_return": 222.22,
     "potential_profit": 122.22,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 45.0
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Detroit Lions",
+    "final_score": "Detroit Lions 45 - Arizona Cardinals 21",
+    "return_amount": 222.22,
+    "profit_loss": 122.22,
+    "kalshi_cents": 45.0,
+    "resolved_at": "2026-10-11T18:51:29.232749-05:00"
   },
   {
     "key": "NFL|401872989|Ganador del partido|Denver Broncos",
@@ -3177,12 +3178,13 @@
     "contracts": 138.8889,
     "potential_return": 138.89,
     "potential_profit": 38.89,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 72.0
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Denver Broncos",
+    "final_score": "Denver Broncos 23 - Los Angeles Chargers 17",
+    "return_amount": 138.89,
+    "profit_loss": 38.89,
+    "kalshi_cents": 72.0,
+    "resolved_at": "2026-10-11T18:51:29.232749-05:00"
   }
 ]
