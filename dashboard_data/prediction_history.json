@@ -3020,13 +3020,14 @@
     "contracts": 158.7302,
     "potential_return": 158.73,
     "potential_profit": 58.73,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 63.0
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "New England Patriots",
+    "final_score": "Las Vegas Raiders 17 - New England Patriots 45",
+    "return_amount": 158.73,
+    "profit_loss": 58.73,
+    "kalshi_cents": 63.0,
+    "resolved_at": "2026-10-11T15:50:24.968113-05:00"
   },
   {
     "key": "NBA|401908941|Ganador del partido|Denver Nuggets",
