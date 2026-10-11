@@ -1,6 +1,6 @@
 # Reporte del analizador deportivo
 
-Actualizado: **2026-10-11T09:11:59.741425-05:00**
+Actualizado: **2026-10-11T15:56:35.874253-05:00**
 Fecha deportiva analizada: **2026-10-11**
 Escaneo de la sesión: **#1**
 
@@ -15,14 +15,14 @@ Escaneo de la sesión: **#1**
 - Partido: Los Angeles Dodgers @ Milwaukee Brewers
 - Mercado: Primeras 5 entradas
 - Selección: **Milwaukee Brewers**
-- Mejor cuota decimal: **2.44** (Kalshi)
-- Probabilidad estimada: **62.8%**
+- Mejor cuota decimal: **2.38** (Kalshi)
+- Probabilidad estimada: **62.9%**
 - Punto de equilibrio: 0.0%
 - Ventaja calculada: **0.0%**
 - Valor esperado por unidad: **0.0%**
 - Casas comparadas: 0
-- Calidad de datos: 64/100
-- Modelo MLB puro: 62.8% para Milwaukee Brewers
+- Calidad de datos: 91/100
+- Modelo MLB puro: 62.9% para Milwaukee Brewers
 - Cuotas del mercado NO usadas para decidir el ganador
 - Abridores: Tarik Skubal vs Jacob Misiorowski
 - OPS temporada: visitante 0.762 | local 0.744
@@ -30,10 +30,10 @@ Escaneo de la sesión: **#1**
 - Bullpen/Staff ERA: visitante 3.55 | local 3.51
 - Descanso: visitante 3 día(s) | local 3 día(s)
 - Carga bullpen 3d: visitante 0.0 IP | local 0.0 IP
-- Alineaciones confirmadas: visitante No | local No
-- BvP suficiente: visitante No | local No
-- Estadio/clima: American Family Field | N/D 
-- Cobertura de factores MLB: 64/100
+- Alineaciones confirmadas: visitante Sí | local Sí
+- BvP suficiente: visitante Sí | local Sí
+- Estadio/clima: American Family Field | Dome 68.0
+- Cobertura de factores MLB: 91/100
 
 Partidos revisados: 1 · Cuotas válidas: 0
 
@@ -43,19 +43,19 @@ Partidos revisados: 1 · Cuotas válidas: 0
 
 **APUESTA CON VALOR DETECTADA**
 
-- Partido: Philadelphia Eagles @ Jacksonville Jaguars
+- Partido: Detroit Lions @ Arizona Cardinals
 - Mercado: Ganador del partido
-- Selección: **Jacksonville Jaguars**
-- Mejor cuota decimal: **0.00** (Kalshi)
-- Probabilidad estimada: **72.7%**
+- Selección: **Detroit Lions**
+- Mejor cuota decimal: **2.22** (Kalshi)
+- Probabilidad estimada: **62.9%**
 - Punto de equilibrio: 0.0%
 - Ventaja calculada: **0.0%**
 - Valor esperado por unidad: **0.0%**
 - Casas comparadas: 0
 - Calidad de datos: 100/100
 - Filtros NFL: probabilidad >= 55%; historial >= 2 por equipo; calidad >= 50/100
-- Modelo NFL sin cuotas: 72.7% para Jacksonville Jaguars
-- Forma Jacksonville Jaguars: 11-1; Philadelphia Eagles: 6-6
+- Modelo NFL sin cuotas: 62.9% para Detroit Lions
+- Forma Arizona Cardinals: 1-11; Detroit Lions: 5-7
 - Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo
 - H2H: sin enfrentamientos recientes utilizables
 - Las cuotas no participan en la decisión
@@ -64,25 +64,25 @@ Partidos revisados: 1 · Cuotas válidas: 0
 
 **APUESTA CON VALOR DETECTADA**
 
-- Partido: Las Vegas Raiders @ New England Patriots
+- Partido: Denver Broncos @ Los Angeles Chargers
 - Mercado: Ganador del partido
-- Selección: **New England Patriots**
-- Mejor cuota decimal: **1.59** (Kalshi)
-- Probabilidad estimada: **70.8%**
+- Selección: **Denver Broncos**
+- Mejor cuota decimal: **1.39** (Kalshi)
+- Probabilidad estimada: **58.9%**
 - Punto de equilibrio: 0.0%
 - Ventaja calculada: **0.0%**
 - Valor esperado por unidad: **0.0%**
 - Casas comparadas: 0
 - Calidad de datos: 100/100
 - Filtros NFL: probabilidad >= 55%; historial >= 2 por equipo; calidad >= 50/100
-- Modelo NFL sin cuotas: 70.8% para New England Patriots
-- Forma New England Patriots: 9-3; Las Vegas Raiders: 4-8
+- Modelo NFL sin cuotas: 58.9% para Denver Broncos
+- Forma Los Angeles Chargers: 5-7; Denver Broncos: 9-3
 - Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo
-- H2H últimos 1: New England Patriots 0% victorias; margen -7.0 pts
-- Peso H2H aplicado: 2.5%
+- H2H últimos 2: Los Angeles Chargers 46% victorias; margen -7.3 pts
+- Peso H2H aplicado: 5.0%
 - Las cuotas no participan en la decisión
 
-Partidos revisados: 13 · Cuotas válidas: 0
+Partidos revisados: 4 · Cuotas válidas: 0
 
 ## NBA — Baloncesto
 
@@ -114,7 +114,7 @@ Partidos revisados: 13 · Cuotas válidas: 0
 - Partido: Milwaukee Bucks @ Charlotte Hornets
 - Mercado: Ganador del partido
 - Selección: **Charlotte Hornets**
-- Mejor cuota decimal: **1.64** (Kalshi)
+- Mejor cuota decimal: **1.75** (Kalshi)
 - Probabilidad estimada: **67.6%**
 - Punto de equilibrio: 0.0%
 - Ventaja calculada: **0.0%**
