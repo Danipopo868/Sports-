@@ -3060,13 +3060,14 @@
     "contracts": 144.9275,
     "potential_return": 144.93,
     "potential_profit": 44.93,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 69.0
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Denver Nuggets",
+    "final_score": "Chicago Bulls 128 - Denver Nuggets 133",
+    "return_amount": 144.93,
+    "profit_loss": 44.93,
+    "kalshi_cents": 69.0,
+    "resolved_at": "2026-10-12T05:39:58.369736-05:00"
   },
   {
     "key": "NBA|401901821|Ganador del partido|Charlotte Hornets",
