@@ -3340,12 +3340,13 @@
     "contracts": 238.0952,
     "potential_return": 238.1,
     "potential_profit": 138.1,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 42.0
+    "status": "RESUELTA",
+    "result": "PERDIDA",
+    "winner": "Utah Jazz",
+    "final_score": "San Antonio Spurs 109 - Utah Jazz 119",
+    "return_amount": 0.0,
+    "profit_loss": -100.0,
+    "kalshi_cents": 42.0,
+    "resolved_at": "2026-10-13T05:27:30.288868-05:00"
   }
 ]
