@@ -2942,13 +2942,14 @@
     "contracts": 243.9024,
     "potential_return": 243.9,
     "potential_profit": 143.9,
-    "status": "PENDIENTE",
-    "result": null,
+    "status": "RESUELTA",
+    "result": "EMPATE",
     "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 41.0
+    "final_score": "F5: Los Angeles Dodgers 4 - Milwaukee Brewers 4",
+    "return_amount": 100.0,
+    "profit_loss": 0.0,
+    "kalshi_cents": 41.0,
+    "resolved_at": "2026-10-12T21:33:21.327986-05:00"
   },
   {
     "key": "NFL|401872981|Ganador del partido|Jacksonville Jaguars",
@@ -3259,13 +3260,14 @@
     "contracts": 270.2703,
     "potential_return": 270.27,
     "potential_profit": 170.27,
-    "status": "PENDIENTE",
-    "result": null,
+    "status": "RESUELTA",
+    "result": "EMPATE",
     "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 37.0
+    "final_score": "F5: Los Angeles Dodgers 4 - Milwaukee Brewers 4",
+    "return_amount": 100.0,
+    "profit_loss": 0.0,
+    "kalshi_cents": 37.0,
+    "resolved_at": "2026-10-12T21:33:21.327986-05:00"
   },
   {
     "key": "NBA|401914124|Ganador del partido|New York Knicks",
@@ -3298,13 +3300,14 @@
     "contracts": 192.3077,
     "potential_return": 192.31,
     "potential_profit": 92.31,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 52.0
+    "status": "RESUELTA",
+    "result": "PERDIDA",
+    "winner": "Minnesota Timberwolves",
+    "final_score": "Minnesota Timberwolves 122 - New York Knicks 104",
+    "return_amount": 0.0,
+    "profit_loss": -100.0,
+    "kalshi_cents": 52.0,
+    "resolved_at": "2026-10-12T21:33:21.327986-05:00"
   },
   {
     "key": "NBA|401898721|Ganador del partido|San Antonio Spurs",
