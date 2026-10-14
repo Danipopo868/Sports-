@@ -3221,13 +3221,14 @@
     "contracts": 196.0784,
     "potential_return": 196.08,
     "potential_profit": 96.08,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 51.0
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Tampa Bay Rays",
+    "final_score": "F5: Cleveland Guardians 0 - Tampa Bay Rays 3",
+    "return_amount": 196.08,
+    "profit_loss": 96.08,
+    "kalshi_cents": 51.0,
+    "resolved_at": "2026-10-13T20:51:18.132131-05:00"
   },
   {
     "key": "MLB|849812|Primeras 5 entradas|Milwaukee Brewers",
@@ -3380,13 +3381,14 @@
     "contracts": 256.4103,
     "potential_return": 256.41,
     "potential_profit": 156.41,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 39.0
+    "status": "RESUELTA",
+    "result": "PERDIDA",
+    "winner": "Tampa Bay Rays",
+    "final_score": "F5: Cleveland Guardians 0 - Tampa Bay Rays 3",
+    "return_amount": 0.0,
+    "profit_loss": -100.0,
+    "kalshi_cents": 39.0,
+    "resolved_at": "2026-10-13T20:51:18.132131-05:00"
   },
   {
     "key": "NBA|401901826|Ganador del partido|Portland Trail Blazers",
@@ -3458,12 +3460,13 @@
     "contracts": 204.0816,
     "potential_return": 204.08,
     "potential_profit": 104.08,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 49.0
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Orlando Magic",
+    "final_score": "Cleveland Cavaliers 116 - Orlando Magic 132",
+    "return_amount": 204.08,
+    "profit_loss": 104.08,
+    "kalshi_cents": 49.0,
+    "resolved_at": "2026-10-13T20:51:18.132131-05:00"
   }
 ]
