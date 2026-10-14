@@ -3421,13 +3421,14 @@
     "contracts": 196.0784,
     "potential_return": 196.08,
     "potential_profit": 96.08,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 51.0
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Portland Trail Blazers",
+    "final_score": "Portland Trail Blazers 110 - Sacramento Kings 98",
+    "return_amount": 196.08,
+    "profit_loss": 96.08,
+    "kalshi_cents": 51.0,
+    "resolved_at": "2026-10-14T02:31:50.171014-05:00"
   },
   {
     "key": "NBA|401898403|Ganador del partido|Orlando Magic",
