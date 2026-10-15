@@ -3659,13 +3659,14 @@
     "contracts": 217.3913,
     "potential_return": 217.39,
     "potential_profit": 117.39,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 46.0
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Cleveland Guardians",
+    "final_score": "F5: Tampa Bay Rays 2 - Cleveland Guardians 3",
+    "return_amount": 217.39,
+    "profit_loss": 117.39,
+    "kalshi_cents": 46.0,
+    "resolved_at": "2026-10-15T16:22:16.066892-05:00"
   },
   {
     "key": "NFL|401872995|Ganador del partido|Seattle Seahawks",
