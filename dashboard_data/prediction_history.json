@@ -3540,12 +3540,13 @@
     "contracts": null,
     "potential_return": null,
     "potential_profit": null,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Western Kentucky Hilltoppers",
+    "final_score": "Western Kentucky Hilltoppers 16 - Sam Houston Bearkats 3",
     "return_amount": null,
-    "profit_loss": null
+    "profit_loss": null,
+    "resolved_at": "2026-10-15T02:22:00.036334-05:00"
   },
   {
     "key": "NBA|401901825|Ganador del partido|Dallas Mavericks",
@@ -3578,13 +3579,14 @@
     "contracts": 204.0816,
     "potential_return": 204.08,
     "potential_profit": 104.08,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 49.0
+    "status": "RESUELTA",
+    "result": "PERDIDA",
+    "winner": "New Orleans Pelicans",
+    "final_score": "New Orleans Pelicans 101 - Dallas Mavericks 97",
+    "return_amount": 0.0,
+    "profit_loss": -100.0,
+    "kalshi_cents": 49.0,
+    "resolved_at": "2026-10-15T02:22:00.036334-05:00"
   },
   {
     "key": "NBA|401898404|Ganador del partido|Miami Heat",
@@ -3617,12 +3619,13 @@
     "contracts": 140.8451,
     "potential_return": 140.85,
     "potential_profit": 40.85,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 71.0
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Miami Heat",
+    "final_score": "Brooklyn Nets 128 - Miami Heat 144",
+    "return_amount": 140.85,
+    "profit_loss": 40.85,
+    "kalshi_cents": 71.0,
+    "resolved_at": "2026-10-15T02:22:00.036334-05:00"
   }
 ]
