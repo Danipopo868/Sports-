@@ -1,7 +1,7 @@
 # Reporte del analizador deportivo
 
-Actualizado: **2026-10-15T11:13:37.492371-05:00**
-Fecha deportiva analizada: **2026-10-15**
+Actualizado: **2026-10-16T11:10:56.252982-05:00**
+Fecha deportiva analizada: **2026-10-16**
 Escaneo de la sesión: **#1**
 
 > Las probabilidades son estimaciones. El sistema puede indicar NO APOSTAR y nunca garantiza ganancias.
@@ -14,53 +14,36 @@ Escaneo de la sesión: **#1**
 
 - Partido: Tampa Bay Rays @ Cleveland Guardians
 - Mercado: Primeras 5 entradas
-- Selección: **Cleveland Guardians**
-- Mejor cuota decimal: **2.17** (Kalshi)
-- Probabilidad estimada: **56.2%**
+- Selección: **Tampa Bay Rays**
+- Mejor cuota decimal: **2.27** (Kalshi)
+- Probabilidad estimada: **57.6%**
 - Punto de equilibrio: 0.0%
 - Ventaja calculada: **0.0%**
 - Valor esperado por unidad: **0.0%**
 - Casas comparadas: 0
-- Calidad de datos: 100/100
-- Modelo MLB puro: 56.2% para Cleveland Guardians
+- Calidad de datos: 73/100
+- Modelo MLB puro: 57.6% para Tampa Bay Rays
 - Cuotas del mercado NO usadas para decidir el ganador
-- Abridores: Griffin Jax vs Gavin Williams
+- Abridores: Nick Martinez vs Shawn Armstrong
 - OPS temporada: visitante 0.728 | local 0.696
 - OPS split L/R: visitante 0.728 | local 0.696
 - Bullpen/Staff ERA: visitante 3.70 | local 3.77
-- Descanso: visitante 1 día(s) | local 1 día(s)
-- Carga bullpen 3d: visitante 6.0 IP | local 8.0 IP
-- Alineaciones confirmadas: visitante Sí | local Sí
-- BvP suficiente: visitante Sí | local Sí
-- Estadio/clima: Progressive Field | Sunny 57.0
-- Cobertura de factores MLB: 100/100
+- Descanso: visitante 0 día(s) | local 0 día(s)
+- Carga bullpen 3d: visitante 7.0 IP | local 7.0 IP
+- Alineaciones confirmadas: visitante No | local No
+- BvP suficiente: visitante No | local No
+- Estadio/clima: Progressive Field | N/D 
+- Cobertura de factores MLB: 73/100
 
-Partidos revisados: 2 · Cuotas válidas: 0
+Partidos revisados: 1 · Cuotas válidas: 0
 
 ## NFL — Fútbol americano
 
-### APUESTA #1
+**NO APOSTAR**
 
-**APUESTA CON VALOR DETECTADA**
+- No hay partidos disponibles para la fecha analizada.
 
-- Partido: Seattle Seahawks @ Denver Broncos
-- Mercado: Ganador del partido
-- Selección: **Seattle Seahawks**
-- Mejor cuota decimal: **1.75** (Kalshi)
-- Probabilidad estimada: **55.1%**
-- Punto de equilibrio: 0.0%
-- Ventaja calculada: **0.0%**
-- Valor esperado por unidad: **0.0%**
-- Casas comparadas: 0
-- Calidad de datos: 100/100
-- Filtros NFL: probabilidad >= 55%; historial >= 2 por equipo; calidad >= 50/100
-- Modelo NFL sin cuotas: 55.1% para Seattle Seahawks
-- Forma Denver Broncos: 9-3; Seattle Seahawks: 10-2
-- Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo
-- H2H: sin enfrentamientos recientes utilizables
-- Las cuotas no participan en la decisión
-
-Partidos revisados: 1 · Cuotas válidas: 0
+Partidos revisados: 0 · Cuotas válidas: 0
 
 ## NBA — Baloncesto
 
@@ -68,21 +51,42 @@ Partidos revisados: 1 · Cuotas válidas: 0
 
 **APUESTA CON VALOR DETECTADA**
 
-- Partido: Oklahoma City Thunder @ Houston Rockets
+- Partido: Boston Celtics @ Philadelphia 76ers
 - Mercado: Ganador del partido
-- Selección: **Houston Rockets**
-- Mejor cuota decimal: **2.56** (Kalshi)
-- Probabilidad estimada: **59.7%**
+- Selección: **Boston Celtics**
+- Mejor cuota decimal: **2.63** (Kalshi)
+- Probabilidad estimada: **63.9%**
 - Punto de equilibrio: 0.0%
 - Ventaja calculada: **0.0%**
 - Valor esperado por unidad: **0.0%**
 - Casas comparadas: 0
 - Calidad de datos: 100/100
 - Filtros NBA: probabilidad >= 54%; historial >= 3 por equipo; calidad >= 28/100
-- Modelo NBA sin cuotas: 59.7% para Houston Rockets
-- Forma Houston Rockets: 6-6; Oklahoma City Thunder: 5-7
+- Modelo NBA sin cuotas: 63.9% para Boston Celtics
+- Forma Philadelphia 76ers: 4-8; Boston Celtics: 8-4
 - Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo
 - H2H: sin enfrentamientos recientes utilizables
 - Las cuotas no participan en la decisión
 
-Partidos revisados: 2 · Cuotas válidas: 0
+### APUESTA #2
+
+**APUESTA CON VALOR DETECTADA**
+
+- Partido: Sacramento Kings @ San Antonio Spurs
+- Mercado: Ganador del partido
+- Selección: **San Antonio Spurs**
+- Mejor cuota decimal: **1.12** (Kalshi)
+- Probabilidad estimada: **61.3%**
+- Punto de equilibrio: 0.0%
+- Ventaja calculada: **0.0%**
+- Valor esperado por unidad: **0.0%**
+- Casas comparadas: 0
+- Calidad de datos: 100/100
+- Filtros NBA: probabilidad >= 54%; historial >= 3 por equipo; calidad >= 28/100
+- Modelo NBA sin cuotas: 61.3% para San Antonio Spurs
+- Forma San Antonio Spurs: 4-8; Sacramento Kings: 3-9
+- Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo
+- H2H: sin enfrentamientos recientes utilizables
+- Las cuotas no participan en la decisión
+
+Partidos revisados: 12 · Cuotas válidas: 0
