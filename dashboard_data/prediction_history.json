@@ -3897,12 +3897,13 @@
     "contracts": null,
     "potential_return": null,
     "potential_profit": null,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Washington Huskies",
+    "final_score": "Washington Huskies 38 - Purdue Boilermakers 26",
     "return_amount": null,
-    "profit_loss": null
+    "profit_loss": null,
+    "resolved_at": "2026-10-17T01:52:49.081977-05:00"
   },
   {
     "key": "NBA|401898407|Ganador del partido|Boston Celtics",
@@ -3935,13 +3936,14 @@
     "contracts": 263.1579,
     "potential_return": 263.16,
     "potential_profit": 163.16,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 38.0
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Boston Celtics",
+    "final_score": "Boston Celtics 125 - Philadelphia 76ers 120",
+    "return_amount": 263.16,
+    "profit_loss": 163.16,
+    "kalshi_cents": 38.0,
+    "resolved_at": "2026-10-17T01:52:49.081977-05:00"
   },
   {
     "key": "NBA|401898843|Ganador del partido|San Antonio Spurs",
@@ -3974,12 +3976,13 @@
     "contracts": 112.3596,
     "potential_return": 112.36,
     "potential_profit": 12.36,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 89.0
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "San Antonio Spurs",
+    "final_score": "Sacramento Kings 97 - San Antonio Spurs 126",
+    "return_amount": 112.36,
+    "profit_loss": 12.36,
+    "kalshi_cents": 89.0,
+    "resolved_at": "2026-10-17T01:52:49.081977-05:00"
   }
 ]
