@@ -4055,12 +4055,13 @@
     "contracts": null,
     "potential_return": null,
     "potential_profit": null,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "James Madison Dukes",
+    "final_score": "Georgia State Panthers 22 - James Madison Dukes 49",
     "return_amount": null,
-    "profit_loss": null
+    "profit_loss": null,
+    "resolved_at": "2026-10-17T16:25:09.714398-05:00"
   },
   {
     "key": "NCAAF|401856719|Ganador del partido|Georgia Bulldogs",
