@@ -4173,13 +4173,14 @@
     "contracts": 131.5789,
     "potential_return": 131.58,
     "potential_profit": 31.58,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 76.0
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "New England Patriots",
+    "final_score": "New York Jets 19 - New England Patriots 26",
+    "return_amount": 131.58,
+    "profit_loss": 31.58,
+    "kalshi_cents": 76.0,
+    "resolved_at": "2026-10-18T15:35:47.137934-05:00"
   },
   {
     "key": "NFL|401873004|Ganador del partido|Los Angeles Rams",
