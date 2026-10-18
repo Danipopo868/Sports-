@@ -4133,13 +4133,14 @@
     "contracts": 181.8182,
     "potential_return": 181.82,
     "potential_profit": 81.82,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 55.00000000000001
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Tampa Bay Rays",
+    "final_score": "Tampa Bay Rays 7 - Cleveland Guardians 3",
+    "return_amount": 181.82,
+    "profit_loss": 81.82,
+    "kalshi_cents": 55.00000000000001,
+    "resolved_at": "2026-10-18T04:31:14.087787-05:00"
   },
   {
     "key": "NFL|401873001|Ganador del partido|New England Patriots",
