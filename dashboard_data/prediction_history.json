@@ -3858,13 +3858,14 @@
     "contracts": 227.2727,
     "potential_return": 227.27,
     "potential_profit": 127.27,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 44.0
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Tampa Bay Rays",
+    "final_score": "F5: Tampa Bay Rays 3 - Cleveland Guardians 0",
+    "return_amount": 227.27,
+    "profit_loss": 127.27,
+    "kalshi_cents": 44.0,
+    "resolved_at": "2026-10-18T18:05:45.723714-05:00"
   },
   {
     "key": "NCAAF|401858493|Ganador del partido|Washington Huskies",
@@ -4016,13 +4017,14 @@
     "contracts": 227.2727,
     "potential_return": 227.27,
     "potential_profit": 127.27,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 44.0
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Tampa Bay Rays",
+    "final_score": "F5: Tampa Bay Rays 3 - Cleveland Guardians 0",
+    "return_amount": 227.27,
+    "profit_loss": 127.27,
+    "kalshi_cents": 44.0,
+    "resolved_at": "2026-10-18T18:05:45.723714-05:00"
   },
   {
     "key": "NCAAF|401869957|Ganador del partido|James Madison Dukes",
@@ -4213,12 +4215,13 @@
     "contracts": 113.6364,
     "potential_return": 113.64,
     "potential_profit": 13.64,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 88.0
+    "status": "RESUELTA",
+    "result": "PERDIDA",
+    "winner": "Arizona Cardinals",
+    "final_score": "Arizona Cardinals 18 - Los Angeles Rams 16",
+    "return_amount": 0.0,
+    "profit_loss": -100.0,
+    "kalshi_cents": 88.0,
+    "resolved_at": "2026-10-18T18:05:45.723714-05:00"
   }
 ]
