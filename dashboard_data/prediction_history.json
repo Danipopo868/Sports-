@@ -4094,11 +4094,12 @@
     "contracts": null,
     "potential_return": null,
     "potential_profit": null,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
+    "status": "RESUELTA",
+    "result": "PERDIDA",
+    "winner": "Auburn Tigers",
+    "final_score": "Auburn Tigers 27 - Georgia Bulldogs 24",
     "return_amount": null,
-    "profit_loss": null
+    "profit_loss": null,
+    "resolved_at": "2026-10-17T19:00:18.059266-05:00"
   }
 ]
