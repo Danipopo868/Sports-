@@ -1,0 +1,287 @@
+{
+  "generated_at": "2026-10-19T18:25:26.190403-05:00",
+  "analysis_date": "2026-10-19",
+  "scan_number": 1,
+  "guarantee": false,
+  "message": "Las probabilidades son estimaciones; ninguna apuesta garantiza ganancias.",
+  "sports": {
+    "MLB": {
+      "games": 1,
+      "quotes": 0,
+      "kalshi_quotes": 1,
+      "remaining_requests": null,
+      "notes": [
+        "MLB analizado SIN cuotas: el ganador se calculó únicamente con el modelo deportivo de MLB Stats API.",
+        "Solo un equipo distinto superó todos los filtros; no se repite el mismo equipo para completar una segunda apuesta."
+      ],
+      "history_summary": {
+        "total": 114,
+        "resolved": 112,
+        "won": 73,
+        "lost": 33,
+        "ties": 6,
+        "pending": 2,
+        "win_rate": 0.6886792452830188,
+        "financial_operations": 82,
+        "total_staked": 7700.0,
+        "profit_loss": 1210.23,
+        "roi": 0.157173
+      },
+      "error": null,
+      "recommendations": [
+        {
+          "sport": "MLB",
+          "game_id": "849815",
+          "matchup": "Cleveland Guardians @ Tampa Bay Rays",
+          "start": "2026-10-20T00:08:00Z",
+          "market": "Ganador del partido",
+          "selection": "Tampa Bay Rays",
+          "bookmaker": "Kalshi",
+          "decimal_odds": 1.6949152542372883,
+          "model_probability": 0.6472693728086789,
+          "break_even_probability": 0.0,
+          "edge": 0.0,
+          "expected_value": 0.0,
+          "bookmakers": 0,
+          "data_quality": 100,
+          "passes_filters": true,
+          "reasons": [
+            "Modelo MLB puro: 64.7% para Tampa Bay Rays",
+            "Cuotas del mercado NO usadas para decidir el ganador",
+            "Abridores: Shawn Armstrong vs Freddy Peralta",
+            "OPS temporada: visitante 0.696 | local 0.728",
+            "OPS split L/R: visitante 0.696 | local 0.728",
+            "Bullpen/Staff ERA: visitante 3.77 | local 3.70",
+            "Descanso: visitante 0 día(s) | local 0 día(s)",
+            "Carga bullpen 3d: visitante 22.0 IP | local 7.7 IP",
+            "Alineaciones confirmadas: visitante Sí | local Sí",
+            "BvP suficiente: visitante Sí | local Sí",
+            "Estadio/clima: Tropicana Field | Dome 71.0",
+            "Cobertura de factores MLB: 100/100"
+          ],
+          "kalshi_percent": null
+        }
+      ],
+      "recommendation": {
+        "sport": "MLB",
+        "game_id": "849815",
+        "matchup": "Cleveland Guardians @ Tampa Bay Rays",
+        "start": "2026-10-20T00:08:00Z",
+        "market": "Ganador del partido",
+        "selection": "Tampa Bay Rays",
+        "bookmaker": "Kalshi",
+        "decimal_odds": 1.6949152542372883,
+        "model_probability": 0.6472693728086789,
+        "break_even_probability": 0.0,
+        "edge": 0.0,
+        "expected_value": 0.0,
+        "bookmakers": 0,
+        "data_quality": 100,
+        "passes_filters": true,
+        "reasons": [
+          "Modelo MLB puro: 64.7% para Tampa Bay Rays",
+          "Cuotas del mercado NO usadas para decidir el ganador",
+          "Abridores: Shawn Armstrong vs Freddy Peralta",
+          "OPS temporada: visitante 0.696 | local 0.728",
+          "OPS split L/R: visitante 0.696 | local 0.728",
+          "Bullpen/Staff ERA: visitante 3.77 | local 3.70",
+          "Descanso: visitante 0 día(s) | local 0 día(s)",
+          "Carga bullpen 3d: visitante 22.0 IP | local 7.7 IP",
+          "Alineaciones confirmadas: visitante Sí | local Sí",
+          "BvP suficiente: visitante Sí | local Sí",
+          "Estadio/clima: Tropicana Field | Dome 71.0",
+          "Cobertura de factores MLB: 100/100"
+        ],
+        "kalshi_percent": null
+      },
+      "best_observed": {
+        "sport": "MLB",
+        "game_id": "849815",
+        "matchup": "Cleveland Guardians @ Tampa Bay Rays",
+        "start": "2026-10-20T00:08:00Z",
+        "market": "Ganador del partido",
+        "selection": "Tampa Bay Rays",
+        "bookmaker": "SIN CUOTAS — MODELO MLB",
+        "decimal_odds": 0.0,
+        "model_probability": 0.6472693728086789,
+        "break_even_probability": 0.0,
+        "edge": 0.0,
+        "expected_value": 0.0,
+        "bookmakers": 0,
+        "data_quality": 100,
+        "passes_filters": true,
+        "reasons": [
+          "Modelo MLB puro: 64.7% para Tampa Bay Rays",
+          "Cuotas del mercado NO usadas para decidir el ganador",
+          "Abridores: Shawn Armstrong vs Freddy Peralta",
+          "OPS temporada: visitante 0.696 | local 0.728",
+          "OPS split L/R: visitante 0.696 | local 0.728",
+          "Bullpen/Staff ERA: visitante 3.77 | local 3.70",
+          "Descanso: visitante 0 día(s) | local 0 día(s)",
+          "Carga bullpen 3d: visitante 22.0 IP | local 7.7 IP",
+          "Alineaciones confirmadas: visitante Sí | local Sí",
+          "BvP suficiente: visitante Sí | local Sí",
+          "Estadio/clima: Tropicana Field | Dome 71.0",
+          "Cobertura de factores MLB: 100/100"
+        ],
+        "kalshi_percent": null
+      }
+    },
+    "NFL": {
+      "games": 1,
+      "quotes": 0,
+      "kalshi_quotes": 1,
+      "remaining_requests": null,
+      "notes": [
+        "NFL analizado SIN cuotas: la selección se calculó con forma reciente, puntos anotados/permitidos, margen de puntos y enfrentamientos directos (H2H) cuando existen; las cuotas no participaron en la decisión.",
+        "Solo un equipo distinto superó todos los filtros; no se repite el mismo equipo para completar una segunda apuesta."
+      ],
+      "history_summary": {
+        "total": 115,
+        "resolved": 112,
+        "won": 73,
+        "lost": 33,
+        "ties": 6,
+        "pending": 3,
+        "win_rate": 0.6886792452830188,
+        "financial_operations": 82,
+        "total_staked": 7700.0,
+        "profit_loss": 1210.23,
+        "roi": 0.157173
+      },
+      "error": null,
+      "recommendations": [
+        {
+          "sport": "NFL",
+          "game_id": "401873008",
+          "matchup": "Washington Commanders @ San Francisco 49ers",
+          "start": "2026-10-20T00:15",
+          "market": "Ganador del partido",
+          "selection": "San Francisco 49ers",
+          "bookmaker": "Kalshi",
+          "decimal_odds": 1.2987012987012987,
+          "model_probability": 0.7740069264560318,
+          "break_even_probability": 0.0,
+          "edge": 0.0,
+          "expected_value": 0.0,
+          "bookmakers": 0,
+          "data_quality": 100,
+          "passes_filters": true,
+          "reasons": [
+            "Filtros NFL: probabilidad >= 55%; historial >= 2 por equipo; calidad >= 50/100",
+            "Modelo NFL sin cuotas: 77.4% para San Francisco 49ers",
+            "Forma San Francisco 49ers: 11-1; Washington Commanders: 3-8",
+            "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+            "H2H: sin enfrentamientos recientes utilizables",
+            "Las cuotas no participan en la decisión"
+          ],
+          "kalshi_percent": null
+        }
+      ],
+      "recommendation": {
+        "sport": "NFL",
+        "game_id": "401873008",
+        "matchup": "Washington Commanders @ San Francisco 49ers",
+        "start": "2026-10-20T00:15",
+        "market": "Ganador del partido",
+        "selection": "San Francisco 49ers",
+        "bookmaker": "Kalshi",
+        "decimal_odds": 1.2987012987012987,
+        "model_probability": 0.7740069264560318,
+        "break_even_probability": 0.0,
+        "edge": 0.0,
+        "expected_value": 0.0,
+        "bookmakers": 0,
+        "data_quality": 100,
+        "passes_filters": true,
+        "reasons": [
+          "Filtros NFL: probabilidad >= 55%; historial >= 2 por equipo; calidad >= 50/100",
+          "Modelo NFL sin cuotas: 77.4% para San Francisco 49ers",
+          "Forma San Francisco 49ers: 11-1; Washington Commanders: 3-8",
+          "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+          "H2H: sin enfrentamientos recientes utilizables",
+          "Las cuotas no participan en la decisión"
+        ],
+        "kalshi_percent": null
+      },
+      "best_observed": {
+        "sport": "NFL",
+        "game_id": "401873008",
+        "matchup": "Washington Commanders @ San Francisco 49ers",
+        "start": "2026-10-20T00:15",
+        "market": "Ganador del partido",
+        "selection": "San Francisco 49ers",
+        "bookmaker": "SIN CUOTAS — MODELO NFL",
+        "decimal_odds": 0.0,
+        "model_probability": 0.7740069264560318,
+        "break_even_probability": 0.0,
+        "edge": 0.0,
+        "expected_value": 0.0,
+        "bookmakers": 0,
+        "data_quality": 100,
+        "passes_filters": true,
+        "reasons": [
+          "Filtros NFL: probabilidad >= 55%; historial >= 2 por equipo; calidad >= 50/100",
+          "Modelo NFL sin cuotas: 77.4% para San Francisco 49ers",
+          "Forma San Francisco 49ers: 11-1; Washington Commanders: 3-8",
+          "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+          "H2H: sin enfrentamientos recientes utilizables",
+          "Las cuotas no participan en la decisión"
+        ],
+        "kalshi_percent": null
+      }
+    },
+    "NCAAF": {
+      "games": 0,
+      "quotes": 0,
+      "kalshi_quotes": 0,
+      "remaining_requests": null,
+      "notes": [
+        "No hay partidos disponibles para la fecha analizada."
+      ],
+      "history_summary": {
+        "total": 115,
+        "resolved": 112,
+        "won": 73,
+        "lost": 33,
+        "ties": 6,
+        "pending": 3,
+        "win_rate": 0.6886792452830188,
+        "financial_operations": 82,
+        "total_staked": 7700.0,
+        "profit_loss": 1210.23,
+        "roi": 0.157173
+      },
+      "error": null,
+      "recommendations": [],
+      "recommendation": null,
+      "best_observed": null
+    },
+    "NBA": {
+      "games": 0,
+      "quotes": 0,
+      "kalshi_quotes": 0,
+      "remaining_requests": null,
+      "notes": [
+        "No hay partidos disponibles para la fecha analizada."
+      ],
+      "history_summary": {
+        "total": 115,
+        "resolved": 112,
+        "won": 73,
+        "lost": 33,
+        "ties": 6,
+        "pending": 3,
+        "win_rate": 0.6886792452830188,
+        "financial_operations": 82,
+        "total_staked": 7700.0,
+        "profit_loss": 1210.23,
+        "roi": 0.157173
+      },
+      "error": null,
+      "recommendations": [],
+      "recommendation": null,
+      "best_observed": null
+    }
+  }
+}
