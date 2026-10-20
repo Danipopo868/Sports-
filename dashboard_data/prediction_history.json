@@ -4255,13 +4255,14 @@
     "contracts": 169.4915,
     "potential_return": 169.49,
     "potential_profit": 69.49,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 59.0
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Tampa Bay Rays",
+    "final_score": "Cleveland Guardians 3 - Tampa Bay Rays 7",
+    "return_amount": 169.49,
+    "profit_loss": 69.49,
+    "kalshi_cents": 59.0,
+    "resolved_at": "2026-10-19T23:41:58.024615-05:00"
   },
   {
     "key": "NFL|401873008|Ganador del partido|San Francisco 49ers",
@@ -4294,12 +4295,13 @@
     "contracts": 129.8701,
     "potential_return": 129.87,
     "potential_profit": 29.87,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 77.0
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "San Francisco 49ers",
+    "final_score": "Washington Commanders 17 - San Francisco 49ers 23",
+    "return_amount": 129.87,
+    "profit_loss": 29.87,
+    "kalshi_cents": 77.0,
+    "resolved_at": "2026-10-19T23:41:58.024615-05:00"
   }
 ]
