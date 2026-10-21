@@ -1,0 +1,248 @@
+{
+  "generated_at": "2026-10-21T18:00:07.573139-05:00",
+  "analysis_date": "2026-10-21",
+  "scan_number": 1,
+  "guarantee": false,
+  "message": "Las probabilidades son estimaciones; ninguna apuesta garantiza ganancias.",
+  "sports": {
+    "MLB": {
+      "games": 0,
+      "quotes": 0,
+      "kalshi_quotes": 0,
+      "remaining_requests": null,
+      "notes": [
+        "No hay partidos disponibles para la fecha analizada."
+      ],
+      "history_summary": {
+        "total": 115,
+        "resolved": 114,
+        "won": 75,
+        "lost": 33,
+        "ties": 6,
+        "pending": 1,
+        "win_rate": 0.6944444444444444,
+        "financial_operations": 84,
+        "total_staked": 7900.0,
+        "profit_loss": 1309.59,
+        "roi": 0.165771
+      },
+      "error": null,
+      "recommendations": [],
+      "recommendation": null,
+      "best_observed": null
+    },
+    "NFL": {
+      "games": 0,
+      "quotes": 0,
+      "kalshi_quotes": 0,
+      "remaining_requests": null,
+      "notes": [
+        "No hay partidos disponibles para la fecha analizada."
+      ],
+      "history_summary": {
+        "total": 115,
+        "resolved": 114,
+        "won": 75,
+        "lost": 33,
+        "ties": 6,
+        "pending": 1,
+        "win_rate": 0.6944444444444444,
+        "financial_operations": 84,
+        "total_staked": 7900.0,
+        "profit_loss": 1309.59,
+        "roi": 0.165771
+      },
+      "error": null,
+      "recommendations": [],
+      "recommendation": null,
+      "best_observed": null
+    },
+    "NCAAF": {
+      "games": 1,
+      "quotes": 0,
+      "kalshi_quotes": 0,
+      "remaining_requests": null,
+      "notes": [
+        "NCAAF | New Mexico State Aggies @ Sam Houston Bearkats | NO BET: probabilidad 51.6% < 55.0%",
+        "NCAAF analizado SIN cuotas: la selección se calculó con forma reciente, puntos anotados/permitidos, margen de puntos y enfrentamientos directos (H2H) cuando existen; las cuotas no participaron en la decisión.",
+        "Ningún juego NCAAF superó simultáneamente la probabilidad mínima, la calidad mínima y el historial mínimo exigido."
+      ],
+      "history_summary": {
+        "total": 115,
+        "resolved": 114,
+        "won": 75,
+        "lost": 33,
+        "ties": 6,
+        "pending": 1,
+        "win_rate": 0.6944444444444444,
+        "financial_operations": 84,
+        "total_staked": 7900.0,
+        "profit_loss": 1309.59,
+        "roi": 0.165771
+      },
+      "error": null,
+      "recommendations": [],
+      "recommendation": null,
+      "best_observed": {
+        "sport": "NCAAF",
+        "game_id": "401871070",
+        "matchup": "New Mexico State Aggies @ Sam Houston Bearkats",
+        "start": "2026-10-22T00:00",
+        "market": "Ganador del partido",
+        "selection": "New Mexico State Aggies",
+        "bookmaker": "SIN CUOTAS — MODELO NCAAF",
+        "decimal_odds": 0.0,
+        "model_probability": 0.5161428133870675,
+        "break_even_probability": 0.0,
+        "edge": 0.0,
+        "expected_value": 0.0,
+        "bookmakers": 0,
+        "data_quality": 100,
+        "passes_filters": false,
+        "reasons": [
+          "Filtros NCAAF: probabilidad >= 55%; historial >= 2 por equipo; calidad >= 50/100",
+          "Modelo NCAAF sin cuotas: 51.6% para New Mexico State Aggies",
+          "Forma Sam Houston Bearkats: 3-9; New Mexico State Aggies: 3-9",
+          "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+          "H2H últimos 1: Sam Houston Bearkats 0% victorias; margen -27.0 pts",
+          "Peso H2H aplicado: 2.5%",
+          "Las cuotas no participan en la decisión"
+        ],
+        "kalshi_percent": null
+      }
+    },
+    "NBA": {
+      "games": 11,
+      "quotes": 0,
+      "kalshi_quotes": 2,
+      "remaining_requests": null,
+      "notes": [
+        "NBA | Milwaukee Bucks @ Washington Wizards | NO BET: probabilidad 52.6% < 54.0%",
+        "NBA | Charlotte Hornets @ Brooklyn Nets | NO BET: probabilidad 50.0% < 54.0%",
+        "NBA | Utah Jazz @ Memphis Grizzlies | NO BET: probabilidad 51.8% < 54.0%",
+        "NBA | Indiana Pacers @ New Orleans Pelicans | NO BET: probabilidad 50.3% < 54.0%",
+        "NBA analizado SIN cuotas: la selección se calculó con forma reciente, puntos anotados/permitidos, margen de puntos y enfrentamientos directos (H2H) cuando existen; las cuotas no participaron en la decisión."
+      ],
+      "history_summary": {
+        "total": 117,
+        "resolved": 114,
+        "won": 75,
+        "lost": 33,
+        "ties": 6,
+        "pending": 3,
+        "win_rate": 0.6944444444444444,
+        "financial_operations": 84,
+        "total_staked": 7900.0,
+        "profit_loss": 1309.59,
+        "roi": 0.165771
+      },
+      "error": null,
+      "recommendations": [
+        {
+          "sport": "NBA",
+          "game_id": "401909842",
+          "matchup": "Sacramento Kings @ LA Clippers",
+          "start": "2026-10-22T02:30Z",
+          "market": "Ganador del partido",
+          "selection": "LA Clippers",
+          "bookmaker": "Kalshi",
+          "decimal_odds": 1.5384615384615383,
+          "model_probability": 0.6838757383341305,
+          "break_even_probability": 0.0,
+          "edge": 0.0,
+          "expected_value": 0.0,
+          "bookmakers": 0,
+          "data_quality": 100,
+          "passes_filters": true,
+          "reasons": [
+            "Filtros NBA: probabilidad >= 54%; historial >= 3 por equipo; calidad >= 28/100",
+            "Modelo NBA sin cuotas: 68.4% para LA Clippers",
+            "Forma LA Clippers: 7-5; Sacramento Kings: 3-9",
+            "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+            "H2H: sin enfrentamientos recientes utilizables",
+            "Las cuotas no participan en la decisión"
+          ],
+          "kalshi_percent": null
+        },
+        {
+          "sport": "NBA",
+          "game_id": "401909840",
+          "matchup": "Dallas Mavericks @ Houston Rockets",
+          "start": "2026-10-22T00:30Z",
+          "market": "Ganador del partido",
+          "selection": "Houston Rockets",
+          "bookmaker": "Kalshi",
+          "decimal_odds": 1.2658227848101264,
+          "model_probability": 0.6724316665224158,
+          "break_even_probability": 0.0,
+          "edge": 0.0,
+          "expected_value": 0.0,
+          "bookmakers": 0,
+          "data_quality": 100,
+          "passes_filters": true,
+          "reasons": [
+            "Filtros NBA: probabilidad >= 54%; historial >= 3 por equipo; calidad >= 28/100",
+            "Modelo NBA sin cuotas: 67.2% para Houston Rockets",
+            "Forma Houston Rockets: 6-6; Dallas Mavericks: 3-9",
+            "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+            "H2H: sin enfrentamientos recientes utilizables",
+            "Las cuotas no participan en la decisión"
+          ],
+          "kalshi_percent": null
+        }
+      ],
+      "recommendation": {
+        "sport": "NBA",
+        "game_id": "401909842",
+        "matchup": "Sacramento Kings @ LA Clippers",
+        "start": "2026-10-22T02:30Z",
+        "market": "Ganador del partido",
+        "selection": "LA Clippers",
+        "bookmaker": "Kalshi",
+        "decimal_odds": 1.5384615384615383,
+        "model_probability": 0.6838757383341305,
+        "break_even_probability": 0.0,
+        "edge": 0.0,
+        "expected_value": 0.0,
+        "bookmakers": 0,
+        "data_quality": 100,
+        "passes_filters": true,
+        "reasons": [
+          "Filtros NBA: probabilidad >= 54%; historial >= 3 por equipo; calidad >= 28/100",
+          "Modelo NBA sin cuotas: 68.4% para LA Clippers",
+          "Forma LA Clippers: 7-5; Sacramento Kings: 3-9",
+          "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+          "H2H: sin enfrentamientos recientes utilizables",
+          "Las cuotas no participan en la decisión"
+        ],
+        "kalshi_percent": null
+      },
+      "best_observed": {
+        "sport": "NBA",
+        "game_id": "401909842",
+        "matchup": "Sacramento Kings @ LA Clippers",
+        "start": "2026-10-22T02:30Z",
+        "market": "Ganador del partido",
+        "selection": "LA Clippers",
+        "bookmaker": "SIN CUOTAS — MODELO NBA",
+        "decimal_odds": 0.0,
+        "model_probability": 0.6838757383341305,
+        "break_even_probability": 0.0,
+        "edge": 0.0,
+        "expected_value": 0.0,
+        "bookmakers": 0,
+        "data_quality": 100,
+        "passes_filters": true,
+        "reasons": [
+          "Filtros NBA: probabilidad >= 54%; historial >= 3 por equipo; calidad >= 28/100",
+          "Modelo NBA sin cuotas: 68.4% para LA Clippers",
+          "Forma LA Clippers: 7-5; Sacramento Kings: 3-9",
+          "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+          "H2H: sin enfrentamientos recientes utilizables",
+          "Las cuotas no participan en la decisión"
+        ],
+        "kalshi_percent": null
+      }
+    }
+  }
+}
