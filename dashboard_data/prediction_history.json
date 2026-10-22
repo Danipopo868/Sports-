@@ -4335,13 +4335,14 @@
     "contracts": 153.8462,
     "potential_return": 153.85,
     "potential_profit": 53.85,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 65.0
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "LA Clippers",
+    "final_score": "Sacramento Kings 96 - LA Clippers 121",
+    "return_amount": 153.85,
+    "profit_loss": 53.85,
+    "kalshi_cents": 65.0,
+    "resolved_at": "2026-10-22T02:29:54.140034-05:00"
   },
   {
     "key": "NBA|401909840|Ganador del partido|Houston Rockets",
@@ -4374,12 +4375,13 @@
     "contracts": 126.5823,
     "potential_return": 126.58,
     "potential_profit": 26.58,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 79.0
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Houston Rockets",
+    "final_score": "Dallas Mavericks 110 - Houston Rockets 128",
+    "return_amount": 126.58,
+    "profit_loss": 26.58,
+    "kalshi_cents": 79.0,
+    "resolved_at": "2026-10-22T02:29:54.140034-05:00"
   }
 ]
