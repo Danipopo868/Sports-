@@ -1,0 +1,253 @@
+{
+  "generated_at": "2026-10-22T13:41:54.236682-05:00",
+  "analysis_date": "2026-10-22",
+  "scan_number": 1,
+  "guarantee": false,
+  "message": "Las probabilidades son estimaciones; ninguna apuesta garantiza ganancias.",
+  "sports": {
+    "MLB": {
+      "games": 0,
+      "quotes": 0,
+      "kalshi_quotes": 0,
+      "remaining_requests": null,
+      "notes": [
+        "No hay partidos disponibles para la fecha analizada."
+      ],
+      "history_summary": {
+        "total": 117,
+        "resolved": 116,
+        "won": 77,
+        "lost": 33,
+        "ties": 6,
+        "pending": 1,
+        "win_rate": 0.7,
+        "financial_operations": 86,
+        "total_staked": 8100.0,
+        "profit_loss": 1390.02,
+        "roi": 0.171607
+      },
+      "error": null,
+      "recommendations": [],
+      "recommendation": null,
+      "best_observed": null
+    },
+    "NFL": {
+      "games": 1,
+      "quotes": 0,
+      "kalshi_quotes": 0,
+      "remaining_requests": null,
+      "notes": [
+        "NFL | New England Patriots @ Chicago Bears | NO BET: probabilidad 54.4% < 55.0%",
+        "NFL analizado SIN cuotas: la selección se calculó con forma reciente, puntos anotados/permitidos, margen de puntos y enfrentamientos directos (H2H) cuando existen; las cuotas no participaron en la decisión.",
+        "Ningún juego NFL superó simultáneamente la probabilidad mínima, la calidad mínima y el historial mínimo exigido."
+      ],
+      "history_summary": {
+        "total": 117,
+        "resolved": 116,
+        "won": 77,
+        "lost": 33,
+        "ties": 6,
+        "pending": 1,
+        "win_rate": 0.7,
+        "financial_operations": 86,
+        "total_staked": 8100.0,
+        "profit_loss": 1390.02,
+        "roi": 0.171607
+      },
+      "error": null,
+      "recommendations": [],
+      "recommendation": null,
+      "best_observed": {
+        "sport": "NFL",
+        "game_id": "401873010",
+        "matchup": "New England Patriots @ Chicago Bears",
+        "start": "2026-10-23T00:15",
+        "market": "Ganador del partido",
+        "selection": "New England Patriots",
+        "bookmaker": "SIN CUOTAS — MODELO NFL",
+        "decimal_odds": 0.0,
+        "model_probability": 0.5439307334888737,
+        "break_even_probability": 0.0,
+        "edge": 0.0,
+        "expected_value": 0.0,
+        "bookmakers": 0,
+        "data_quality": 100,
+        "passes_filters": false,
+        "reasons": [
+          "Filtros NFL: probabilidad >= 55%; historial >= 2 por equipo; calidad >= 50/100",
+          "Modelo NFL sin cuotas: 54.4% para New England Patriots",
+          "Forma Chicago Bears: 7-5; New England Patriots: 9-3",
+          "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+          "H2H: sin enfrentamientos recientes utilizables",
+          "Las cuotas no participan en la decisión"
+        ],
+        "kalshi_percent": null
+      }
+    },
+    "NCAAF": {
+      "games": 3,
+      "quotes": 0,
+      "kalshi_quotes": 0,
+      "remaining_requests": null,
+      "notes": [
+        "NCAAF | Liberty Flames @ Kennesaw State Owls | NO BET: probabilidad 53.4% < 55.0%",
+        "NCAAF | East Carolina Pirates @ Memphis Tigers | NO BET: probabilidad 50.9% < 55.0%",
+        "NCAAF analizado SIN cuotas: la selección se calculó con forma reciente, puntos anotados/permitidos, margen de puntos y enfrentamientos directos (H2H) cuando existen; las cuotas no participaron en la decisión.",
+        "Solo un equipo distinto superó todos los filtros; no se repite el mismo equipo para completar una segunda apuesta."
+      ],
+      "history_summary": {
+        "total": 118,
+        "resolved": 116,
+        "won": 77,
+        "lost": 33,
+        "ties": 6,
+        "pending": 2,
+        "win_rate": 0.7,
+        "financial_operations": 86,
+        "total_staked": 8100.0,
+        "profit_loss": 1390.02,
+        "roi": 0.171607
+      },
+      "error": null,
+      "recommendations": [
+        {
+          "sport": "NCAAF",
+          "game_id": "401869845",
+          "matchup": "James Madison Dukes @ App State Mountaineers",
+          "start": "2026-10-22T23:00",
+          "market": "Ganador del partido",
+          "selection": "James Madison Dukes",
+          "bookmaker": "Kalshi",
+          "decimal_odds": 0.0,
+          "model_probability": 0.729931910762706,
+          "break_even_probability": 0.0,
+          "edge": 0.0,
+          "expected_value": 0.0,
+          "bookmakers": 0,
+          "data_quality": 100,
+          "passes_filters": true,
+          "reasons": [
+            "Filtros NCAAF: probabilidad >= 55%; historial >= 2 por equipo; calidad >= 50/100",
+            "Modelo NCAAF sin cuotas: 73.0% para James Madison Dukes",
+            "Forma App State Mountaineers: 5-7; James Madison Dukes: 12-0",
+            "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+            "H2H últimos 1: App State Mountaineers 0% victorias; margen -48.0 pts",
+            "Peso H2H aplicado: 2.5%",
+            "Las cuotas no participan en la decisión"
+          ],
+          "kalshi_percent": null
+        }
+      ],
+      "recommendation": {
+        "sport": "NCAAF",
+        "game_id": "401869845",
+        "matchup": "James Madison Dukes @ App State Mountaineers",
+        "start": "2026-10-22T23:00",
+        "market": "Ganador del partido",
+        "selection": "James Madison Dukes",
+        "bookmaker": "Kalshi",
+        "decimal_odds": 0.0,
+        "model_probability": 0.729931910762706,
+        "break_even_probability": 0.0,
+        "edge": 0.0,
+        "expected_value": 0.0,
+        "bookmakers": 0,
+        "data_quality": 100,
+        "passes_filters": true,
+        "reasons": [
+          "Filtros NCAAF: probabilidad >= 55%; historial >= 2 por equipo; calidad >= 50/100",
+          "Modelo NCAAF sin cuotas: 73.0% para James Madison Dukes",
+          "Forma App State Mountaineers: 5-7; James Madison Dukes: 12-0",
+          "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+          "H2H últimos 1: App State Mountaineers 0% victorias; margen -48.0 pts",
+          "Peso H2H aplicado: 2.5%",
+          "Las cuotas no participan en la decisión"
+        ],
+        "kalshi_percent": null
+      },
+      "best_observed": {
+        "sport": "NCAAF",
+        "game_id": "401869845",
+        "matchup": "James Madison Dukes @ App State Mountaineers",
+        "start": "2026-10-22T23:00",
+        "market": "Ganador del partido",
+        "selection": "James Madison Dukes",
+        "bookmaker": "SIN CUOTAS — MODELO NCAAF",
+        "decimal_odds": 0.0,
+        "model_probability": 0.729931910762706,
+        "break_even_probability": 0.0,
+        "edge": 0.0,
+        "expected_value": 0.0,
+        "bookmakers": 0,
+        "data_quality": 100,
+        "passes_filters": true,
+        "reasons": [
+          "Filtros NCAAF: probabilidad >= 55%; historial >= 2 por equipo; calidad >= 50/100",
+          "Modelo NCAAF sin cuotas: 73.0% para James Madison Dukes",
+          "Forma App State Mountaineers: 5-7; James Madison Dukes: 12-0",
+          "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+          "H2H últimos 1: App State Mountaineers 0% victorias; margen -48.0 pts",
+          "Peso H2H aplicado: 2.5%",
+          "Las cuotas no participan en la decisión"
+        ],
+        "kalshi_percent": null
+      }
+    },
+    "NBA": {
+      "games": 2,
+      "quotes": 0,
+      "kalshi_quotes": 0,
+      "remaining_requests": null,
+      "notes": [
+        "NBA | Cleveland Cavaliers @ Philadelphia 76ers | NO BET: probabilidad 53.4% < 54.0%",
+        "NBA | Denver Nuggets @ Oklahoma City Thunder | NO BET: probabilidad 50.1% < 54.0%",
+        "NBA analizado SIN cuotas: la selección se calculó con forma reciente, puntos anotados/permitidos, margen de puntos y enfrentamientos directos (H2H) cuando existen; las cuotas no participaron en la decisión.",
+        "Ningún juego NBA superó simultáneamente la probabilidad mínima, la calidad mínima y el historial mínimo exigido.",
+        "Cleveland Cavaliers @ Philadelphia 76ers — Philadelphia 76ers: Las cuotas no participan en la decisión",
+        "Denver Nuggets @ Oklahoma City Thunder — Denver Nuggets: Las cuotas no participan en la decisión"
+      ],
+      "history_summary": {
+        "total": 118,
+        "resolved": 116,
+        "won": 77,
+        "lost": 33,
+        "ties": 6,
+        "pending": 2,
+        "win_rate": 0.7,
+        "financial_operations": 86,
+        "total_staked": 8100.0,
+        "profit_loss": 1390.02,
+        "roi": 0.171607
+      },
+      "error": null,
+      "recommendations": [],
+      "recommendation": null,
+      "best_observed": {
+        "sport": "NBA",
+        "game_id": "401909093",
+        "matchup": "Cleveland Cavaliers @ Philadelphia 76ers",
+        "start": "2026-10-22T23:00Z",
+        "market": "Ganador del partido",
+        "selection": "Philadelphia 76ers",
+        "bookmaker": "SIN CUOTAS — MODELO NBA",
+        "decimal_odds": 0.0,
+        "model_probability": 0.5342898071164665,
+        "break_even_probability": 0.0,
+        "edge": 0.0,
+        "expected_value": 0.0,
+        "bookmakers": 0,
+        "data_quality": 100,
+        "passes_filters": false,
+        "reasons": [
+          "Filtros NBA: probabilidad >= 54%; historial >= 3 por equipo; calidad >= 28/100",
+          "Modelo NBA sin cuotas: 53.4% para Philadelphia 76ers",
+          "Forma Philadelphia 76ers: 5-7; Cleveland Cavaliers: 5-7",
+          "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+          "H2H: sin enfrentamientos recientes utilizables",
+          "Las cuotas no participan en la decisión"
+        ],
+        "kalshi_percent": null
+      }
+    }
+  }
+}

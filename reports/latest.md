@@ -1,7 +1,7 @@
 # Reporte del analizador deportivo
 
-Actualizado: **2026-10-21T18:00:07.573139-05:00**
-Fecha deportiva analizada: **2026-10-21**
+Actualizado: **2026-10-22T13:41:54.236682-05:00**
+Fecha deportiva analizada: **2026-10-22**
 Escaneo de la sesión: **#1**
 
 > Las probabilidades son estimaciones. El sistema puede indicar NO APOSTAR y nunca garantiza ganancias.
@@ -18,52 +18,33 @@ Partidos revisados: 0 · Cuotas válidas: 0
 
 **NO APOSTAR**
 
-- No hay partidos disponibles para la fecha analizada.
+- NFL | New England Patriots @ Chicago Bears | NO BET: probabilidad 54.4% < 55.0%
+- NFL analizado SIN cuotas: la selección se calculó con forma reciente, puntos anotados/permitidos, margen de puntos y enfrentamientos directos (H2H) cuando existen; las cuotas no participaron en la decisión.
+- Ningún juego NFL superó simultáneamente la probabilidad mínima, la calidad mínima y el historial mínimo exigido.
 
-Partidos revisados: 0 · Cuotas válidas: 0
+La opción más cercana fue descartada:
+- New England Patriots — Ganador del partido
+- Probabilidad estimada: 54.4%
+- Ventaja: 0.0%; valor esperado: 0.0%
+- Calidad de datos: 100/100
+
+Partidos revisados: 1 · Cuotas válidas: 0
 
 ## NBA — Baloncesto
 
-### APUESTA #1
+**NO APOSTAR**
 
-**APUESTA CON VALOR DETECTADA**
+- NBA | Cleveland Cavaliers @ Philadelphia 76ers | NO BET: probabilidad 53.4% < 54.0%
+- NBA | Denver Nuggets @ Oklahoma City Thunder | NO BET: probabilidad 50.1% < 54.0%
+- NBA analizado SIN cuotas: la selección se calculó con forma reciente, puntos anotados/permitidos, margen de puntos y enfrentamientos directos (H2H) cuando existen; las cuotas no participaron en la decisión.
+- Ningún juego NBA superó simultáneamente la probabilidad mínima, la calidad mínima y el historial mínimo exigido.
+- Cleveland Cavaliers @ Philadelphia 76ers — Philadelphia 76ers: Las cuotas no participan en la decisión
+- Denver Nuggets @ Oklahoma City Thunder — Denver Nuggets: Las cuotas no participan en la decisión
 
-- Partido: Sacramento Kings @ LA Clippers
-- Mercado: Ganador del partido
-- Selección: **LA Clippers**
-- Mejor cuota decimal: **1.54** (Kalshi)
-- Probabilidad estimada: **68.4%**
-- Punto de equilibrio: 0.0%
-- Ventaja calculada: **0.0%**
-- Valor esperado por unidad: **0.0%**
-- Casas comparadas: 0
+La opción más cercana fue descartada:
+- Philadelphia 76ers — Ganador del partido
+- Probabilidad estimada: 53.4%
+- Ventaja: 0.0%; valor esperado: 0.0%
 - Calidad de datos: 100/100
-- Filtros NBA: probabilidad >= 54%; historial >= 3 por equipo; calidad >= 28/100
-- Modelo NBA sin cuotas: 68.4% para LA Clippers
-- Forma LA Clippers: 7-5; Sacramento Kings: 3-9
-- Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo
-- H2H: sin enfrentamientos recientes utilizables
-- Las cuotas no participan en la decisión
 
-### APUESTA #2
-
-**APUESTA CON VALOR DETECTADA**
-
-- Partido: Dallas Mavericks @ Houston Rockets
-- Mercado: Ganador del partido
-- Selección: **Houston Rockets**
-- Mejor cuota decimal: **1.27** (Kalshi)
-- Probabilidad estimada: **67.2%**
-- Punto de equilibrio: 0.0%
-- Ventaja calculada: **0.0%**
-- Valor esperado por unidad: **0.0%**
-- Casas comparadas: 0
-- Calidad de datos: 100/100
-- Filtros NBA: probabilidad >= 54%; historial >= 3 por equipo; calidad >= 28/100
-- Modelo NBA sin cuotas: 67.2% para Houston Rockets
-- Forma Houston Rockets: 6-6; Dallas Mavericks: 3-9
-- Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo
-- H2H: sin enfrentamientos recientes utilizables
-- Las cuotas no participan en la decisión
-
-Partidos revisados: 11 · Cuotas válidas: 0
+Partidos revisados: 2 · Cuotas válidas: 0
