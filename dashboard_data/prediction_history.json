@@ -4415,11 +4415,12 @@
     "contracts": null,
     "potential_return": null,
     "potential_profit": null,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
+    "status": "RESUELTA",
+    "result": "PERDIDA",
+    "winner": "App State Mountaineers",
+    "final_score": "James Madison Dukes 31 - App State Mountaineers 34",
     "return_amount": null,
-    "profit_loss": null
+    "profit_loss": null,
+    "resolved_at": "2026-10-23T02:24:40.297670-05:00"
   }
 ]
