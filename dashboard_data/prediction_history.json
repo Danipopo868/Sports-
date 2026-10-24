@@ -4493,12 +4493,13 @@
     "contracts": null,
     "potential_return": null,
     "potential_profit": null,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "UConn Huskies",
+    "final_score": "Massachusetts Minutemen 16 - UConn Huskies 35",
     "return_amount": null,
-    "profit_loss": null
+    "profit_loss": null,
+    "resolved_at": "2026-10-24T00:46:14.827919-05:00"
   },
   {
     "key": "NCAAF|401864525|Ganador del partido|Air Force Falcons",
@@ -4531,12 +4532,13 @@
     "contracts": null,
     "potential_return": null,
     "potential_profit": null,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
+    "status": "RESUELTA",
+    "result": "PERDIDA",
+    "winner": "Wyoming Cowboys",
+    "final_score": "Air Force Falcons 14 - Wyoming Cowboys 28",
     "return_amount": null,
-    "profit_loss": null
+    "profit_loss": null,
+    "resolved_at": "2026-10-24T00:46:14.827919-05:00"
   },
   {
     "key": "NBA|401909852|Ganador del partido|Portland Trail Blazers",
@@ -4569,13 +4571,14 @@
     "contracts": 125.0,
     "potential_return": 125.0,
     "potential_profit": 25.0,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 80.0
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Portland Trail Blazers",
+    "final_score": "Portland Trail Blazers 128 - Sacramento Kings 120",
+    "return_amount": 125.0,
+    "profit_loss": 25.0,
+    "kalshi_cents": 80.0,
+    "resolved_at": "2026-10-24T00:46:14.827919-05:00"
   },
   {
     "key": "NBA|401909095|Ganador del partido|Boston Celtics",
@@ -4608,12 +4611,13 @@
     "contracts": 178.5714,
     "potential_return": 178.57,
     "potential_profit": 78.57,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 56.00000000000001
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Boston Celtics",
+    "final_score": "New York Knicks 103 - Boston Celtics 107",
+    "return_amount": 178.57,
+    "profit_loss": 78.57,
+    "kalshi_cents": 56.00000000000001,
+    "resolved_at": "2026-10-24T00:46:14.827919-05:00"
   }
 ]
