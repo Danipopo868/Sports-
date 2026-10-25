@@ -4454,13 +4454,14 @@
     "contracts": 185.1852,
     "potential_return": 185.19,
     "potential_profit": 85.19,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 54.0
+    "status": "RESUELTA",
+    "result": "PERDIDA",
+    "winner": "Tampa Bay Rays",
+    "final_score": "F5: Tampa Bay Rays 4 - Milwaukee Brewers 3",
+    "return_amount": 0.0,
+    "profit_loss": -100.0,
+    "kalshi_cents": 54.0,
+    "resolved_at": "2026-10-25T01:02:03.346734-05:00"
   },
   {
     "key": "NCAAF|401861965|Ganador del partido|UConn Huskies",
