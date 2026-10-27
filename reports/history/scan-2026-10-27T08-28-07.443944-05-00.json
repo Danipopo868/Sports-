@@ -1,0 +1,323 @@
+{
+  "generated_at": "2026-10-27T08:28:07.443944-05:00",
+  "analysis_date": "2026-10-27",
+  "scan_number": 1,
+  "guarantee": false,
+  "message": "Las probabilidades son estimaciones; ninguna apuesta garantiza ganancias.",
+  "sports": {
+    "MLB": {
+      "games": 1,
+      "quotes": 0,
+      "kalshi_quotes": 0,
+      "remaining_requests": null,
+      "notes": [
+        "Milwaukee Brewers @ Tampa Bay Rays: F5 omitido porque faltan abridores u ofensiva verificable.",
+        "Milwaukee Brewers @ Tampa Bay Rays: ganador final omitido porque faltan datos MLB esenciales.",
+        "MLB analizado SIN cuotas: el ganador se calculó únicamente con el modelo deportivo de MLB Stats API.",
+        "Ningún juego MLB superó simultáneamente la probabilidad mínima y la cobertura mínima de factores."
+      ],
+      "history_summary": {
+        "total": 127,
+        "resolved": 125,
+        "won": 82,
+        "lost": 37,
+        "ties": 6,
+        "pending": 2,
+        "win_rate": 0.6890756302521008,
+        "financial_operations": 92,
+        "total_staked": 8700.0,
+        "profit_loss": 1341.86,
+        "roi": 0.154237
+      },
+      "error": null,
+      "recommendations": [],
+      "recommendation": null,
+      "best_observed": null
+    },
+    "NFL": {
+      "games": 0,
+      "quotes": 0,
+      "kalshi_quotes": 0,
+      "remaining_requests": null,
+      "notes": [
+        "No hay partidos disponibles para la fecha analizada."
+      ],
+      "history_summary": {
+        "total": 127,
+        "resolved": 125,
+        "won": 82,
+        "lost": 37,
+        "ties": 6,
+        "pending": 2,
+        "win_rate": 0.6890756302521008,
+        "financial_operations": 92,
+        "total_staked": 8700.0,
+        "profit_loss": 1341.86,
+        "roi": 0.154237
+      },
+      "error": null,
+      "recommendations": [],
+      "recommendation": null,
+      "best_observed": null
+    },
+    "NCAAF": {
+      "games": 2,
+      "quotes": 0,
+      "kalshi_quotes": 0,
+      "remaining_requests": null,
+      "notes": [
+        "NCAAF analizado SIN cuotas: la selección se calculó con forma reciente, puntos anotados/permitidos, margen de puntos y enfrentamientos directos (H2H) cuando existen; las cuotas no participaron en la decisión."
+      ],
+      "history_summary": {
+        "total": 129,
+        "resolved": 125,
+        "won": 82,
+        "lost": 37,
+        "ties": 6,
+        "pending": 4,
+        "win_rate": 0.6890756302521008,
+        "financial_operations": 92,
+        "total_staked": 8700.0,
+        "profit_loss": 1341.86,
+        "roi": 0.154237
+      },
+      "error": null,
+      "recommendations": [
+        {
+          "sport": "NCAAF",
+          "game_id": "401871072",
+          "matchup": "Sam Houston Bearkats @ Missouri State Bears",
+          "start": "2026-10-28T00:00",
+          "market": "Ganador del partido",
+          "selection": "Missouri State Bears",
+          "bookmaker": "Kalshi",
+          "decimal_odds": 0.0,
+          "model_probability": 0.6107832940833878,
+          "break_even_probability": 0.0,
+          "edge": 0.0,
+          "expected_value": 0.0,
+          "bookmakers": 0,
+          "data_quality": 100,
+          "passes_filters": true,
+          "reasons": [
+            "Filtros NCAAF: probabilidad >= 55%; historial >= 2 por equipo; calidad >= 50/100",
+            "Modelo NCAAF sin cuotas: 61.1% para Missouri State Bears",
+            "Forma Missouri State Bears: 5-7; Sam Houston Bearkats: 3-9",
+            "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+            "H2H: sin enfrentamientos recientes utilizables",
+            "Las cuotas no participan en la decisión"
+          ],
+          "kalshi_percent": null
+        },
+        {
+          "sport": "NCAAF",
+          "game_id": "401871071",
+          "matchup": "Delaware Blue Hens @ Western Kentucky Hilltoppers",
+          "start": "2026-10-27T23:00",
+          "market": "Ganador del partido",
+          "selection": "Western Kentucky Hilltoppers",
+          "bookmaker": "Kalshi",
+          "decimal_odds": 0.0,
+          "model_probability": 0.5642072634251487,
+          "break_even_probability": 0.0,
+          "edge": 0.0,
+          "expected_value": 0.0,
+          "bookmakers": 0,
+          "data_quality": 100,
+          "passes_filters": true,
+          "reasons": [
+            "Filtros NCAAF: probabilidad >= 55%; historial >= 2 por equipo; calidad >= 50/100",
+            "Modelo NCAAF sin cuotas: 56.4% para Western Kentucky Hilltoppers",
+            "Forma Western Kentucky Hilltoppers: 6-6; Delaware Blue Hens: 5-7",
+            "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+            "H2H últimos 1: Western Kentucky Hilltoppers 100% victorias; margen +3.0 pts",
+            "Peso H2H aplicado: 2.5%",
+            "Las cuotas no participan en la decisión"
+          ],
+          "kalshi_percent": null
+        }
+      ],
+      "recommendation": {
+        "sport": "NCAAF",
+        "game_id": "401871072",
+        "matchup": "Sam Houston Bearkats @ Missouri State Bears",
+        "start": "2026-10-28T00:00",
+        "market": "Ganador del partido",
+        "selection": "Missouri State Bears",
+        "bookmaker": "Kalshi",
+        "decimal_odds": 0.0,
+        "model_probability": 0.6107832940833878,
+        "break_even_probability": 0.0,
+        "edge": 0.0,
+        "expected_value": 0.0,
+        "bookmakers": 0,
+        "data_quality": 100,
+        "passes_filters": true,
+        "reasons": [
+          "Filtros NCAAF: probabilidad >= 55%; historial >= 2 por equipo; calidad >= 50/100",
+          "Modelo NCAAF sin cuotas: 61.1% para Missouri State Bears",
+          "Forma Missouri State Bears: 5-7; Sam Houston Bearkats: 3-9",
+          "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+          "H2H: sin enfrentamientos recientes utilizables",
+          "Las cuotas no participan en la decisión"
+        ],
+        "kalshi_percent": null
+      },
+      "best_observed": {
+        "sport": "NCAAF",
+        "game_id": "401871072",
+        "matchup": "Sam Houston Bearkats @ Missouri State Bears",
+        "start": "2026-10-28T00:00",
+        "market": "Ganador del partido",
+        "selection": "Missouri State Bears",
+        "bookmaker": "SIN CUOTAS — MODELO NCAAF",
+        "decimal_odds": 0.0,
+        "model_probability": 0.6107832940833878,
+        "break_even_probability": 0.0,
+        "edge": 0.0,
+        "expected_value": 0.0,
+        "bookmakers": 0,
+        "data_quality": 100,
+        "passes_filters": true,
+        "reasons": [
+          "Filtros NCAAF: probabilidad >= 55%; historial >= 2 por equipo; calidad >= 50/100",
+          "Modelo NCAAF sin cuotas: 61.1% para Missouri State Bears",
+          "Forma Missouri State Bears: 5-7; Sam Houston Bearkats: 3-9",
+          "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+          "H2H: sin enfrentamientos recientes utilizables",
+          "Las cuotas no participan en la decisión"
+        ],
+        "kalshi_percent": null
+      }
+    },
+    "NBA": {
+      "games": 4,
+      "quotes": 0,
+      "kalshi_quotes": 2,
+      "remaining_requests": null,
+      "notes": [
+        "NBA analizado SIN cuotas: la selección se calculó con forma reciente, puntos anotados/permitidos, margen de puntos y enfrentamientos directos (H2H) cuando existen; las cuotas no participaron en la decisión."
+      ],
+      "history_summary": {
+        "total": 131,
+        "resolved": 125,
+        "won": 82,
+        "lost": 37,
+        "ties": 6,
+        "pending": 6,
+        "win_rate": 0.6890756302521008,
+        "financial_operations": 92,
+        "total_staked": 8700.0,
+        "profit_loss": 1341.86,
+        "roi": 0.154237
+      },
+      "error": null,
+      "recommendations": [
+        {
+          "sport": "NBA",
+          "game_id": "401909879",
+          "matchup": "Sacramento Kings @ San Antonio Spurs",
+          "start": "2026-10-28T00:00Z",
+          "market": "Ganador del partido",
+          "selection": "San Antonio Spurs",
+          "bookmaker": "Kalshi",
+          "decimal_odds": 1.075268817204301,
+          "model_probability": 0.6794500340639971,
+          "break_even_probability": 0.0,
+          "edge": 0.0,
+          "expected_value": 0.0,
+          "bookmakers": 0,
+          "data_quality": 100,
+          "passes_filters": true,
+          "reasons": [
+            "Filtros NBA: probabilidad >= 54%; historial >= 3 por equipo; calidad >= 28/100",
+            "Modelo NBA sin cuotas: 67.9% para San Antonio Spurs",
+            "Forma San Antonio Spurs: 4-8; Sacramento Kings: 1-11",
+            "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+            "H2H: sin enfrentamientos recientes utilizables",
+            "Las cuotas no participan en la decisión"
+          ],
+          "kalshi_percent": null
+        },
+        {
+          "sport": "NBA",
+          "game_id": "401909877",
+          "matchup": "Brooklyn Nets @ Boston Celtics",
+          "start": "2026-10-27T23:30Z",
+          "market": "Ganador del partido",
+          "selection": "Boston Celtics",
+          "bookmaker": "Kalshi",
+          "decimal_odds": 1.1904761904761905,
+          "model_probability": 0.6790113575703046,
+          "break_even_probability": 0.0,
+          "edge": 0.0,
+          "expected_value": 0.0,
+          "bookmakers": 0,
+          "data_quality": 100,
+          "passes_filters": true,
+          "reasons": [
+            "Filtros NBA: probabilidad >= 54%; historial >= 3 por equipo; calidad >= 28/100",
+            "Modelo NBA sin cuotas: 67.9% para Boston Celtics",
+            "Forma Boston Celtics: 8-4; Brooklyn Nets: 5-7",
+            "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+            "H2H: sin enfrentamientos recientes utilizables",
+            "Las cuotas no participan en la decisión"
+          ],
+          "kalshi_percent": null
+        }
+      ],
+      "recommendation": {
+        "sport": "NBA",
+        "game_id": "401909879",
+        "matchup": "Sacramento Kings @ San Antonio Spurs",
+        "start": "2026-10-28T00:00Z",
+        "market": "Ganador del partido",
+        "selection": "San Antonio Spurs",
+        "bookmaker": "Kalshi",
+        "decimal_odds": 1.075268817204301,
+        "model_probability": 0.6794500340639971,
+        "break_even_probability": 0.0,
+        "edge": 0.0,
+        "expected_value": 0.0,
+        "bookmakers": 0,
+        "data_quality": 100,
+        "passes_filters": true,
+        "reasons": [
+          "Filtros NBA: probabilidad >= 54%; historial >= 3 por equipo; calidad >= 28/100",
+          "Modelo NBA sin cuotas: 67.9% para San Antonio Spurs",
+          "Forma San Antonio Spurs: 4-8; Sacramento Kings: 1-11",
+          "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+          "H2H: sin enfrentamientos recientes utilizables",
+          "Las cuotas no participan en la decisión"
+        ],
+        "kalshi_percent": null
+      },
+      "best_observed": {
+        "sport": "NBA",
+        "game_id": "401909879",
+        "matchup": "Sacramento Kings @ San Antonio Spurs",
+        "start": "2026-10-28T00:00Z",
+        "market": "Ganador del partido",
+        "selection": "San Antonio Spurs",
+        "bookmaker": "SIN CUOTAS — MODELO NBA",
+        "decimal_odds": 0.0,
+        "model_probability": 0.6794500340639971,
+        "break_even_probability": 0.0,
+        "edge": 0.0,
+        "expected_value": 0.0,
+        "bookmakers": 0,
+        "data_quality": 100,
+        "passes_filters": true,
+        "reasons": [
+          "Filtros NBA: probabilidad >= 54%; historial >= 3 por equipo; calidad >= 28/100",
+          "Modelo NBA sin cuotas: 67.9% para San Antonio Spurs",
+          "Forma San Antonio Spurs: 4-8; Sacramento Kings: 1-11",
+          "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+          "H2H: sin enfrentamientos recientes utilizables",
+          "Las cuotas no participan en la decisión"
+        ],
+        "kalshi_percent": null
+      }
+    }
+  }
+}
