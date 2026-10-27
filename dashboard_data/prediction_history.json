@@ -4691,13 +4691,14 @@
     "contracts": 294.1176,
     "potential_return": 294.12,
     "potential_profit": 194.12,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 34.0
+    "status": "RESUELTA",
+    "result": "PERDIDA",
+    "winner": "Dallas Cowboys",
+    "final_score": "Dallas Cowboys 38 - Philadelphia Eagles 21",
+    "return_amount": 0.0,
+    "profit_loss": -100.0,
+    "kalshi_cents": 34.0,
+    "resolved_at": "2026-10-27T02:44:36.015222-05:00"
   },
   {
     "key": "NBA|401909873|Ganador del partido|Oklahoma City Thunder",
@@ -4730,13 +4731,14 @@
     "contracts": 133.3333,
     "potential_return": 133.33,
     "potential_profit": 33.33,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 75.0
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Oklahoma City Thunder",
+    "final_score": "Phoenix Suns 114 - Oklahoma City Thunder 125",
+    "return_amount": 133.33,
+    "profit_loss": 33.33,
+    "kalshi_cents": 75.0,
+    "resolved_at": "2026-10-27T02:44:36.015222-05:00"
   },
   {
     "key": "NBA|401909870|Ganador del partido|Boston Celtics",
