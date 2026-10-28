@@ -4652,13 +4652,14 @@
     "contracts": 263.1579,
     "potential_return": 263.16,
     "potential_profit": 163.16,
-    "status": "PENDIENTE",
-    "result": null,
+    "status": "RESUELTA",
+    "result": "EMPATE",
     "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 38.0
+    "final_score": "F5: Milwaukee Brewers 2 - Tampa Bay Rays 2",
+    "return_amount": 100.0,
+    "profit_loss": 0.0,
+    "kalshi_cents": 38.0,
+    "resolved_at": "2026-10-28T00:31:25.991126-05:00"
   },
   {
     "key": "NFL|401873009|Ganador del partido|Philadelphia Eagles",
@@ -4811,12 +4812,13 @@
     "contracts": null,
     "potential_return": null,
     "potential_profit": null,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Missouri State Bears",
+    "final_score": "Sam Houston Bearkats 3 - Missouri State Bears 24",
     "return_amount": null,
-    "profit_loss": null
+    "profit_loss": null,
+    "resolved_at": "2026-10-28T00:31:25.991126-05:00"
   },
   {
     "key": "NCAAF|401871071|Ganador del partido|Western Kentucky Hilltoppers",
@@ -4849,12 +4851,13 @@
     "contracts": null,
     "potential_return": null,
     "potential_profit": null,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
+    "status": "RESUELTA",
+    "result": "PERDIDA",
+    "winner": "Delaware Blue Hens",
+    "final_score": "Delaware Blue Hens 35 - Western Kentucky Hilltoppers 21",
     "return_amount": null,
-    "profit_loss": null
+    "profit_loss": null,
+    "resolved_at": "2026-10-28T00:31:25.991126-05:00"
   },
   {
     "key": "NBA|401909879|Ganador del partido|San Antonio Spurs",
@@ -4887,13 +4890,14 @@
     "contracts": 107.5269,
     "potential_return": 107.53,
     "potential_profit": 7.53,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 93.0
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "San Antonio Spurs",
+    "final_score": "Sacramento Kings 103 - San Antonio Spurs 130",
+    "return_amount": 107.53,
+    "profit_loss": 7.53,
+    "kalshi_cents": 93.0,
+    "resolved_at": "2026-10-28T00:31:25.991126-05:00"
   },
   {
     "key": "NBA|401909877|Ganador del partido|Boston Celtics",
@@ -4926,12 +4930,13 @@
     "contracts": 119.0476,
     "potential_return": 119.05,
     "potential_profit": 19.05,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 84.0
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Boston Celtics",
+    "final_score": "Brooklyn Nets 124 - Boston Celtics 125",
+    "return_amount": 119.05,
+    "profit_loss": 19.05,
+    "kalshi_cents": 84.0,
+    "resolved_at": "2026-10-28T00:31:25.991126-05:00"
   }
 ]
