@@ -1,0 +1,325 @@
+{
+  "generated_at": "2026-11-01T09:49:12.706982-06:00",
+  "analysis_date": "2026-11-01",
+  "scan_number": 1,
+  "guarantee": false,
+  "message": "Las probabilidades son estimaciones; ninguna apuesta garantiza ganancias.",
+  "sports": {
+    "MLB": {
+      "games": 0,
+      "quotes": 0,
+      "kalshi_quotes": 0,
+      "remaining_requests": null,
+      "notes": [
+        "No hay partidos disponibles para la fecha analizada."
+      ],
+      "history_summary": {
+        "total": 131,
+        "resolved": 130,
+        "won": 85,
+        "lost": 38,
+        "ties": 7,
+        "pending": 1,
+        "win_rate": 0.6910569105691057,
+        "financial_operations": 95,
+        "total_staked": 8900.0,
+        "profit_loss": 1368.44,
+        "roi": 0.153757
+      },
+      "error": null,
+      "recommendations": [],
+      "recommendation": null,
+      "best_observed": null
+    },
+    "NFL": {
+      "games": 12,
+      "quotes": 0,
+      "kalshi_quotes": 1,
+      "remaining_requests": null,
+      "notes": [
+        "NFL | Atlanta Falcons @ Tampa Bay Buccaneers | NO BET: probabilidad 54.7% < 55.0%",
+        "NFL | Philadelphia Eagles @ Washington Commanders | NO BET: probabilidad 54.6% < 55.0%",
+        "NFL analizado SIN cuotas: la selección se calculó con forma reciente, puntos anotados/permitidos, margen de puntos y enfrentamientos directos (H2H) cuando existen; las cuotas no participaron en la decisión."
+      ],
+      "history_summary": {
+        "total": 133,
+        "resolved": 130,
+        "won": 85,
+        "lost": 38,
+        "ties": 7,
+        "pending": 3,
+        "win_rate": 0.6910569105691057,
+        "financial_operations": 95,
+        "total_staked": 8900.0,
+        "profit_loss": 1368.44,
+        "roi": 0.153757
+      },
+      "error": null,
+      "recommendations": [
+        {
+          "sport": "NFL",
+          "game_id": "401873028",
+          "matchup": "Indianapolis Colts @ Jacksonville Jaguars",
+          "start": "2026-11-01T18:00",
+          "market": "Ganador del partido",
+          "selection": "Jacksonville Jaguars",
+          "bookmaker": "Kalshi",
+          "decimal_odds": 0.0,
+          "model_probability": 0.7914636345115927,
+          "break_even_probability": 0.0,
+          "edge": 0.0,
+          "expected_value": 0.0,
+          "bookmakers": 0,
+          "data_quality": 100,
+          "passes_filters": true,
+          "reasons": [
+            "Filtros NFL: probabilidad >= 55%; historial >= 2 por equipo; calidad >= 50/100",
+            "Modelo NFL sin cuotas: 79.1% para Jacksonville Jaguars",
+            "Forma Jacksonville Jaguars: 10-2; Indianapolis Colts: 2-10",
+            "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+            "H2H últimos 2: Jacksonville Jaguars 100% victorias; margen +11.1 pts",
+            "Peso H2H aplicado: 5.0%",
+            "Las cuotas no participan en la decisión"
+          ],
+          "kalshi_percent": null
+        },
+        {
+          "sport": "NFL",
+          "game_id": "401873031",
+          "matchup": "Tennessee Titans @ Cincinnati Bengals",
+          "start": "2026-11-01T18:00",
+          "market": "Ganador del partido",
+          "selection": "Cincinnati Bengals",
+          "bookmaker": "Kalshi",
+          "decimal_odds": 1.1363636363636365,
+          "model_probability": 0.700541747344124,
+          "break_even_probability": 0.0,
+          "edge": 0.0,
+          "expected_value": 0.0,
+          "bookmakers": 0,
+          "data_quality": 100,
+          "passes_filters": true,
+          "reasons": [
+            "Filtros NFL: probabilidad >= 55%; historial >= 2 por equipo; calidad >= 50/100",
+            "Modelo NFL sin cuotas: 70.1% para Cincinnati Bengals",
+            "Forma Cincinnati Bengals: 7-5; Tennessee Titans: 3-9",
+            "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+            "H2H: sin enfrentamientos recientes utilizables",
+            "Las cuotas no participan en la decisión"
+          ],
+          "kalshi_percent": null
+        }
+      ],
+      "recommendation": {
+        "sport": "NFL",
+        "game_id": "401873028",
+        "matchup": "Indianapolis Colts @ Jacksonville Jaguars",
+        "start": "2026-11-01T18:00",
+        "market": "Ganador del partido",
+        "selection": "Jacksonville Jaguars",
+        "bookmaker": "Kalshi",
+        "decimal_odds": 0.0,
+        "model_probability": 0.7914636345115927,
+        "break_even_probability": 0.0,
+        "edge": 0.0,
+        "expected_value": 0.0,
+        "bookmakers": 0,
+        "data_quality": 100,
+        "passes_filters": true,
+        "reasons": [
+          "Filtros NFL: probabilidad >= 55%; historial >= 2 por equipo; calidad >= 50/100",
+          "Modelo NFL sin cuotas: 79.1% para Jacksonville Jaguars",
+          "Forma Jacksonville Jaguars: 10-2; Indianapolis Colts: 2-10",
+          "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+          "H2H últimos 2: Jacksonville Jaguars 100% victorias; margen +11.1 pts",
+          "Peso H2H aplicado: 5.0%",
+          "Las cuotas no participan en la decisión"
+        ],
+        "kalshi_percent": null
+      },
+      "best_observed": {
+        "sport": "NFL",
+        "game_id": "401873028",
+        "matchup": "Indianapolis Colts @ Jacksonville Jaguars",
+        "start": "2026-11-01T18:00",
+        "market": "Ganador del partido",
+        "selection": "Jacksonville Jaguars",
+        "bookmaker": "SIN CUOTAS — MODELO NFL",
+        "decimal_odds": 0.0,
+        "model_probability": 0.7914636345115927,
+        "break_even_probability": 0.0,
+        "edge": 0.0,
+        "expected_value": 0.0,
+        "bookmakers": 0,
+        "data_quality": 100,
+        "passes_filters": true,
+        "reasons": [
+          "Filtros NFL: probabilidad >= 55%; historial >= 2 por equipo; calidad >= 50/100",
+          "Modelo NFL sin cuotas: 79.1% para Jacksonville Jaguars",
+          "Forma Jacksonville Jaguars: 10-2; Indianapolis Colts: 2-10",
+          "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+          "H2H últimos 2: Jacksonville Jaguars 100% victorias; margen +11.1 pts",
+          "Peso H2H aplicado: 5.0%",
+          "Las cuotas no participan en la decisión"
+        ],
+        "kalshi_percent": null
+      }
+    },
+    "NCAAF": {
+      "games": 0,
+      "quotes": 0,
+      "kalshi_quotes": 0,
+      "remaining_requests": null,
+      "notes": [
+        "No hay partidos disponibles para la fecha analizada."
+      ],
+      "history_summary": {
+        "total": 133,
+        "resolved": 130,
+        "won": 85,
+        "lost": 38,
+        "ties": 7,
+        "pending": 3,
+        "win_rate": 0.6910569105691057,
+        "financial_operations": 95,
+        "total_staked": 8900.0,
+        "profit_loss": 1368.44,
+        "roi": 0.153757
+      },
+      "error": null,
+      "recommendations": [],
+      "recommendation": null,
+      "best_observed": null
+    },
+    "NBA": {
+      "games": 4,
+      "quotes": 0,
+      "kalshi_quotes": 2,
+      "remaining_requests": null,
+      "notes": [
+        "NBA | Toronto Raptors @ Los Angeles Lakers | NO BET: probabilidad 50.5% < 54.0%",
+        "NBA analizado SIN cuotas: la selección se calculó con forma reciente, puntos anotados/permitidos, margen de puntos y enfrentamientos directos (H2H) cuando existen; las cuotas no participaron en la decisión."
+      ],
+      "history_summary": {
+        "total": 135,
+        "resolved": 130,
+        "won": 85,
+        "lost": 38,
+        "ties": 7,
+        "pending": 5,
+        "win_rate": 0.6910569105691057,
+        "financial_operations": 95,
+        "total_staked": 8900.0,
+        "profit_loss": 1368.44,
+        "roi": 0.153757
+      },
+      "error": null,
+      "recommendations": [
+        {
+          "sport": "NBA",
+          "game_id": "401909905",
+          "matchup": "LA Clippers @ Golden State Warriors",
+          "start": "2026-11-02T01:30Z",
+          "market": "Ganador del partido",
+          "selection": "Golden State Warriors",
+          "bookmaker": "Kalshi",
+          "decimal_odds": 1.8518518518518516,
+          "model_probability": 0.6316345961169638,
+          "break_even_probability": 0.0,
+          "edge": 0.0,
+          "expected_value": 0.0,
+          "bookmakers": 0,
+          "data_quality": 100,
+          "passes_filters": true,
+          "reasons": [
+            "Filtros NBA: probabilidad >= 54%; historial >= 3 por equipo; calidad >= 28/100",
+            "Modelo NBA sin cuotas: 63.2% para Golden State Warriors",
+            "Forma Golden State Warriors: 7-5; LA Clippers: 5-7",
+            "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+            "H2H: sin enfrentamientos recientes utilizables",
+            "Las cuotas no participan en la decisión"
+          ],
+          "kalshi_percent": null
+        },
+        {
+          "sport": "NBA",
+          "game_id": "401909903",
+          "matchup": "Boston Celtics @ Orlando Magic",
+          "start": "2026-11-01T20:30Z",
+          "market": "Ganador del partido",
+          "selection": "Boston Celtics",
+          "bookmaker": "Kalshi",
+          "decimal_odds": 1.4084507042253522,
+          "model_probability": 0.5945450050170376,
+          "break_even_probability": 0.0,
+          "edge": 0.0,
+          "expected_value": 0.0,
+          "bookmakers": 0,
+          "data_quality": 100,
+          "passes_filters": true,
+          "reasons": [
+            "Filtros NBA: probabilidad >= 54%; historial >= 3 por equipo; calidad >= 28/100",
+            "Modelo NBA sin cuotas: 59.5% para Boston Celtics",
+            "Forma Orlando Magic: 5-7; Boston Celtics: 8-4",
+            "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+            "H2H: sin enfrentamientos recientes utilizables",
+            "Las cuotas no participan en la decisión"
+          ],
+          "kalshi_percent": null
+        }
+      ],
+      "recommendation": {
+        "sport": "NBA",
+        "game_id": "401909905",
+        "matchup": "LA Clippers @ Golden State Warriors",
+        "start": "2026-11-02T01:30Z",
+        "market": "Ganador del partido",
+        "selection": "Golden State Warriors",
+        "bookmaker": "Kalshi",
+        "decimal_odds": 1.8518518518518516,
+        "model_probability": 0.6316345961169638,
+        "break_even_probability": 0.0,
+        "edge": 0.0,
+        "expected_value": 0.0,
+        "bookmakers": 0,
+        "data_quality": 100,
+        "passes_filters": true,
+        "reasons": [
+          "Filtros NBA: probabilidad >= 54%; historial >= 3 por equipo; calidad >= 28/100",
+          "Modelo NBA sin cuotas: 63.2% para Golden State Warriors",
+          "Forma Golden State Warriors: 7-5; LA Clippers: 5-7",
+          "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+          "H2H: sin enfrentamientos recientes utilizables",
+          "Las cuotas no participan en la decisión"
+        ],
+        "kalshi_percent": null
+      },
+      "best_observed": {
+        "sport": "NBA",
+        "game_id": "401909905",
+        "matchup": "LA Clippers @ Golden State Warriors",
+        "start": "2026-11-02T01:30Z",
+        "market": "Ganador del partido",
+        "selection": "Golden State Warriors",
+        "bookmaker": "SIN CUOTAS — MODELO NBA",
+        "decimal_odds": 0.0,
+        "model_probability": 0.6316345961169638,
+        "break_even_probability": 0.0,
+        "edge": 0.0,
+        "expected_value": 0.0,
+        "bookmakers": 0,
+        "data_quality": 100,
+        "passes_filters": true,
+        "reasons": [
+          "Filtros NBA: probabilidad >= 54%; historial >= 3 por equipo; calidad >= 28/100",
+          "Modelo NBA sin cuotas: 63.2% para Golden State Warriors",
+          "Forma Golden State Warriors: 7-5; LA Clippers: 5-7",
+          "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+          "H2H: sin enfrentamientos recientes utilizables",
+          "Las cuotas no participan en la decisión"
+        ],
+        "kalshi_percent": null
+      }
+    }
+  }
+}
