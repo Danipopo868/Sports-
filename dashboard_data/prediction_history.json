@@ -4970,12 +4970,13 @@
     "contracts": null,
     "potential_return": null,
     "potential_profit": null,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Jacksonville Jaguars",
+    "final_score": "Indianapolis Colts 7 - Jacksonville Jaguars 42",
     "return_amount": null,
-    "profit_loss": null
+    "profit_loss": null,
+    "resolved_at": "2026-11-01T18:37:54.639530-06:00"
   },
   {
     "key": "NFL|401873031|Ganador del partido|Cincinnati Bengals",
@@ -5008,13 +5009,14 @@
     "contracts": 113.6364,
     "potential_return": 113.64,
     "potential_profit": 13.64,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 88.0
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Cincinnati Bengals",
+    "final_score": "Tennessee Titans 36 - Cincinnati Bengals 43",
+    "return_amount": 113.64,
+    "profit_loss": 13.64,
+    "kalshi_cents": 88.0,
+    "resolved_at": "2026-11-01T18:37:54.639530-06:00"
   },
   {
     "key": "NBA|401909905|Ganador del partido|Golden State Warriors",
@@ -5086,12 +5088,13 @@
     "contracts": 140.8451,
     "potential_return": 140.85,
     "potential_profit": 40.85,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 71.0
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Boston Celtics",
+    "final_score": "Boston Celtics 108 - Orlando Magic 97",
+    "return_amount": 140.85,
+    "profit_loss": 40.85,
+    "kalshi_cents": 71.0,
+    "resolved_at": "2026-11-01T18:37:54.639530-06:00"
   }
 ]
