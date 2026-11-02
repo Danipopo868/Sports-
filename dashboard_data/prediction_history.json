@@ -5049,13 +5049,14 @@
     "contracts": 185.1852,
     "potential_return": 185.19,
     "potential_profit": 85.19,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 54.0
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Golden State Warriors",
+    "final_score": "LA Clippers 112 - Golden State Warriors 124",
+    "return_amount": 185.19,
+    "profit_loss": 85.19,
+    "kalshi_cents": 54.0,
+    "resolved_at": "2026-11-02T01:37:19.438471-06:00"
   },
   {
     "key": "NBA|401909903|Ganador del partido|Boston Celtics",
