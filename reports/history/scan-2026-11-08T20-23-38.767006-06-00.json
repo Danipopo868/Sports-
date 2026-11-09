@@ -1,0 +1,295 @@
+{
+  "generated_at": "2026-11-08T20:23:38.767006-06:00",
+  "analysis_date": "2026-11-08",
+  "scan_number": 1,
+  "guarantee": false,
+  "message": "Las probabilidades son estimaciones; ninguna apuesta garantiza ganancias.",
+  "sports": {
+    "MLB": {
+      "games": 0,
+      "quotes": 0,
+      "kalshi_quotes": 0,
+      "remaining_requests": null,
+      "notes": [
+        "No hay partidos disponibles para la fecha analizada."
+      ],
+      "history_summary": {
+        "total": 139,
+        "resolved": 136,
+        "won": 91,
+        "lost": 38,
+        "ties": 7,
+        "pending": 3,
+        "win_rate": 0.7054263565891473,
+        "financial_operations": 100,
+        "total_staked": 9400.0,
+        "profit_loss": 1515.38,
+        "roi": 0.161211
+      },
+      "error": null,
+      "recommendations": [],
+      "recommendation": null,
+      "best_observed": null
+    },
+    "NFL": {
+      "games": 1,
+      "quotes": 0,
+      "kalshi_quotes": 1,
+      "remaining_requests": null,
+      "notes": [
+        "NFL analizado SIN cuotas: la selección se calculó con forma reciente, puntos anotados/permitidos, margen de puntos y enfrentamientos directos (H2H) cuando existen; las cuotas no participaron en la decisión.",
+        "Solo un equipo distinto superó todos los filtros; no se repite el mismo equipo para completar una segunda apuesta."
+      ],
+      "history_summary": {
+        "total": 140,
+        "resolved": 136,
+        "won": 91,
+        "lost": 38,
+        "ties": 7,
+        "pending": 4,
+        "win_rate": 0.7054263565891473,
+        "financial_operations": 100,
+        "total_staked": 9400.0,
+        "profit_loss": 1515.38,
+        "roi": 0.161211
+      },
+      "error": null,
+      "recommendations": [
+        {
+          "sport": "NFL",
+          "game_id": "401873050",
+          "matchup": "Tampa Bay Buccaneers @ Chicago Bears",
+          "start": "2026-11-09T01:20",
+          "market": "Ganador del partido",
+          "selection": "Chicago Bears",
+          "bookmaker": "Kalshi",
+          "decimal_odds": 1.0869565217391304,
+          "model_probability": 0.6633700457962574,
+          "break_even_probability": 0.0,
+          "edge": 0.0,
+          "expected_value": 0.0,
+          "bookmakers": 0,
+          "data_quality": 100,
+          "passes_filters": true,
+          "reasons": [
+            "Filtros NFL: probabilidad >= 55%; historial >= 2 por equipo; calidad >= 50/100",
+            "Modelo NFL sin cuotas: 66.3% para Chicago Bears",
+            "Forma Chicago Bears: 8-4; Tampa Bay Buccaneers: 4-8",
+            "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+            "H2H: sin enfrentamientos recientes utilizables",
+            "Las cuotas no participan en la decisión"
+          ],
+          "kalshi_percent": null
+        }
+      ],
+      "recommendation": {
+        "sport": "NFL",
+        "game_id": "401873050",
+        "matchup": "Tampa Bay Buccaneers @ Chicago Bears",
+        "start": "2026-11-09T01:20",
+        "market": "Ganador del partido",
+        "selection": "Chicago Bears",
+        "bookmaker": "Kalshi",
+        "decimal_odds": 1.0869565217391304,
+        "model_probability": 0.6633700457962574,
+        "break_even_probability": 0.0,
+        "edge": 0.0,
+        "expected_value": 0.0,
+        "bookmakers": 0,
+        "data_quality": 100,
+        "passes_filters": true,
+        "reasons": [
+          "Filtros NFL: probabilidad >= 55%; historial >= 2 por equipo; calidad >= 50/100",
+          "Modelo NFL sin cuotas: 66.3% para Chicago Bears",
+          "Forma Chicago Bears: 8-4; Tampa Bay Buccaneers: 4-8",
+          "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+          "H2H: sin enfrentamientos recientes utilizables",
+          "Las cuotas no participan en la decisión"
+        ],
+        "kalshi_percent": null
+      },
+      "best_observed": {
+        "sport": "NFL",
+        "game_id": "401873050",
+        "matchup": "Tampa Bay Buccaneers @ Chicago Bears",
+        "start": "2026-11-09T01:20",
+        "market": "Ganador del partido",
+        "selection": "Chicago Bears",
+        "bookmaker": "SIN CUOTAS — MODELO NFL",
+        "decimal_odds": 0.0,
+        "model_probability": 0.6633700457962574,
+        "break_even_probability": 0.0,
+        "edge": 0.0,
+        "expected_value": 0.0,
+        "bookmakers": 0,
+        "data_quality": 100,
+        "passes_filters": true,
+        "reasons": [
+          "Filtros NFL: probabilidad >= 55%; historial >= 2 por equipo; calidad >= 50/100",
+          "Modelo NFL sin cuotas: 66.3% para Chicago Bears",
+          "Forma Chicago Bears: 8-4; Tampa Bay Buccaneers: 4-8",
+          "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+          "H2H: sin enfrentamientos recientes utilizables",
+          "Las cuotas no participan en la decisión"
+        ],
+        "kalshi_percent": null
+      }
+    },
+    "NCAAF": {
+      "games": 0,
+      "quotes": 0,
+      "kalshi_quotes": 0,
+      "remaining_requests": null,
+      "notes": [
+        "No hay partidos disponibles para la fecha analizada."
+      ],
+      "history_summary": {
+        "total": 140,
+        "resolved": 136,
+        "won": 91,
+        "lost": 38,
+        "ties": 7,
+        "pending": 4,
+        "win_rate": 0.7054263565891473,
+        "financial_operations": 100,
+        "total_staked": 9400.0,
+        "profit_loss": 1515.38,
+        "roi": 0.161211
+      },
+      "error": null,
+      "recommendations": [],
+      "recommendation": null,
+      "best_observed": null
+    },
+    "NBA": {
+      "games": 5,
+      "quotes": 0,
+      "kalshi_quotes": 1,
+      "remaining_requests": null,
+      "notes": [
+        "NBA | New Orleans Pelicans @ LA Clippers | NO BET: probabilidad 53.3% < 54.0%",
+        "NBA analizado SIN cuotas: la selección se calculó con forma reciente, puntos anotados/permitidos, margen de puntos y enfrentamientos directos (H2H) cuando existen; las cuotas no participaron en la decisión."
+      ],
+      "history_summary": {
+        "total": 140,
+        "resolved": 136,
+        "won": 91,
+        "lost": 38,
+        "ties": 7,
+        "pending": 4,
+        "win_rate": 0.7054263565891473,
+        "financial_operations": 100,
+        "total_staked": 9400.0,
+        "profit_loss": 1515.38,
+        "roi": 0.161211
+      },
+      "error": null,
+      "recommendations": [
+        {
+          "sport": "NBA",
+          "game_id": "401909949",
+          "matchup": "Boston Celtics @ Milwaukee Bucks",
+          "start": "2026-11-09T01:00Z",
+          "market": "Ganador del partido",
+          "selection": "Boston Celtics",
+          "bookmaker": "Kalshi",
+          "decimal_odds": 1.0204081632653061,
+          "model_probability": 0.7291691655655672,
+          "break_even_probability": 0.0,
+          "edge": 0.0,
+          "expected_value": 0.0,
+          "bookmakers": 0,
+          "data_quality": 100,
+          "passes_filters": true,
+          "reasons": [
+            "Filtros NBA: probabilidad >= 54%; historial >= 3 por equipo; calidad >= 28/100",
+            "Modelo NBA sin cuotas: 72.9% para Boston Celtics",
+            "Forma Milwaukee Bucks: 2-10; Boston Celtics: 10-2",
+            "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+            "H2H: sin enfrentamientos recientes utilizables",
+            "Las cuotas no participan en la decisión"
+          ],
+          "kalshi_percent": null
+        },
+        {
+          "sport": "NBA",
+          "game_id": "401909947",
+          "matchup": "Utah Jazz @ Minnesota Timberwolves",
+          "start": "2026-11-09T00:00Z",
+          "market": "Ganador del partido",
+          "selection": "Minnesota Timberwolves",
+          "bookmaker": "Kalshi",
+          "decimal_odds": 0.0,
+          "model_probability": 0.6965665251775962,
+          "break_even_probability": 0.0,
+          "edge": 0.0,
+          "expected_value": 0.0,
+          "bookmakers": 0,
+          "data_quality": 100,
+          "passes_filters": true,
+          "reasons": [
+            "Filtros NBA: probabilidad >= 54%; historial >= 3 por equipo; calidad >= 28/100",
+            "Modelo NBA sin cuotas: 69.7% para Minnesota Timberwolves",
+            "Forma Minnesota Timberwolves: 7-5; Utah Jazz: 3-9",
+            "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+            "H2H: sin enfrentamientos recientes utilizables",
+            "Las cuotas no participan en la decisión"
+          ],
+          "kalshi_percent": null
+        }
+      ],
+      "recommendation": {
+        "sport": "NBA",
+        "game_id": "401909949",
+        "matchup": "Boston Celtics @ Milwaukee Bucks",
+        "start": "2026-11-09T01:00Z",
+        "market": "Ganador del partido",
+        "selection": "Boston Celtics",
+        "bookmaker": "Kalshi",
+        "decimal_odds": 1.0204081632653061,
+        "model_probability": 0.7291691655655672,
+        "break_even_probability": 0.0,
+        "edge": 0.0,
+        "expected_value": 0.0,
+        "bookmakers": 0,
+        "data_quality": 100,
+        "passes_filters": true,
+        "reasons": [
+          "Filtros NBA: probabilidad >= 54%; historial >= 3 por equipo; calidad >= 28/100",
+          "Modelo NBA sin cuotas: 72.9% para Boston Celtics",
+          "Forma Milwaukee Bucks: 2-10; Boston Celtics: 10-2",
+          "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+          "H2H: sin enfrentamientos recientes utilizables",
+          "Las cuotas no participan en la decisión"
+        ],
+        "kalshi_percent": null
+      },
+      "best_observed": {
+        "sport": "NBA",
+        "game_id": "401909949",
+        "matchup": "Boston Celtics @ Milwaukee Bucks",
+        "start": "2026-11-09T01:00Z",
+        "market": "Ganador del partido",
+        "selection": "Boston Celtics",
+        "bookmaker": "SIN CUOTAS — MODELO NBA",
+        "decimal_odds": 0.0,
+        "model_probability": 0.7291691655655672,
+        "break_even_probability": 0.0,
+        "edge": 0.0,
+        "expected_value": 0.0,
+        "bookmakers": 0,
+        "data_quality": 100,
+        "passes_filters": true,
+        "reasons": [
+          "Filtros NBA: probabilidad >= 54%; historial >= 3 por equipo; calidad >= 28/100",
+          "Modelo NBA sin cuotas: 72.9% para Boston Celtics",
+          "Forma Milwaukee Bucks: 2-10; Boston Celtics: 10-2",
+          "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+          "H2H: sin enfrentamientos recientes utilizables",
+          "Las cuotas no participan en la decisión"
+        ],
+        "kalshi_percent": null
+      }
+    }
+  }
+}
