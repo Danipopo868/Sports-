@@ -1,0 +1,295 @@
+{
+  "generated_at": "2026-11-16T12:14:07.410953-06:00",
+  "analysis_date": "2026-11-16",
+  "scan_number": 1,
+  "guarantee": false,
+  "message": "Las probabilidades son estimaciones; ninguna apuesta garantiza ganancias.",
+  "sports": {
+    "MLB": {
+      "games": 0,
+      "quotes": 0,
+      "kalshi_quotes": 0,
+      "remaining_requests": null,
+      "notes": [
+        "No hay partidos disponibles para la fecha analizada."
+      ],
+      "history_summary": {
+        "total": 141,
+        "resolved": 138,
+        "won": 93,
+        "lost": 38,
+        "ties": 7,
+        "pending": 3,
+        "win_rate": 0.7099236641221374,
+        "financial_operations": 102,
+        "total_staked": 9600.0,
+        "profit_loss": 1533.7,
+        "roi": 0.15976
+      },
+      "error": null,
+      "recommendations": [],
+      "recommendation": null,
+      "best_observed": null
+    },
+    "NFL": {
+      "games": 1,
+      "quotes": 0,
+      "kalshi_quotes": 1,
+      "remaining_requests": null,
+      "notes": [
+        "NFL analizado SIN cuotas: la selección se calculó con forma reciente, puntos anotados/permitidos, margen de puntos y enfrentamientos directos (H2H) cuando existen; las cuotas no participaron en la decisión.",
+        "Solo un equipo distinto superó todos los filtros; no se repite el mismo equipo para completar una segunda apuesta."
+      ],
+      "history_summary": {
+        "total": 142,
+        "resolved": 138,
+        "won": 93,
+        "lost": 38,
+        "ties": 7,
+        "pending": 4,
+        "win_rate": 0.7099236641221374,
+        "financial_operations": 102,
+        "total_staked": 9600.0,
+        "profit_loss": 1533.7,
+        "roi": 0.15976
+      },
+      "error": null,
+      "recommendations": [
+        {
+          "sport": "NFL",
+          "game_id": "401873065",
+          "matchup": "Los Angeles Chargers @ Baltimore Ravens",
+          "start": "2026-11-17T01:15",
+          "market": "Ganador del partido",
+          "selection": "Baltimore Ravens",
+          "bookmaker": "Kalshi",
+          "decimal_odds": 1.4705882352941175,
+          "model_probability": 0.6430567586033344,
+          "break_even_probability": 0.0,
+          "edge": 0.0,
+          "expected_value": 0.0,
+          "bookmakers": 0,
+          "data_quality": 100,
+          "passes_filters": true,
+          "reasons": [
+            "Filtros NFL: probabilidad >= 55%; historial >= 2 por equipo; calidad >= 50/100",
+            "Modelo NFL sin cuotas: 64.3% para Baltimore Ravens",
+            "Forma Baltimore Ravens: 5-7; Los Angeles Chargers: 2-10",
+            "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+            "H2H: sin enfrentamientos recientes utilizables",
+            "Las cuotas no participan en la decisión"
+          ],
+          "kalshi_percent": null
+        }
+      ],
+      "recommendation": {
+        "sport": "NFL",
+        "game_id": "401873065",
+        "matchup": "Los Angeles Chargers @ Baltimore Ravens",
+        "start": "2026-11-17T01:15",
+        "market": "Ganador del partido",
+        "selection": "Baltimore Ravens",
+        "bookmaker": "Kalshi",
+        "decimal_odds": 1.4705882352941175,
+        "model_probability": 0.6430567586033344,
+        "break_even_probability": 0.0,
+        "edge": 0.0,
+        "expected_value": 0.0,
+        "bookmakers": 0,
+        "data_quality": 100,
+        "passes_filters": true,
+        "reasons": [
+          "Filtros NFL: probabilidad >= 55%; historial >= 2 por equipo; calidad >= 50/100",
+          "Modelo NFL sin cuotas: 64.3% para Baltimore Ravens",
+          "Forma Baltimore Ravens: 5-7; Los Angeles Chargers: 2-10",
+          "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+          "H2H: sin enfrentamientos recientes utilizables",
+          "Las cuotas no participan en la decisión"
+        ],
+        "kalshi_percent": null
+      },
+      "best_observed": {
+        "sport": "NFL",
+        "game_id": "401873065",
+        "matchup": "Los Angeles Chargers @ Baltimore Ravens",
+        "start": "2026-11-17T01:15",
+        "market": "Ganador del partido",
+        "selection": "Baltimore Ravens",
+        "bookmaker": "SIN CUOTAS — MODELO NFL",
+        "decimal_odds": 0.0,
+        "model_probability": 0.6430567586033344,
+        "break_even_probability": 0.0,
+        "edge": 0.0,
+        "expected_value": 0.0,
+        "bookmakers": 0,
+        "data_quality": 100,
+        "passes_filters": true,
+        "reasons": [
+          "Filtros NFL: probabilidad >= 55%; historial >= 2 por equipo; calidad >= 50/100",
+          "Modelo NFL sin cuotas: 64.3% para Baltimore Ravens",
+          "Forma Baltimore Ravens: 5-7; Los Angeles Chargers: 2-10",
+          "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+          "H2H: sin enfrentamientos recientes utilizables",
+          "Las cuotas no participan en la decisión"
+        ],
+        "kalshi_percent": null
+      }
+    },
+    "NCAAF": {
+      "games": 0,
+      "quotes": 0,
+      "kalshi_quotes": 0,
+      "remaining_requests": null,
+      "notes": [
+        "No hay partidos disponibles para la fecha analizada."
+      ],
+      "history_summary": {
+        "total": 142,
+        "resolved": 138,
+        "won": 93,
+        "lost": 38,
+        "ties": 7,
+        "pending": 4,
+        "win_rate": 0.7099236641221374,
+        "financial_operations": 102,
+        "total_staked": 9600.0,
+        "profit_loss": 1533.7,
+        "roi": 0.15976
+      },
+      "error": null,
+      "recommendations": [],
+      "recommendation": null,
+      "best_observed": null
+    },
+    "NBA": {
+      "games": 8,
+      "quotes": 0,
+      "kalshi_quotes": 2,
+      "remaining_requests": null,
+      "notes": [
+        "NBA | Portland Trail Blazers @ Minnesota Timberwolves | NO BET: probabilidad 53.2% < 54.0%",
+        "NBA analizado SIN cuotas: la selección se calculó con forma reciente, puntos anotados/permitidos, margen de puntos y enfrentamientos directos (H2H) cuando existen; las cuotas no participaron en la decisión."
+      ],
+      "history_summary": {
+        "total": 144,
+        "resolved": 138,
+        "won": 93,
+        "lost": 38,
+        "ties": 7,
+        "pending": 6,
+        "win_rate": 0.7099236641221374,
+        "financial_operations": 102,
+        "total_staked": 9600.0,
+        "profit_loss": 1533.7,
+        "roi": 0.15976
+      },
+      "error": null,
+      "recommendations": [
+        {
+          "sport": "NBA",
+          "game_id": "401909994",
+          "matchup": "Orlando Magic @ Boston Celtics",
+          "start": "2026-11-17T00:00Z",
+          "market": "Ganador del partido",
+          "selection": "Boston Celtics",
+          "bookmaker": "Kalshi",
+          "decimal_odds": 1.2987012987012987,
+          "model_probability": 0.7468089059403978,
+          "break_even_probability": 0.0,
+          "edge": 0.0,
+          "expected_value": 0.0,
+          "bookmakers": 0,
+          "data_quality": 100,
+          "passes_filters": true,
+          "reasons": [
+            "Filtros NBA: probabilidad >= 54%; historial >= 3 por equipo; calidad >= 28/100",
+            "Modelo NBA sin cuotas: 74.7% para Boston Celtics",
+            "Forma Boston Celtics: 11-1; Orlando Magic: 5-7",
+            "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+            "H2H: sin enfrentamientos recientes utilizables",
+            "Las cuotas no participan en la decisión"
+          ],
+          "kalshi_percent": null
+        },
+        {
+          "sport": "NBA",
+          "game_id": "401909995",
+          "matchup": "Chicago Bulls @ Cleveland Cavaliers",
+          "start": "2026-11-17T00:00Z",
+          "market": "Ganador del partido",
+          "selection": "Cleveland Cavaliers",
+          "bookmaker": "Kalshi",
+          "decimal_odds": 1.3157894736842106,
+          "model_probability": 0.6745122684168581,
+          "break_even_probability": 0.0,
+          "edge": 0.0,
+          "expected_value": 0.0,
+          "bookmakers": 0,
+          "data_quality": 100,
+          "passes_filters": true,
+          "reasons": [
+            "Filtros NBA: probabilidad >= 54%; historial >= 3 por equipo; calidad >= 28/100",
+            "Modelo NBA sin cuotas: 67.5% para Cleveland Cavaliers",
+            "Forma Cleveland Cavaliers: 6-6; Chicago Bulls: 3-9",
+            "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+            "H2H: sin enfrentamientos recientes utilizables",
+            "Las cuotas no participan en la decisión"
+          ],
+          "kalshi_percent": null
+        }
+      ],
+      "recommendation": {
+        "sport": "NBA",
+        "game_id": "401909994",
+        "matchup": "Orlando Magic @ Boston Celtics",
+        "start": "2026-11-17T00:00Z",
+        "market": "Ganador del partido",
+        "selection": "Boston Celtics",
+        "bookmaker": "Kalshi",
+        "decimal_odds": 1.2987012987012987,
+        "model_probability": 0.7468089059403978,
+        "break_even_probability": 0.0,
+        "edge": 0.0,
+        "expected_value": 0.0,
+        "bookmakers": 0,
+        "data_quality": 100,
+        "passes_filters": true,
+        "reasons": [
+          "Filtros NBA: probabilidad >= 54%; historial >= 3 por equipo; calidad >= 28/100",
+          "Modelo NBA sin cuotas: 74.7% para Boston Celtics",
+          "Forma Boston Celtics: 11-1; Orlando Magic: 5-7",
+          "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+          "H2H: sin enfrentamientos recientes utilizables",
+          "Las cuotas no participan en la decisión"
+        ],
+        "kalshi_percent": null
+      },
+      "best_observed": {
+        "sport": "NBA",
+        "game_id": "401909994",
+        "matchup": "Orlando Magic @ Boston Celtics",
+        "start": "2026-11-17T00:00Z",
+        "market": "Ganador del partido",
+        "selection": "Boston Celtics",
+        "bookmaker": "SIN CUOTAS — MODELO NBA",
+        "decimal_odds": 0.0,
+        "model_probability": 0.7468089059403978,
+        "break_even_probability": 0.0,
+        "edge": 0.0,
+        "expected_value": 0.0,
+        "bookmakers": 0,
+        "data_quality": 100,
+        "passes_filters": true,
+        "reasons": [
+          "Filtros NBA: probabilidad >= 54%; historial >= 3 por equipo; calidad >= 28/100",
+          "Modelo NBA sin cuotas: 74.7% para Boston Celtics",
+          "Forma Boston Celtics: 11-1; Orlando Magic: 5-7",
+          "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+          "H2H: sin enfrentamientos recientes utilizables",
+          "Las cuotas no participan en la decisión"
+        ],
+        "kalshi_percent": null
+      }
+    }
+  }
+}
