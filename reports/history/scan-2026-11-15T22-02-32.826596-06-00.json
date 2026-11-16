@@ -1,0 +1,219 @@
+{
+  "generated_at": "2026-11-15T22:02:32.826596-06:00",
+  "analysis_date": "2026-11-15",
+  "scan_number": 1,
+  "guarantee": false,
+  "message": "Las probabilidades son estimaciones; ninguna apuesta garantiza ganancias.",
+  "sports": {
+    "MLB": {
+      "games": 0,
+      "quotes": 0,
+      "kalshi_quotes": 0,
+      "remaining_requests": null,
+      "notes": [
+        "No hay partidos disponibles para la fecha analizada."
+      ],
+      "history_summary": {
+        "total": 140,
+        "resolved": 138,
+        "won": 93,
+        "lost": 38,
+        "ties": 7,
+        "pending": 2,
+        "win_rate": 0.7099236641221374,
+        "financial_operations": 102,
+        "total_staked": 9600.0,
+        "profit_loss": 1533.7,
+        "roi": 0.15976
+      },
+      "error": null,
+      "recommendations": [],
+      "recommendation": null,
+      "best_observed": null
+    },
+    "NFL": {
+      "games": 1,
+      "quotes": 0,
+      "kalshi_quotes": 0,
+      "remaining_requests": null,
+      "notes": [
+        "NFL | Pittsburgh Steelers @ Cincinnati Bengals | NO BET: probabilidad 51.8% < 55.0%",
+        "NFL analizado SIN cuotas: la selección se calculó con forma reciente, puntos anotados/permitidos, margen de puntos y enfrentamientos directos (H2H) cuando existen; las cuotas no participaron en la decisión.",
+        "Ningún juego NFL superó simultáneamente la probabilidad mínima, la calidad mínima y el historial mínimo exigido."
+      ],
+      "history_summary": {
+        "total": 140,
+        "resolved": 138,
+        "won": 93,
+        "lost": 38,
+        "ties": 7,
+        "pending": 2,
+        "win_rate": 0.7099236641221374,
+        "financial_operations": 102,
+        "total_staked": 9600.0,
+        "profit_loss": 1533.7,
+        "roi": 0.15976
+      },
+      "error": null,
+      "recommendations": [],
+      "recommendation": null,
+      "best_observed": {
+        "sport": "NFL",
+        "game_id": "401873064",
+        "matchup": "Pittsburgh Steelers @ Cincinnati Bengals",
+        "start": "2026-11-16T01:20",
+        "market": "Ganador del partido",
+        "selection": "Cincinnati Bengals",
+        "bookmaker": "SIN CUOTAS — MODELO NFL",
+        "decimal_odds": 0.0,
+        "model_probability": 0.517690115969324,
+        "break_even_probability": 0.0,
+        "edge": 0.0,
+        "expected_value": 0.0,
+        "bookmakers": 0,
+        "data_quality": 100,
+        "passes_filters": false,
+        "reasons": [
+          "Filtros NFL: probabilidad >= 55%; historial >= 2 por equipo; calidad >= 50/100",
+          "Modelo NFL sin cuotas: 51.8% para Cincinnati Bengals",
+          "Forma Cincinnati Bengals: 8-4; Pittsburgh Steelers: 9-3",
+          "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+          "H2H últimos 3: Cincinnati Bengals 27% victorias; margen -8.0 pts",
+          "Peso H2H aplicado: 7.5%",
+          "Las cuotas no participan en la decisión"
+        ],
+        "kalshi_percent": null
+      }
+    },
+    "NCAAF": {
+      "games": 0,
+      "quotes": 0,
+      "kalshi_quotes": 0,
+      "remaining_requests": null,
+      "notes": [
+        "No hay partidos disponibles para la fecha analizada."
+      ],
+      "history_summary": {
+        "total": 140,
+        "resolved": 138,
+        "won": 93,
+        "lost": 38,
+        "ties": 7,
+        "pending": 2,
+        "win_rate": 0.7099236641221374,
+        "financial_operations": 102,
+        "total_staked": 9600.0,
+        "profit_loss": 1533.7,
+        "roi": 0.15976
+      },
+      "error": null,
+      "recommendations": [],
+      "recommendation": null,
+      "best_observed": null
+    },
+    "NBA": {
+      "games": 1,
+      "quotes": 0,
+      "kalshi_quotes": 0,
+      "remaining_requests": null,
+      "notes": [
+        "NBA analizado SIN cuotas: la selección se calculó con forma reciente, puntos anotados/permitidos, margen de puntos y enfrentamientos directos (H2H) cuando existen; las cuotas no participaron en la decisión.",
+        "Solo un equipo distinto superó todos los filtros; no se repite el mismo equipo para completar una segunda apuesta."
+      ],
+      "history_summary": {
+        "total": 141,
+        "resolved": 138,
+        "won": 93,
+        "lost": 38,
+        "ties": 7,
+        "pending": 3,
+        "win_rate": 0.7099236641221374,
+        "financial_operations": 102,
+        "total_staked": 9600.0,
+        "profit_loss": 1533.7,
+        "roi": 0.15976
+      },
+      "error": null,
+      "recommendations": [
+        {
+          "sport": "NBA",
+          "game_id": "401909993",
+          "matchup": "Oklahoma City Thunder @ Sacramento Kings",
+          "start": "2026-11-16T02:00Z",
+          "market": "Ganador del partido",
+          "selection": "Oklahoma City Thunder",
+          "bookmaker": "Kalshi",
+          "decimal_odds": 0.0,
+          "model_probability": 0.6741725051922162,
+          "break_even_probability": 0.0,
+          "edge": 0.0,
+          "expected_value": 0.0,
+          "bookmakers": 0,
+          "data_quality": 100,
+          "passes_filters": true,
+          "reasons": [
+            "Filtros NBA: probabilidad >= 54%; historial >= 3 por equipo; calidad >= 28/100",
+            "Modelo NBA sin cuotas: 67.4% para Oklahoma City Thunder",
+            "Forma Sacramento Kings: 1-11; Oklahoma City Thunder: 7-5",
+            "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+            "H2H: sin enfrentamientos recientes utilizables",
+            "Las cuotas no participan en la decisión"
+          ],
+          "kalshi_percent": null
+        }
+      ],
+      "recommendation": {
+        "sport": "NBA",
+        "game_id": "401909993",
+        "matchup": "Oklahoma City Thunder @ Sacramento Kings",
+        "start": "2026-11-16T02:00Z",
+        "market": "Ganador del partido",
+        "selection": "Oklahoma City Thunder",
+        "bookmaker": "Kalshi",
+        "decimal_odds": 0.0,
+        "model_probability": 0.6741725051922162,
+        "break_even_probability": 0.0,
+        "edge": 0.0,
+        "expected_value": 0.0,
+        "bookmakers": 0,
+        "data_quality": 100,
+        "passes_filters": true,
+        "reasons": [
+          "Filtros NBA: probabilidad >= 54%; historial >= 3 por equipo; calidad >= 28/100",
+          "Modelo NBA sin cuotas: 67.4% para Oklahoma City Thunder",
+          "Forma Sacramento Kings: 1-11; Oklahoma City Thunder: 7-5",
+          "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+          "H2H: sin enfrentamientos recientes utilizables",
+          "Las cuotas no participan en la decisión"
+        ],
+        "kalshi_percent": null
+      },
+      "best_observed": {
+        "sport": "NBA",
+        "game_id": "401909993",
+        "matchup": "Oklahoma City Thunder @ Sacramento Kings",
+        "start": "2026-11-16T02:00Z",
+        "market": "Ganador del partido",
+        "selection": "Oklahoma City Thunder",
+        "bookmaker": "SIN CUOTAS — MODELO NBA",
+        "decimal_odds": 0.0,
+        "model_probability": 0.6741725051922162,
+        "break_even_probability": 0.0,
+        "edge": 0.0,
+        "expected_value": 0.0,
+        "bookmakers": 0,
+        "data_quality": 100,
+        "passes_filters": true,
+        "reasons": [
+          "Filtros NBA: probabilidad >= 54%; historial >= 3 por equipo; calidad >= 28/100",
+          "Modelo NBA sin cuotas: 67.4% para Oklahoma City Thunder",
+          "Forma Sacramento Kings: 1-11; Oklahoma City Thunder: 7-5",
+          "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+          "H2H: sin enfrentamientos recientes utilizables",
+          "Las cuotas no participan en la decisión"
+        ],
+        "kalshi_percent": null
+      }
+    }
+  }
+}
