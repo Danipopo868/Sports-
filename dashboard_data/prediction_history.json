@@ -5366,13 +5366,14 @@
     "contracts": 312.5,
     "potential_return": 312.5,
     "potential_profit": 212.5,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 32.0
+    "status": "RESUELTA",
+    "result": "PERDIDA",
+    "winner": "Los Angeles Chargers",
+    "final_score": "Los Angeles Chargers 23 - Baltimore Ravens 20",
+    "return_amount": 0.0,
+    "profit_loss": -100.0,
+    "kalshi_cents": 32.0,
+    "resolved_at": "2026-11-17T07:14:12.359465-06:00"
   },
   {
     "key": "NBA|401909994|Ganador del partido|Boston Celtics",
@@ -5485,13 +5486,14 @@
     "contracts": 120.4819,
     "potential_return": 120.48,
     "potential_profit": 20.48,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 83.0
+    "status": "RESUELTA",
+    "result": "PERDIDA",
+    "winner": "Phoenix Suns",
+    "final_score": "Phoenix Suns 117 - Denver Nuggets 105",
+    "return_amount": 0.0,
+    "profit_loss": -100.0,
+    "kalshi_cents": 83.0,
+    "resolved_at": "2026-11-17T07:14:12.359465-06:00"
   },
   {
     "key": "NBA|401909997|Ganador del partido|Philadelphia 76ers",
