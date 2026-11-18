@@ -1,0 +1,298 @@
+{
+  "generated_at": "2026-11-18T12:08:05.788646-06:00",
+  "analysis_date": "2026-11-18",
+  "scan_number": 1,
+  "guarantee": false,
+  "message": "Las probabilidades son estimaciones; ninguna apuesta garantiza ganancias.",
+  "sports": {
+    "MLB": {
+      "games": 0,
+      "quotes": 0,
+      "kalshi_quotes": 0,
+      "remaining_requests": null,
+      "notes": [
+        "No hay partidos disponibles para la fecha analizada."
+      ],
+      "history_summary": {
+        "total": 146,
+        "resolved": 143,
+        "won": 95,
+        "lost": 41,
+        "ties": 7,
+        "pending": 3,
+        "win_rate": 0.6985294117647058,
+        "financial_operations": 107,
+        "total_staked": 10100.0,
+        "profit_loss": 1272.81,
+        "roi": 0.126021
+      },
+      "error": null,
+      "recommendations": [],
+      "recommendation": null,
+      "best_observed": null
+    },
+    "NFL": {
+      "games": 0,
+      "quotes": 0,
+      "kalshi_quotes": 0,
+      "remaining_requests": null,
+      "notes": [
+        "No hay partidos disponibles para la fecha analizada."
+      ],
+      "history_summary": {
+        "total": 146,
+        "resolved": 143,
+        "won": 95,
+        "lost": 41,
+        "ties": 7,
+        "pending": 3,
+        "win_rate": 0.6985294117647058,
+        "financial_operations": 107,
+        "total_staked": 10100.0,
+        "profit_loss": 1272.81,
+        "roi": 0.126021
+      },
+      "error": null,
+      "recommendations": [],
+      "recommendation": null,
+      "best_observed": null
+    },
+    "NCAAF": {
+      "games": 2,
+      "quotes": 0,
+      "kalshi_quotes": 0,
+      "remaining_requests": null,
+      "notes": [
+        "NCAAF | Central Michigan Chippewas @ Buffalo Bulls | NO BET: probabilidad 54.3% < 55.0%",
+        "NCAAF analizado SIN cuotas: la selección se calculó con forma reciente, puntos anotados/permitidos, margen de puntos y enfrentamientos directos (H2H) cuando existen; las cuotas no participaron en la decisión.",
+        "Solo un equipo distinto superó todos los filtros; no se repite el mismo equipo para completar una segunda apuesta."
+      ],
+      "history_summary": {
+        "total": 147,
+        "resolved": 143,
+        "won": 95,
+        "lost": 41,
+        "ties": 7,
+        "pending": 4,
+        "win_rate": 0.6985294117647058,
+        "financial_operations": 107,
+        "total_staked": 10100.0,
+        "profit_loss": 1272.81,
+        "roi": 0.126021
+      },
+      "error": null,
+      "recommendations": [
+        {
+          "sport": "NCAAF",
+          "game_id": "401866467",
+          "matchup": "Akron Zips @ Massachusetts Minutemen",
+          "start": "2026-11-19T00:00",
+          "market": "Ganador del partido",
+          "selection": "Massachusetts Minutemen",
+          "bookmaker": "Kalshi",
+          "decimal_odds": 0.0,
+          "model_probability": 0.6419775834788252,
+          "break_even_probability": 0.0,
+          "edge": 0.0,
+          "expected_value": 0.0,
+          "bookmakers": 0,
+          "data_quality": 100,
+          "passes_filters": true,
+          "reasons": [
+            "Filtros NCAAF: probabilidad >= 55%; historial >= 2 por equipo; calidad >= 50/100",
+            "Modelo NCAAF sin cuotas: 64.2% para Massachusetts Minutemen",
+            "Forma Massachusetts Minutemen: 5-7; Akron Zips: 2-10",
+            "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+            "H2H últimos 1: Massachusetts Minutemen 0% victorias; margen -34.0 pts",
+            "Peso H2H aplicado: 2.5%",
+            "Las cuotas no participan en la decisión"
+          ],
+          "kalshi_percent": null
+        }
+      ],
+      "recommendation": {
+        "sport": "NCAAF",
+        "game_id": "401866467",
+        "matchup": "Akron Zips @ Massachusetts Minutemen",
+        "start": "2026-11-19T00:00",
+        "market": "Ganador del partido",
+        "selection": "Massachusetts Minutemen",
+        "bookmaker": "Kalshi",
+        "decimal_odds": 0.0,
+        "model_probability": 0.6419775834788252,
+        "break_even_probability": 0.0,
+        "edge": 0.0,
+        "expected_value": 0.0,
+        "bookmakers": 0,
+        "data_quality": 100,
+        "passes_filters": true,
+        "reasons": [
+          "Filtros NCAAF: probabilidad >= 55%; historial >= 2 por equipo; calidad >= 50/100",
+          "Modelo NCAAF sin cuotas: 64.2% para Massachusetts Minutemen",
+          "Forma Massachusetts Minutemen: 5-7; Akron Zips: 2-10",
+          "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+          "H2H últimos 1: Massachusetts Minutemen 0% victorias; margen -34.0 pts",
+          "Peso H2H aplicado: 2.5%",
+          "Las cuotas no participan en la decisión"
+        ],
+        "kalshi_percent": null
+      },
+      "best_observed": {
+        "sport": "NCAAF",
+        "game_id": "401866467",
+        "matchup": "Akron Zips @ Massachusetts Minutemen",
+        "start": "2026-11-19T00:00",
+        "market": "Ganador del partido",
+        "selection": "Massachusetts Minutemen",
+        "bookmaker": "SIN CUOTAS — MODELO NCAAF",
+        "decimal_odds": 0.0,
+        "model_probability": 0.6419775834788252,
+        "break_even_probability": 0.0,
+        "edge": 0.0,
+        "expected_value": 0.0,
+        "bookmakers": 0,
+        "data_quality": 100,
+        "passes_filters": true,
+        "reasons": [
+          "Filtros NCAAF: probabilidad >= 55%; historial >= 2 por equipo; calidad >= 50/100",
+          "Modelo NCAAF sin cuotas: 64.2% para Massachusetts Minutemen",
+          "Forma Massachusetts Minutemen: 5-7; Akron Zips: 2-10",
+          "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+          "H2H últimos 1: Massachusetts Minutemen 0% victorias; margen -34.0 pts",
+          "Peso H2H aplicado: 2.5%",
+          "Las cuotas no participan en la decisión"
+        ],
+        "kalshi_percent": null
+      }
+    },
+    "NBA": {
+      "games": 12,
+      "quotes": 0,
+      "kalshi_quotes": 2,
+      "remaining_requests": null,
+      "notes": [
+        "NBA analizado SIN cuotas: la selección se calculó con forma reciente, puntos anotados/permitidos, margen de puntos y enfrentamientos directos (H2H) cuando existen; las cuotas no participaron en la decisión."
+      ],
+      "history_summary": {
+        "total": 149,
+        "resolved": 143,
+        "won": 95,
+        "lost": 41,
+        "ties": 7,
+        "pending": 6,
+        "win_rate": 0.6985294117647058,
+        "financial_operations": 107,
+        "total_staked": 10100.0,
+        "profit_loss": 1272.81,
+        "roi": 0.126021
+      },
+      "error": null,
+      "recommendations": [
+        {
+          "sport": "NBA",
+          "game_id": "401910017",
+          "matchup": "Utah Jazz @ Los Angeles Lakers",
+          "start": "2026-11-19T03:00Z",
+          "market": "Ganador del partido",
+          "selection": "Los Angeles Lakers",
+          "bookmaker": "Kalshi",
+          "decimal_odds": 1.2658227848101264,
+          "model_probability": 0.7896839017491614,
+          "break_even_probability": 0.0,
+          "edge": 0.0,
+          "expected_value": 0.0,
+          "bookmakers": 0,
+          "data_quality": 100,
+          "passes_filters": true,
+          "reasons": [
+            "Filtros NBA: probabilidad >= 54%; historial >= 3 por equipo; calidad >= 28/100",
+            "Modelo NBA sin cuotas: 79.0% para Los Angeles Lakers",
+            "Forma Los Angeles Lakers: 10-2; Utah Jazz: 1-11",
+            "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+            "H2H: sin enfrentamientos recientes utilizables",
+            "Las cuotas no participan en la decisión"
+          ],
+          "kalshi_percent": null
+        },
+        {
+          "sport": "NBA",
+          "game_id": "401910009",
+          "matchup": "Milwaukee Bucks @ Miami Heat",
+          "start": "2026-11-19T00:00Z",
+          "market": "Ganador del partido",
+          "selection": "Miami Heat",
+          "bookmaker": "Kalshi",
+          "decimal_odds": 1.1764705882352942,
+          "model_probability": 0.76250385959187,
+          "break_even_probability": 0.0,
+          "edge": 0.0,
+          "expected_value": 0.0,
+          "bookmakers": 0,
+          "data_quality": 100,
+          "passes_filters": true,
+          "reasons": [
+            "Filtros NBA: probabilidad >= 54%; historial >= 3 por equipo; calidad >= 28/100",
+            "Modelo NBA sin cuotas: 76.3% para Miami Heat",
+            "Forma Miami Heat: 8-4; Milwaukee Bucks: 1-11",
+            "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+            "H2H: sin enfrentamientos recientes utilizables",
+            "Las cuotas no participan en la decisión"
+          ],
+          "kalshi_percent": null
+        }
+      ],
+      "recommendation": {
+        "sport": "NBA",
+        "game_id": "401910017",
+        "matchup": "Utah Jazz @ Los Angeles Lakers",
+        "start": "2026-11-19T03:00Z",
+        "market": "Ganador del partido",
+        "selection": "Los Angeles Lakers",
+        "bookmaker": "Kalshi",
+        "decimal_odds": 1.2658227848101264,
+        "model_probability": 0.7896839017491614,
+        "break_even_probability": 0.0,
+        "edge": 0.0,
+        "expected_value": 0.0,
+        "bookmakers": 0,
+        "data_quality": 100,
+        "passes_filters": true,
+        "reasons": [
+          "Filtros NBA: probabilidad >= 54%; historial >= 3 por equipo; calidad >= 28/100",
+          "Modelo NBA sin cuotas: 79.0% para Los Angeles Lakers",
+          "Forma Los Angeles Lakers: 10-2; Utah Jazz: 1-11",
+          "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+          "H2H: sin enfrentamientos recientes utilizables",
+          "Las cuotas no participan en la decisión"
+        ],
+        "kalshi_percent": null
+      },
+      "best_observed": {
+        "sport": "NBA",
+        "game_id": "401910017",
+        "matchup": "Utah Jazz @ Los Angeles Lakers",
+        "start": "2026-11-19T03:00Z",
+        "market": "Ganador del partido",
+        "selection": "Los Angeles Lakers",
+        "bookmaker": "SIN CUOTAS — MODELO NBA",
+        "decimal_odds": 0.0,
+        "model_probability": 0.7896839017491614,
+        "break_even_probability": 0.0,
+        "edge": 0.0,
+        "expected_value": 0.0,
+        "bookmakers": 0,
+        "data_quality": 100,
+        "passes_filters": true,
+        "reasons": [
+          "Filtros NBA: probabilidad >= 54%; historial >= 3 por equipo; calidad >= 28/100",
+          "Modelo NBA sin cuotas: 79.0% para Los Angeles Lakers",
+          "Forma Los Angeles Lakers: 10-2; Utah Jazz: 1-11",
+          "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+          "H2H: sin enfrentamientos recientes utilizables",
+          "Las cuotas no participan en la decisión"
+        ],
+        "kalshi_percent": null
+      }
+    }
+  }
+}
