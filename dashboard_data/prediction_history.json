@@ -5605,13 +5605,14 @@
     "contracts": 126.5823,
     "potential_return": 126.58,
     "potential_profit": 26.58,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 79.0
+    "status": "RESUELTA",
+    "result": "PERDIDA",
+    "winner": "Utah Jazz",
+    "final_score": "Utah Jazz 109 - Los Angeles Lakers 97",
+    "return_amount": 0.0,
+    "profit_loss": -100.0,
+    "kalshi_cents": 79.0,
+    "resolved_at": "2026-11-19T06:55:52.200226-06:00"
   },
   {
     "key": "NBA|401910009|Ganador del partido|Miami Heat",
