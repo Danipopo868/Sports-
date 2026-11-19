@@ -5566,12 +5566,13 @@
     "contracts": null,
     "potential_return": null,
     "potential_profit": null,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
+    "status": "RESUELTA",
+    "result": "PERDIDA",
+    "winner": "Akron Zips",
+    "final_score": "Akron Zips 34 - Massachusetts Minutemen 33",
     "return_amount": null,
-    "profit_loss": null
+    "profit_loss": null,
+    "resolved_at": "2026-11-18T21:19:19.895846-06:00"
   },
   {
     "key": "NBA|401910017|Ganador del partido|Los Angeles Lakers",
@@ -5643,12 +5644,13 @@
     "contracts": 117.6471,
     "potential_return": 117.65,
     "potential_profit": 17.65,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 85.0
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Miami Heat",
+    "final_score": "Milwaukee Bucks 130 - Miami Heat 137",
+    "return_amount": 117.65,
+    "profit_loss": 17.65,
+    "kalshi_cents": 85.0,
+    "resolved_at": "2026-11-18T21:19:19.895846-06:00"
   }
 ]
