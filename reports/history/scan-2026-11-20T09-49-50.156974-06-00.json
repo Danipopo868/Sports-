@@ -1,0 +1,322 @@
+{
+  "generated_at": "2026-11-20T09:49:50.156974-06:00",
+  "analysis_date": "2026-11-20",
+  "scan_number": 1,
+  "guarantee": false,
+  "message": "Las probabilidades son estimaciones; ninguna apuesta garantiza ganancias.",
+  "sports": {
+    "MLB": {
+      "games": 0,
+      "quotes": 0,
+      "kalshi_quotes": 0,
+      "remaining_requests": null,
+      "notes": [
+        "No hay partidos disponibles para la fecha analizada."
+      ],
+      "history_summary": {
+        "total": 149,
+        "resolved": 146,
+        "won": 96,
+        "lost": 43,
+        "ties": 7,
+        "pending": 3,
+        "win_rate": 0.6906474820143885,
+        "financial_operations": 109,
+        "total_staked": 10300.0,
+        "profit_loss": 1190.46,
+        "roi": 0.115579
+      },
+      "error": null,
+      "recommendations": [],
+      "recommendation": null,
+      "best_observed": null
+    },
+    "NFL": {
+      "games": 0,
+      "quotes": 0,
+      "kalshi_quotes": 0,
+      "remaining_requests": null,
+      "notes": [
+        "No hay partidos disponibles para la fecha analizada."
+      ],
+      "history_summary": {
+        "total": 149,
+        "resolved": 146,
+        "won": 96,
+        "lost": 43,
+        "ties": 7,
+        "pending": 3,
+        "win_rate": 0.6906474820143885,
+        "financial_operations": 109,
+        "total_staked": 10300.0,
+        "profit_loss": 1190.46,
+        "roi": 0.115579
+      },
+      "error": null,
+      "recommendations": [],
+      "recommendation": null,
+      "best_observed": null
+    },
+    "NCAAF": {
+      "games": 6,
+      "quotes": 0,
+      "kalshi_quotes": 0,
+      "remaining_requests": null,
+      "notes": [
+        "NCAAF | Iowa State Cyclones @ UCF Knights | NO BET: probabilidad 52.7% < 55.0%",
+        "NCAAF analizado SIN cuotas: la selección se calculó con forma reciente, puntos anotados/permitidos, margen de puntos y enfrentamientos directos (H2H) cuando existen; las cuotas no participaron en la decisión."
+      ],
+      "history_summary": {
+        "total": 151,
+        "resolved": 146,
+        "won": 96,
+        "lost": 43,
+        "ties": 7,
+        "pending": 5,
+        "win_rate": 0.6906474820143885,
+        "financial_operations": 109,
+        "total_staked": 10300.0,
+        "profit_loss": 1190.46,
+        "roi": 0.115579
+      },
+      "error": null,
+      "recommendations": [
+        {
+          "sport": "NCAAF",
+          "game_id": "401864545",
+          "matchup": "UTEP Miners @ Air Force Falcons",
+          "start": "2026-11-21T01:00",
+          "market": "Ganador del partido",
+          "selection": "Air Force Falcons",
+          "bookmaker": "Kalshi",
+          "decimal_odds": 0.0,
+          "model_probability": 0.7849038802443027,
+          "break_even_probability": 0.0,
+          "edge": 0.0,
+          "expected_value": 0.0,
+          "bookmakers": 0,
+          "data_quality": 100,
+          "passes_filters": true,
+          "reasons": [
+            "Filtros NCAAF: probabilidad >= 55%; historial >= 2 por equipo; calidad >= 50/100",
+            "Modelo NCAAF sin cuotas: 78.5% para Air Force Falcons",
+            "Forma Air Force Falcons: 9-3; UTEP Miners: 1-11",
+            "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+            "H2H: sin enfrentamientos recientes utilizables",
+            "Las cuotas no participan en la decisión"
+          ],
+          "kalshi_percent": null
+        },
+        {
+          "sport": "NCAAF",
+          "game_id": "401866468",
+          "matchup": "Bowling Green Falcons @ Toledo Rockets",
+          "start": "2026-11-21T00:30",
+          "market": "Ganador del partido",
+          "selection": "Toledo Rockets",
+          "bookmaker": "Kalshi",
+          "decimal_odds": 0.0,
+          "model_probability": 0.7302024774332416,
+          "break_even_probability": 0.0,
+          "edge": 0.0,
+          "expected_value": 0.0,
+          "bookmakers": 0,
+          "data_quality": 100,
+          "passes_filters": true,
+          "reasons": [
+            "Filtros NCAAF: probabilidad >= 55%; historial >= 2 por equipo; calidad >= 50/100",
+            "Modelo NCAAF sin cuotas: 73.0% para Toledo Rockets",
+            "Forma Toledo Rockets: 10-2; Bowling Green Falcons: 4-8",
+            "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+            "H2H últimos 1: Toledo Rockets 0% victorias; margen -5.0 pts",
+            "Peso H2H aplicado: 2.5%",
+            "Las cuotas no participan en la decisión"
+          ],
+          "kalshi_percent": null
+        }
+      ],
+      "recommendation": {
+        "sport": "NCAAF",
+        "game_id": "401864545",
+        "matchup": "UTEP Miners @ Air Force Falcons",
+        "start": "2026-11-21T01:00",
+        "market": "Ganador del partido",
+        "selection": "Air Force Falcons",
+        "bookmaker": "Kalshi",
+        "decimal_odds": 0.0,
+        "model_probability": 0.7849038802443027,
+        "break_even_probability": 0.0,
+        "edge": 0.0,
+        "expected_value": 0.0,
+        "bookmakers": 0,
+        "data_quality": 100,
+        "passes_filters": true,
+        "reasons": [
+          "Filtros NCAAF: probabilidad >= 55%; historial >= 2 por equipo; calidad >= 50/100",
+          "Modelo NCAAF sin cuotas: 78.5% para Air Force Falcons",
+          "Forma Air Force Falcons: 9-3; UTEP Miners: 1-11",
+          "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+          "H2H: sin enfrentamientos recientes utilizables",
+          "Las cuotas no participan en la decisión"
+        ],
+        "kalshi_percent": null
+      },
+      "best_observed": {
+        "sport": "NCAAF",
+        "game_id": "401864545",
+        "matchup": "UTEP Miners @ Air Force Falcons",
+        "start": "2026-11-21T01:00",
+        "market": "Ganador del partido",
+        "selection": "Air Force Falcons",
+        "bookmaker": "SIN CUOTAS — MODELO NCAAF",
+        "decimal_odds": 0.0,
+        "model_probability": 0.7849038802443027,
+        "break_even_probability": 0.0,
+        "edge": 0.0,
+        "expected_value": 0.0,
+        "bookmakers": 0,
+        "data_quality": 100,
+        "passes_filters": true,
+        "reasons": [
+          "Filtros NCAAF: probabilidad >= 55%; historial >= 2 por equipo; calidad >= 50/100",
+          "Modelo NCAAF sin cuotas: 78.5% para Air Force Falcons",
+          "Forma Air Force Falcons: 9-3; UTEP Miners: 1-11",
+          "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+          "H2H: sin enfrentamientos recientes utilizables",
+          "Las cuotas no participan en la decisión"
+        ],
+        "kalshi_percent": null
+      }
+    },
+    "NBA": {
+      "games": 9,
+      "quotes": 0,
+      "kalshi_quotes": 2,
+      "remaining_requests": null,
+      "notes": [
+        "NBA | Houston Rockets @ Denver Nuggets | NO BET: probabilidad 50.3% < 54.0%",
+        "NBA analizado SIN cuotas: la selección se calculó con forma reciente, puntos anotados/permitidos, margen de puntos y enfrentamientos directos (H2H) cuando existen; las cuotas no participaron en la decisión."
+      ],
+      "history_summary": {
+        "total": 153,
+        "resolved": 146,
+        "won": 96,
+        "lost": 43,
+        "ties": 7,
+        "pending": 7,
+        "win_rate": 0.6906474820143885,
+        "financial_operations": 109,
+        "total_staked": 10300.0,
+        "profit_loss": 1190.46,
+        "roi": 0.115579
+      },
+      "error": null,
+      "recommendations": [
+        {
+          "sport": "NBA",
+          "game_id": "401909313",
+          "matchup": "Sacramento Kings @ Los Angeles Lakers",
+          "start": "2026-11-21T03:00Z",
+          "market": "Ganador del partido",
+          "selection": "Los Angeles Lakers",
+          "bookmaker": "Kalshi",
+          "decimal_odds": 1.1363636363636365,
+          "model_probability": 0.7978719157701651,
+          "break_even_probability": 0.0,
+          "edge": 0.0,
+          "expected_value": 0.0,
+          "bookmakers": 0,
+          "data_quality": 100,
+          "passes_filters": true,
+          "reasons": [
+            "Filtros NBA: probabilidad >= 54%; historial >= 3 por equipo; calidad >= 28/100",
+            "Modelo NBA sin cuotas: 79.8% para Los Angeles Lakers",
+            "Forma Los Angeles Lakers: 10-2; Sacramento Kings: 1-11",
+            "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+            "H2H: sin enfrentamientos recientes utilizables",
+            "Las cuotas no participan en la decisión"
+          ],
+          "kalshi_percent": null
+        },
+        {
+          "sport": "NBA",
+          "game_id": "401909308",
+          "matchup": "Toronto Raptors @ Detroit Pistons",
+          "start": "2026-11-21T00:30Z",
+          "market": "Ganador del partido",
+          "selection": "Detroit Pistons",
+          "bookmaker": "Kalshi",
+          "decimal_odds": 1.4084507042253522,
+          "model_probability": 0.6954895138350401,
+          "break_even_probability": 0.0,
+          "edge": 0.0,
+          "expected_value": 0.0,
+          "bookmakers": 0,
+          "data_quality": 100,
+          "passes_filters": true,
+          "reasons": [
+            "Filtros NBA: probabilidad >= 54%; historial >= 3 por equipo; calidad >= 28/100",
+            "Modelo NBA sin cuotas: 69.5% para Detroit Pistons",
+            "Forma Detroit Pistons: 8-4; Toronto Raptors: 3-9",
+            "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+            "H2H: sin enfrentamientos recientes utilizables",
+            "Las cuotas no participan en la decisión"
+          ],
+          "kalshi_percent": null
+        }
+      ],
+      "recommendation": {
+        "sport": "NBA",
+        "game_id": "401909313",
+        "matchup": "Sacramento Kings @ Los Angeles Lakers",
+        "start": "2026-11-21T03:00Z",
+        "market": "Ganador del partido",
+        "selection": "Los Angeles Lakers",
+        "bookmaker": "Kalshi",
+        "decimal_odds": 1.1363636363636365,
+        "model_probability": 0.7978719157701651,
+        "break_even_probability": 0.0,
+        "edge": 0.0,
+        "expected_value": 0.0,
+        "bookmakers": 0,
+        "data_quality": 100,
+        "passes_filters": true,
+        "reasons": [
+          "Filtros NBA: probabilidad >= 54%; historial >= 3 por equipo; calidad >= 28/100",
+          "Modelo NBA sin cuotas: 79.8% para Los Angeles Lakers",
+          "Forma Los Angeles Lakers: 10-2; Sacramento Kings: 1-11",
+          "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+          "H2H: sin enfrentamientos recientes utilizables",
+          "Las cuotas no participan en la decisión"
+        ],
+        "kalshi_percent": null
+      },
+      "best_observed": {
+        "sport": "NBA",
+        "game_id": "401909313",
+        "matchup": "Sacramento Kings @ Los Angeles Lakers",
+        "start": "2026-11-21T03:00Z",
+        "market": "Ganador del partido",
+        "selection": "Los Angeles Lakers",
+        "bookmaker": "SIN CUOTAS — MODELO NBA",
+        "decimal_odds": 0.0,
+        "model_probability": 0.7978719157701651,
+        "break_even_probability": 0.0,
+        "edge": 0.0,
+        "expected_value": 0.0,
+        "bookmakers": 0,
+        "data_quality": 100,
+        "passes_filters": true,
+        "reasons": [
+          "Filtros NBA: probabilidad >= 54%; historial >= 3 por equipo; calidad >= 28/100",
+          "Modelo NBA sin cuotas: 79.8% para Los Angeles Lakers",
+          "Forma Los Angeles Lakers: 10-2; Sacramento Kings: 1-11",
+          "Forma reciente, puntos anotados/permitidos y margen de puntos incluidos en el modelo",
+          "H2H: sin enfrentamientos recientes utilizables",
+          "Las cuotas no participan en la decisión"
+        ],
+        "kalshi_percent": null
+      }
+    }
+  }
+}
