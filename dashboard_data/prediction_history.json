@@ -5685,12 +5685,13 @@
     "contracts": null,
     "potential_return": null,
     "potential_profit": null,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Air Force Falcons",
+    "final_score": "UTEP Miners 3 - Air Force Falcons 52",
     "return_amount": null,
-    "profit_loss": null
+    "profit_loss": null,
+    "resolved_at": "2026-11-21T03:40:51.892054-06:00"
   },
   {
     "key": "NCAAF|401866468|Ganador del partido|Toledo Rockets",
@@ -5723,12 +5724,13 @@
     "contracts": null,
     "potential_return": null,
     "potential_profit": null,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Toledo Rockets",
+    "final_score": "Bowling Green Falcons 0 - Toledo Rockets 19",
     "return_amount": null,
-    "profit_loss": null
+    "profit_loss": null,
+    "resolved_at": "2026-11-21T03:40:51.892054-06:00"
   },
   {
     "key": "NBA|401909313|Ganador del partido|Los Angeles Lakers",
@@ -5761,13 +5763,14 @@
     "contracts": 113.6364,
     "potential_return": 113.64,
     "potential_profit": 13.64,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 88.0
+    "status": "RESUELTA",
+    "result": "GANADA",
+    "winner": "Los Angeles Lakers",
+    "final_score": "Sacramento Kings 104 - Los Angeles Lakers 106",
+    "return_amount": 113.64,
+    "profit_loss": 13.64,
+    "kalshi_cents": 88.0,
+    "resolved_at": "2026-11-21T03:40:51.892054-06:00"
   },
   {
     "key": "NBA|401909308|Ganador del partido|Detroit Pistons",
@@ -5800,12 +5803,13 @@
     "contracts": 140.8451,
     "potential_return": 140.85,
     "potential_profit": 40.85,
-    "status": "PENDIENTE",
-    "result": null,
-    "winner": null,
-    "final_score": null,
-    "return_amount": null,
-    "profit_loss": null,
-    "kalshi_cents": 71.0
+    "status": "RESUELTA",
+    "result": "PERDIDA",
+    "winner": "Toronto Raptors",
+    "final_score": "Toronto Raptors 105 - Detroit Pistons 102",
+    "return_amount": 0.0,
+    "profit_loss": -100.0,
+    "kalshi_cents": 71.0,
+    "resolved_at": "2026-11-21T03:40:51.892054-06:00"
   }
 ]
